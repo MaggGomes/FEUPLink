@@ -31,10 +31,9 @@ fs
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
-    console.log("amizade");
   });
 
-  console.log("amizade");
+
 // eslint-disable-next-line
 // just to allow the usage of the sequelize objects with both capital and lower case
 db.sequelize = sequelize;
