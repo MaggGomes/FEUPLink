@@ -1,2 +1,10 @@
-lint:
-  - npm run lint
+image: node:8.6.0
+
+services:
+  - postgres:9.5.0
+
+all_tests:
+  script:
+   - cd server
+   - npm install
+   - npm run lint
