@@ -1,35 +1,24 @@
-var express = require('express');
-var app = express();
-const Sequelize = require('sequelize');
+// loading environment variables
+require('dotenv').config();
 
-require('dotenv').config()
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const morgan = require('morgan');
+const {sequelize} = require('./models');
 
-const sequelize = new Sequelize(process.env.DB_NAME_DEV, process.env.DB_USER_DEV, process.env.DB_PASS_DEV, {
-  host: process.env.DB_HOST_DEV,
-  dialect: 'postgres',
-  operatorsAliases: false,
 
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
+const app = express();
+app.use(morgan('combined'));
+app.use(bodyParser.json());
+app.use(cors());
 
-sequelize
-  .authenticate()
+
+require('./routes')(app);
+
+sequelize.sync()
   .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+    app.listen(process.env.SERVER_PORT, function() {
+      console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
+    });
   });
-
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
