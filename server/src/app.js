@@ -33,8 +33,3 @@ app.get('/', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
-
-console.log(process.env.DB_NAME_DEV);
-console.log(process.env.DB_USER_DEV);
-console.log(process.env.DB_PASS_DEV);
-console.log(process.env.DB_HOST_DEV);
