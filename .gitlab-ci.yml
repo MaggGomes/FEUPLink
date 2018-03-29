@@ -1,2 +1,2 @@
-before_script:
+lint:
   - npm run lint
