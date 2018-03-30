@@ -13,7 +13,7 @@ module.exports = (app) => {
     });
   });
 
-  app.get('/signup', function(req, res) {
+  app.post('/signup', function(req, res) {
     res.send({
       message: `hello ${req.body.email}`,
     });

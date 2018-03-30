@@ -24,7 +24,7 @@ export default {
       const response = await AuthenticationService.signup({
         email: this.email,
         password: this.password
-      }).catch(console.log("error!!"))
+      }).catch((err) => { console.log(err); });
       console.log(response.data)
     }
   }
