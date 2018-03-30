@@ -1,7 +1,7 @@
 <template>
-  <div class="hello">
+  <div class="text-lg-center text-md-center text-sm-center">
     <h1>FEUPLink</h1>
-    <a href="/#/signup">Sign-Up</a>
+    <h3>Bem-vindo antigo aluno da FEUP!</h3>
   </div>
 </template>
 
@@ -13,7 +13,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-a {
-  color: #42b983;
-}
 </style>
