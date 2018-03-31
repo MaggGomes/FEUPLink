@@ -33,6 +33,12 @@ fs
     db[model.name] = model;
   });
 
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
 
 // eslint-disable-next-line
 // just to allow the usage of the sequelize objects with both capital and lower case
