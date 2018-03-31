@@ -1,14 +1,17 @@
-const AuthenticationControllers = require('./controllers/AuthenticationController');
+const AuthenticationController = require('./controllers/AuthenticationController');
+
+const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 
 module.exports = (app) => {
   // ----Authentication
 
   app.post('/signup',
-    AuthenticationControllers.signup
+    AuthenticationControllerPolicy.signup,
+    AuthenticationController.signup
   );
 
   app.post('/signin',
-    AuthenticationControllers.signin
+    AuthenticationController.signin
   );
 };
 
