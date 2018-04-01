@@ -90,7 +90,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       freezeTableName: true,
       hooks: {
-        beforeCreate: hashPassword,
         beforeUpdate: hashPassword,
         beforeSave: hashPassword
       }
