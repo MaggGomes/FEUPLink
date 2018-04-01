@@ -1,4 +1,12 @@
 const {Person} = require('../models')
+const jwt = require('jsonwebtoken')
+
+function jwtSignPerson (person) {
+  const ONE_WEEK = 60 * 60 * 24 * 7
+  return jwt.sign(person, process.env.JWT_SECRET || 'secret', {
+    expiresIn: ONE_WEEK
+  })
+}
 
 module.exports = {
   async signup(req, res) {
@@ -35,7 +43,8 @@ module.exports = {
 
       const personJson = person.toJSON()
       res.send({
-        person: personJson
+        person: personJson,
+        token: jwtSignPerson(personJson)
       })
     } catch (err) {
       res.status(500).send({
