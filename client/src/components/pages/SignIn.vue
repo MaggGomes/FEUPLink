@@ -3,7 +3,10 @@
       <h1>Sign-In</h1>
 
       <input type="email" name="email" placeholder="email" v-model="email">
+      <br>
       <input type="password" name="password" placeholder="password" v-model="password">
+      <br>
+      <div class="error" v-html="error" />
       <button @click="signin">Sign-In</button>
   </div>
 </template>
@@ -16,21 +19,27 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   methods: {
     async signin () {
-      const response = await AuthenticationService.signin({
-        email: this.email,
-        password: this.password
-      }).catch((err) => { console.log(err); });
-      console.log(response.data)
+      try {
+        await AuthenticationService.signin({
+          email: this.email,
+          hashedPassword: this.password
+        })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   }
 }
 </script>
 
-<style>
-
+<style scopped>
+.error {
+  color: red;
+}
 </style>

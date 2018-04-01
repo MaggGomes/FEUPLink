@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style>
+<style scopped>
 .error {
   color: red;
 }
