@@ -1,3 +1,21 @@
+const Promise = require('bluebird')
+const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
+
+function hashPassword(person, options) {
+  const SALT_FACTOR = 8
+
+  if(!person.changed('hashedPassword')) {
+    return
+  }
+
+  return bcrypt
+    .genSaltAsync(SALT_FACTOR)
+    .then(salt => bcrypt.hashAsync(person.hashedPassword, salt, null))
+    .then(hash => {
+      person.setDataValue('hashedPassword', hash)
+    })
+}
+
 module.exports = (sequelize, DataTypes) => {
   const Person = sequelize.define('Person', {
       name: {
@@ -71,9 +89,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       freezeTableName: true,
+      hooks: {
+        beforeCreate: hashPassword,
+        beforeUpdate: hashPassword,
+        beforeSave: hashPassword
+      }
     }
   );
 
+  Person.prototype.comparePassword = function (password) {
+    return bcrypt.compareAsync(password, this.hashedPassword)
+  }
 
   Person.associate = (models) => {
     // many-to-many channel admins
@@ -103,7 +129,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     );
   };
-
-
+  
   return Person;
 };

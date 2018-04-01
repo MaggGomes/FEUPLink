@@ -12,7 +12,12 @@ module.exports = {
   async signup(req, res) {
       try {
         const person = await Person.create(req.body);        
-        res.send(user.toJSON());
+        
+        const personJson = person.toJSON()
+        res.send({
+          person: personJson,
+          token: jwtSignPerson(personJson)
+        })
       } catch(err) {
         res.status(400).send({
           error: err
@@ -34,7 +39,7 @@ module.exports = {
         })
       }
 
-      const isPasswordValid = hashedPassword === person.hashedPassword
+      const isPasswordValid = await person.comparePassword(hashedPassword)
       if(!isPasswordValid) {
         return res.status(403).send({
           error: 'The login information was incorrect.'
