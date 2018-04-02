@@ -133,6 +133,22 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
       }
     );
+
+    // person can have many jobs
+    Person.hasMany(models.Job,
+      {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      }
+    );
+
+    // person can create many posts
+    Person.hasMany(models.Post,
+      {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      }
+    );
   };
 
   return Person;

@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
       mecNumber: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
       },
