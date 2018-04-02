@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Channel.associate = (models) => {
-    console.log('associate');
       // channel can have many administrators
       Channel.belongsToMany(models.Person,
         {

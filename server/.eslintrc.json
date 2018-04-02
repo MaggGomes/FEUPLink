@@ -4,6 +4,6 @@
         "max-len": "off"
     },
     "parserOptions": {
-        "ecmaVersion": 6
+        "ecmaVersion": 8
       }
 }

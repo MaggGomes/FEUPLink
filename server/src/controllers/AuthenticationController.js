@@ -1,60 +1,66 @@
-const {Person} = require('../models')
-const jwt = require('jsonwebtoken')
+const {Person} = require('../models');
+const jwt = require('jsonwebtoken');
 
-function jwtSignPerson (person) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
+/**
+ * Add two numbers.
+ * @param {object} person person model object.
+ * @return {string} user token.
+ */
+function jwtSignPerson(person) {
+  const ONE_WEEK = 60 * 60 * 24 * 7;
   return jwt.sign(person, process.env.JWT_SECRET || 'secret', {
-    expiresIn: ONE_WEEK
-  })
+    expiresIn: ONE_WEEK,
+  });
 }
 
 module.exports = {
+  // asda
   async signup(req, res) {
       try {
-        const person = await Person.create(req.body);        
-        
-        const personJson = person.toJSON()
+        const person = await Person.create(req.body);
+
+        const personJson = person.toJSON();
         res.send({
           person: personJson,
-          token: jwtSignPerson(personJson)
-        })
-      } catch(err) {
+          token: jwtSignPerson(personJson),
+        });
+      } catch (err) {
         res.status(400).send({
-          error: err
-        })
+          error: err,
+        });
       }
   },
   async signin(req, res) {
     try {
-      const {email, hashedPassword} = req.body
+      const {email, hashedPassword} = req.body;
       const person = await Person.findOne({
         where: {
-          email: email
-        }
-      })
+          email: email,
+        },
+      });
 
-      if(!person) {
+      if (!person) {
         return res.status(403).send({
-          error: 'The login information was incorrect.'
-        })
+          error: 'The login information was incorrect.',
+        });
       }
 
-      const isPasswordValid = await person.comparePassword(hashedPassword)
-      if(!isPasswordValid) {
+      const isPasswordValid = await person.comparePassword(hashedPassword);
+      if (!isPasswordValid) {
         return res.status(403).send({
-          error: 'The login information was incorrect.'
-        })
+          error: 'The login information was incorrect.',
+        });
       }
 
-      const personJson = person.toJSON()
+      const personJson = person.toJSON();
       res.send({
         person: personJson,
-        token: jwtSignPerson(personJson)
-      })
+        token: jwtSignPerson(personJson),
+      });
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to login'
-      })
+        error: 'An error has occured trying to login',
+      });
     }
   },
 };
