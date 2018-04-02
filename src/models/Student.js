@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
 
-  // It's not working, don't know why :(
+  // It's not working
   Student.associate = (models) => {
     // Student will have fk to person
     Student.belongsTo(
