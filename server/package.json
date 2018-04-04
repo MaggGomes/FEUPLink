@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
-    "lint": "./node_modules/.bin/eslint **/*.js"
+    "lint": "./node_modules/.bin/eslint . --ext .js"
   },
   "repository": {
     "type": "git",
@@ -24,14 +24,18 @@
   },
   "homepage": "https://gitlab.com/LGP-APPly/3C-FEUP-SICC#README",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "eslint": "^4.19.1",
     "express": "^4.16.3",
+    "joi": "^13.1.2",
+    "jsonwebtoken": "^8.2.0",
+    "lint": "^1.1.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.2",
-    "lint": "^1.1.2",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.37.5"

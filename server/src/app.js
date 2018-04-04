@@ -16,6 +16,7 @@ app.use(cors());
 
 require('./routes')(app);
 
+// sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
 sequelize.sync()
   .then(() => {
     app.listen(process.env.SERVER_PORT, function() {
