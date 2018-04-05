@@ -14,13 +14,12 @@ function jwtSignPerson(person) {
 }
 
 module.exports = {
-  // asda
   async signup(req, res) {
       try {
         const person = await Person.create(req.body);
 
         const personJson = person.toJSON();
-        res.send({
+        res.status(200).send({
           person: personJson,
           token: jwtSignPerson(personJson),
         });
