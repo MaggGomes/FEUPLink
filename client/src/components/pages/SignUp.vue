@@ -1,16 +1,60 @@
 <template>
-  <div class="text-lg-center text-md-center text-sm-center">
-      <h1>Sign-Up</h1>
-
-      <input type="text" name="name" placeholder="name" v-model="name">
-      <br>
-      <input type="email" name="email" placeholder="email" v-model="email">
-      <br>
-      <input type="password" name="password" placeholder="password" v-model="password">
-      <br>
-      <div class="error" v-html="error" />
-      <button @click="signup">Sign-up</button>
-  </div>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid>
+        <v-layout align-center justify-center>
+          <v-spacer></v-spacer>
+          <v-flex xs12 sm8 md5>
+            <v-card class="elevation-12">
+              <v-toolbar dark class="red darken-4">
+                <v-toolbar-title>Create new account</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+              <form autocomplete="off">
+                <v-text-field
+                  prepend-icon="person"
+                  label="Name"
+                  v-model="name"
+                ></v-text-field>
+                <v-text-field
+                  prepend-icon="email"
+                  label="Email"
+                  v-model="email"
+                ></v-text-field>
+                <v-text-field
+                  prepend-icon="lock"
+                  label="Password"
+                  type="password"
+                  v-model="password"
+                ></v-text-field>
+                <v-text-field
+                  prepend-icon="lock"
+                  label="Repeat password"
+                  type="password"
+                  v-model="repeatPassword"
+                ></v-text-field>
+              </form>
+               <div class="danger-alert" v-html="error" />
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn to="/signup-continue" dark class="red darken-4">Continue</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-flex xs12 sm8 md5>
+              <v-card-media v-bind:src="require('@/assets/Fb.png')" height="100px">
+              </v-card-media> 
+              <br /><br />
+              <v-card-media v-bind:src="require('@/assets/Linkedin.png')" height="100px">
+              </v-card-media>              
+          </v-flex>
+          <v-spacer></v-spacer>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -23,6 +67,7 @@ export default {
       name: '',
       email: '',
       password: '',
+      repeatPassword: '',
       error: null
     }
   },
@@ -43,7 +88,4 @@ export default {
 </script>
 
 <style scopped>
-.error {
-  color: red;
-}
 </style>

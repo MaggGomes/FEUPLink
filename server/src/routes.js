@@ -5,9 +5,14 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 module.exports = (app) => {
   // ----Authentication
 
-  app.post('/signup',
+  app.post('/signup_student',
     AuthenticationControllerPolicy.signup,
-    AuthenticationController.signup
+    AuthenticationController.signup_student
+  );
+
+  app.post('/signup_staff',
+    AuthenticationControllerPolicy.signup,
+    AuthenticationController.signup_staff
   );
 
   app.post('/signin',

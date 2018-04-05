@@ -15,7 +15,7 @@ function jwtSignPerson(person) {
 
 module.exports = {
   // asda
-  async signup(req, res) {
+  async signup_student(req, res) {
       try {
         const person = await Person.create(req.body);
 
@@ -30,6 +30,21 @@ module.exports = {
         });
       }
   },
+  async signup_staff(req, res) {
+    try {
+      const person = await Person.create(req.body);
+
+      const personJson = person.toJSON();
+      res.send({
+        person: personJson,
+        token: jwtSignPerson(personJson),
+      });
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+},
   async signin(req, res) {
     try {
       const {email, hashedPassword} = req.body;
