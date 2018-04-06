@@ -1,9 +1,7 @@
 <template>
   <div class="text-lg-center text-md-center text-sm-center">
-    <h1>FEUPLink</h1>
-    <h3>Bem-vindo antigo aluno da FEUP!</h3>
     <div id="carousel_homepage">
-      <v-carousel light="true" hide-delimiters="true" prev-icon="fas fa-caret-left " next-icon="fas fa-caret-right"  style="height: 100%">
+      <v-carousel hide-delimiters=true prev-icon="fas fa-caret-left " next-icon="fas fa-caret-right"  style="height: 100%">
         <v-carousel-item
                 v-for="(item,i) in items"
                 :src="item.src"
