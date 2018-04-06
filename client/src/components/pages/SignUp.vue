@@ -11,17 +11,17 @@
               </v-toolbar>
               <v-card-text>
               <form autocomplete="off">
-                <v-text-field
+                <v-text-field :name="name"
                   prepend-icon="person"
                   label="Name"
                   v-model="name"
                 ></v-text-field>
-                <v-text-field
+                <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
                   v-model="email"
                 ></v-text-field>
-                <v-text-field
+                <v-text-field :password="password"
                   prepend-icon="lock"
                   label="Password"
                   type="password"
@@ -38,7 +38,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn to="/signup-continue" dark class="red darken-4">Continue</v-btn>
+                <v-btn v-on:click="continueSignup" to="/signup-continue" dark class="red darken-4">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -59,6 +59,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import { bus } from '@/main'
 
 export default {
   name: 'SignUp',
@@ -82,6 +83,9 @@ export default {
       } catch (error) {
         this.error = error.response.data.error
       }
+    },
+    continueSignup: function() {
+      bus.$emit('signupContinue', Array(this.name, this.email, this.password))
     }
   }
 }
