@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-//const app = require('../src/app.js');
+// const app = require('../src/app.js');
 
 describe('Authentication', function() {
     it('should be a first test', function() {
