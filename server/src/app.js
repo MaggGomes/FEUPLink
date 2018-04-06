@@ -23,3 +23,6 @@ sequelize.sync()
       console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
     });
   });
+
+
+module.exports = app;
