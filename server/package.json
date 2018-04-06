@@ -4,7 +4,7 @@
   "description": "FEUPLinkServer",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --exit",
     "start": "./node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
     "lint": "./node_modules/.bin/eslint . --ext .js"
   },
@@ -41,6 +41,8 @@
     "sequelize": "^4.37.5"
   },
   "devDependencies": {
-    "eslint-config-google": "^0.9.1"
+    "chai": "^4.1.2",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^5.0.5"
   }
 }
