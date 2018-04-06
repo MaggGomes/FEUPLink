@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-content>
     <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step step="1" :complete="e1 > 1">Personal</v-stepper-step>
@@ -41,40 +41,66 @@
                         :max="new Date().toISOString().substr(0, 10)"
                       ></v-date-picker>
                     </v-menu>
-                  </v-container>
-                  <v-container fluid>
                     <v-select
                       :items="genders"
-                      v-model="e2"
+                      v-model="gender"
                       label="Gender"
                       single-line
                       auto
                       prepend-icon="person"
                       hide-details
-                    ></v-select>
+                    ></v-select><br />
+                    <v-text-field
+                      prepend-icon="person"
+                      label="Country"
+                      v-model="country"
+                    ></v-text-field>
+                    <v-text-field
+                      prepend-icon="person"
+                      label="Address"
+                      v-model="address"
+                    ></v-text-field>
+                    <v-text-field
+                      prepend-icon="email"
+                      label="Email"
+                      v-model="email"
+                    ></v-text-field>
                   </v-container>
                 </form>
           </v-card>
           <v-btn color="primary" @click.native="e1 = 2">Continue</v-btn>
         </v-stepper-content>
         <v-stepper-content step="2">
-          <v-card color="grey lighten-3" class="mb-5" height="200px"></v-card>
+          <v-card color="grey lighten-3" class="mb-5" height="400px">
+            <v-layout align-center>
+              <v-flex xs12 sm6 text-xs-center>
+                <div>
+                  <v-btn large>Student</v-btn>
+                </div>
+              </v-flex>
+              <v-flex xs12 sm6 text-xs-center>
+                <div>
+                  <v-btn large>Staff</v-btn>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-card>
           <v-btn color="primary" @click.native="e1 = 3">Continue</v-btn>
           <v-btn @click.native="e1 = 1" flat>Back</v-btn>
         </v-stepper-content>
         <v-stepper-content step="3">
-          <v-card color="grey lighten-3" class="mb-5" height="200px"></v-card>
+          <v-card color="grey lighten-3" class="mb-5" height="400px"></v-card>
           <v-btn color="primary" @click.native="e1 = 4">Continue</v-btn>
           <v-btn @click.native="e1 = 2" flat>Back</v-btn>
         </v-stepper-content>
         <v-stepper-content step="4">
-          <v-card color="grey lighten-3" class="mb-5" height="200px"></v-card>
+          <v-card color="grey lighten-3" class="mb-5" height="400px"></v-card>
           <v-btn color="primary" @click.native="e1 = 1">Finish</v-btn>
           <v-btn @click.native="e1 = 3" flat>Back</v-btn>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-  </v-app>
+  </v-content>
 </template>
 
 <script>
@@ -84,8 +110,11 @@ import { bus } from '@/main'
     data () {
       return {
         e1: 0,
-        e2: null,
         date: null,
+        gender: null,
+        country: '',
+        address: '',
+        email: '',
         menu: false,
         genders: ['Male', 'Female', 'Not Specified' ]
       }
