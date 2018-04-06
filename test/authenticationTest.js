@@ -1,8 +1,15 @@
-const assert = require('chai').assert;
-// const app = require('../src/app.js');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const app = require('../src/app.js');
+
+chai.use(chaiHttp);
 
 describe('Authentication', function() {
     it('should be a first test', function() {
-        assert.equal(1, 1);
+        chai.request(app)
+            .post('/signin')
+            .end((err, res) => {
+
+            });
     });
 });
