@@ -43,11 +43,13 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>
-              <v-card-media v-bind:src="require('@/assets/Fb.png')" height="100px">
-              </v-card-media> 
-              <br /><br />
-              <v-card-media v-bind:src="require('@/assets/Linkedin.png')" height="100px">
-              </v-card-media>              
+             <fb-signin-button
+              :params="FBSignUpParams"
+              @success="onFBSignUpSuccess"
+              @error="onFBSignUpError">
+              <v-btn id="facebook-signup-button" class="signup-button indigo" large dark>Sign up with Facebook</v-btn>
+            </fb-signin-button><br>
+            <v-btn id="linkedin-signup-button" large dark class="signup-button blue">Sign up with LinkedIn</v-btn>        
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -58,11 +60,19 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 import { bus } from '@/main'
+import FBSignInButton from 'vue-facebook-signin-button'
+import Vue from 'vue';
+
+Vue.use(FBSignInButton)
 
 export default {
   name: 'SignUp',
   data () {
-    return {
+    return {      
+      FBSignInParams: {
+        scope: '',
+        return_scopes: true
+      },
       name: '',
       email: '',
       password: '',
@@ -84,10 +94,22 @@ export default {
     },
     continueSignup: function() {
       bus.$emit('signupContinue', Array(this.name, this.email, this.password))
+    },
+    onFBSignUpSuccess (response) {
+      FB.api('/me', user => {
+      })
+    },
+    onFBSignUpError (error) {
     }
   }
 }
 </script>
 
 <style scopped>
+.signup-button {
+  width:60%;
+  height:60px;
+  font-size: 125%;
+  margin-left: 10%;
+}
 </style>

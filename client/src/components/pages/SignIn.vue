@@ -21,28 +21,34 @@
                   label="Password"
                   type="password"
                   v-model="password"
-                ></v-text-field>               
+                ></v-text-field>                
               </form>
-               <div class="danger-alert" v-html="error" />
-              </v-card-text>
+               <div class="danger-alert" v-html="error"/>
+              </v-card-text>             
               <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-checkbox style="margin-left:20px;margin-top:25px"
+                  :label="`Remember me`"
+                  v-model="checkbox"
+                ></v-checkbox>
+                <v-spacer></v-spacer>                   
+                  Not a member?
+                  <v-btn to="/signup" small flat color="primary" class="">Sign up!
+                  </v-btn>
                 <v-btn v-on:click="signin" dark class="red darken-4">Continue</v-btn>
-                <v-btn to="/signup" dark class="red darken-4">Sign Up</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>             
             <fb-signin-button
-              :params="fbSignInParams"
-              @success="onSignInSuccess"
-              @error="onSignInError">
-              Sign in with Facebook
-            </fb-signin-button>              
-            <br /><br />
-            <v-card-media v-bind:src="require('@/assets/Linkedin.png')" height="100px">
-            </v-card-media>              
+              :params="FBSignInParams"
+              @success="onFBSignInSuccess"
+              @error="onFBSignInError">
+              <v-btn id="facebook-signin-button" class="signin-button indigo" large dark>   
+                Sign in with Facebook
+                </v-btn>
+            </fb-signin-button><br>
+            <v-btn id="linkedin-signin-button" large dark class="signin-button blue">Sign in with LinkedIn</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -62,12 +68,13 @@ export default {
   name: 'SignIn',
   data () {
     return {
-       fbSignInParams: {
-        scope: 'email,user_likes',
+       FBSignInParams: {
+        scope: 'public_profile,email',
         return_scopes: true
       },
       email: '',
       password: '',
+      checkbox:'',
       error: null
     }
   },
@@ -82,13 +89,16 @@ export default {
         this.error = error.response.data.error
       }      
     },
-     onSignInSuccess (response) {
-      FB.api('/me', user => {
-        console.log(`Good to see you, ${dude.name}.`)
-      })
+    async onFBSignInSuccess (response) {
+      console.log(response);
+       try {
+        await AuthenticationService.fbsignin(response.authResponse)
+      } catch (error) {
+        this.error = error.response.data.error
+      }     
     },
-    onSignInError (error) {
-      console.log('OH NOES', error)
+    onFBSignInError (error) {
+      console.log(error);
     }
   }
 }
@@ -98,12 +108,30 @@ export default {
 .error {
   color: red;
 }
+.signin-button {
+  width:60%;
+  height:60px;
+  font-size: 125%;
+  margin-left: 10%;
+}
+/*
 .fb-signin-button {
   display: inline-block;
   padding: 4px 8px;
   border-radius: 3px;
-  width: 40%;
-  background-color: #4267b2;
+  width: 50%;
+  height: 60px;
+  line-height: 55px;
+  background-color: #3F51B5;
   color: #fff;
-}
+  cursor: pointer;
+  text-align: center; 
+  vertical-align: middle;
+  font-size: 150%;
+  font-family: 'Roboto',sans-serif;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-rendering: optimizeLegibility;
+}*/
 </style>
