@@ -206,4 +206,8 @@
 .v-select .dropdown-menu {
 	display:block;
 }
+
+.primary {
+  background-color: #b71c1c !important;
+}
 </style>
