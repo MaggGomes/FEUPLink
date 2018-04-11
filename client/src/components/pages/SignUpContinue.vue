@@ -1,5 +1,8 @@
          <template >
          	<v-content >
+             <v-toolbar dark class="red darken-4" height="40px">
+              <v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
+            </v-toolbar>
          		<v-stepper v-model="e1" >
          			<v-stepper-header>
          				<v-stepper-step step="1" :complete="e1 > 1">Personal</v-stepper-step>
@@ -13,9 +16,7 @@
          			<v-stepper-items>
          				<v-stepper-content step="1">
          					<v-card color="grey lighten-3" class="mb-4" height="400px">
-         						<v-toolbar dark class="red darken-4" height="40px">
-         							<v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
-         						</v-toolbar>
+
          						<form autocomplete="off">
          							<v-container fluid>
          								<v-menu
@@ -74,31 +75,25 @@
          				<v-btn dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
          			</v-stepper-content>
          			<v-stepper-content step="2">
-         				<v-card color="grey lighten-3" class="mb-5" height="400px">
-         					<v-toolbar dark class="red darken-4" height="40px">
-         						<v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
-         					</v-toolbar>	
-         					<v-layout align-center>
-         						<v-flex xs12 sm6 text-xs-center>
-         							<div>
-         								<v-btn large>Student</v-btn>
-         							</div>
-         						</v-flex>
-         						<v-flex xs12 sm6 text-xs-center>
-         							<div>
-         								<v-btn large>Staff</v-btn>
-         							</div>
-         						</v-flex>
-         					</v-layout>
+         				<v-card color="grey lighten-3" class="mb-5" height="400px" fill-height>
+                   <v-container fill-height>
+                    <v-layout align-center>
+                      <v-flex xs24 sm12 text-xs-center>
+                        <div class="cc-selector">
+                          <input id="student" type="radio" name="credit-card" value="student" />
+                          <label class="drinkcard-cc student" for="student"></label>
+                          <input id="staff" type="radio" name="credit-card" value="staff" />
+                          <label class="drinkcard-cc staff" for="staff"></label>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                   </v-container>
          				</v-card>
          				<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">Continue</v-btn>
          				<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>Back</v-btn>
          			</v-stepper-content>
          			<v-stepper-content step="3">
          				<v-card color="grey lighten-3" class="mb-5" height="400px">
-         					<v-toolbar dark class="red darken-4" height="40px">
-         						<v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
-         					</v-toolbar>
          					<form autocomplete="off">
          						<v-container fluid>
          							<v-menu
@@ -210,4 +205,44 @@
 .primary {
   background-color: #b71c1c !important;
 }
+
+.cc-selector input{
+    margin:0;padding:0;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}
+
+.student{background-image:url(https://cdn3.iconfinder.com/data/icons/school-and-education-2/56/education_icons_IF-02-512.png);}
+.staff{background-image:url(https://cdn4.iconfinder.com/data/icons/hr-recruitment-management-part-2/400/hr-07-2-512.png);}
+
+.cc-selector input:active +.drinkcard-cc{opacity: .9;}
+.cc-selector input:checked +.drinkcard-cc{
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+}
+.drinkcard-cc{
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:400px;height:280px;
+    -webkit-transition: all 100ms ease-in;
+       -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+    -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+       -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+            filter: brightness(1.8) grayscale(1) opacity(.7);
+}
+.drinkcard-cc:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+       -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
+}
+
+/* Extras */
+a:visited{color:#888}
+a{color:#444;text-decoration:none;}
+p{margin-bottom:.3em;}
 </style>
