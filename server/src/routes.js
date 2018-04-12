@@ -18,5 +18,10 @@ module.exports = (app) => {
   app.post('/signin',
     AuthenticationController.signin
   );
+
+  // Linked IN
+  app.get('/signup_linkedin',
+    AuthenticationController.signup_linkedin
+  );
 };
 

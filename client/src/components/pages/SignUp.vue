@@ -1,7 +1,7 @@
 <template>
     <v-content>
       <v-container fluid>
-        <v-layout align-center justify-center>
+        <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>
             <v-card class="elevation-12">
@@ -49,7 +49,7 @@
               @error="onFBSignUpError">
               <v-btn id="facebook-signup-button" class="signup-button indigo" large dark>Sign up with Facebook</v-btn>
             </fb-signin-button><br>
-            <v-btn id="linkedin-signup-button" large dark class="signup-button blue">Sign up with LinkedIn</v-btn>        
+            <linked-in-button class="signup-button" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -59,6 +59,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import LinkedInButton from '@/components/elements/LinkedInButton'
 import { bus } from '@/main'
 import FBSignInButton from 'vue-facebook-signin-button'
 import Vue from 'vue';
@@ -67,6 +68,9 @@ Vue.use(FBSignInButton)
 
 export default {
   name: 'SignUp',
+   components: {
+    LinkedInButton,
+  },
   data () {
     return {      
       FBSignInParams: {
@@ -107,9 +111,8 @@ export default {
 
 <style scopped>
 .signup-button {
-  width:60%;
+  width: 100%;
   height:60px;
   font-size: 125%;
-  margin-left: 10%;
 }
 </style>
