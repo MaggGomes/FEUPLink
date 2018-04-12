@@ -17,19 +17,24 @@
 </template>
 
 <script>
+
+import homepage_1 from '@/assets/homepage_1.jpg'
+import homepage_2 from '@/assets/homepage_2.jpg'
+import homepage_3 from '@/assets/homepage_3.jpg' 
+
 export default {
     name: 'Homepage',
     data () {
         return {
             items: [
                 {
-                    src: 'https://paginas.fe.up.pt/~feuplink/wp-content/uploads/2016/09/01.jpg'
+                    src: homepage_1
                 },
                 {
-                    src: 'https://paginas.fe.up.pt/~feuplink/wp-content/uploads/2017/10/1975.jpg'
+                    src: homepage_2
                 },
                 {
-                    src: 'https://paginas.fe.up.pt/~feuplink/wp-content/uploads/2016/07/01_Af.jpg'
+                    src: homepage_3
                 }
 
             ]
