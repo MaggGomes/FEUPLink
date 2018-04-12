@@ -6,7 +6,6 @@ module.exports = (app) => {
   // ----Authentication
 
   app.post('/signup_student',
-    AuthenticationControllerPolicy.signup,
     AuthenticationController.signup_student
   );
 
