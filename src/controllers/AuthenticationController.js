@@ -79,13 +79,11 @@ module.exports = {
   },
    async signup_linkedin(req, res) {
     try {
-      console.log('\n\nLinkedIN-> ', req);
-      console.log('\n\n\n\nLinkedIN query-> ', req.Url.query);
       res.redirect(`https://localhost:8080`);
+      console.log('\n\nLinkedIN-> ', req);
     } catch (err) {
       res.status(400).send({
         error: err,
-        oi: 'oi',
       });
     }
   },
