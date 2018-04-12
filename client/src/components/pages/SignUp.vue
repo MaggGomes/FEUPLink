@@ -81,17 +81,6 @@ export default {
     }
   },
   methods: {
-    async signup () {
-      try {
-        await AuthenticationService.signup({
-          name: this.name,
-          email: this.email,
-          hashedPassword: this.password
-        })
-      } catch (error) {
-        this.error = error.response.data.error
-      }
-    },
     continueSignup: function() {
       bus.$emit('signupContinue', Array(this.name, this.email, this.password))
     },

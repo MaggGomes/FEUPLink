@@ -192,13 +192,13 @@
          		<form autocomplete="off">
          						<v-container fluid>
 									 <v-text-field
-         							prepend-icon="company"
+         							prepend-icon="person"
          							label="Company"
          							v-model="company"
          							></v-text-field>
 
          							<v-text-field
-         							prepend-icon="position"
+         							prepend-icon="person"
          							label="Position"
          							v-model="position"
          							></v-text-field>
@@ -212,10 +212,10 @@
 									<v-layout align-center>
 										<v-flex xs24 sm6 text-xs-center>
 											<v-menu
-												ref="menu2"
+												ref="menu4"
 												lazy
 												:close-on-content-click="false"
-												v-model="menu2"
+												v-model="menu4"
 												transition="scale-transition"
 												offset-y
 												full-width
@@ -225,13 +225,13 @@
 												<v-text-field
 												slot="activator"
 												label="Start period"
-												v-model="date2"
+												v-model="date4"
 												prepend-icon="event"
 												readonly
 												></v-text-field>
 												<v-date-picker
 												ref="picker"
-												v-model="date2"
+												v-model="date4"
 												@change="save"
 												min="1950-01-01"
 												:max="new Date().toISOString().substr(0, 10)"
@@ -245,10 +245,10 @@
 
 										<v-flex xs24 sm6 text-xs-center>
 											<v-menu
-												ref="menu3"
+												ref="menu5"
 												lazy
 												:close-on-content-click="false"
-												v-model="menu3"
+												v-model="menu5"
 												transition="scale-transition"
 												offset-y
 												full-width
@@ -258,13 +258,13 @@
 												<v-text-field
 												slot="activator"
 												label="End period"
-												v-model="date3"
+												v-model="date5"
 												prepend-icon="event"
 												readonly
 												></v-text-field>
 												<v-date-picker
 												ref="picker"
-												v-model="date3"
+												v-model="date5"
 												@change="save"
 												min="1950-01-01"
 												:max="new Date().toISOString().substr(0, 10)"
@@ -274,7 +274,7 @@
 									</v-layout>
 							
 							<v-checkbox
-							:label="`Still Work Here`"
+							:label="`I currently work here`"
 							v-model="checkboxWork"
 							></v-checkbox>
 
@@ -286,7 +286,7 @@
          				</v-container>
          			</form>
          			</v-card>
-         		<v-btn color="primary" @click.native="e1 = 1">Finish</v-btn>
+         		<v-btn color="primary" @click="signup">Finish</v-btn>
          		<v-btn @click.native="e1 = 3" flat>Back</v-btn>
          	</v-stepper-content>
          </v-stepper-items>
@@ -303,12 +303,18 @@
 				e1: 0,
 				date: null,
 				date2: null,
+				date3: null,
+				date4: null,
+				date5: null,
 				gender: null,
 				country: '',
 				address: '',
 				email: '',
 				menu: false,
 				menu2: false,
+				menu3: false,
+				menu4: false,
+				menu5: false,
 				checkbox: false,
 				checkboxWork: false,
 				checkboxExperience: false,
@@ -316,9 +322,9 @@
 				genders: ['Male', 'Female', 'Not Specified' ],
 				course: null,
 				courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
-				company: null,
-				city: null,
-				position: null,
+				company: '',
+				city: '',
+				position: '',
 			}
 		},
 		created () {
@@ -332,6 +338,17 @@
 			}
 		},
 		methods: {
+			async signup () {
+				try {
+					await AuthenticationService.signup({
+					name: this.name,
+					email: this.email,
+					hashedPassword: this.password
+					})
+				} catch (error) {
+					this.error = error.response.data.error
+				}
+			},
 			save (date) {
 				this.$refs.menu.save(date)
 			}
