@@ -187,7 +187,105 @@
          		<v-btn  @click.native="e1 = 2" flat>Back</v-btn>
          	</v-stepper-content>
          	<v-stepper-content step="4">
-         		<v-card color="grey lighten-3" class="mb-5" height="400px"></v-card>
+         		<v-card color="grey lighten-3" class="mb-5" height="400px">
+
+         		<form autocomplete="off">
+         						<v-container fluid>
+									 <v-text-field
+         							prepend-icon="company"
+         							label="Company"
+         							v-model="company"
+         							></v-text-field>
+
+         							<v-text-field
+         							prepend-icon="position"
+         							label="Position"
+         							v-model="position"
+         							></v-text-field>
+
+         							<v-text-field
+         							prepend-icon="person"
+         							label="City/Town"
+         							v-model="city"
+         							></v-text-field>
+
+									<v-layout align-center>
+										<v-flex xs24 sm6 text-xs-center>
+											<v-menu
+												ref="menu2"
+												lazy
+												:close-on-content-click="false"
+												v-model="menu2"
+												transition="scale-transition"
+												offset-y
+												full-width
+												:nudge-right="40"
+												min-width="290px"
+												>
+												<v-text-field
+												slot="activator"
+												label="Start period"
+												v-model="date2"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-date-picker
+												ref="picker"
+												v-model="date2"
+												@change="save"
+												min="1950-01-01"
+												:max="new Date().toISOString().substr(0, 10)"
+												></v-date-picker>
+											</v-menu>
+										</v-flex>
+
+										<v-flex xs24 sm1 text-xs-center>
+											to
+										</v-flex>
+
+										<v-flex xs24 sm6 text-xs-center>
+											<v-menu
+												ref="menu3"
+												lazy
+												:close-on-content-click="false"
+												v-model="menu3"
+												transition="scale-transition"
+												offset-y
+												full-width
+												:nudge-right="40"
+												min-width="290px"
+												>
+												<v-text-field
+												slot="activator"
+												label="End period"
+												v-model="date3"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-date-picker
+												ref="picker"
+												v-model="date3"
+												@change="save"
+												min="1950-01-01"
+												:max="new Date().toISOString().substr(0, 10)"
+												></v-date-picker>
+											</v-menu>
+										</v-flex>
+									</v-layout>
+							
+							<v-checkbox
+							:label="`Still Work Here`"
+							v-model="checkbox"
+							></v-checkbox>
+
+							<v-checkbox
+							:label="`I have no work experience`"
+							v-model="checkbox"
+							></v-checkbox>
+							
+         				</v-container>
+         			</form>
+         			</v-card>
          		<v-btn color="primary" @click.native="e1 = 1">Finish</v-btn>
          		<v-btn @click.native="e1 = 3" flat>Back</v-btn>
          	</v-stepper-content>
@@ -215,7 +313,10 @@
 				number: '',
 				genders: ['Male', 'Female', 'Not Specified' ],
 				course: null,
-				courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC']
+				courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
+				company: null,
+				city: null,
+				position: null,
 			}
 		},
 		created () {
