@@ -1,7 +1,7 @@
 <template>
     <v-content>
       <v-container fluid v-if="firstStep">
-        <v-layout align-center justify-center>
+        <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>
             <v-card class="elevation-12">
@@ -9,30 +9,39 @@
                 <v-toolbar-title>Create new account</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-              <form autocomplete="off">
+              <v-form autocomplete="off" ref="form" v-model="valid">
                 <v-text-field :name="name"
                   prepend-icon="person"
                   label="Name"
                   v-model="name"
+                  :rules="nameRules"
+                  :counter="50"
+                  required
                 ></v-text-field>
                 <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
                   v-model="email"
+                  :rules="emailRules"
+                  required
                 ></v-text-field>
                 <v-text-field :password="password"
                   prepend-icon="lock"
                   label="Password"
                   type="password"
                   v-model="password"
+                  :rules="passwordRules"
+                  required
                 ></v-text-field>
                 <v-text-field
                   prepend-icon="lock"
                   label="Repeat password"
                   type="password"
                   v-model="repeatPassword"
+                  :rules="passwordRules"
+                  required
                 ></v-text-field>
-              </form>
+              </v-form>
                <div class="danger-alert" v-html="error" />
               </v-card-text>
               <v-card-actions>
@@ -355,6 +364,7 @@
 import FBSignInButton from 'vue-facebook-signin-button'
 import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
+import LinkedInButton from '@/components/elements/LinkedInButton'
 
 Vue.use(FBSignInButton)
 
@@ -369,6 +379,7 @@ export default {
         scope: '',
         return_scopes: true
       },
+      valid: false,
       name: '',
       email: '',
       password: '',
@@ -399,8 +410,20 @@ export default {
       company: '',
       city: '',
       position: '',
-      role: '',
-      cgpa: ''
+      role: 'staff',
+      cgpa: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => v.length <= 50 || 'Name must be less than 50 characters'
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+      ]
     }
   },
   watch: {
@@ -410,7 +433,8 @@ export default {
   },
   methods: {
     continueSignup: function() {
-      this.firstStep = false;
+      if(this.$refs.form.validate())
+        this.firstStep = false;
     },
     onFBSignUpSuccess (response) {
       FB.api('/me', user => {
@@ -419,7 +443,7 @@ export default {
     onFBSignUpError (error) {
     },
     async signup () {
-				try {
+				//try {
 					await AuthenticationService.signup({
 						name: this.name,
 						email: this.email,
@@ -428,7 +452,6 @@ export default {
 						gender: this.gender,
 						country: this.country,
 						city: this.city,
-						role: this.role,
 						course: this.course,
 						enrollmentDate: this.date2,
 						graduationDate: this.date3,
@@ -441,10 +464,10 @@ export default {
 						endDate: this.date5,
 						isCurrent: this.checkboxWork
 					})
-				} catch (error) {
+				/*} catch (error) {
 					console.log(error);
 					//this.error = error.response.data.error
-				}
+				}*/
 			},
 			save (date) {
 				this.$refs.menu.save(date)

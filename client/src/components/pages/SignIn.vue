@@ -2,7 +2,7 @@
    <v-app id="inspire">
     <v-content>
       <v-container fluid>
-        <v-layout align-center justify-center>
+        <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>
             <v-card class="elevation-12">
