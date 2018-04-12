@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const chaiShould = chai.should();
+const expect = chai.expect;
 
 const app = require('../src/app.js');
 
@@ -20,7 +20,7 @@ describe('Authentication', function() {
                 .send(user)
                 .end((err, res) => {
                     // console.log(res.body.error);
-                    res.should.have.status(401);
+                    expect(res).to.have.status(401);
                     done();
                 });
         });
@@ -36,7 +36,7 @@ describe('Authentication', function() {
                 .post('/signup')
                 .send(user)
                 .end((err, res) => {
-                    res.should.have.status(402);
+                    expect(res).to.have.status(402);
                     done();
                 });
         });
@@ -52,13 +52,10 @@ describe('Authentication', function() {
                 .post('/signup')
                 .send(user)
                 .end((err, res) => {
-                    res.should.status(403);
+                    expect(res).to.have.status(403);
                     done();
                 });
         });
     });
 });
-
-
-
 
