@@ -13,8 +13,8 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
-
 require('./routes')(app);
+
 
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
 sequelize.sync()
@@ -23,3 +23,4 @@ sequelize.sync()
       console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
     });
   });
+

@@ -14,7 +14,6 @@ function jwtSignPerson(person) {
 }
 
 module.exports = {
-  // asda
   async signup_student(req, res) {
       try {
         const person = await Person.create(req.body);
@@ -44,7 +43,7 @@ module.exports = {
         error: err,
       });
     }
-},
+  },
   async signin(req, res) {
     try {
       const {email, hashedPassword} = req.body;
@@ -75,6 +74,18 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: 'An error has occured trying to login',
+      });
+    }
+  },
+   async signup_linkedin(req, res) {
+    try {
+      console.log('\n\nLinkedIN-> ', req);
+      console.log('\n\n\n\nLinkedIN query-> ', req.Url.query);
+      res.redirect(`https://localhost:8080`);
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+        oi: 'oi',
       });
     }
   },
