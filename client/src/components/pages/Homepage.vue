@@ -42,9 +42,6 @@ export default {
     #carousel_homepage div.carousel__controls{
         background-color: transparent!important;
     }
-    div ::before{
-        
-    }
     #carousel_homepage{
        height: 1000px;
     }
@@ -56,5 +53,6 @@ export default {
        text-decoration: none;
         color:red;
     }
+    
 </style>
 
