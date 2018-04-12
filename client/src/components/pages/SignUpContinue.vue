@@ -61,13 +61,8 @@
          							></v-text-field>
          							<v-text-field
          							prepend-icon="person"
-         							label="Address"
-         							v-model="address"
-         							></v-text-field>
-         							<v-text-field
-         							prepend-icon="email"
-         							label="Email"
-         							v-model="email"
+         							label="City"
+         							v-model="city"
          							></v-text-field>
          						</v-container>
          					</form>
@@ -80,7 +75,7 @@
                     <v-layout align-center>
                       <v-flex xs24 sm12 text-xs-center>
                         <div class="cc-selector">
-                          <input id="student" type="radio" name="credit-card" value="student" />
+                          <input v-model="role" id="student" type="radio" name="credit-card" value="student" />
                           <label class="drinkcard-cc student" for="student"></label>
                           <input id="staff" type="radio" name="credit-card" value="staff" />
                           <label class="drinkcard-cc staff" for="staff"></label>
@@ -104,7 +99,7 @@
          							auto
          							prepend-icon="person"
          							hide-details
-         							></v-select>
+         							></v-select><br />
 
 									<v-layout align-center>
 										<v-flex xs24 sm6 text-xs-center>
@@ -121,7 +116,7 @@
 												>
 												<v-text-field
 												slot="activator"
-												label="Start period"
+												label="Enrollment date"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
@@ -154,7 +149,7 @@
 												>
 												<v-text-field
 												slot="activator"
-												label="End period"
+												label="Graduation date"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
@@ -169,7 +164,6 @@
 											</v-menu>
 										</v-flex>
 									</v-layout>
-							
 							<v-checkbox
 							:label="`Graduated`"
 							v-model="checkbox"
@@ -178,6 +172,11 @@
 							prepend-icon="person"
 							label="Student number"
 							v-model="number"
+							></v-text-field>
+							<v-text-field
+							prepend-icon="person"
+							label="CGPA"
+							v-model="cgpa"
 							></v-text-field>
          				</v-container>
          			</form>
@@ -191,11 +190,12 @@
 
          		<form autocomplete="off">
          						<v-container fluid>
-									 <v-text-field
+									<v-text-field
          							prepend-icon="person"
          							label="Company"
          							v-model="company"
          							></v-text-field>
+
 
          							<v-text-field
          							prepend-icon="person"
@@ -206,7 +206,7 @@
          							<v-text-field
          							prepend-icon="person"
          							label="City/Town"
-         							v-model="city"
+         							v-model="companyCity"
          							></v-text-field>
 
 									<v-layout align-center>
@@ -286,7 +286,7 @@
          				</v-container>
          			</form>
          			</v-card>
-         		<v-btn color="primary" @click="signup">Finish</v-btn>
+         		<v-btn color="primary" v-on:click="signup">Finish</v-btn>
          		<v-btn @click.native="e1 = 3" flat>Back</v-btn>
          	</v-stepper-content>
          </v-stepper-items>
@@ -296,6 +296,7 @@
 
 <script>
 	import { bus } from '@/main'
+	import AuthenticationService from '@/services/AuthenticationService'
 
 	export default {
 		data () {
@@ -308,7 +309,7 @@
 				date5: null,
 				gender: null,
 				country: '',
-				address: '',
+				companyCity: '',
 				email: '',
 				menu: false,
 				menu2: false,
@@ -325,33 +326,71 @@
 				company: '',
 				city: '',
 				position: '',
+				name: '',
+				password: '',
+				role: '',
+				cgpa: ''
 			}
-		},
-		created () {
-			bus.$on('signupContinue', (data) => {
-				console.log(data);
-			})
 		},
 		watch: {
 			menu (val) {
 				val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
 			}
 		},
+		created () {
+			let context = this;
+			console.log("created");
+			bus.$on('signupContinue', (data) => {
+					console.log("func");
+				context.name = data[0];
+				context.email = data[1];
+				context.password = data[2];
+			})
+		},
 		methods: {
 			async signup () {
 				try {
 					await AuthenticationService.signup({
-					name: this.name,
-					email: this.email,
-					hashedPassword: this.password
+						name: this.name,
+						email: this.email,
+						hashedPassword: this.password,
+						birthDate: this.date,
+						gender: this.gender,
+						country: this.country,
+						city: this.city,
+						role: this.role,
+						course: this.course,
+						enrollmentDate: this.date2,
+						graduationDate: this.date3,
+						type: this.checkbox,
+						mecNumber: this.number,
+						cgpa: this.cgpa,
+						company: this.company,
+						title: this.position,
+						startDate: this.date4,
+						endDate: this.date5,
+						isCurrent: this.checkboxWork
 					})
 				} catch (error) {
-					this.error = error.response.data.error
+					console.log(error);
+					//this.error = error.response.data.error
 				}
 			},
 			save (date) {
 				this.$refs.menu.save(date)
-			}
+			}/*,
+			mounted : function() {
+				let context = this;
+				console.log("sgrdfb");
+				bus.$on('signupContinue', (data) => {
+					console.log("func");
+				context.name = data[0];
+				context.email = data[1];
+				context.password = data[2];
+			})
+			console.log(this.name);
+			
+			}*/
 		}
 	}
 </script>

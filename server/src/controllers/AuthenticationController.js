@@ -17,6 +17,7 @@ function jwtSignPerson(person) {
 
 module.exports = {
   async signup_student(req, res) {
+      console.log(req);
       try {
         const person = await Person.create(req.body);
 
