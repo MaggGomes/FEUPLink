@@ -275,12 +275,12 @@
 							
 							<v-checkbox
 							:label="`Still Work Here`"
-							v-model="checkbox"
+							v-model="checkboxWork"
 							></v-checkbox>
 
 							<v-checkbox
 							:label="`I have no work experience`"
-							v-model="checkbox"
+							v-model="checkboxExperience"
 							></v-checkbox>
 							
          				</v-container>
@@ -310,6 +310,8 @@
 				menu: false,
 				menu2: false,
 				checkbox: false,
+				checkboxWork: false,
+				checkboxExperience: false,
 				number: '',
 				genders: ['Male', 'Female', 'Not Specified' ],
 				course: null,
