@@ -20,31 +20,31 @@
          						<form autocomplete="off">
          							<v-container fluid>
          								<v-menu
-         								ref="menu"
-         								lazy
-         								:close-on-content-click="false"
-         								v-model="menu"
-         								transition="scale-transition"
-         								offset-y
-         								full-width
-         								:nudge-right="40"
-         								min-width="290px"
-         								>
-         								<v-text-field
-         								slot="activator"
-         								label="Birthday date"
-         								v-model="date"
-         								prepend-icon="event"
-         								readonly
-         								></v-text-field>
-         								<v-date-picker
-         								ref="picker"
-         								v-model="date"
-         								@change="save"
-         								min="1950-01-01"
-         								:max="new Date().toISOString().substr(0, 10)"
-         								></v-date-picker>
-         							</v-menu>
+											ref="menu"
+											lazy
+											:close-on-content-click="false"
+											v-model="menu"
+											transition="scale-transition"
+											offset-y
+											full-width
+											:nudge-right="40"
+											min-width="290px"
+											>
+											<v-text-field
+											slot="activator"
+											label="Birthday date"
+											v-model="date"
+											prepend-icon="event"
+											readonly
+											></v-text-field>
+											<v-date-picker
+											ref="picker"
+											v-model="date"
+											@change="save"
+											min="1950-01-01"
+											:max="new Date().toISOString().substr(0, 10)"
+											></v-date-picker>
+         								</v-menu>
          							<v-select
          							:items="genders"
          							v-model="gender"
@@ -96,54 +96,89 @@
          				<v-card color="grey lighten-3" class="mb-5" height="400px">
          					<form autocomplete="off">
          						<v-container fluid>
-         							<v-menu
-         							ref="menu"
-         							lazy
-         							:close-on-content-click="false"
-         							v-model="menu"
-         							transition="scale-transition"
-         							offset-y
-         							full-width
-         							:nudge-right="40"
-         							min-width="290px"
-         							>
-         							<v-text-field
-         							slot="activator"
-         							label="Time Period"
-         							v-model="date"
-         							readonly
-         							></v-text-field>
-         							<v-date-picker 
-         							v-model="date"  
-         							@change="save"
-         							min="1950-01-01"
-         							:max="new Date().toISOString().substr(0, 10)" no-title scrollable >
-         							<v-spacer></v-spacer>
+									 <v-select
+         							:items="courses"
+         							v-model="course"
+         							label="Course"
+         							single-line
+         							auto
+         							prepend-icon="person"
+         							hide-details
+         							></v-select>
 
-         							<v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-         							<v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-         						</v-date-picker>
-         					</v-menu>
-         					<div class="courseInput" >
-         						<label >Course:</label>
-         						<v-select
-         						:items="courses"
-         						v-model="course"
-         						single-line
-         						auto
-         						hide-details
-         						></v-select><br />
-         					</div>
-         					
+									<v-layout align-center>
+										<v-flex xs24 sm6 text-xs-center>
+											<v-menu
+												ref="menu2"
+												lazy
+												:close-on-content-click="false"
+												v-model="menu2"
+												transition="scale-transition"
+												offset-y
+												full-width
+												:nudge-right="40"
+												min-width="290px"
+												>
+												<v-text-field
+												slot="activator"
+												label="Start period"
+												v-model="date2"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-date-picker
+												ref="picker"
+												v-model="date2"
+												@change="save"
+												min="1950-01-01"
+												:max="new Date().toISOString().substr(0, 10)"
+												></v-date-picker>
+											</v-menu>
+										</v-flex>
 
-         					<div style="display:inline">
-         						<label for="checkbox">Graduated</label>
+										<v-flex xs24 sm1 text-xs-center>
+											to
+										</v-flex>
 
-         						<input type="checkbox" id="checkbox" v-model="checked">
-         					</div>             
-
-
-
+										<v-flex xs24 sm6 text-xs-center>
+											<v-menu
+												ref="menu3"
+												lazy
+												:close-on-content-click="false"
+												v-model="menu3"
+												transition="scale-transition"
+												offset-y
+												full-width
+												:nudge-right="40"
+												min-width="290px"
+												>
+												<v-text-field
+												slot="activator"
+												label="End period"
+												v-model="date3"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-date-picker
+												ref="picker"
+												v-model="date3"
+												@change="save"
+												min="1950-01-01"
+												:max="new Date().toISOString().substr(0, 10)"
+												></v-date-picker>
+											</v-menu>
+										</v-flex>
+									</v-layout>
+							
+							<v-checkbox
+							:label="`Graduated`"
+							v-model="checkbox"
+							></v-checkbox>
+							<v-text-field
+							prepend-icon="person"
+							label="Student number"
+							v-model="number"
+							></v-text-field>
          				</v-container>
          			</form>
          		</v-card>
@@ -169,11 +204,15 @@
 			return {
 				e1: 0,
 				date: null,
+				date2: null,
 				gender: null,
 				country: '',
 				address: '',
 				email: '',
 				menu: false,
+				menu2: false,
+				checkbox: false,
+				number: '',
 				genders: ['Male', 'Female', 'Not Specified' ],
 				course: null,
 				courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC']
