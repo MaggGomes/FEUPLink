@@ -1,5 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const chaiShould = chai.should();
 
 const app = require('../src/app.js');
 
@@ -11,16 +12,14 @@ describe('Authentication', function() {
             let user = {
                 'name': 'teste1',
                 'email': 'teste1',
-                'hashedPassword': '123.4'
+                'hashedPassword': '123.4',
             };
-
-            const should = chai.should();
 
             chai.request(app)
                 .post('/signup')
                 .send(user)
                 .end((err, res) => {
-                    //console.log(res.body.error);
+                    // console.log(res.body.error);
                     res.should.have.status(401);
                     done();
                 });
@@ -30,10 +29,8 @@ describe('Authentication', function() {
             let user = {
                 'name': 'teste1',
                 'email': 'teste1@teste.teste',
-                'hashedPassword': 'dj.@@a'
+                'hashedPassword': 'dj.@@a',
             };
-
-            const should = chai.should();
 
             chai.request(app)
                 .post('/signup')
@@ -48,26 +45,19 @@ describe('Authentication', function() {
             let user = {
                 'name': 'teste@44ee',
                 'email': 'teste@teste.teste',
-                'hashedPassword': 'dj.@@a'
+                'hashedPassword': 'dj.@@a',
             };
-
-            const should = chai.should();
 
             chai.request(app)
                 .post('/signup')
                 .send(user)
                 .end((err, res) => {
-                    if(err)
-                        res.should.have.status(403);
-
-                    res.should.have.status(403);
+                    res.should.status(403);
                     done();
                 });
         });
     });
 });
-
-
 
 
 
