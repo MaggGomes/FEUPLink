@@ -48,7 +48,7 @@
                 Sign in with Facebook
                 </v-btn>
             </fb-signin-button><br>
-            <v-btn id="linkedin-signin-button" large dark class="signin-button blue">Sign in with LinkedIn</v-btn>
+               <linked-in-button class="signup-button" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -61,11 +61,15 @@
 import Vue from 'vue';
 import AuthenticationService from '@/services/AuthenticationService'
 import FBSignInButton from 'vue-facebook-signin-button'
+import LinkedInButton from '@/components/elements/LinkedInButton'
 
 Vue.use(FBSignInButton)
 
 export default {
   name: 'SignIn',
+  components: {
+      LinkedInButton,
+  },
   data () {
     return {
        FBSignInParams: {
@@ -109,29 +113,9 @@ export default {
   color: red;
 }
 .signin-button {
-  width:60%;
+  width: 100%;
   height:60px;
   font-size: 125%;
-  margin-left: 10%;
 }
-/*
-.fb-signin-button {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px;
-  width: 50%;
-  height: 60px;
-  line-height: 55px;
-  background-color: #3F51B5;
-  color: #fff;
-  cursor: pointer;
-  text-align: center; 
-  vertical-align: middle;
-  font-size: 150%;
-  font-family: 'Roboto',sans-serif;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  text-rendering: optimizeLegibility;
-}*/
+
 </style>

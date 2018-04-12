@@ -31,8 +31,5 @@ export default {
 <style scopped>
 .linkedIn-sign-btn{
   background-image: "../../assets/linkedIN/Sign-In-Default.png";
-  width: 100%;
-  height:60px;
-  font-size: 125%;
 }
 </style>
