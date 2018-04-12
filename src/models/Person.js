@@ -86,6 +86,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      signIn_type: {
+        type: DataTypes.ENUM,
+        values: ['normal', 'facebook', 'linkedin'],
+        defaultValue: 'normal',
+        allowNull: false,
+      },
       role: {
         type: DataTypes.ENUM,
         values: ['User', 'Channel Admin', 'Super Admin'],

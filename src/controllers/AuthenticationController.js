@@ -84,40 +84,51 @@ module.exports = {
       let code = req.query.code;
       let error = req.query.error;
       let state = req.query.state;
-
+      // const person = await Person.create(req.body);
       console.log('\n\n code -> ' + code + ' error -> ' + error + ' state-> ' + state);
 
       if (state !== 'Feup-Link-state') {
         // send error this is possibly a CSRF attack.
-        res.redirect(`https://localhost:8080`);
+        res.redirect(process.env.FRONT_END_URL);
       }
 
       if (typeof error !== 'undefined') {
         // send error object error and error_description available.
-        res.redirect(`https://localhost:8080`);
+        res.redirect(process.env.FRONT_END_URL);
       }
 
-      // get the access token
-      axios.post('https://www.linkedin.com/oauth/v2/accessToken',
-                    `grant_type=authorization_code&` +
-                    `code=${code}&` +
-                    `redirect_uri=http://localhost:8081/signup_linkedin&` +
-                    `client_id=${process.env.IN_ID}&` +
-                    `client_secret=${process.env.IN_SECRET}`)
-          .then(function(accessTokenRes) {
-            console.log('accesstokenRes-> ', accessTokenRes.data);
-            let accessToken = accessTokenRes.data.access_token;
+       // get the access token
+       let accessToken = (await axios.post('https://www.linkedin.com/oauth/v2/accessToken',
+            `grant_type=authorization_code&` +
+            `code=${code}&` +
+            `redirect_uri=http://localhost:8081/signup_linkedin&` +
+            `client_id=${process.env.IN_ID}&` +
+            `client_secret=${process.env.IN_SECRET}`)).data.access_token;
 
-            axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
-                        `oauth2_access_token=${accessToken}`
-            ).then(function(userData) {
-                console.log(userData.data);
-                res.redirect(`https://localhost:8080`);
-            });
+
+        // get the user data
+        let userData = (await axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
+            `oauth2_access_token=${accessToken}`)).data;
+
+        await Person.create({
+          name: `${userData.firstName}  ${userData.lastName}`,
+          email: userData.emailAddress,
+          headline: userData.headline,
+          hashedPassword: 'password', // this is useless on the login with facebook
+          validated: false,
+          country: userData.location.country.code,
+          city: userData.location.name,
+          summary: userData.summary,
+          signIn_type: 'linkedin',
+          gender: `Male`,
+          role: 'User',
         });
+
+        res.redirect(process.env.FRONT_END_URL);
       } catch (err) {
+        console.log(err);
         res.status(500).send({
-          error: err,
+          error: err.message,
         });
       }
   },
