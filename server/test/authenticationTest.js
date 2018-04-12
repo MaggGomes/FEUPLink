@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const should = chai.should();
+
 const app = require('../src/app.js');
 
 chai.use(chaiHttp);
@@ -13,6 +13,8 @@ describe('Authentication', function() {
                 'email': 'teste1',
                 'hashedPassword': '123.4'
             };
+
+            const should = chai.should();
 
             chai.request(app)
                 .post('/signup')
@@ -31,6 +33,8 @@ describe('Authentication', function() {
                 'hashedPassword': 'dj.@@a'
             };
 
+            const should = chai.should();
+
             chai.request(app)
                 .post('/signup')
                 .send(user)
@@ -47,10 +51,15 @@ describe('Authentication', function() {
                 'hashedPassword': 'dj.@@a'
             };
 
+            const should = chai.should();
+
             chai.request(app)
                 .post('/signup')
                 .send(user)
                 .end((err, res) => {
+                    if(err)
+                        res.should.have.status(403);
+
                     res.should.have.status(403);
                     done();
                 });
