@@ -16,12 +16,12 @@ module.exports = {
         if (error) {
             switch (error.details[0].context.key) {
                 case 'email':
-                    res.status(400).send({
+                    res.status(401).send({
                         error: 'You must provide a valid email address',
                     });
                     break;
                 case 'hashedPassword':
-                    res.status(400).send({
+                    res.status(402).send({
                         error: `The password provided failed to match the following rules:
                         <br>
                         1. It must contain ONLY the following characters: lower case, upper case, numerics
@@ -30,7 +30,7 @@ module.exports = {
                     });
                     break;
                 default:
-                    res.status(400).send({
+                    res.status(403).send({
                         error: 'Invalid registration information',
                     });
             }
