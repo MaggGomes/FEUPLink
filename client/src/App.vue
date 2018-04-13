@@ -48,6 +48,15 @@
             title: 'Sign-Up',
             link: "/signup"
           }
+        ],
+        signnedInMenuItens: [{
+            title: 'Home',
+            link: "/"
+        },
+        {
+            title: 'Feed',
+            link: "/Feed"
+        }
         ]
       }
     }

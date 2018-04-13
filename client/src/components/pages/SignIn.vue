@@ -84,14 +84,20 @@ export default {
   },
   methods: {
     async signin () {
+      let resp;
       try {
-        await AuthenticationService.signin({
+        resp = (await AuthenticationService.signin({
           email: this.email,
           hashedPassword: this.password
-        })
+        })).data
       } catch (error) {
         this.error = error.response.data.error
-      }      
+      }
+      console.log(resp)
+      
+      this.$store.dispatch('setToken', resp.token)      
+      this.$store.dispatch('setUser', resp.person)
+      this.$router.push('Feed');
     },
     async onFBSignInSuccess (response) {
       console.log(response);
