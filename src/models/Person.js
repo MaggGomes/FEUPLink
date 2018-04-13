@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      summary: {
-        type: DataTypes.STRING,
+      summary: { // eslint-disable-next-line
+        type: DataTypes.STRING(2500),
         allowNull: true,
       },
       facebookProfile: {
