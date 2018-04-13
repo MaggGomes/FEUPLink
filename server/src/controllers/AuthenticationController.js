@@ -21,19 +21,14 @@ function jwtSignPerson(person) {
 }
 
 module.exports = {
-<<<<<<< HEAD
-  async signup(req, res) {
-=======
+
   async signup_student(req, res) {
       console.log('student');
->>>>>>> feature/signup
+
       try {
         const person = await Person.create(req.body);
 
         const personJson = person.toJSON();
-<<<<<<< HEAD
-        res.status(200).send({
-=======
 
         const {dpName, acronym} = req.body;
 
@@ -78,7 +73,7 @@ module.exports = {
           });
         }
         res.send({
->>>>>>> feature/signup
+
           person: personJson,
           token: jwtSignPerson(personJson),
         });
