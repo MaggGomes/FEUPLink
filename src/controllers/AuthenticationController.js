@@ -184,4 +184,35 @@ module.exports = {
         });
       }
   },
+  async signup_facebook(req, res) {
+    try {
+      let accessToken = req.accessToken;
+      let userId = req.userId;
+      // const person = await Person.create(req.body);
+      console.log('\n\n accessToken -> ' + accessToken);
+
+        let userData = (await axios.get(`https://graph.facebook.com/v2.11/${userId}/?fields=first_name,last_name,location,profile_pic,gender`)).data;
+
+        await Person.create({
+          name: `${userData.firstName}  ${userData.lastName}`,
+          email: userData.emailAddress,
+          headline: userData.headline,
+          hashedPassword: 'password', // this is useless on the login with facebook
+          validated: false,
+          country: userData.location.country.code,
+          city: userData.location.name,
+          summary: userData.summary,
+          signIn_type: 'linkedin',
+          gender: `Male`,
+          role: 'User',
+        });
+
+        res.redirect(process.env.FRONT_END_URL);
+      } catch (err) {
+        console.log(err);
+        res.status(500).send({
+          error: err.message,
+        });
+      }
+  },
 };
