@@ -7,10 +7,16 @@
 
 <script>
 export default {
-  name: 'Feed'
-}
+  name: "Feed",
+  mounted () {
+    if (!this.$store.state.isUserLoggedIn){
+        this.$router.push('/');
+    }
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>
