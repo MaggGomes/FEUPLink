@@ -1,29 +1,40 @@
 <template>
    <v-app id="inspire">
     <v-content>
-      <v-container fluid>
+      <v-container fluid v-if="loading">
+        <v-layout row wrap align-center justify-center>
+          <v-flex xs12>
+            <v-progress-circular :size="60" indeterminate color="primary"/>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <v-container fluid v-else>
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>
+          <v-flex xs12 sm10 md5>
             <v-card class="elevation-12">
               <v-toolbar dark class="red darken-4">
                 <v-toolbar-title>Sign In</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-              <form autocomplete="off">
+              <form ref="form" lazy-validation>
                 <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
+                  :rules="emailRules"
                   v-model="email"
+                  required
                 ></v-text-field>
                 <v-text-field :password="password"
                   prepend-icon="lock"
                   label="Password"
                   type="password"
+                  :rules="passwordRules"
                   v-model="password"
+                  required
                 ></v-text-field>                
               </form>
-               <div class="danger-alert" v-html="error"/>
+               <div class="danger-alert" v-html="error" />
               </v-card-text>             
               <v-card-actions>
                 <v-checkbox style="margin-left:20px;margin-top:25px"
@@ -40,8 +51,8 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>             
-            <facebook-button class="signup-button"></facebook-button><br>
-            <linked-in-button class="signup-button" ></linked-in-button>
+            <facebook-button class="signin-button elevation-12"></facebook-button><br>
+            <linked-in-button class="signin-button elevation-12" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -63,22 +74,37 @@ export default {
   },
   data () {
     return {
+      loading: false,
+      valid: false,
       email: '',
       password: '',
       checkbox:'',
-      error: null
+      error: null,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+      ]
     }
   },
   methods: {
     async signin () {
+      let resp;
       try {
-        await AuthenticationService.signin({
+        resp = (await AuthenticationService.signin({
           email: this.email,
           hashedPassword: this.password
-        })
+        })).data
       } catch (error) {
         this.error = error.response.data.error
-      }      
+      }
+      
+      this.$store.dispatch('setToken', resp.token)      
+      this.$store.dispatch('setUser', resp.person)
+      this.$router.push('Feed');
     },
   }
 }

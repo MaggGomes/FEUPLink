@@ -3,10 +3,12 @@ import Router from 'vue-router'
 import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
+import Feed from '@/components/pages/Feed'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -22,6 +24,11 @@ export default new Router({
       path: '/signin',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/feed',
+      name: 'Feed',
+      component: Feed
     }
   ]
 })
