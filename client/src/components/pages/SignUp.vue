@@ -505,7 +505,7 @@ export default {
 				}*/
 				}
 				else {
-					await AuthenticationService.signup_student({
+					await AuthenticationService.signup_staff({
 						name: this.name,
 						email: this.email,
 						hashedPassword: this.password,
