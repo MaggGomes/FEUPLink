@@ -196,7 +196,7 @@ module.exports = {
           name: `${userData.firstName}  ${userData.lastName}`,
           email: userData.emailAddress,
           headline: userData.headline,
-          hashedPassword: 'password', // this is useless on the login with facebook
+          hashedPassword: 'Password1', // this is useless on the login with facebook
           validated: false,
           country: userData.location.country.code,
           city: userData.location.name,
