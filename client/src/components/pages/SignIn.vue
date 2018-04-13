@@ -13,7 +13,7 @@
                 <v-toolbar-title>Sign In</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-              <form ref="form" lazy-validation>
+              <v-form autocomplete="off" ref="form" lazy-validation>
                 <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
@@ -29,7 +29,7 @@
                   v-model="password"
                   required
                 ></v-text-field>                
-              </form>
+              </v-form>
                <div class="danger-alert" v-html="error" />
               </v-card-text>             
               <v-card-actions>
