@@ -11,9 +11,17 @@ module.exports = {
     browser
       .url(devServer)
       .waitForElementVisible('#app', 5000)
-      .assert.elementPresent('.hello')
-      .assert.containsText('h1', 'Welcome to Your Vue.js App')
-      .assert.elementCount('img', 1)
+      .assert.elementPresent('#carousel_homepage')
+      .assert.elementCount('nav', 1)
+  },
+
+  'Test 2': function (browser) {
+    const devServer = browser.globals.devServerURL
+
+    browser
+      .url(devServer)
+      .waitForElementVisible('#app', 5000)
+      .assert.containsText('div', 'FEUPLink')
       .end()
   }
-}
+};
