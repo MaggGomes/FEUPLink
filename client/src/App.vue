@@ -64,8 +64,11 @@
         {
             title: 'Feed',
             link: "/Feed"
-        }
-        ]
+        },
+        {
+            title: 'Logout',
+            link: "/logout"
+        }]
       }
     }
   };

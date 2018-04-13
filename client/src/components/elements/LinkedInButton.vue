@@ -5,18 +5,11 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 
-function onLinkedInLoad(){
-  console.log("oi-linkedin");
-}
-
 export default {
-  onLinkedInLoad: function(){
-     console.log("oi- linkedin");
-  },
   methods: {
     async signIn() {
         try {
-          console.log("Sign in");
+          console.log("Sign in Linkedin");
           let client_id = '78tdph8nd2st08'; 
           let redirect_uri = 'http://localhost:8081/signup_linkedin'; 
           let state = 'Feup-Link-state'; 
