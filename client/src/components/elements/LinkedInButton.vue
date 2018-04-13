@@ -5,7 +5,14 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 
-export default {  
+function onLinkedInLoad(){
+  console.log("oi-linkedin");
+}
+
+export default {
+  onLinkedInLoad: function(){
+     console.log("oi- linkedin");
+  },
   methods: {
     async signIn() {
         try {
