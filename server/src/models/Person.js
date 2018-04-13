@@ -130,16 +130,6 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
       }
     );
-
-    // many-to-many person - department
-    Person.belongsToMany(models.Department,
-      {
-        through: 'PersonDepartment',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }
-    );
-
     // person can have many jobs
     Person.hasMany(models.Job,
       {

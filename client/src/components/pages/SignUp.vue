@@ -150,7 +150,7 @@
          				<v-card color="grey lighten-3" class="mb-5" height="450px">
          					<form autocomplete="off">
          						<v-container fluid>
-											 <v-layout align-center>
+											 <v-layout align-center v-if="role == 'staff'">
 											<v-flex xs24 sm6 text-xs-center>
 												<v-text-field
 													prepend-icon="person"
@@ -259,11 +259,6 @@
 							prepend-icon="person"
 							label="Mec number"
 							v-model="number"
-							></v-text-field>
-							<v-text-field v-if="role == 'student'"
-							prepend-icon="person"
-							label="CGPA"
-							v-model="cgpa"
 							></v-text-field>
          				</v-container>
          			</form>
@@ -428,7 +423,6 @@ export default {
       city: '',
       position: '',
       role: 'student',
-      cgpa: '',
 			dpName: '',
 			dpAcr: '',
       nameRules: [
@@ -473,7 +467,6 @@ export default {
 						graduationDate: this.date3,
 						type: this.graduated,
 						mecNumber: this.number,
-						cgpa: this.cgpa,
 						company: this.company,
 						companyCity: this.company,
 						title: this.position,
