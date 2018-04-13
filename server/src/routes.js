@@ -14,13 +14,16 @@ module.exports = (app) => {
     AuthenticationController.signup_staff
   );
 
-  app.post('/signin',
-    AuthenticationController.signin
-  );
-
-  // Linked IN
   app.get('/signup_linkedin',
     AuthenticationController.signup_linkedin
+  );
+
+  app.post('/signup_facebook',
+    AuthenticationController.signup_facebook
+  );
+
+  app.post('/signin',
+  AuthenticationController.signin
   );
 };
 
