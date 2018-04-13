@@ -134,8 +134,6 @@ module.exports = {
       let code = req.query.code;
       let error = req.query.error;
       let state = req.query.state;
-      // const person = await Person.create(req.body);
-      console.log('\n\n code -> ' + code + ' error -> ' + error + ' state-> ' + state);
 
       if (state !== 'Feup-Link-state') {
         // send error this is possibly a CSRF attack.
@@ -160,18 +158,21 @@ module.exports = {
         let userData = (await axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
             `oauth2_access_token=${accessToken}`)).data;
 
-        await Person.create({
-          name: `${userData.firstName}  ${userData.lastName}`,
-          email: userData.emailAddress,
-          headline: userData.headline,
-          hashedPassword: 'password', // this is useless on the login with facebook
-          validated: false,
-          country: userData.location.country.code,
-          city: userData.location.name,
-          summary: userData.summary,
-          signIn_type: 'linkedin',
-          gender: `Male`,
-          role: 'User',
+        await Person.findOrCreate({
+            where:
+            {
+              name: `${userData.firstName}  ${userData.lastName}`,
+              email: userData.emailAddress,
+              headline: userData.headline,
+              hashedPassword: 'password', // this is useless on the login with facebook
+              validated: false,
+              country: userData.location.country.code,
+              city: userData.location.name,
+              summary: userData.summary,
+              signIn_type: 'linkedin',
+              gender: `Not Specified`,
+              role: 'User',
+            },
         });
 
         res.redirect(process.env.FRONT_END_URL);
