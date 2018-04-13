@@ -4,6 +4,8 @@ import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import Feed from '@/components/pages/Feed'
+import AuthenticationPolicy from '@/policies/authenticationPolicy'
+import store from '@/store/store'
 
 Vue.use(Router)
 
@@ -18,17 +20,28 @@ export default new Router({
     {
       path: '/signup',
       name: 'SignUp',
-      component: SignUp
+      component: SignUp,
+      beforeEnter: AuthenticationPolicy.unAuthenticated
     },
     {
       path: '/signin',
       name: 'SignIn',
-      component: SignIn
+      component: SignIn,
+      beforeEnter: AuthenticationPolicy.unAuthenticated
     },
     {
       path: '/feed',
       name: 'Feed',
-      component: Feed
+      component: Feed,
+      beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/logout',
+      beforeEnter: (to, from, next) => {
+        store.dispatch('setToken', null)
+        store.dispatch('setUser', null)
+        next('/');
+      }
     }
   ]
 })

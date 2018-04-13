@@ -2,11 +2,7 @@
    <v-app id="inspire">
     <v-content>
       <v-container fluid v-if="loading">
-        <v-layout row wrap align-center justify-center>
-          <v-flex xs12>
-            <v-progress-circular :size="60" indeterminate color="primary"/>
-          </v-flex>
-        </v-layout>
+        <buffering-wheel />
       </v-container>
       <v-container fluid v-else>
         <v-layout row wrap align-center justify-center>
@@ -73,6 +69,7 @@ import Vue from 'vue';
 import AuthenticationService from '@/services/AuthenticationService'
 import FBSignInButton from 'vue-facebook-signin-button'
 import LinkedInButton from '@/components/elements/LinkedInButton'
+import BufferingWheel from '@/components/elements/BufferingWheel'
 
 Vue.use(FBSignInButton)
 
@@ -80,6 +77,7 @@ export default {
   name: 'SignIn',
   components: {
       LinkedInButton,
+      BufferingWheel
   },
   data () {
     return {
@@ -105,19 +103,23 @@ export default {
   },
   methods: {
     async signin () {
-      let resp;
       try {
-        resp = (await AuthenticationService.signin({
+        this.loading=true;
+      
+        let resp = (await AuthenticationService.signin({
           email: this.email,
           hashedPassword: this.password
         })).data
+      
+        if(resp != null){
+          this.$store.dispatch('setToken', resp.token)      
+          this.$store.dispatch('setUser', resp.person)
+          this.loading=false;
+          this.$router.push('Feed')
+        }
       } catch (error) {
         this.error = error.response.data.error
       }
-      
-      this.$store.dispatch('setToken', resp.token)      
-      this.$store.dispatch('setUser', resp.person)
-      this.$router.push('Feed');
     },
     async onFBSignInSuccess (response) {
       console.log(response);
