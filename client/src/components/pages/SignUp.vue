@@ -79,7 +79,7 @@
          			</v-stepper-header>
          			<v-stepper-items>
          				<v-stepper-content step="1">
-         					<v-card color="grey lighten-3" class="mb-4" height="400px">
+         					<v-card color="grey lighten-3" class="mb-4" height="450px">
 
          						<form autocomplete="off">
          							<v-container fluid>
@@ -134,14 +134,14 @@
          				<v-btn dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
          			</v-stepper-content>
          			<v-stepper-content step="2">
-         				<v-card color="grey lighten-3" class="mb-5" height="400px" fill-height>
+         				<v-card color="grey lighten-3" class="mb-5" height="450px" fill-height>
                    <v-container fill-height>
                     <v-layout align-center>
                       <v-flex xs24 sm12 text-xs-center>
                         <div class="cc-selector">
-                          <input v-model="role" id="student" type="radio" name="credit-card" value="student" />
+                          <input id="student" type="radio" name="credit-card" value="student" />
                           <label class="drinkcard-cc student" for="student"></label>
-                          <input id="staff" type="radio" name="credit-card" value="staff" />
+                          <input v-model="role" id="staff" type="radio" name="credit-card" value="staff" />
                           <label class="drinkcard-cc staff" for="staff"></label>
                         </div>
                       </v-flex>
@@ -152,13 +152,40 @@
          				<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>Back</v-btn>
          			</v-stepper-content>
          			<v-stepper-content step="3">
-         				<v-card color="grey lighten-3" class="mb-5" height="400px">
+         				<v-card color="grey lighten-3" class="mb-5" height="450px">
          					<form autocomplete="off">
          						<v-container fluid>
-									 <v-select
+											 <v-layout align-center>
+											<v-flex xs24 sm6 text-xs-center>
+												<v-text-field
+													prepend-icon="person"
+													label="Department name"
+													v-model="dpName"
+													></v-text-field>
+											</v-flex>
+											<v-flex xs24 sm6 text-xs-center>
+												<v-text-field
+													prepend-icon="person"
+													label="Department acronym"
+													v-model="dpAcr"
+													></v-text-field>
+											</v-flex>
+										 </v-layout>
+											
+									 <v-select v-if="role == 'student'"
          							:items="courses"
          							v-model="course"
          							label="Course"
+         							single-line
+         							auto
+         							prepend-icon="person"
+         							hide-details
+         							></v-select><br />
+
+										<v-select v-if="role == 'staff'"
+         							:items="courses"
+         							v-model="course"
+         							label="Working location"
          							single-line
          							auto
          							prepend-icon="person"
@@ -228,16 +255,17 @@
 											</v-menu>
 										</v-flex>
 									</v-layout>
-							<v-checkbox
+
+							<v-checkbox v-if="role == 'student'"
 							:label="`Graduated`"
 							v-model="graduated"
 							></v-checkbox>
 							<v-text-field
 							prepend-icon="person"
-							label="Student number"
+							label="Mec number"
 							v-model="number"
 							></v-text-field>
-							<v-text-field
+							<v-text-field v-if="role == 'student'"
 							prepend-icon="person"
 							label="CGPA"
 							v-model="cgpa"
@@ -250,7 +278,7 @@
          		<v-btn  @click.native="e1 = 2" flat>Back</v-btn>
          	</v-stepper-content>
          	<v-stepper-content step="4">
-         		<v-card color="grey lighten-3" class="mb-5" height="400px">
+         		<v-card color="grey lighten-3" class="mb-5" height="450px">
 
          		<form autocomplete="off">
          						<v-container fluid>
@@ -410,8 +438,10 @@ export default {
       company: '',
       city: '',
       position: '',
-      role: 'staff',
+      role: 'student',
       cgpa: '',
+			dpName: '',
+			dpAcr: '',
       nameRules: [
         v => !!v || 'Name is required',
         v => v.length <= 50 || 'Name must be less than 50 characters'
@@ -443,8 +473,9 @@ export default {
     onFBSignUpError (error) {
     },
     async signup () {
+				if(this.role == 'student') {
 				//try {
-					await AuthenticationService.signup({
+					await AuthenticationService.signup_student({
 						name: this.name,
 						email: this.email,
 						hashedPassword: this.password,
@@ -452,6 +483,8 @@ export default {
 						gender: this.gender,
 						country: this.country,
 						city: this.city,
+						dpName: this.dpName,
+						acronym: this.dpAcr,
 						course: this.course,
 						enrollmentDate: this.date2,
 						graduationDate: this.date3,
@@ -462,12 +495,28 @@ export default {
 						title: this.position,
 						startDate: this.date4,
 						endDate: this.date5,
-						isCurrent: this.checkboxWork
+						isCurrent: this.checkboxWork,
+						workExperience: this.workExperience
 					})
 				/*} catch (error) {
 					console.log(error);
 					//this.error = error.response.data.error
 				}*/
+				}
+				else {
+					await AuthenticationService.signup_student({
+						name: this.name,
+						email: this.email,
+						hashedPassword: this.password,
+						birthDate: this.date,
+						gender: this.gender,
+						country: this.country,
+						city: this.city,
+						dpName: this.dpName,
+						acronym: this.dpAcr,
+						workingLocation: this.course
+					})
+				}
 			},
 			save (date) {
 				this.$refs.menu.save(date)
