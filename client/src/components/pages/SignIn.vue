@@ -1,7 +1,14 @@
 <template>
    <v-app id="inspire">
     <v-content>
-      <v-container fluid>
+      <v-container fluid v-if="loading">
+        <v-layout row wrap align-center justify-center>
+          <v-flex xs12>
+            <v-progress-circular :size="60" indeterminate color="primary"/>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <v-container fluid v-else>
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
           <v-flex xs12 sm10 md5>
@@ -80,6 +87,7 @@ export default {
         scope: 'public_profile,email',
         return_scopes: true
       },
+      loading: false,
       valid: false,
       email: '',
       password: '',
