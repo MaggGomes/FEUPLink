@@ -10,20 +10,24 @@
                 <v-toolbar-title>Sign In</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-              <form autocomplete="off">
+              <form ref="form" lazy-validation>
                 <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
+                  :rules="emailRules"
                   v-model="email"
+                  required
                 ></v-text-field>
                 <v-text-field :password="password"
                   prepend-icon="lock"
                   label="Password"
                   type="password"
+                  :rules="passwordRules"
                   v-model="password"
+                  required
                 ></v-text-field>                
               </form>
-               <div class="danger-alert" v-html="error"/>
+               <div class="danger-alert" v-html="error" />
               </v-card-text>             
               <v-card-actions>
                 <v-checkbox style="margin-left:20px;margin-top:25px"
@@ -39,7 +43,7 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>             
+          <v-flex xs12 sm8 md5>          
             <fb-signin-button
               :params="FBSignInParams"
               @success="onFBSignInSuccess"
@@ -76,22 +80,33 @@ export default {
         scope: 'public_profile,email',
         return_scopes: true
       },
+      valid: false,
       email: '',
       password: '',
       checkbox:'',
-      error: null
+      error: null,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+      ]
     }
   },
   methods: {
     async signin () {
-      try {
-        await AuthenticationService.signin({
-          email: this.email,
-          hashedPassword: this.password
-        })
-      } catch (error) {
-        this.error = error.response.data.error
-      }      
+      if(this.$refs.form.validate()){
+        try {
+          await AuthenticationService.signin({
+            email: this.email,
+            hashedPassword: this.password
+          })
+        } catch (error) {
+          this.error = error.response.data.error
+        }   
+      }   
     },
     async onFBSignInSuccess (response) {
       console.log(response);
