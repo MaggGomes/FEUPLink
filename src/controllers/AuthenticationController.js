@@ -1,4 +1,5 @@
 const {Person} = require('../models');
+const {Department} = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const axios = require('axios');
@@ -17,11 +18,23 @@ function jwtSignPerson(person) {
 
 module.exports = {
   async signup_student(req, res) {
-      console.log(req);
+      console.log('student');
       try {
         const person = await Person.create(req.body);
 
         const personJson = person.toJSON();
+
+        const {dpName, acronym} = req.body;
+
+        const department = await Department.create({
+          name: dpName,
+          acronym: acronym,
+        });
+
+        Person.findById(personJson.id).then((person) => {
+          person.setDepartments(department.toJSON().id);
+        });
+        console.log(department);
         res.send({
           person: personJson,
           token: jwtSignPerson(personJson),
@@ -34,6 +47,7 @@ module.exports = {
   },
   async signup_staff(req, res) {
     try {
+      console.log('staff');
       const person = await Person.create(req.body);
 
       const personJson = person.toJSON();
