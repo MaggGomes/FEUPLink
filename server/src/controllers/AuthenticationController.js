@@ -31,6 +31,9 @@ module.exports = {
           acronym: acronym,
         });
 
+        Person.findById(personJson.id).then((person) => {
+          person.setDepartments(department.toJSON().id);
+        });
         console.log(department);
         res.send({
           person: personJson,
