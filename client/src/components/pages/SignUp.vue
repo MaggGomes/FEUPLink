@@ -134,7 +134,7 @@
                     <v-layout align-center>
                       <v-flex xs24 sm12 text-xs-center>
                         <div class="cc-selector">
-                          <input id="student" type="radio" name="credit-card" value="student" />
+                          <input v-model="role" id="student" type="radio" name="credit-card" value="student" />
                           <label class="drinkcard-cc student" for="student"></label>
                           <input v-model="role" id="staff" type="radio" name="credit-card" value="staff" />
                           <label class="drinkcard-cc staff" for="staff"></label>
