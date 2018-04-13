@@ -49,6 +49,7 @@ module.exports = {
 
         const course = await Course.create({
           name: req.body.course,
+          creationDate: 2000,
         });
 
         Course.findById(course.toJSON().id).then((course) => {
