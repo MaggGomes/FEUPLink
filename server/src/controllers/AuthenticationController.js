@@ -1,5 +1,9 @@
 const {Person} = require('../models');
 const {Department} = require('../models');
+const {Student} = require('../models');
+const {Company} = require('../models');
+const {Job} = require('../models');
+const {Course} = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const axios = require('axios');
@@ -34,7 +38,38 @@ module.exports = {
         Person.findById(personJson.id).then((person) => {
           person.setDepartments(department.toJSON().id);
         });
-        console.log(department);
+
+        const student = await Student.create({
+          mecNumber: req.body.mecNumber,
+          enrollmentDate: req.body.enrollmentDate,
+          graduationDate: req.body.graduationDate,
+          cgpa: req.body.cgpa,
+          PersonId: personJson.id,
+        });
+
+        const course = await Course.create({
+          name: req.body.course,
+        });
+
+        Course.findById(course.toJSON().id).then((course) => {
+          course.setStudents(student.toJSON().id);
+        });
+
+        if (!req.body.workExperience) {
+          const company = await Company.create({
+            name: req.body.company,
+            industry: req.body.companyCity,
+          });
+
+          await Job.create({
+            title: req.body.title,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            isCurrent: req.body.isCurrent,
+            CompanyId: company.toJSON().id,
+            PersonId: personJson.id,
+          });
+        }
         res.send({
           person: personJson,
           token: jwtSignPerson(personJson),
