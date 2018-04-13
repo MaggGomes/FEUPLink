@@ -34,6 +34,15 @@ module.exports = (sequelize, DataTypes) => {
           onDelete: 'CASCADE',
         }
       );
+
+      // many-to-many staff - department
+      Staff.belongsToMany(models.Department,
+        {
+          through: 'StaffDepartment',
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        }
+      );
     };
 
   return Staff;
