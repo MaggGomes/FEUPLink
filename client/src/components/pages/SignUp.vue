@@ -492,6 +492,7 @@ export default {
 						mecNumber: this.number,
 						cgpa: this.cgpa,
 						company: this.company,
+						companyCity: this.company,
 						title: this.position,
 						startDate: this.date4,
 						endDate: this.date5,
