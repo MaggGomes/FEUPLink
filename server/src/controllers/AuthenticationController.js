@@ -43,7 +43,6 @@ module.exports = {
           mecNumber: req.body.mecNumber,
           enrollmentDate: req.body.enrollmentDate,
           graduationDate: req.body.graduationDate,
-          cgpa: req.body.cgpa,
           PersonId: personJson.id,
         });
 
