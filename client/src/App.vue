@@ -5,9 +5,14 @@
   
     <v-navigation-drawer app temporary v-model="sideNav" absolute>
       <v-list>
-        <v-list-tile v-for="item in menuItens" :key="item.title" route :to="item.link">
+        <v-list-tile v-if="$store.state.isUserLoggedIn" v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" route :to="signnedInItem.link">
           <v-list-tile-content>
-            {{ item.title }}
+            {{ signnedInItem.title }}
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+          <v-list-tile-content>
+            {{ menuItem.title }}
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -19,8 +24,11 @@
         <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItens" :key="item.title" router :to="item.link">{{ item.title }}</v-btn>
+      <v-toolbar-items v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
+        <v-btn flat v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-else class="hidden-xs-only">
+        <v-btn flat v-for="menuItem in menuItens" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   
