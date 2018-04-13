@@ -3,7 +3,7 @@
       <v-container fluid v-if="firstStep">
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>
+          <v-flex xs12 sm10 md5>
             <v-card class="elevation-12">
               <v-toolbar dark class="red darken-4">
                 <v-toolbar-title>Create new account</v-toolbar-title>
@@ -51,14 +51,14 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>
+          <v-flex xs12 sm12 md5>
              <fb-signin-button
               :params="FBSignUpParams"
               @success="onFBSignUpSuccess"
               @error="onFBSignUpError">
-              <v-btn id="facebook-signup-button" class="signup-button indigo" large dark>Sign up with Facebook</v-btn>
+              <v-btn id="facebook-signup-button elevation-12" class="signup-button indigo" large dark>Sign up with Facebook</v-btn>
             </fb-signin-button><br>
-            <linked-in-button class="signup-button" ></linked-in-button>
+            <linked-in-button class="signup-button elevation-12" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>

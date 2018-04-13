@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>
+          <v-flex xs12 sm10 md5>
             <v-card class="elevation-12">
               <v-toolbar dark class="red darken-4">
                 <v-toolbar-title>Sign In</v-toolbar-title>
@@ -43,16 +43,16 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>          
+          <v-flex xs12 sm12 md5>          
             <fb-signin-button
               :params="FBSignInParams"
               @success="onFBSignInSuccess"
               @error="onFBSignInError">
-              <v-btn id="facebook-signin-button" class="signin-button indigo" large dark>   
+              <v-btn id="facebook-signin-button" class="signin-button indigo elevation-12" large dark>   
                 Sign in with Facebook
                 </v-btn>
             </fb-signin-button><br>
-               <linked-in-button class="signup-button" ></linked-in-button>
+               <linked-in-button class="signin-button elevation-12" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
