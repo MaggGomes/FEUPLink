@@ -4,10 +4,10 @@ export default {
     signup (userInfo) {
         return Api().post('signup_student', userInfo)
     },
+    signup_facebook (userInfo) {
+        return Api().post('signup_facebook', userInfo)
+    },
     signin (userInfo) {
         return Api().post('signin', userInfo)
     },
-    fbsignin (userInfo) {
-        return Api().post('fbsignin', userInfo)
-    }
 }

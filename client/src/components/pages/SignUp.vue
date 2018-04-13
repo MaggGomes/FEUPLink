@@ -52,12 +52,7 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>
-             <fb-signin-button
-              :params="FBSignUpParams"
-              @success="onFBSignUpSuccess"
-              @error="onFBSignUpError">
-              <v-btn id="facebook-signup-button" class="signup-button indigo" large dark>Sign up with Facebook</v-btn>
-            </fb-signin-button><br>
+						<facebook-button class="signup-button"></facebook-button><br>
             <linked-in-button class="signup-button" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
@@ -361,24 +356,18 @@
 
 <script>
 
-import FBSignInButton from 'vue-facebook-signin-button'
 import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
 import LinkedInButton from '@/components/elements/LinkedInButton'
-
-Vue.use(FBSignInButton)
+import FacebookButton from '@/components/elements/FacebookButton'
 
 export default {
   name: 'SignUp',
    components: {
-    LinkedInButton,
+    LinkedInButton,FacebookButton
   },
   data () {
-    return {      
-      FBSignInParams: {
-        scope: '',
-        return_scopes: true
-      },
+    return {    
       valid: false,
       name: '',
       email: '',
@@ -435,12 +424,6 @@ export default {
     continueSignup: function() {
       if(this.$refs.form.validate())
         this.firstStep = false;
-    },
-    onFBSignUpSuccess (response) {
-      FB.api('/me', user => {
-      })
-    },
-    onFBSignUpError (error) {
     },
     async signup () {
 				//try {

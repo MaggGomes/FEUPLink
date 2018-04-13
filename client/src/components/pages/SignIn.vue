@@ -40,15 +40,8 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 sm8 md5>             
-            <fb-signin-button
-              :params="FBSignInParams"
-              @success="onFBSignInSuccess"
-              @error="onFBSignInError">
-              <v-btn id="facebook-signin-button" class="signin-button indigo" large dark>   
-                Sign in with Facebook
-                </v-btn>
-            </fb-signin-button><br>
-               <linked-in-button class="signup-button" ></linked-in-button>
+            <facebook-button class="signup-button"></facebook-button><br>
+            <linked-in-button class="signup-button" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
@@ -60,22 +53,16 @@
 <script>
 import Vue from 'vue';
 import AuthenticationService from '@/services/AuthenticationService'
-import FBSignInButton from 'vue-facebook-signin-button'
+import FacebookButton from '@/components/elements/FacebookButton'
 import LinkedInButton from '@/components/elements/LinkedInButton'
-
-Vue.use(FBSignInButton)
 
 export default {
   name: 'SignIn',
   components: {
-      LinkedInButton,
+      LinkedInButton,FacebookButton
   },
   data () {
     return {
-       FBSignInParams: {
-        scope: 'public_profile,email',
-        return_scopes: true
-      },
       email: '',
       password: '',
       checkbox:'',
@@ -93,17 +80,6 @@ export default {
         this.error = error.response.data.error
       }      
     },
-    async onFBSignInSuccess (response) {
-      console.log(response);
-       try {
-        await AuthenticationService.fbsignin(response.authResponse)
-      } catch (error) {
-        this.error = error.response.data.error
-      }     
-    },
-    onFBSignInError (error) {
-      console.log(error);
-    }
   }
 }
 </script>
