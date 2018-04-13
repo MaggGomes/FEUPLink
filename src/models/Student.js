@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      cgpa: {
-        type: DataTypes.REAL,
-        allowNull: true,
-      },
     },
     {
       freezeTableName: true,
