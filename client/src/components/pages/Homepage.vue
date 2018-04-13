@@ -45,7 +45,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     #carousel_homepage div.carousel__controls{
-        background-color: transparent!important;
+        background-color: transparent !important;
     }
     #carousel_homepage{
        height: 1000px;

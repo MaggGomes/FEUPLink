@@ -1,11 +1,18 @@
 <template>
+  <v-app>
+
   <div id="app">
   
     <v-navigation-drawer app temporary v-model="sideNav" absolute>
       <v-list>
-        <v-list-tile v-for="item in menuItens" :key="item.title" route :to="item.link">
+        <v-list-tile v-if="$store.state.isUserLoggedIn" v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" route :to="signnedInItem.link">
           <v-list-tile-content>
-            {{ item.title }}
+            {{ signnedInItem.title }}
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+          <v-list-tile-content>
+            {{ menuItem.title }}
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -17,8 +24,11 @@
         <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItens" :key="item.title" router :to="item.link">{{ item.title }}</v-btn>
+      <v-toolbar-items v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
+        <v-btn flat v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-else class="hidden-xs-only">
+        <v-btn flat v-for="menuItem in menuItens" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   
@@ -29,6 +39,7 @@
     </v-content>
     <v-footer app></v-footer>
   </div>
+  </v-app>
 </template>
 
 <script>
@@ -45,10 +56,39 @@
             title: 'Sign-Up',
             link: "/signup"
           }
-        ]
+        ],
+        signnedInMenuItens: [{
+            title: 'Home',
+            link: "/"
+        },
+        {
+            title: 'Feed',
+            link: "/Feed"
+        },
+        {
+            title: 'Logout',
+            link: "/logout"
+        }]
       }
     }
   };
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1602254696490199',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.12'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
 </script>
 
 <style>

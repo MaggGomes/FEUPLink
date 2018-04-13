@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Department.associate = (models) => {
-      // many-to-many person - department
-      Department.belongsToMany(models.Person,
+      // many-to-many staff - department
+      Department.belongsToMany(models.Staff,
         {
-          through: 'PersonDepartment',
+          through: 'StaffDepartment',
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }

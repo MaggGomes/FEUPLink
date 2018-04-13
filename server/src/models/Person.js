@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      summary: {
-        type: DataTypes.STRING,
+      summary: { // eslint-disable-next-line
+        type: DataTypes.STRING(2500),
         allowNull: true,
       },
       facebookProfile: {
@@ -84,6 +84,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       hashedPassword: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      signIn_type: {
+        type: DataTypes.ENUM,
+        values: ['normal', 'facebook', 'linkedin'],
+        defaultValue: 'normal',
         allowNull: false,
       },
       role: {
@@ -124,16 +130,6 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
       }
     );
-
-    // many-to-many person - department
-    Person.belongsToMany(models.Department,
-      {
-        through: 'PersonDepartment',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }
-    );
-
     // person can have many jobs
     Person.hasMany(models.Job,
       {
