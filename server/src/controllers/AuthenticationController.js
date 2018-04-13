@@ -1,4 +1,9 @@
 const {Person} = require('../models');
+const {Department} = require('../models');
+const {Student} = require('../models');
+const {Company} = require('../models');
+const {Job} = require('../models');
+const {Course} = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const axios = require('axios');
@@ -17,11 +22,54 @@ function jwtSignPerson(person) {
 
 module.exports = {
   async signup_student(req, res) {
-      console.log(req);
+      console.log('student');
       try {
         const person = await Person.create(req.body);
 
         const personJson = person.toJSON();
+
+        const {dpName, acronym} = req.body;
+
+        const department = await Department.create({
+          name: dpName,
+          acronym: acronym,
+        });
+
+        Person.findById(personJson.id).then((person) => {
+          person.setDepartments(department.toJSON().id);
+        });
+
+        const student = await Student.create({
+          mecNumber: req.body.mecNumber,
+          enrollmentDate: req.body.enrollmentDate,
+          graduationDate: req.body.graduationDate,
+          cgpa: req.body.cgpa,
+          PersonId: personJson.id,
+        });
+
+        const course = await Course.create({
+          name: req.body.course,
+        });
+
+        Course.findById(course.toJSON().id).then((course) => {
+          course.setStudents(student.toJSON().id);
+        });
+
+        if (!req.body.workExperience) {
+          const company = await Company.create({
+            name: req.body.company,
+            industry: req.body.companyCity,
+          });
+
+          await Job.create({
+            title: req.body.title,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            isCurrent: req.body.isCurrent,
+            CompanyId: company.toJSON().id,
+            PersonId: personJson.id,
+          });
+        }
         res.send({
           person: personJson,
           token: jwtSignPerson(personJson),
@@ -34,6 +82,7 @@ module.exports = {
   },
   async signup_staff(req, res) {
     try {
+      console.log('staff');
       const person = await Person.create(req.body);
 
       const personJson = person.toJSON();
@@ -85,8 +134,6 @@ module.exports = {
       let code = req.query.code;
       let error = req.query.error;
       let state = req.query.state;
-      // const person = await Person.create(req.body);
-      console.log('\n\n code -> ' + code + ' error -> ' + error + ' state-> ' + state);
 
       if (state !== 'Feup-Link-state') {
         // send error this is possibly a CSRF attack.
@@ -111,18 +158,21 @@ module.exports = {
         let userData = (await axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
             `oauth2_access_token=${accessToken}`)).data;
 
-        await Person.create({
-          name: `${userData.firstName}  ${userData.lastName}`,
-          email: userData.emailAddress,
-          headline: userData.headline,
-          hashedPassword: 'password', // this is useless on the login with facebook
-          validated: false,
-          country: userData.location.country.code,
-          city: userData.location.name,
-          summary: userData.summary,
-          signIn_type: 'linkedin',
-          gender: `Male`,
-          role: 'User',
+        await Person.findOrCreate({
+            where:
+            {
+              name: `${userData.firstName}  ${userData.lastName}`,
+              email: userData.emailAddress,
+              headline: userData.headline,
+              hashedPassword: 'password', // this is useless on the login with facebook
+              validated: false,
+              country: userData.location.country.code,
+              city: userData.location.name,
+              summary: userData.summary,
+              signIn_type: 'linkedin',
+              gender: `Not Specified`,
+              role: 'User',
+            },
         });
 
         res.redirect(process.env.FRONT_END_URL);
