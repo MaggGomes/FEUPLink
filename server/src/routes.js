@@ -14,7 +14,7 @@ module.exports = (app) => {
     AuthenticationController.signup_staff
   );
 
-  app.get('/signup_linkedin',
+  app.post('/signup_linkedin',
     AuthenticationController.signup_linkedin
   );
 

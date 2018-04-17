@@ -6,6 +6,7 @@ import SignIn from '@/components/pages/SignIn'
 import Feed from '@/components/pages/Feed'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
+import AuthenticationService from '@/services/AuthenticationService'
 
 Vue.use(Router)
 
@@ -41,6 +42,21 @@ export default new Router({
         store.dispatch('setToken', null)
         store.dispatch('setUser', null)
         next('/');
+      }
+    },
+    { // just a callback for linkedIn oauth
+      path: '/linkedIn',
+      beforeEnter: async (to, from, next) => {
+        var url = new URL(window.location.href);
+        var code = url.searchParams.get("code");
+        var state = url.searchParams.get("state");
+        var error = url.searchParams.get("error");
+
+        let data = (await AuthenticationService.signup_linkedin({code,state,error})).data;
+        
+        console.log("data.linkedin: ",data);
+        next('/feed')
+        //To-do set store variables and redierct to feed
       }
     }
   ]

@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+// eslint-disable-next-line
 const {sequelize} = require('./models');
 // const createServer = require('auto-sni');
 
@@ -30,12 +31,13 @@ createServer({
 */
 
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
-sequelize.sync()
+ sequelize.sync()
   .then(() => {
     app.listen(process.env.SERVER_PORT, function() {
       console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
     });
   });
+
 
 module.exports = app;
 

@@ -134,25 +134,29 @@ module.exports = {
   },
   async signup_linkedin(req, res) {
     try {
-      let code = req.query.code;
-      let error = req.query.error;
-      let state = req.query.state;
+      let code = req.body.code;
+      let error = req.body.error;
+      let state = req.body.state;
 
       if (state !== 'Feup-Link-state') {
         // send error this is possibly a CSRF attack.
-        res.redirect(process.env.FRONT_END_URL);
+        res.status(500).send({
+          error: 'Wrong linkedin state',
+        });
       }
 
       if (typeof error !== 'undefined') {
         // send error object error and error_description available.
-        res.redirect(process.env.FRONT_END_URL);
+        res.status(500).send({
+          error: error,
+        });
       }
 
        // get the access token
        let accessToken = (await axios.post('https://www.linkedin.com/oauth/v2/accessToken',
             `grant_type=authorization_code&` +
             `code=${code}&` +
-            `redirect_uri=http://localhost:8081/signup_linkedin&` +
+            `redirect_uri=${process.env.FRONT_END_URL}/linkedin&` +
             `client_id=${process.env.IN_ID}&` +
             `client_secret=${process.env.IN_SECRET}`)).data.access_token;
 
@@ -161,7 +165,7 @@ module.exports = {
         let userData = (await axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
             `oauth2_access_token=${accessToken}`)).data;
 
-        await Person.findOrCreate({
+        let person = await Person.findOrCreate({
             where:
             {
               name: `${userData.firstName}  ${userData.lastName}`,
@@ -178,7 +182,11 @@ module.exports = {
             },
         });
 
-        res.redirect(process.env.FRONT_END_URL);
+        console.log(person);
+        res.send({
+          person: person,
+          token: jwtSignPerson(personJson),
+        });
       } catch (err) {
         console.log(err);
         res.status(500).send({
@@ -204,7 +212,7 @@ module.exports = {
           country: userData.location.country.code,
           city: userData.location.name,
           summary: userData.summary,
-          signIn_type: 'linkedin',
+          signIn_type: 'facebook',
           gender: `Male`,
           role: 'User',
         });
