@@ -32,8 +32,8 @@ createServer({
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
 sequelize.sync()
   .then(() => {
-    app.listen(process.env.SERVER_PORT, function() {
-      console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
+    app.listen(process.env.PORT, function() {
+      console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
   });
 
