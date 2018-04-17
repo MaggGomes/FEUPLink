@@ -17,8 +17,7 @@ all_tests:
     - npm run lint
 
 deploy_api_dev:
-  stage:
-    - deploy_api_dev
+  stage: deploy_api_dev
   only:
     - cicd/port-env-fix
   script:
