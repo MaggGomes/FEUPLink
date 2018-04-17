@@ -78,51 +78,105 @@
 
          						<form autocomplete="off">
          							<v-container fluid>
-         								<v-menu
-											ref="menu"
-											lazy
-											:close-on-content-click="false"
-											v-model="menu"
-											transition="scale-transition"
-											offset-y
-											full-width
-											:nudge-right="40"
-											min-width="290px"
-											>
-											<v-text-field
-											slot="activator"
-											label="Birthday date"
-											v-model="date"
-											prepend-icon="event"
-											readonly
-											></v-text-field>
-											<v-date-picker
-											ref="picker"
-											v-model="date"
-											@change="save"
-											min="1950-01-01"
-											:max="new Date().toISOString().substr(0, 10)"
-											></v-date-picker>
-         								</v-menu>
-         							<v-select
-         							:items="genders"
-         							v-model="gender"
-         							label="Gender"
-         							single-line
-         							auto
-         							prepend-icon="person"
-         							hide-details
-         							></v-select><br />
-         							<v-text-field
-         							prepend-icon="person"
-         							label="Country"
-         							v-model="country"
-         							></v-text-field>
-         							<v-text-field
-         							prepend-icon="person"
-         							label="City"
-         							v-model="city"
-         							></v-text-field>
+												<v-layout align-center>
+													<v-flex xs24 sm17 text-xs-center>
+														<v-menu
+															ref="menu"
+															lazy
+															:close-on-content-click="false"
+															v-model="menu"
+															transition="scale-transition"
+															offset-y
+															full-width
+															:nudge-right="40"
+															min-width="290px"
+															>
+															<v-text-field
+															slot="activator"
+															label="Birthday date"
+															v-model="date"
+															prepend-icon="event"
+															readonly
+															></v-text-field>
+															<v-date-picker
+															ref="picker"
+															v-model="date"
+															@change="save"
+															min="1950-01-01"
+															:max="new Date().toISOString().substr(0, 10)"
+															></v-date-picker>
+														</v-menu>
+													</v-flex>
+													<v-flex xs24 sm1 text-xs-center>
+														<v-btn-toggle v-model="birthdayVisible">
+															<v-btn flat>
+																<v-icon>visibility</v-icon>
+															</v-btn>
+															<v-btn flat>
+																<v-icon>visibility_off</v-icon>
+															</v-btn>
+														</v-btn-toggle>
+													</v-flex>
+												</v-layout>
+
+												<v-layout align-center>
+													<v-flex xs24 sm17 text-xs-center>
+														<v-select
+															:items="genders"
+															v-model="gender"
+															label="Gender"
+															prepend-icon="person"
+														></v-select>
+													</v-flex>
+													<v-flex xs24 sm1 text-xs-center>
+														<v-btn-toggle v-model="genderVisible">
+															<v-btn flat>
+																<v-icon>visibility</v-icon>
+															</v-btn>
+															<v-btn flat>
+																<v-icon>visibility_off</v-icon>
+															</v-btn>
+														</v-btn-toggle>
+													</v-flex>
+												</v-layout>
+											<v-layout align-center>
+													<v-flex xs24 sm17 text-xs-center>
+														<v-text-field
+														prepend-icon="person"
+														label="Country"
+														v-model="country"
+														></v-text-field>
+													</v-flex>
+													<v-flex xs24 sm1 text-xs-center>
+														<v-btn-toggle v-model="countryVisible">
+															<v-btn flat>
+																<v-icon>visibility</v-icon>
+															</v-btn>
+															<v-btn flat>
+																<v-icon>visibility_off</v-icon>
+															</v-btn>
+														</v-btn-toggle>
+													</v-flex>
+											</v-layout>
+											<v-layout align-center>
+													<v-flex xs24 sm17 text-xs-center>
+														<v-text-field
+														prepend-icon="person"
+														label="City"
+														v-model="city"
+														></v-text-field>
+													</v-flex>
+													<v-flex xs24 sm1 text-xs-center>
+														<v-btn-toggle v-model="cityVisible">
+															<v-btn flat>
+																<v-icon>visibility</v-icon>
+															</v-btn>
+															<v-btn flat>
+																<v-icon>visibility_off</v-icon>
+															</v-btn>
+														</v-btn-toggle>
+													</v-flex>
+											</v-layout>
          						</v-container>
          					</form>
          				</v-card>
@@ -151,44 +205,109 @@
          					<form autocomplete="off">
          						<v-container fluid>
 											 <v-layout align-center v-if="role == 'staff'">
-											<v-flex xs24 sm6 text-xs-center>
+											<v-flex xs24 sm5 text-xs-center>
 												<v-text-field
 													prepend-icon="person"
 													label="Department name"
 													v-model="dpName"
 													></v-text-field>
 											</v-flex>
-											<v-flex xs24 sm6 text-xs-center>
+											<v-flex xs24 sm1 text-xs-center>
+												<v-btn-toggle v-model="dpNameVisible">
+															<v-btn flat>
+																<v-icon>visibility</v-icon>
+															</v-btn>
+															<v-btn flat>
+																<v-icon>visibility_off</v-icon>
+															</v-btn>
+														</v-btn-toggle>
+											</v-flex>
+											<v-flex xs24 sm5 text-xs-center>
 												<v-text-field
 													prepend-icon="person"
 													label="Department acronym"
 													v-model="dpAcr"
 													></v-text-field>
 											</v-flex>
-										 </v-layout>
-											
-									 <v-select v-if="role == 'student'"
-         							:items="courses"
-         							v-model="course"
-         							label="Course"
-         							single-line
-         							auto
-         							prepend-icon="person"
-         							hide-details
-         							></v-select><br />
+											<v-flex xs24 sm1 text-xs-center>
+												<v-btn-toggle v-model="dpAcrVisible">
+													<v-btn flat>
+														<v-icon>visibility</v-icon>
+													</v-btn>
+													<v-btn flat>
+														<v-icon>visibility_off</v-icon>
+													</v-btn>
+												</v-btn-toggle>
+											</v-flex>
+										 </v-layout>	
+										
+										<v-layout align-center v-if="role == 'student'">
+											<v-flex xs24 sm17 text-xs-center>
+												<v-radio-group label="Academic degree" 
+													v-model="degree" row>
+													<v-radio label="Bachelor" value="bachelor" ></v-radio>
+													<v-radio label="Masters" value="masters"></v-radio>
+													<v-radio label="PhD" value="phd"></v-radio>
+												</v-radio-group>
+											</v-flex>
+											<v-flex xs24 sm1 text-xs-center>
+													<v-btn-toggle v-model="degreeVisible">
+														<v-btn flat>
+															<v-icon>visibility</v-icon>
+														</v-btn>
+														<v-btn flat>
+															<v-icon>visibility_off</v-icon>
+														</v-btn>
+													</v-btn-toggle>
+												</v-flex>
+											</v-layout>
+									<v-layout align-center v-if="role == 'student'">
+										<v-flex xs24 sm17 text-xs-center>		
+											<v-select
+													:items="courses"
+													v-model="course"
+													label="Course"
+													prepend-icon="person"
+													></v-select>
+										</v-flex>
+										<v-flex xs24 sm1 text-xs-center>
+											<v-btn-toggle v-model="courseVisible">
+												<v-btn flat>
+													<v-icon>visibility</v-icon>
+												</v-btn>
+												<v-btn flat>
+													<v-icon>visibility_off</v-icon>
+												</v-btn>
+											</v-btn-toggle>
+										</v-flex>
+									</v-layout>
 
-										<v-select v-if="role == 'staff'"
-         							:items="courses"
-         							v-model="course"
-         							label="Working location"
-         							single-line
-         							auto
-         							prepend-icon="person"
-         							hide-details
-         							></v-select><br />
+									<v-layout align-center v-if="role == 'staff'">
+										<v-flex xs24 sm17 text-xs-center>	
+											<v-select
+												:items="courses"
+												v-model="course"
+												label="Working location"
+												single-line
+												auto
+												prepend-icon="person"
+												hide-details
+												></v-select><br />
+										</v-flex>
+										<v-flex xs24 sm1 text-xs-center>
+											<v-btn-toggle v-model="courseVisible">
+												<v-btn flat>
+													<v-icon>visibility</v-icon>
+												</v-btn>
+												<v-btn flat>
+													<v-icon>visibility_off</v-icon>
+												</v-btn>
+											</v-btn-toggle>
+										</v-flex>
+									</v-layout>
 
 									<v-layout align-center>
-										<v-flex xs24 sm6 text-xs-center>
+										<v-flex xs24 sm5 text-xs-center>
 											<v-menu
 												ref="menu2"
 												lazy
@@ -213,15 +332,26 @@
 												@change="save"
 												min="1950-01-01"
 												:max="new Date().toISOString().substr(0, 10)"
+												type="month"
 												></v-date-picker>
 											</v-menu>
+										</v-flex>
+										<v-flex xs24 sm1 text-xs-center>
+											<v-btn-toggle v-model="date2Visible">
+												<v-btn flat>
+													<v-icon>visibility</v-icon>
+												</v-btn>
+												<v-btn flat>
+													<v-icon>visibility_off</v-icon>
+												</v-btn>
+											</v-btn-toggle>
 										</v-flex>
 
 										<v-flex xs24 sm1 text-xs-center>
 											to
 										</v-flex>
 
-										<v-flex xs24 sm6 text-xs-center>
+										<v-flex xs24 sm5 text-xs-center>
 											<v-menu
 												ref="menu3"
 												lazy
@@ -246,20 +376,59 @@
 												@change="save"
 												min="1950-01-01"
 												:max="new Date().toISOString().substr(0, 10)"
+												type="month"
 												></v-date-picker>
 											</v-menu>
 										</v-flex>
+										<v-flex xs24 sm1 text-xs-center>
+											<v-btn-toggle v-model="date3Visible">
+												<v-btn flat>
+													<v-icon>visibility</v-icon>
+												</v-btn>
+												<v-btn flat>
+													<v-icon>visibility_off</v-icon>
+												</v-btn>
+											</v-btn-toggle>
+										</v-flex>
 									</v-layout>
 
-							<v-checkbox v-if="role == 'student'"
-							:label="`Graduated`"
-							v-model="graduated"
-							></v-checkbox>
-							<v-text-field
-							prepend-icon="person"
-							label="Mec number"
-							v-model="number"
-							></v-text-field>
+							<v-layout align-center v-if="role == 'student'">
+								<v-flex xs24 sm1 text-xs-center>
+									<v-checkbox 
+									:label="`Graduated`"
+									v-model="graduated"
+									></v-checkbox>
+								</v-flex>
+								<v-flex xs24 sm1 text-xs-center>
+									<v-btn-toggle v-model="graduatedVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
+							<v-layout align-center>
+								<v-flex xs24 sm17 text-xs-center>
+									<v-text-field
+									prepend-icon="person"
+									label="Mec number"
+									v-model="number"
+									></v-text-field>
+								</v-flex>
+								<v-flex xs24 sm1 text-xs-center>
+									<v-btn-toggle v-model="numberVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
          				</v-container>
          			</form>
          		</v-card>
@@ -271,99 +440,189 @@
          		<v-card color="grey lighten-3" class="mb-5" height="450px">
 
          		<form autocomplete="off">
-         						<v-container fluid>
-									<v-text-field
-         							prepend-icon="person"
-         							label="Company"
-         							v-model="company"
-         							></v-text-field>
-
-
-         							<v-text-field
-         							prepend-icon="person"
-         							label="Position"
-         							v-model="position"
-         							></v-text-field>
-
-         							<v-text-field
-         							prepend-icon="person"
-         							label="City/Town"
-         							v-model="companyCity"
-         							></v-text-field>
-
-									<v-layout align-center>
-										<v-flex xs24 sm6 text-xs-center>
-											<v-menu
-												ref="menu4"
-												lazy
-												:close-on-content-click="false"
-												v-model="menu4"
-												transition="scale-transition"
-												offset-y
-												full-width
-												:nudge-right="40"
-												min-width="290px"
-												>
-												<v-text-field
-												slot="activator"
-												label="Start period"
-												v-model="date4"
-												prepend-icon="event"
-												readonly
+							<v-container fluid>
+								<v-layout align-center>
+									<v-flex xs24 sm17 text-xs-center>
+										<v-text-field
+												prepend-icon="person"
+												label="Company"
+												v-model="company"
 												></v-text-field>
-												<v-date-picker
-												ref="picker"
-												v-model="date4"
-												@change="save"
-												min="1950-01-01"
-												:max="new Date().toISOString().substr(0, 10)"
-												></v-date-picker>
-											</v-menu>
-										</v-flex>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
 
-										<v-flex xs24 sm1 text-xs-center>
-											to
-										</v-flex>
+								<v-layout align-center>
+									<v-flex xs24 sm17 text-xs-center>
+										<v-text-field
+										prepend-icon="person"
+										label="Position"
+										v-model="position"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="positionVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+								<v-layout align-center>
+									<v-flex xs24 sm17 text-xs-center>
+										<v-text-field
+										prepend-icon="person"
+										label="City/Town"
+										v-model="companyCity"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyCityVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
 
-										<v-flex xs24 sm6 text-xs-center>
-											<v-menu
-												ref="menu5"
-												lazy
-												:close-on-content-click="false"
-												v-model="menu5"
-												transition="scale-transition"
-												offset-y
-												full-width
-												:nudge-right="40"
-												min-width="290px"
-												>
-												<v-text-field
-												slot="activator"
-												label="End period"
-												v-model="date5"
-												prepend-icon="event"
-												readonly
-												></v-text-field>
-												<v-date-picker
-												ref="picker"
-												v-model="date5"
-												@change="save"
-												min="1950-01-01"
-												:max="new Date().toISOString().substr(0, 10)"
-												></v-date-picker>
-											</v-menu>
-										</v-flex>
-									</v-layout>
+
+								<v-layout align-center>
+									<v-flex xs24 sm5 text-xs-center>
+										<v-menu
+											ref="menu4"
+											lazy
+											:close-on-content-click="false"
+											v-model="menu4"
+											transition="scale-transition"
+											offset-y
+											full-width
+											:nudge-right="40"
+											min-width="290px"
+											>
+											<v-text-field
+											slot="activator"
+											label="Start period"
+											v-model="date4"
+											prepend-icon="event"
+											readonly
+											></v-text-field>
+											<v-date-picker
+											ref="picker"
+											v-model="date4"
+											@change="save"
+											min="1950-01-01"
+											:max="new Date().toISOString().substr(0, 10)"
+											type="month"
+											></v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="date4Visible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+
+									<v-flex xs24 sm1 text-xs-center>
+										to
+									</v-flex>
+
+									<v-flex xs24 sm5 text-xs-center>
+										<v-menu
+											ref="menu5"
+											lazy
+											:close-on-content-click="false"
+											v-model="menu5"
+											transition="scale-transition"
+											offset-y
+											full-width
+											:nudge-right="40"
+											min-width="290px"
+											>
+											<v-text-field
+											slot="activator"
+											label="End period"
+											v-model="date5"
+											prepend-icon="event"
+											readonly
+											></v-text-field>
+											<v-date-picker
+											ref="picker"
+											v-model="date5"
+											@change="save"
+											min="1950-01-01"
+											:max="new Date().toISOString().substr(0, 10)"
+											type="month"
+											></v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="date5Visible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
 							
-							<v-checkbox
-							:label="`I currently work here`"
-							v-model="checkboxWork"
-							></v-checkbox>
-
-							<v-checkbox
-							:label="`I have no work experience`"
-							v-model="checkboxExperience"
-							></v-checkbox>
+							<v-layout align-center>
+								<v-flex xs24 sm2 text-xs-center>
+									<v-checkbox
+									:label="`I currently work here`"
+									v-model="checkboxWork"
+									></v-checkbox>
+								</v-flex>
+								<v-flex xs24 sm1 text-xs-center>
+									<v-btn-toggle v-model="checkboxWorkVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
+							<v-layout align-center>
+								<v-flex xs24 sm3 text-xs-center>
+									<v-checkbox
+									:label="`I have no work experience`"
+									v-model="checkboxExperience"
+									></v-checkbox>
+								</v-flex>
+								<v-flex xs24 sm1 text-xs-center>
+									<v-btn-toggle v-model="checkboxExperienceVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
 							
          				</v-container>
          			</form>
@@ -392,10 +651,10 @@ export default {
   data () {
     return {    
       valid: false,
-      name: '',
-      email: '',
-      password: '',
-      repeatPassword: '',
+      name: 'paulo',
+      email: 'paulo@gmail.com',
+      password: '1234paulo',
+      repeatPassword: '1234paulo',
       error: null,
       firstStep: true,
       e1: 0,
@@ -425,6 +684,26 @@ export default {
       role: 'student',
 			dpName: '',
 			dpAcr: '',
+			degree: null,
+			birthdayVisible: 0,
+			genderVisible: 0,
+			countryVisible: 0,
+			cityVisible: 0,
+			dpNameVisible: 0,
+			dpAcrVisible: 0,
+			degreeVisible: 0,
+			courseVisible: 0,
+			date2Visible: 0,
+			date3Visible: 0,
+			graduatedVisible: 0,
+			numberVisible: 0,
+			companyVisible: 0,
+			positionVisible: 0,
+			companyCityVisible: 0,
+			checkboxWorkVisible: 0,
+			checkboxExperienceVisible: 0,
+			date4Visible: 0,
+			date5Visible: 0,
       nameRules: [
         v => !!v || 'Name is required',
         v => v.length <= 50 || 'Name must be less than 50 characters'
