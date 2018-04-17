@@ -18,6 +18,8 @@ Vue.config.productionTip = false
 
 sync(store, router)
 
+console.log(process.env.NODE_ENV);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
