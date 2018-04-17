@@ -3,8 +3,29 @@ image: node:8.6.0
 services:
   - postgres:9.5.0
 
+stages:
+  - all_tests
+  - deploy_api_dev
+
 all_tests:
+  only:
+    - master
+    - develop
   script:
-   - cd server
-   - npm install
-   - npm run lint
+    - cd server
+    - npm install
+    - npm run lint
+
+deploy_api_dev:
+  stage:
+    - deploy_api_dev
+  only:
+    - cicd/port-env-fix
+  script:
+    - git checkout master
+    - git pull
+    - git remote add heroku https://git.heroku.com/feup-link-dev-api.git 
+    - git subtree push --prefix server heroku master
+    - git remote remove heroku
+  environment:
+    name: production
