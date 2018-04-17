@@ -8,6 +8,7 @@ stages:
   - deploy_api_dev
 
 all_tests:
+  stage: all_tests
   only:
     - master
     - develop
