@@ -7,6 +7,9 @@ export default {
     signup_facebook (userInfo) {
         return Api().post('signup_facebook', userInfo)
     },
+    signup_linkedin (userInfo) {
+        return Api().post('signup_linkedin', userInfo)
+    },
     signup_staff (userInfo) {
         return Api().post('signup_staff', userInfo)
     },
