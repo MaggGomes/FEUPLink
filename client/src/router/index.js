@@ -44,7 +44,7 @@ export default new Router({
         next('/');
       }
     },
-    { // just a callback for linkedIn oauth
+    { // just a callback for the linkedIn oauth
       path: '/linkedIn',
       beforeEnter: async (to, from, next) => {
         var url = new URL(window.location.href);
@@ -52,11 +52,18 @@ export default new Router({
         var state = url.searchParams.get("state");
         var error = url.searchParams.get("error");
 
-        let data = (await AuthenticationService.signup_linkedin({code,state,error})).data;
-        
-        console.log("data.linkedin: ",data);
-        next('/feed')
-        //To-do set store variables and redierct to feed
+
+        try{
+          let data = (await AuthenticationService.signup_linkedin({code,state,error})).data;
+          
+          store.dispatch('setToken', data.token)
+          store.dispatch('setUser', data.person)
+          next('/feed');
+        }catch(error){
+          console.log(error.response.data.error);
+          next('/');
+        }
+
       }
     }
   ]
