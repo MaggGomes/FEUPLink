@@ -22,6 +22,8 @@ deploy_api_dev:
   image: ruby:latest
   only:
     - cicd/port-env-fix
+  before-script:
+    - cd server
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
