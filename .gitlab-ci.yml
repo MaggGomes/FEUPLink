@@ -22,9 +22,9 @@ deploy_api_dev:
   only:
     - cicd/port-env-fix
   script:
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/feup-link-dev-api.git
     - git checkout master
     - git pull
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/feup-link-dev-api.git 
     - git subtree push --prefix server heroku master
     - git remote remove heroku
   environment:
