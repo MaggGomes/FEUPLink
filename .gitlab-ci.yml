@@ -19,6 +19,7 @@ all_tests:
 
 deploy_api_dev:
   stage: deploy_api_dev
+  image: ruby:latest
   only:
     - cicd/port-env-fix
   script:
