@@ -24,7 +24,7 @@ deploy_api_dev:
   script:
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/feup-link-dev-api.git
     - git checkout master
-    - git pull
+    - git subtree pull --prefix server heroku master
     - git subtree push --prefix server heroku master
     - git remote remove heroku
   environment:
