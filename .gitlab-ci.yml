@@ -22,7 +22,7 @@ deploy_api_dev:
   only:
     - cicd/port-env-fix
   script:
-    - npm install dpl
+    - gem install dpl
     - dpl --provider=heroku --app=feup-link-dev-api --api-key=$HEROKU_API_KEY
   environment:
     name: production
