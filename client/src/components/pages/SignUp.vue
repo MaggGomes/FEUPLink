@@ -1,6 +1,6 @@
 <template>
-    <v-content>
-      <v-container fluid v-if="firstStep">
+    <v-content id="createContent">
+      <v-container fluid v-if="firstStep" id="createNewAcc">
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
           <v-flex xs12 sm10 md5>
@@ -51,14 +51,14 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>
-						<facebook-button class="signup-button elevation-12"></facebook-button><br>
+          <v-flex xs11 sm8 md5 id="social">
+			<facebook-button class="signup-button elevation-12"></facebook-button><br>
             <linked-in-button class="signup-button elevation-12" ></linked-in-button>
           </v-flex>
           <v-spacer></v-spacer>
         </v-layout>
       </v-container>
-      <v-container fluid v-else>
+      <v-container id="userInfo" fluid v-else>
         <v-toolbar dark class="red darken-4" height="40px">
               <v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
             </v-toolbar>
@@ -874,4 +874,22 @@ export default {
 a:visited{color:#888}
 a{color:#444;text-decoration:none;}
 p{margin-bottom:.3em;}
+
+@media only screen and (max-width: 720px) {
+	#createContent {
+		padding: 0 !important;
+	}
+	#createNewAcc {
+		padding: 0;
+	}
+	#social {
+		padding-top: 1.5em !important;
+	}
+	#userInfo {
+		padding: 0;
+	}
+	.stepper__content {
+		padding: 0;
+	}
+}
 </style>
