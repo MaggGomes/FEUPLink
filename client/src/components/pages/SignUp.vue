@@ -224,10 +224,10 @@
 											</v-flex>
 											<v-flex xs24 sm5 text-xs-center>
 												<v-text-field
-													prepend-icon="person"
-													label="Department acronym"
-													v-model="dpAcr"
-													></v-text-field>
+												prepend-icon="person"
+												label="Department acronym"
+												v-model="dpAcr"
+												></v-text-field>
 											</v-flex>
 											<v-flex xs24 sm1 text-xs-center>
 												<v-btn-toggle v-model="dpAcrVisible">
@@ -281,19 +281,15 @@
 										</v-layout>
 
 									<v-layout align-center v-if="role == 'staff'">
-										<v-flex xs24 sm17 text-xs-center>	
-											<v-select
-												:items="courses"
-												v-model="course"
-												label="Working location"
-												single-line
-												auto
+										<v-flex xs24 sm17 text-xs-center>
+											<v-text-field
 												prepend-icon="person"
-												hide-details
-												></v-select><br />
+												label="Working location"
+												v-model="workingLocation"
+												></v-text-field>
 										</v-flex>
 										<v-flex xs24 sm1 text-xs-center>
-											<v-btn-toggle v-model="courseVisible">
+											<v-btn-toggle v-model="workingLocationVisible">
 												<v-btn flat>
 													<v-icon>visibility</v-icon>
 												</v-btn>
@@ -317,9 +313,16 @@
 												:nudge-right="40"
 												min-width="290px"
 												>
-												<v-text-field
+												<v-text-field v-if="role == 'student'"
 												slot="activator"
 												label="Enrollment date"
+												v-model="date2"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-text-field v-if="role == 'staff'"
+												slot="activator"
+												label="Start date"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
@@ -361,9 +364,16 @@
 												:nudge-right="40"
 												min-width="290px"
 												>
-												<v-text-field
+												<v-text-field v-if="role == 'student'"
 												slot="activator"
 												label="Graduation date"
+												v-model="date3"
+												prepend-icon="event"
+												readonly
+												></v-text-field>
+												<v-text-field v-if="role == 'staff'"
+												slot="activator"
+												label="End date"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
@@ -701,31 +711,33 @@ export default {
       city: '',
       position: '',
       role: 'student',
-	dpName: '',
-	dpAcr: '',
-	degree: null,
-	degrees: ['Bachelor', 'Masters', 'PhD'],
-	birthdayVisible: 0,
-	genderVisible: 0,
-	countryVisible: 0,
-	cityVisible: 0,
-	dpNameVisible: 0,
-	dpAcrVisible: 0,
-	degreeVisible: 0,
-	courseVisible: 0,
-	date2Visible: 0,
-	date3Visible: 0,
-	typeVisible: 0,
-	numberVisible: 0,
-	companyVisible: 0,
-	positionVisible: 0,
-	companyTypeVisible: 0,
-	checkboxWorkVisible: 0,
-	checkboxNoExperienceVisible: 0,
-	date4Visible: 0,
-	date5Visible: 0,
-	companyIndustry: '',
-	companyIndustryVisible: 0,
+	  dpName: '',
+	  dpAcr: '',
+	  degree: null,
+	  degrees: ['Bachelor', 'Masters', 'PhD'],
+	  birthdayVisible: 0,
+	  genderVisible: 0,
+	  countryVisible: 0,
+	  cityVisible: 0,
+	  dpNameVisible: 0,
+	  dpAcrVisible: 0,
+	  degreeVisible: 0,
+	  courseVisible: 0,
+	  date2Visible: 0,
+	  date3Visible: 0,
+	  typeVisible: 0,
+	  numberVisible: 0,
+	  companyVisible: 0,
+	  positionVisible: 0,
+	  companyTypeVisible: 0,
+	  checkboxWorkVisible: 0,
+	  checkboxNoExperienceVisible: 0,
+	  date4Visible: 0,
+	  date5Visible: 0,
+	  companyIndustry: '',
+	  companyIndustryVisible: 0,
+	  workingLocationVisible: 0,
+	  workingLocation: '',
       nameRules: [
         v => !!v || 'Name is required',
         v => v.length <= 50 || 'Name must be less than 50 characters'
@@ -751,55 +763,59 @@ export default {
         this.firstStep = false;
     },
     async signup () {
-				if(this.role == 'student') {
-				//try {
-					await AuthenticationService.signup_student({
-						name: this.name,
-						email: this.email,
-						hashedPassword: this.password,
-						birthDate: this.date,
-						gender: this.gender,
-						country: this.country,
-						city: this.city,
-						dpName: this.dpName,
-						acronym: this.dpAcr,
-						course: this.course,
-						enrollmentDate: this.date2,
-						graduationDate: this.date3,
-						type: this.type,
-						mecNumber: this.number,
-						company: this.company,
-						companyType: this.companyType,
-						companyIndustry: this.companyIndustry,
-						title: this.position,
-						startDate: this.date4,
-						endDate: this.date5,
-						isCurrent: this.checkboxWork,
-						workExperience: this.checkboxNoExperience
-					})
-				/*} catch (error) {
-					console.log(error);
-					//this.error = error.response.data.error
-				}*/
-				}
-				else {
-					await AuthenticationService.signup_staff({
-						name: this.name,
-						email: this.email,
-						hashedPassword: this.password,
-						birthDate: this.date,
-						gender: this.gender,
-						country: this.country,
-						city: this.city,
-						dpName: this.dpName,
-						acronym: this.dpAcr,
-						workingLocation: this.course
-					})
-				}
-			},
-			save (date) {
-				this.$refs.menu.save(date)
-			}
+		if(this.role == 'student') {
+			await AuthenticationService.signup_student({
+				name: this.name,
+				email: this.email,
+				hashedPassword: this.password,
+				birthDate: this.date,
+				gender: this.gender,
+				country: this.country,
+				city: this.city,
+				course: this.course,
+				enrollmentDate: this.date2,
+				graduationDate: this.date3,
+				type: this.type,
+				mecNumber: this.number,
+				company: this.company,
+				companyType: this.companyType,
+				companyIndustry: this.companyIndustry,
+				title: this.position,
+				startDate: this.date4,
+				endDate: this.date5,
+				isCurrent: this.checkboxWork,
+				workExperience: this.checkboxNoExperience
+			})
+		}
+		else {
+			await AuthenticationService.signup_staff({
+				name: this.name,
+				email: this.email,
+				hashedPassword: this.password,
+				birthDate: this.date,
+				gender: this.gender,
+				country: this.country,
+				city: this.city,
+				dpName: this.dpName,
+				acronym: this.dpAcr,
+				workingLocation: this.workingLocation,
+				startDate: this.date2,
+				endDate: this.date3,
+				mecNumber: this.number,
+				company: this.company,
+				companyType: this.companyType,
+				companyIndustry: this.companyIndustry,
+				title: this.position,
+				jobStartDate: this.date4,
+				jobEndDate: this.date5,
+				isCurrent: this.checkboxWork,
+				workExperience: this.checkboxNoExperience
+			})
+		}
+	},
+	save (date) {
+		this.$refs.menu.save(date)
+	}
   }
 }
 </script>

@@ -1,9 +1,10 @@
 const {Person} = require('../models');
-// const {Department} = require('../models');
+const {Department} = require('../models');
 const {Student} = require('../models');
 const {Company} = require('../models');
 const {Job} = require('../models');
 const {Course} = require('../models');
+const {Staff} = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const axios = require('axios');
@@ -23,23 +24,10 @@ function jwtSignPerson(person) {
 module.exports = {
 
   async signup_student(req, res) {
-      console.log('student');
-
       try {
         const person = await Person.create(req.body);
 
         const personJson = person.toJSON();
-
-        /* const {dpName, acronym} = req.body;
-
-        const department = await Department.create({
-          name: dpName,
-          acronym: acronym,
-        });
-
-        Person.findById(personJson.id).then((person) => {
-          person.setDepartments(department.toJSON().id);
-        }); */
 
         const student = await Student.create({
           mecNumber: req.body.mecNumber,
@@ -86,10 +74,44 @@ module.exports = {
   },
   async signup_staff(req, res) {
     try {
-      console.log('staff');
       const person = await Person.create(req.body);
 
       const personJson = person.toJSON();
+
+      const staff = await Staff.create({
+        mecNumber: req.body.mecNumber,
+        jobStart: req.body.startDate,
+        jobEnd: req.body.endDate,
+        workingLocation: req.body.workingLocation,
+        PersonId: personJson.id,
+      });
+
+      const {dpName, acronym} = req.body;
+
+        const department = await Department.create({
+          name: dpName,
+          acronym: acronym,
+        });
+
+        Staff.findById(staff.toJSON().id).then((staff) => {
+          staff.setDepartments(department.toJSON().id);
+        });
+        if (!req.body.workExperience) {
+          const company = await Company.create({
+            name: req.body.company,
+            type: req.body.companyType,
+            industry: req.body.companyIndustry,
+          });
+
+          await Job.create({
+            title: req.body.title,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            isCurrent: req.body.isCurrent,
+            CompanyId: company.toJSON().id,
+            PersonId: personJson.id,
+          });
+        }
       res.send({
         person: personJson,
         token: jwtSignPerson(personJson),
@@ -112,6 +134,12 @@ module.exports = {
       if (!person) {
         return res.status(403).send({
           error: 'The login information was incorrect.',
+        });
+      }
+
+      if (person.signIn_type !== 'normal') {
+        return res.status(403).send({
+          error: 'This is an external account.',
         });
       }
 
