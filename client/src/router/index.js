@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
+import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
 import Feed from '@/components/pages/Feed'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
@@ -21,6 +22,12 @@ export default new Router({
       path: '/signup',
       name: 'SignUp',
       component: SignUp,
+      beforeEnter: AuthenticationPolicy.unAuthenticated
+    },
+    {
+      path: '/continue-signup-linkedin',
+      name: 'Continue Signup Linkedin',
+      component: ContinueSignupLinkedin,
       beforeEnter: AuthenticationPolicy.unAuthenticated
     },
     {
