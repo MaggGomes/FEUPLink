@@ -21,7 +21,7 @@ all_tests:
 deploy_api_dev:
   stage: deploy_api_dev
   only:
-    - cicd/port-env-fix
+    - develop
   image: ruby:latest
   before_script:
     - cd server
@@ -36,7 +36,7 @@ deploy_api_dev:
 deploy_api_prod:
   stage: deploy_api_prod
   only:
-    - cicd/port-env-fix
+    - master
   image: ruby:latest
   before_script:
     - cd server
