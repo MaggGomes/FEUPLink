@@ -4,10 +4,6 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 
 module.exports = (app) => {
   // ----Authentication
-<<<<<<< HEAD
-
-=======
->>>>>>> 8deb34dd81297d90710f0cbb52fe83e973178edc
   app.post('/signup_student',
     AuthenticationController.signup_student
   );
@@ -26,13 +22,6 @@ module.exports = (app) => {
   );
 
   app.post('/signin',
-<<<<<<< HEAD
-  AuthenticationController.signin
-  );
-};
-
-=======
     AuthenticationController.signin
   );
 };
->>>>>>> 8deb34dd81297d90710f0cbb52fe83e973178edc

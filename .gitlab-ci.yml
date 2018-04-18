@@ -22,12 +22,7 @@ deploy_api_dev:
   only:
     - cicd/port-env-fix
   script:
-    - git config --global user.email "lgp1718c03@gmail.com"
-    - git config --global user.name "FEUPLink"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/feup-link-dev-api.git
-    - git checkout master
-    - git subtree pull --prefix server heroku master
-    - git subtree push --prefix server heroku master
-    - git remote remove heroku
+    - npm install dpl
+    - dpl --provider=heroku --app=feup-link-dev-api --api-key=$HEROKU_API_KEY
   environment:
     name: production
