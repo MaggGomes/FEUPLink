@@ -9,9 +9,9 @@ export default {
   methods: {
     async signIn() {
         try {
-          console.log("Sign in Linkedin");
+
           let client_id = '78tdph8nd2st08'; 
-          let redirect_uri = 'http://localhost:8081/signup_linkedin'; 
+          let redirect_uri = 'http://localhost:8080/linkedin'; 
           let state = 'Feup-Link-state'; 
           
           window.location.replace(`https://www.linkedin.com/oauth/v2/authorization?` +
@@ -21,7 +21,7 @@ export default {
                 `state=${state}`);
       } catch (error) {
         this.error = error.response.data.error
-        console.log('Error-> ' + error);
+        console.log('Error: ' + error);
       }
     },   
   }

@@ -1,9 +1,11 @@
-const {Person} = require('../models');
-const {Department} = require('../models');
-const {Student} = require('../models');
-const {Company} = require('../models');
-const {Job} = require('../models');
-const {Course} = require('../models');
+const {
+  Person,
+  Department,
+  Student,
+  Course,
+  Company,
+  Job,
+} = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const axios = require('axios');
@@ -21,7 +23,7 @@ function jwtSignPerson(person) {
 }
 
 module.exports = {
-
+  // Todo: give errors like, email has already been taken
   async signup_student(req, res) {
       console.log('student');
 
@@ -73,7 +75,6 @@ module.exports = {
           });
         }
         res.send({
-
           person: personJson,
           token: jwtSignPerson(personJson),
         });
@@ -134,35 +135,42 @@ module.exports = {
   },
   async signup_linkedin(req, res) {
     try {
-      let code = req.query.code;
-      let error = req.query.error;
-      let state = req.query.state;
+      let code = req.body.code;
+      let error = req.body.error;
+      let state = req.body.state;
 
       if (state !== 'Feup-Link-state') {
         // send error this is possibly a CSRF attack.
-        res.redirect(process.env.FRONT_END_URL);
+        return res.status(500).send({
+          error: 'Wrong linkedin state',
+        });
       }
 
-      if (typeof error !== 'undefined') {
+      if (error !== null) {
         // send error object error and error_description available.
-        res.redirect(process.env.FRONT_END_URL);
+        return res.status(500).send({
+          error: error,
+        });
       }
 
        // get the access token
        let accessToken = (await axios.post('https://www.linkedin.com/oauth/v2/accessToken',
             `grant_type=authorization_code&` +
             `code=${code}&` +
-            `redirect_uri=http://localhost:8081/signup_linkedin&` +
+            `redirect_uri=${process.env.FRONT_END_URL}/linkedin&` +
             `client_id=${process.env.IN_ID}&` +
             `client_secret=${process.env.IN_SECRET}`)).data.access_token;
-
 
         // get the user data
         let userData = (await axios.get('https://api.linkedin.com/v1/people/~:(first-name,last-name,headline,location,industry,summary,specialties,positions,picture-url,email-address)?format=json&' +
             `oauth2_access_token=${accessToken}`)).data;
 
-        await Person.findOrCreate({
-            where:
+
+        let seqUser = (await Person.findOne({where: {email: userData.emailAddress}}));
+        let personData= '';
+
+        if (seqUser == null) {
+          personData = (await Person.create(
             {
               name: `${userData.firstName}  ${userData.lastName}`,
               email: userData.emailAddress,
@@ -173,12 +181,42 @@ module.exports = {
               city: userData.location.name,
               summary: userData.summary,
               signIn_type: 'linkedin',
-              gender: `Not Specified`,
-              role: 'User',
-            },
-        });
+            })).dataValues;
+        } else {
+          personData = seqUser.dataValues;
+        }
 
-        res.redirect(process.env.FRONT_END_URL);
+        // insert user positions and companies in the database
+        for (let position of userData.positions.values) {
+          if ('company' in position) { // check if the key is in
+            let company = (await Company.findOrCreate({
+              where: {
+                name: position.company.name,
+              },
+              defaults: {
+                type: position.company.type,
+                industry: position.company.industry,
+              }}))[0].dataValues;
+
+            (await Job.findOrCreate({
+              where: {
+                title: position.title,
+                PersonId: personData.id,
+              },
+              defaults: {
+                startDate: `${position.startDate.year}-${position.startDate.month}`,
+                endDate: null,
+                isCurrent: position.isCurrent,
+                CompanyId: company.id,
+            }}));
+          }
+        };
+
+        // return the user token, to allow him to make further requests to the API
+        return res.status(200).send({
+          person: personData,
+          token: jwtSignPerson(personData),
+        });
       } catch (err) {
         console.log(err);
         res.status(500).send({
@@ -204,7 +242,7 @@ module.exports = {
           country: userData.location.country.code,
           city: userData.location.name,
           summary: userData.summary,
-          signIn_type: 'linkedin',
+          signIn_type: 'facebook',
           gender: `Male`,
           role: 'User',
         });
