@@ -34,6 +34,7 @@ sequelize.sync()
   .then(() => {
     app.listen(process.env.PORT, function() {
       console.log(process.env.HEROKU_ENV);
+      console.log('Está a pintar?');
       console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
   });
