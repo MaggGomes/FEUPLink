@@ -6,6 +6,7 @@ services:
 stages:
   - all_tests
   - deploy_api_dev
+  - deploy_api_prod
 
 all_tests:
   stage: all_tests
@@ -29,5 +30,20 @@ deploy_api_dev:
     - apt-get install -y ruby-dev
     - gem install dpl
     - dpl --provider=heroku --app=feup-link-dev-api --api-key=$HEROKU_API_KEY
+  environment:
+    name: staging
+
+deploy_api_prod:
+  stage: deploy_api_prod
+  only:
+    - cicd/port-env-fix
+  image: ruby:latest
+  before_script:
+    - cd server
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=feup-link-prod-api --api-key=$HEROKU_API_KEY
   environment:
     name: production

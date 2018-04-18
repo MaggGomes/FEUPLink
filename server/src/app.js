@@ -33,6 +33,7 @@ createServer({
 sequelize.sync()
   .then(() => {
     app.listen(process.env.PORT, function() {
+      console.log(process.env.NODE_ENV);
       console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
   });
