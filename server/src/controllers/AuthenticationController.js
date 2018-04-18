@@ -1,5 +1,5 @@
 const {Person} = require('../models');
-const {Department} = require('../models');
+// const {Department} = require('../models');
 const {Student} = require('../models');
 const {Company} = require('../models');
 const {Job} = require('../models');
@@ -30,7 +30,7 @@ module.exports = {
 
         const personJson = person.toJSON();
 
-        const {dpName, acronym} = req.body;
+        /* const {dpName, acronym} = req.body;
 
         const department = await Department.create({
           name: dpName,
@@ -39,12 +39,13 @@ module.exports = {
 
         Person.findById(personJson.id).then((person) => {
           person.setDepartments(department.toJSON().id);
-        });
+        }); */
 
         const student = await Student.create({
           mecNumber: req.body.mecNumber,
           enrollmentDate: req.body.enrollmentDate,
           graduationDate: req.body.graduationDate,
+          type: req.body.type,
           PersonId: personJson.id,
         });
 
@@ -60,7 +61,8 @@ module.exports = {
         if (!req.body.workExperience) {
           const company = await Company.create({
             name: req.body.company,
-            industry: req.body.companyCity,
+            type: req.body.companyType,
+            industry: req.body.companyIndustry,
           });
 
           await Job.create({
@@ -73,7 +75,6 @@ module.exports = {
           });
         }
         res.send({
-
           person: personJson,
           token: jwtSignPerson(personJson),
         });

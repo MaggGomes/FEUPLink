@@ -242,45 +242,43 @@
 										 </v-layout>	
 										
 										<v-layout align-center v-if="role == 'student'">
-											<v-flex xs24 sm17 text-xs-center>
-												<v-radio-group label="Academic degree" 
-													v-model="degree" row>
-													<v-radio label="Bachelor" value="bachelor" ></v-radio>
-													<v-radio label="Masters" value="masters"></v-radio>
-													<v-radio label="PhD" value="phd"></v-radio>
-												</v-radio-group>
+											<v-flex xs24 sm6 text-xs-center>
+												<v-select
+												:items="degrees"
+												v-model="degree"
+												label="Academic degree"
+												prepend-icon="person"
+												></v-select>
 											</v-flex>
 											<v-flex xs24 sm1 text-xs-center>
-													<v-btn-toggle v-model="degreeVisible">
-														<v-btn flat>
-															<v-icon>visibility</v-icon>
-														</v-btn>
-														<v-btn flat>
-															<v-icon>visibility_off</v-icon>
-														</v-btn>
-													</v-btn-toggle>
-												</v-flex>
-											</v-layout>
-									<v-layout align-center v-if="role == 'student'">
-										<v-flex xs24 sm17 text-xs-center>		
-											<v-select
-													:items="courses"
-													v-model="course"
-													label="Course"
-													prepend-icon="person"
-													></v-select>
-										</v-flex>
-										<v-flex xs24 sm1 text-xs-center>
-											<v-btn-toggle v-model="courseVisible">
-												<v-btn flat>
-													<v-icon>visibility</v-icon>
-												</v-btn>
-												<v-btn flat>
-													<v-icon>visibility_off</v-icon>
-												</v-btn>
-											</v-btn-toggle>
-										</v-flex>
-									</v-layout>
+												<v-btn-toggle v-model="degreeVisible">
+													<v-btn flat>
+														<v-icon>visibility</v-icon>
+													</v-btn>
+													<v-btn flat>
+														<v-icon>visibility_off</v-icon>
+													</v-btn>
+												</v-btn-toggle>
+											</v-flex>
+											<v-flex xs24 sm6 text-xs-center>		
+												<v-select
+												:items="courses"
+												v-model="course"
+												label="Course"
+												prepend-icon="person"
+												></v-select>
+											</v-flex>
+											<v-flex xs24 sm1 text-xs-center>
+												<v-btn-toggle v-model="courseVisible">
+													<v-btn flat>
+														<v-icon>visibility</v-icon>
+													</v-btn>
+													<v-btn flat>
+														<v-icon>visibility_off</v-icon>
+													</v-btn>
+												</v-btn-toggle>
+											</v-flex>
+										</v-layout>
 
 									<v-layout align-center v-if="role == 'staff'">
 										<v-flex xs24 sm17 text-xs-center>	
@@ -393,14 +391,16 @@
 									</v-layout>
 
 							<v-layout align-center v-if="role == 'student'">
-								<v-flex xs24 sm1 text-xs-center>
-									<v-checkbox 
-									:label="`Graduated`"
-									v-model="graduated"
-									></v-checkbox>
+								<v-flex xs24 sm17 text-xs-center>		
+									<v-select
+											:items="studentTypes"
+											v-model="type"
+											label="Student type"
+											prepend-icon="person"
+											></v-select>
 								</v-flex>
 								<v-flex xs24 sm1 text-xs-center>
-									<v-btn-toggle v-model="graduatedVisible">
+									<v-btn-toggle v-model="typeVisible">
 										<v-btn flat>
 											<v-icon>visibility</v-icon>
 										</v-btn>
@@ -462,6 +462,44 @@
 								</v-layout>
 
 								<v-layout align-center>
+									<v-flex xs24 sm6 text-xs-center>
+										<v-select
+											:items="types"
+											v-model="companyType"
+											label="Company type"
+											prepend-icon="person"
+										></v-select>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyTypeVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+									<v-flex xs24 sm6 text-xs-center>
+										<v-text-field
+										prepend-icon="person"
+										label="Company industry"
+										v-model="companyIndustry"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs24 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyIndustryVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+
+								<v-layout align-center>
 									<v-flex xs24 sm17 text-xs-center>
 										<v-text-field
 										prepend-icon="person"
@@ -480,27 +518,6 @@
 										</v-btn-toggle>
 									</v-flex>
 								</v-layout>
-								<v-layout align-center>
-									<v-flex xs24 sm17 text-xs-center>
-										<v-text-field
-										prepend-icon="person"
-										label="City/Town"
-										v-model="companyCity"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs24 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyCityVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
-								</v-layout>
-
-
 								<v-layout align-center>
 									<v-flex xs24 sm5 text-xs-center>
 										<v-menu
@@ -609,11 +626,11 @@
 								<v-flex xs24 sm3 text-xs-center>
 									<v-checkbox
 									:label="`I have no work experience`"
-									v-model="checkboxExperience"
+									v-model="checkboxNoExperience"
 									></v-checkbox>
 								</v-flex>
 								<v-flex xs24 sm1 text-xs-center>
-									<v-btn-toggle v-model="checkboxExperienceVisible">
+									<v-btn-toggle v-model="checkboxNoExperienceVisible">
 										<v-btn flat>
 											<v-icon>visibility</v-icon>
 										</v-btn>
@@ -665,15 +682,17 @@ export default {
       date5: null,
       gender: null,
       country: '',
-      companyCity: '',
+	  companyType: null,
+	  types: ['public', 'private'],
       menu: false,
       menu2: false,
       menu3: false,
       menu4: false,
       menu5: false,
-      graduated: false,
+	  type: null,
+	  studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
       checkboxWork: false,
-      checkboxExperience: false,
+      checkboxNoExperience: false,
       number: '',
       genders: ['Male', 'Female', 'Not Specified' ],
       course: null,
@@ -682,28 +701,31 @@ export default {
       city: '',
       position: '',
       role: 'student',
-			dpName: '',
-			dpAcr: '',
-			degree: null,
-			birthdayVisible: 0,
-			genderVisible: 0,
-			countryVisible: 0,
-			cityVisible: 0,
-			dpNameVisible: 0,
-			dpAcrVisible: 0,
-			degreeVisible: 0,
-			courseVisible: 0,
-			date2Visible: 0,
-			date3Visible: 0,
-			graduatedVisible: 0,
-			numberVisible: 0,
-			companyVisible: 0,
-			positionVisible: 0,
-			companyCityVisible: 0,
-			checkboxWorkVisible: 0,
-			checkboxExperienceVisible: 0,
-			date4Visible: 0,
-			date5Visible: 0,
+	dpName: '',
+	dpAcr: '',
+	degree: null,
+	degrees: ['Bachelor', 'Masters', 'PhD'],
+	birthdayVisible: 0,
+	genderVisible: 0,
+	countryVisible: 0,
+	cityVisible: 0,
+	dpNameVisible: 0,
+	dpAcrVisible: 0,
+	degreeVisible: 0,
+	courseVisible: 0,
+	date2Visible: 0,
+	date3Visible: 0,
+	typeVisible: 0,
+	numberVisible: 0,
+	companyVisible: 0,
+	positionVisible: 0,
+	companyTypeVisible: 0,
+	checkboxWorkVisible: 0,
+	checkboxNoExperienceVisible: 0,
+	date4Visible: 0,
+	date5Visible: 0,
+	companyIndustry: '',
+	companyIndustryVisible: 0,
       nameRules: [
         v => !!v || 'Name is required',
         v => v.length <= 50 || 'Name must be less than 50 characters'
@@ -744,15 +766,16 @@ export default {
 						course: this.course,
 						enrollmentDate: this.date2,
 						graduationDate: this.date3,
-						type: this.graduated,
+						type: this.type,
 						mecNumber: this.number,
 						company: this.company,
-						companyCity: this.company,
+						companyType: this.companyType,
+						companyIndustry: this.companyIndustry,
 						title: this.position,
 						startDate: this.date4,
 						endDate: this.date5,
 						isCurrent: this.checkboxWork,
-						workExperience: this.workExperience
+						workExperience: this.checkboxNoExperience
 					})
 				/*} catch (error) {
 					console.log(error);
