@@ -1,6 +1,69 @@
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
+
+/**
+ * Represents a book.
+ * @param {req} req - The request.
+ * @return {object} - The token decoded, that consists in the person data
+ */
+function jwtSignedUser(req) {
+    const userData = {
+        token: req.get('auth'),
+    };
+    const schema = {
+        token: Joi.string().regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/).required(),
+    };
+
+    const {error} = Joi.validate(userData, schema);
+    console.log('error', error);
+    if (error) {
+        throw new Error('Invalid Token');
+    } else {
+        return jwt.verify(userData.token, process.env.JWT_SECRET);
+    }
+}
 
 module.exports = {
+    // manage access permisions
+    super_admin(req, res, next) {
+        try {
+          const user = jwtSignedUser(req);
+          if (user.role === 'Super Admin') {
+            next();
+          } else {
+            res.status(403).send({error: 'Access Forbiden'});
+          }
+        } catch (error) {
+          res.status(401).send({
+            error: 'Invalid Token',
+          });
+        }
+    },
+    channel_admin(req, res, next) {
+        try {
+          const user = jwtSignedUser(req);
+          if (user.role === 'Channel Admin') {
+            next();
+          } else {
+            res.status(403).send({error: 'Access Forbiden'});
+          }
+        } catch (error) {
+          res.status(401).send({
+            error: 'Invalid Token',
+          });
+        }
+    },
+    authenticated(req, res, next) {
+        try {
+            console.log('decode: ', jwtSignedUser(req));
+            next();
+        } catch (error) {
+          res.status(401).send({
+            error: 'Invalid Token',
+          });
+        }
+    },
+    // endpoints policies
     signup_student(req, res, next) {
         const schema = {
             name: Joi.string().required(),
@@ -129,7 +192,7 @@ module.exports = {
 
         // eslint-disable-next-line
         const {error, value} = Joi.validate(req.body, schema);
-console.log('error', error);
+
         if (error) {
             switch (error.details[0].context.key) {
                 case 'name':
