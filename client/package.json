@@ -12,8 +12,8 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
-    "staging build": "API_ENV='staging' node build/build.js",
-    "prod build": "API_ENV='production' node build/build.js"
+    "staging_build": "API_ENV='staging' node build/build.js",
+    "prod_build": "API_ENV='production' node build/build.js"
   },
   "nyc": {
     "include": [
