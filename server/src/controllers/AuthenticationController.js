@@ -23,7 +23,7 @@ function jwtSignPerson(person) {
 }
 
 module.exports = {
-
+  // Todo: give errors like, email has already been taken
   async signup_student(req, res) {
       console.log('student');
 
@@ -189,19 +189,26 @@ module.exports = {
         // insert user positions and companies in the database
         for (let position of userData.positions.values) {
           if ('company' in position) { // check if the key is in
-            let company = (await Company.findOrCreate({where: {
-              name: position.company.name,
-              type: position.company.type,
-              industry: position.company.industry}}))[0].dataValues;
+            let company = (await Company.findOrCreate({
+              where: {
+                name: position.company.name,
+              },
+              defaults: {
+                type: position.company.type,
+                industry: position.company.industry,
+              }}))[0].dataValues;
 
-            (await Job.create({
-              title: position.title,
-              startDate: `${position.startDate.year}-${position.startDate.month}`,
-              endDate: null,
-              isCurrent: position.isCurrent,
-              CompanyId: company.id,
-              PersonId: personData.id,
-            })).dataValues;
+            (await Job.findOrCreate({
+              where: {
+                title: position.title,
+                PersonId: personData.id,
+              },
+              defaults: {
+                startDate: `${position.startDate.year}-${position.startDate.month}`,
+                endDate: null,
+                isCurrent: position.isCurrent,
+                CompanyId: company.id,
+            }}));
           }
         };
 

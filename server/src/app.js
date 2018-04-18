@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 // eslint-disable-next-line
-const {sequelize} = require('./models');
+const {sequelize, Person} = require('./models');
 // const createServer = require('auto-sni');
 
 const app = express();
@@ -34,6 +34,17 @@ createServer({
  sequelize.sync()
   .then(() => {
     app.listen(process.env.SERVER_PORT, function() {
+      // insert default admin user
+      Person.findOrCreate({
+        where: {
+          email: 'admin@mail.com',
+        },
+        defaults: {
+          name: 'Admin',
+          hashedPassword: 'Password1',
+          role: 'Super Admin',
+        },
+      });
       console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
     });
   });
