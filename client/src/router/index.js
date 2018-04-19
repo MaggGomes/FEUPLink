@@ -41,7 +41,7 @@ export default new Router({
       path: '/feed',
       name: 'Feed',
       component: Feed,
-      beforeEnter: AuthenticationPolicy.authenticated
+      beforeEnter: AuthenticationPolicy.unAuthenticated
     },
     {
       path: '/logout',
