@@ -1,4 +1,6 @@
 import axios from 'axios'
+import store from '@/store/store'
+
 
 let baseURL;
 
@@ -11,6 +13,7 @@ else {
 
 export default () => {
     return axios.create({
-        baseURL: baseURL
+        baseURL: baseURL,
+        headers: {auth: store.state.token},
     })
 }

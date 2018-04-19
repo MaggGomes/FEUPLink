@@ -1,5 +1,7 @@
 <template>
-    <v-btn v-on:click="signIn" large dark class="linkedIn-sign-btn blue">Sign up with LinkedIn</v-btn> 
+    <v-btn v-on:click="signIn" large class="light-blue darken-1" color="primary" > 
+      <v-icon color="white" large left>fab fa-linkedin</v-icon>Sign in with LinkedIn
+    </v-btn> 
 </template>
 
 <script>
@@ -28,8 +30,3 @@ export default {
 }
 </script>
 
-<style scopped>
-.linkedIn-sign-btn{
-  background-image: "../../assets/linkedIN/Sign-In-Default.png";
-}
-</style>

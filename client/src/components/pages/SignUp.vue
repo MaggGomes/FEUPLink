@@ -51,7 +51,7 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs11 sm8 md5 id="social">
+          <v-flex xs12 md5 id="social">
 			<facebook-button class="signup-button elevation-12"></facebook-button><br>
             <linked-in-button class="signup-button elevation-12" ></linked-in-button>
           </v-flex>
