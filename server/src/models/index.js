@@ -14,8 +14,6 @@ if (process.env.HEROKU_ENV === 'production') {
   dbUser = process.env.DB_USER_PROD;
   dbPass = process.env.DB_PASS_PROD;
   dbHost = process.env.DB_HOST_PROD;
-  console.log('resultou aa');
-  console.log(process.env.HEROKU_ENV);
 } else {
   dbName = process.env.DB_NAME_DEV;
   dbUser = process.env.DB_USER_DEV;
