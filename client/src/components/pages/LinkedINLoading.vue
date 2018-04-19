@@ -43,7 +43,6 @@ export default {
         }
         
       }catch(error){
-        console.log(error.response.data.error);
         this.$router.push('/')
       }
     },

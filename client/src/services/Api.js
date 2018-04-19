@@ -14,6 +14,7 @@ else {
 export default () => {
     return axios.create({
         baseURL: baseURL,
+        timeout: 500,
         headers: {auth: store.state.token},
     })
 }
