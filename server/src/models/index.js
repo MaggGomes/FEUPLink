@@ -14,7 +14,12 @@ if (process.env.HEROKU_ENV === 'production') {
   dbUser = process.env.DB_USER_PROD;
   dbPass = process.env.DB_PASS_PROD;
   dbHost = process.env.DB_HOST_PROD;
-} else {
+} if (process.env.NODE_ENV === 'testing') {
+  dbName = process.env.DB_NAME_TEST;
+  dbUser = process.env.DB_USER_TEST;
+  dbPass = process.env.DB_PASS_TEST;
+  dbHost = process.env.DB_HOST_TEST;
+} else { // localhost developing or staging server
   dbName = process.env.DB_NAME_DEV;
   dbUser = process.env.DB_USER_DEV;
   dbPass = process.env.DB_PASS_DEV;
