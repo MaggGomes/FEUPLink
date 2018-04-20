@@ -263,7 +263,6 @@ module.exports = {
           }
         }
 
-
         // return the user token, to allow him to make further requests to the API
         return res.status(200).send({
           continueSignupLinkedin: continueSignupLinkedin,
