@@ -1,6 +1,9 @@
 <template>
     <v-content id="createContent">
-      <v-container id="userInfo" fluid>
+		 <v-container fluid v-if="loading">
+        <buffering-wheel />
+      </v-container>
+      <v-container fluid v-else>
         <v-toolbar dark class="red darken-4" height="40px">
               <v-toolbar-title style="font-size: 15px">Continue Signup Linkedin</v-toolbar-title>
             </v-toolbar>
@@ -32,7 +35,7 @@
                         </v-stepper-content>
          			<v-stepper-content step="2">
          				<v-card color="grey lighten-3" class="mb-5">
-         					<form autocomplete="off">
+         					<v-form v-model="valid" ref="form" autocomplete="off" lazy-validation>
          						<v-container fluid>
 											<v-layout row wrap align-center v-if="role == 'staff'">
 											<v-flex xs9 sm5 text-xs-center>
@@ -40,6 +43,8 @@
 													prepend-icon="person"
 													label="Department name"
 													v-model="dpName"
+													:rules="[v => !!v || 'Department is required']"
+													required
 													></v-text-field>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
@@ -78,6 +83,8 @@
 												v-model="degree"
 												label="Academic degree"
 												prepend-icon="person"
+												:rules="[v => !!v || 'Degree is required']"
+												required
 												></v-select>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
@@ -96,6 +103,8 @@
 												v-model="course"
 												label="Course"
 												prepend-icon="person"
+												:rules="[v => !!v || 'Course is required']"
+												required
 												></v-select>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
@@ -234,9 +243,11 @@
 								<v-flex xs9 sm11 text-xs-center>		
 									<v-select
 											:items="studentTypes"
-											v-model="type"
+											v-model="studenType"
 											label="Student type"
 											prepend-icon="person"
+											:rules="[v => !!v || 'Student type is required']"
+											required
 											></v-select>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
@@ -256,6 +267,8 @@
 									prepend-icon="person"
 									label="Mec number"
 									v-model="number"
+									:rules="[v => !!v || 'Number is required']"
+									required
 									></v-text-field>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
@@ -270,15 +283,23 @@
 								</v-flex>
 							</v-layout>
          				</v-container>
-         			</form>
+         			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
 					<v-btn  @click.native="e1 = 1" flat>Back</v-btn>					
-					<v-btn color="primary" v-on:click="signup">Finish</v-btn>
+					<v-btn 
+						color="primary" 
+						v-on:click="submitData" 
+						:disabled="!valid">
+							Finish
+					</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
      </v-stepper>
+      <v-alert xs12 type="error" :value="showingError">
+        {{this.errorMessage}}
+      </v-alert>
       </v-container>
     </v-content>
 </template>
@@ -287,53 +308,44 @@
 
 import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
-import LinkedInButton from '@/components/elements/LinkedInButton'
-import FacebookButton from '@/components/elements/FacebookButton'
+import BufferingWheel from '@/components/elements/BufferingWheel'
 
 export default {
-  name: 'SignUp',
-   components: {
-    LinkedInButton,FacebookButton
+	 components: {
+      BufferingWheel
   },
   data () {
     return {
+			valid:false,
+			showingError: false,
+			errorMessage: '',
+			// form-fields
+			loading: false,
       e1: 0,
       date2: null,
       date3: null,
       menu2: false,
       menu3: false,
-	  type: null,
-	  studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
+			studenType: null,
+			studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
       course: null,
       courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
       role: 'student',
-	  dpName: '',
+	  	dpName: '',
       dpAcr: '',
       number: '',
-	  degree: null,
-	  degrees: ['Bachelor', 'Masters', 'PhD'],
-	  dpNameVisible: 0,
-	  dpAcrVisible: 0,
-	  degreeVisible: 0,
-	  courseVisible: 0,
-	  date2Visible: 0,
-	  date3Visible: 0,
-	  typeVisible: 0,
+			degree: null,
+			degrees: ['Bachelor', 'Masters', 'PhD'],
+			dpNameVisible: 0,
+			dpAcrVisible: 0,
+			degreeVisible: 0,
+			courseVisible: 0,
+			date2Visible: 0,
+			date3Visible: 0,
+			typeVisible: 0,
       numberVisible: 0,
-	  workingLocationVisible: 0,
-	  workingLocation: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => v.length <= 50 || 'Name must be less than 50 characters'
-      ],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-      ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
-      ]
+			workingLocationVisible: 0,
+			workingLocation: '',
     }
   },
   watch: {
@@ -342,15 +354,37 @@ export default {
     }
   },
   methods: {
-    async signup () {
-		if(this.role == 'student') {
+    async submitData () {
+				try{
+					if (this.$refs.form.validate()) {
+						await AuthenticationService.continue_signup_linkedin({
+							personType: this.role,
+							//student stuff
+							course: this.course,
+							enrollmentDate: this.date2,
+							graduationDate: this.date3,
+							studenType: this.studenType,
+							// staff stuff
+							dpName: this.dpName,
+							acronym: this.dpAcr,
+							workingLocation: this.workingLocation,
+							startDate: this.date2,
+							endDate: this.date3,
+							// commmon
+							mecNumber: this.number,
+						});
+						
+						this.$router.push('Feed');
+					}
+				}catch(error){
+					this.e1=1;
+					this.showingError=true;
+					this.errorMessage=error.response.data.error;
+				}
+		},
+		save (date) {
+			this.$refs.menu.save(date)
 		}
-		else {
-		}
-	},
-	save (date) {
-		this.$refs.menu.save(date)
-	}
   }
 }
 </script>

@@ -46,7 +46,7 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm8 md5>             
+          <v-flex xs12 md5>             
             <facebook-button class="signin-button elevation-12"></facebook-button><br>
             <linked-in-button class="signin-button elevation-12" ></linked-in-button>
           </v-flex>
@@ -106,6 +106,7 @@ export default {
           this.$router.push('Feed')
         }
       } catch (error) {
+        this.loading=false;
         this.error = error.response.data.error
       }
     },

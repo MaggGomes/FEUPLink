@@ -1,7 +1,7 @@
 <template>
-    <v-btn v-on:click="signIn" class="signup-button indigo" large dark>   
-    Sign up with Facebook
-    </v-btn>
+    <v-btn v-on:click="signIn" large class="blue darken-3" color="primary"> 
+      <v-icon color="white" large left>fab fa-facebook</v-icon>Sign in with Facebook
+    </v-btn> 
 </template>
 
 <script>
