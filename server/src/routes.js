@@ -1,6 +1,9 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
-
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
+
+const PersonController = require('./controllers/PersonController');
+// const PersonControllerPolicy = require('./policies/PersonControllerPolicy');
+
 
 module.exports = (app) => {
   // ----Authentication
@@ -32,6 +35,14 @@ module.exports = (app) => {
 
   app.post('/signup_facebook',
     AuthenticationController.signup_facebook
+  );
+
+  app.get('/getPerson',
+    PersonController.getPerson
+  );
+
+  app.get('/getStudent',
+    PersonController.getStudent
   );
 };
 
