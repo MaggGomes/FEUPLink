@@ -5,14 +5,14 @@ export default {
     if (store.state.isUserLoggedIn) {
       next()
     } else {
-      next('/signup')
+      next('/')
     }
   },
   unAuthenticated: (to, from, next) => {
     if (!store.state.isUserLoggedIn) {
       next()
     } else {
-      next('/signin')
+      next('/')
     }
   },
 }

@@ -4,24 +4,41 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 
 module.exports = (app) => {
   // ----Authentication
+<<<<<<< HEAD
+=======
+  app.post('/signin',
+    AuthenticationControllerPolicy.signin,
+    AuthenticationController.signin
+  );
+
+>>>>>>> develop
   app.post('/signup_student',
+    AuthenticationControllerPolicy.signup_student,
     AuthenticationController.signup_student
   );
 
   app.post('/signup_staff',
-    AuthenticationControllerPolicy.signup,
+    AuthenticationControllerPolicy.signup_staff,
     AuthenticationController.signup_staff
   );
 
-  app.get('/signup_linkedin',
+  app.post('/signup_linkedin',
+    AuthenticationControllerPolicy.signup_linkedin,
     AuthenticationController.signup_linkedin
   );
 
-  app.post('/signup_facebook',
-    AuthenticationController.signup_facebook
+  app.post('/continue_signup_linkedin',
+    AuthenticationControllerPolicy.authenticated,
+    AuthenticationControllerPolicy.continue_signup_linkedin,
+    AuthenticationController.continue_signup_linkedin
   );
 
+<<<<<<< HEAD
   app.post('/signin',
     AuthenticationController.signin
+=======
+  app.post('/signup_facebook',
+    AuthenticationController.signup_facebook
+>>>>>>> develop
   );
 };

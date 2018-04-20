@@ -3,11 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     type: {
-      type: DataTypes.ENUM,
-      values: ['public', 'private'],
-      defaultValue: 'private',
+      type: DataTypes.STRING,
       allowNull: true,
     },
     industry: {

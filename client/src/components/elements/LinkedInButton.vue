@@ -1,5 +1,7 @@
 <template>
-    <v-btn v-on:click="signIn" large dark class="linkedIn-sign-btn blue">Sign up with LinkedIn</v-btn> 
+    <v-btn v-on:click="signIn" large class="light-blue darken-1" color="primary" > 
+      <v-icon color="white" large left>fab fa-linkedin</v-icon>Sign in with LinkedIn
+    </v-btn> 
 </template>
 
 <script>
@@ -9,9 +11,9 @@ export default {
   methods: {
     async signIn() {
         try {
-          console.log("Sign in Linkedin");
+
           let client_id = '78tdph8nd2st08'; 
-          let redirect_uri = 'http://localhost:8081/signup_linkedin'; 
+          let redirect_uri = 'http://localhost:8080/linkedin'; 
           let state = 'Feup-Link-state'; 
           
           window.location.replace(`https://www.linkedin.com/oauth/v2/authorization?` +
@@ -21,15 +23,10 @@ export default {
                 `state=${state}`);
       } catch (error) {
         this.error = error.response.data.error
-        console.log('Error-> ' + error);
+        console.log('Error: ' + error);
       }
     },   
   }
 }
 </script>
 
-<style scopped>
-.linkedIn-sign-btn{
-  background-image: "../../assets/linkedIN/Sign-In-Default.png";
-}
-</style>

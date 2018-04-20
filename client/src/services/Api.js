@@ -1,4 +1,6 @@
 import axios from 'axios'
+import store from '@/store/store'
+
 
 let baseURL;
 
@@ -14,6 +16,8 @@ else if(process.env.API_ENV === 'production') {
 
 export default () => {
     return axios.create({
-        baseURL: baseURL
+        baseURL: baseURL,
+        timeout: 500,
+        headers: {auth: store.state.token},
     })
 }
