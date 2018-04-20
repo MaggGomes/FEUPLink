@@ -4,14 +4,11 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 
 module.exports = (app) => {
   // ----Authentication
-<<<<<<< HEAD
-=======
   app.post('/signin',
     AuthenticationControllerPolicy.signin,
     AuthenticationController.signin
   );
 
->>>>>>> develop
   app.post('/signup_student',
     AuthenticationControllerPolicy.signup_student,
     AuthenticationController.signup_student
@@ -33,12 +30,7 @@ module.exports = (app) => {
     AuthenticationController.continue_signup_linkedin
   );
 
-<<<<<<< HEAD
-  app.post('/signin',
-    AuthenticationController.signin
-=======
   app.post('/signup_facebook',
     AuthenticationController.signup_facebook
->>>>>>> develop
   );
 };
