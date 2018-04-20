@@ -400,13 +400,13 @@ module.exports = {
           params:
           {
             code: code,
-            redirect_uri: process.env.FB_RET_URI + '/facebook',
+            redirect_uri: 'https://localhost:8080/facebook',
             client_id: process.env.FB_ID,
             client_secret: process.env.FB_SECRET,
           },
         }
       )).data.access_token;
-
+/*
       let appAccessToken = (await axios.get(
         'https://graph.facebook.com/v2.12/oauth/access_token',
         {
@@ -429,11 +429,11 @@ module.exports = {
           },
         }
       )).data.user_id;
-
+*/
       let userData = (await axios.get(
-        `https://graph.facebook.com/v2.11/${userId}?` +
-        'fields=first_name,last_name,location{city,country},profile_pic,gender,birthday,email&' +
-        `access_token=${userAccessToken}`
+        `https://graph.facebook.com/v2.11/me?access_token=${userAccessToken}&` +
+        'fields=first_name,last_name,email,birthday,gender,location{city,country}&' +
+        'format=json&method=get&pretty=0'
       )).data;
 
       let seqUser = (await Person.findOne({where: {email: userData.email}}));
@@ -444,9 +444,10 @@ module.exports = {
           {
             name: `${userData.first_name} ${userData.last_name}`,
             email: userData.email,
+            hashedPassword: '',
             validated: false,
-            country: userData.location.country,
-            city: userData.location.city,
+            country: 'location.country' in userData ? userData.location.country : null,
+            city: 'location.city' in userData ? userData.location.city : null,
             signIn_type: 'facebook',
           })).dataValues;
       } else {

@@ -5,7 +5,7 @@ import store from '@/store/store'
 let baseURL;
 
 if(process.env.NODE_ENV === 'https'){
-    baseURL = 'https://d494c340.ngrok.io/'
+    baseURL = 'https://82e2df57.ngrok.io'
 }
 else if(process.env.NODE_ENV !== 'production'){
     baseURL = 'http://localhost:8081/'
