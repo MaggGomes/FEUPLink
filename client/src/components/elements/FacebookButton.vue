@@ -12,38 +12,18 @@ export default {
     async signIn() {
         try {
           console.log("Facebook Sign Up");
-          /*
+          
           let client_id = '1602254696490199'; 
-          let redirect_uri = 'https://localhost:8081/signup_facebook'; 
+          let redirect_uri = 'https://0cba7707.ngrok.io'+'/facebook'; 
           let state = 'Feup-Link-state'; 
           
-          window.location.replace(`https://www.facebook.com/v2.12/dialog/oauth?` +
-                `response_type=code&` +
-                `client_id=${client_id}&` +
-                `redirect_uri=${redirect_uri}&` +
-                `state=${state}`);
-          */        
-        FB.login(
-          function(res){
-            switch(res.status){
-              case 'connected':
-                console.log('Facebook Login Suceeded!');
-                console.log(res.authResponse);
-                FB.api('/me', function(response) {
-                  console.log(response);
-                });
-                /*
-                try { AuthenticationService.signup_facebook(res.authResponse); }
-                catch (error) { this.error = error.response.data.error }*/
-              break;
-              case 'not_authorized':
-                console.log('Facebook Login Not Authorized!');
-              break;
-              case 'unknown':
-                console.log('Facebook Login Status Unknown!');
-              break;
-            }
-          }, {scope:'email'});
+          window.location.replace(
+            `https://www.facebook.com/v2.12/dialog/oauth?` +
+            `response_type=code&` +
+            `client_id=${client_id}&` +
+            `redirect_uri=${redirect_uri}&` +
+            `state=${state}`
+          );
         
       } catch (error) {
         this.error = error.response.data.error

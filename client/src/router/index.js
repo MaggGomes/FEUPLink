@@ -72,6 +72,27 @@ export default new Router({
         }
 
       }
+    },
+    { // just a callback for the linkedIn oauth
+      path: '/facebook',
+      beforeEnter: async (to, from, next) => {
+        var url = new URL(window.location.href);
+        var code = url.searchParams.get("code");
+        var state = url.searchParams.get("state");
+        var error = url.searchParams.get("error");
+
+        try{
+          let data = (await AuthenticationService.signup_facebook({code,state,error})).data;
+          
+          store.dispatch('setToken', data.token)
+          store.dispatch('setUser', data.person)
+          next('/feed');
+        }catch(error){
+          console.log(error.response.data.error);
+          next('/');
+        }
+
+      }
     }
   ]
 })

@@ -256,33 +256,93 @@ module.exports = {
   },
   async signup_facebook(req, res) {
     try {
-      let accessToken = req.accessToken;
-      let userId = req.userId;
-      // const person = await Person.create(req.body);
-      console.log('\n\n accessToken -> ' + accessToken);
+      let code = req.body.code;
+      let error = req.body.error;
+      let state = req.body.state;
 
-        let userData = (await axios.get(`https://graph.facebook.com/v2.11/${userId}/?fields=first_name,last_name,location,profile_pic,gender`)).data;
-
-        await Person.create({
-          name: `${userData.firstName}  ${userData.lastName}`,
-          email: userData.emailAddress,
-          headline: userData.headline,
-          hashedPassword: 'Password1', // this is useless on the login with facebook
-          validated: false,
-          country: userData.location.country.code,
-          city: userData.location.name,
-          summary: userData.summary,
-          signIn_type: 'facebook',
-          gender: `Male`,
-          role: 'User',
-        });
-
-        res.redirect(process.env.FRONT_END_URL);
-      } catch (err) {
-        console.log(err);
-        res.status(500).send({
-          error: err.message,
+      if (state !== 'Feup-Link-state') {
+        // send error this is possibly a CSRF attack.
+        return res.status(500).send({
+          error: 'Wrong facebook state',
         });
       }
+
+      if (error !== null) {
+        // send error object error and error_description available.
+        return res.status(500).send({
+          error: error,
+        });
+      }
+
+      // get the access token
+      let userAccessToken = (await axios.get(
+        'https://graph.facebook.com/v2.12/oauth/access_token',
+        {
+          params:
+          {
+            code: code,
+            redirect_uri: process.env.FB_RET_URI + '/facebook',
+            client_id: process.env.FB_ID,
+            client_secret: process.env.FB_SECRET,
+          },
+        }
+      )).data.access_token;
+
+      let appAccessToken = (await axios.get(
+        'https://graph.facebook.com/v2.12/oauth/access_token',
+        {
+          params:
+          {
+            grant_type: 'client_credentials',
+            client_id: process.env.FB_ID,
+            client_secret: process.env.FB_SECRET,
+          },
+        }
+      )).data.access_token;
+
+      let userId = (await axios.get(
+        'https://graph.facebook.com/v2.12/oauth/debug_token',
+        {
+          params:
+          {
+            input_token: userAccessToken,
+            access_token: appAccessToken,
+          },
+        }
+      )).data.user_id;
+
+      let userData = (await axios.get(
+        `https://graph.facebook.com/v2.11/${userId}?` +
+        'fields=first_name,last_name,location{city,country},profile_pic,gender,birthday,email&' +
+        `access_token=${userAccessToken}`
+      )).data;
+
+      let seqUser = (await Person.findOne({where: {email: userData.email}}));
+      let personData= '';
+
+      if (seqUser == null) {
+        personData = (await Person.create(
+          {
+            name: `${userData.first_name} ${userData.last_name}`,
+            email: userData.email,
+            validated: false,
+            country: userData.location.country,
+            city: userData.location.city,
+            signIn_type: 'facebook',
+          })).dataValues;
+      } else {
+        personData = seqUser.dataValues;
+      }
+      // return the user token, to allow him to make further requests to the API
+      return res.status(200).send({
+        person: personData,
+        token: jwtSignPerson(personData),
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        error: err.message,
+      });
+    }
   },
 };
