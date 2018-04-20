@@ -72,6 +72,7 @@
       }
     }
   };
+  /*
    window.fbAsyncInit = function() {
     FB.init({
       appId            : '1602254696490199',
@@ -88,7 +89,7 @@
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
-
+*/
 </script>
 
 <style>

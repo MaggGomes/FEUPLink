@@ -5,7 +5,7 @@
       </v-container>
       <v-container fluid v-else>
         <v-toolbar dark class="red darken-4" height="40px">
-              <v-toolbar-title style="font-size: 15px">Continue Signup Linkedin</v-toolbar-title>
+              <v-toolbar-title style="font-size: 15px">Continue Signup Facebook</v-toolbar-title>
             </v-toolbar>
          		<v-stepper v-model="e1" >
          			<v-stepper-header>
@@ -357,7 +357,7 @@ export default {
     async submitData () {
 				try{
 					if (this.$refs.form.validate()) {
-						await AuthenticationService.continue_signup_linkedin({
+						await AuthenticationService.continue_signup_facebook({
 							personType: this.role,
 							//student stuff
 							course: this.course,

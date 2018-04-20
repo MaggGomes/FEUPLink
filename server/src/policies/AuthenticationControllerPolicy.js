@@ -15,7 +15,7 @@ function jwtSignedUser(req) {
     };
 
     const {error} = Joi.validate(userData, schema);
-    console.log('error', error);
+
     if (error) {
         throw new Error('Invalid Token');
     } else {
@@ -55,7 +55,7 @@ module.exports = {
     },
     authenticated(req, res, next) {
         try {
-            console.log('decode: ', jwtSignedUser(req));
+            jwtSignedUser(req);
             next();
         } catch (error) {
           res.status(401).send({
@@ -298,6 +298,208 @@ module.exports = {
                 default:
                     res.status(400).send({
                         error: 'Bad request',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    continue_signup_linkedin(req, res, next) {
+        const schema = {
+            personType: Joi.required(),
+            course: Joi.required(),
+            enrollmentDate: Joi.required(),
+            graduationDate: Joi.required(),
+            studenType: Joi.required(),
+            dpName: Joi.required(),
+            acronym: Joi.required(),
+            workingLocation: Joi.required(),
+            startDate: Joi.required(),
+            endDate: Joi.required(),
+            mecNumber: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'personType':
+                    res.status(400).send({
+                        error: 'You must provide a personType field',
+                    });
+                    break;
+                case 'course':
+                    res.status(400).send({
+                        error: 'You must provide a course field',
+                    });
+                    break;
+                case 'enrollmentDate':
+                    res.status(400).send({
+                        error: 'You must provide a enrollmentDate field',
+                    });
+                    break;
+                case 'graduationDate':
+                res.status(400).send({
+                    error: 'You must provide a graduationDate field',
+                });
+                    break;
+                case 'studenType':
+                    res.status(400).send({
+                        error: 'You must provide a studenType field',
+                    });
+                    break;
+                case 'dpName':
+                    res.status(400).send({
+                        error: 'You must provide a dpName field',
+                    });
+                    break;
+                case 'acronym':
+                    res.status(400).send({
+                        error: 'You must provide a acronym field',
+                    });
+                    break;
+                case 'workingLocation':
+                    res.status(400).send({
+                        error: 'You must provide a workingLocation field',
+                    });
+                    break;
+                case 'startDate':
+                    res.status(400).send({
+                        error: 'You must provide a startDate field',
+                    });
+                    break;
+                case 'endDate':
+                    res.status(400).send({
+                        error: 'You must provide a endDate field',
+                    });
+                    break;
+                case 'mecNumber':
+                    res.status(400).send({
+                        error: 'You must provide a mecNumber field',
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Invalid registration information',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    signup_facebook(req, res, next) {
+        const schema = {
+            code: Joi.string().required(),
+            state: Joi.string().required(),
+            error: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'code':
+                    res.status(400).send({
+                        error: 'You must provide your LinkedIn Authorization Code',
+                    });
+                    break;
+                case 'state':
+                    res.status(400).send({
+                        error: `You must provide your LinkedIn state for validation purposes`,
+                    });
+                    break;
+                case 'error':
+                    res.status(400).send({
+                        error: `You must provide a error field`,
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Bad request',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    continue_signup_facebook(req, res, next) {
+        const schema = {
+            personType: Joi.required(),
+            course: Joi.required(),
+            enrollmentDate: Joi.required(),
+            graduationDate: Joi.required(),
+            studenType: Joi.required(),
+            dpName: Joi.required(),
+            acronym: Joi.required(),
+            workingLocation: Joi.required(),
+            startDate: Joi.required(),
+            endDate: Joi.required(),
+            mecNumber: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'personType':
+                    res.status(400).send({
+                        error: 'You must provide a personType field',
+                    });
+                    break;
+                case 'course':
+                    res.status(400).send({
+                        error: 'You must provide a course field',
+                    });
+                    break;
+                case 'enrollmentDate':
+                    res.status(400).send({
+                        error: 'You must provide a enrollmentDate field',
+                    });
+                    break;
+                case 'graduationDate':
+                res.status(400).send({
+                    error: 'You must provide a graduationDate field',
+                });
+                    break;
+                case 'studenType':
+                    res.status(400).send({
+                        error: 'You must provide a studenType field',
+                    });
+                    break;
+                case 'dpName':
+                    res.status(400).send({
+                        error: 'You must provide a dpName field',
+                    });
+                    break;
+                case 'acronym':
+                    res.status(400).send({
+                        error: 'You must provide a acronym field',
+                    });
+                    break;
+                case 'workingLocation':
+                    res.status(400).send({
+                        error: 'You must provide a workingLocation field',
+                    });
+                    break;
+                case 'startDate':
+                    res.status(400).send({
+                        error: 'You must provide a startDate field',
+                    });
+                    break;
+                case 'endDate':
+                    res.status(400).send({
+                        error: 'You must provide a endDate field',
+                    });
+                    break;
+                case 'mecNumber':
+                    res.status(400).send({
+                        error: 'You must provide a mecNumber field',
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Invalid registration information',
                     });
             }
         } else {

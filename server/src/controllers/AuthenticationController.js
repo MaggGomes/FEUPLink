@@ -1,11 +1,11 @@
 const {
   Person,
   Department,
+  Staff,
   Student,
   Course,
   Company,
   Job,
-  Staff,
 } = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
@@ -64,6 +64,7 @@ module.exports = {
             PersonId: personJson.id,
           });
         }
+
         res.send({
           person: personJson,
           token: jwtSignPerson(personJson),
@@ -90,30 +91,30 @@ module.exports = {
 
       const {dpName, acronym} = req.body;
 
-        const department = await Department.create({
-          name: dpName,
-          acronym: acronym,
+      const department = await Department.create({
+        name: dpName,
+        acronym: acronym,
+      });
+
+      Staff.findById(staff.toJSON().id).then((staff) => {
+        staff.setDepartments(department.toJSON().id);
+      });
+      if (!req.body.workExperience) {
+        const company = await Company.create({
+          name: req.body.company,
+          type: req.body.companyType,
+          industry: req.body.companyIndustry,
         });
 
-        Staff.findById(staff.toJSON().id).then((staff) => {
-          staff.setDepartments(department.toJSON().id);
+        await Job.create({
+          title: req.body.title,
+          startDate: req.body.startDate,
+          endDate: req.body.endDate,
+          isCurrent: req.body.isCurrent,
+          CompanyId: company.toJSON().id,
+          PersonId: personJson.id,
         });
-        if (!req.body.workExperience) {
-          const company = await Company.create({
-            name: req.body.company,
-            type: req.body.companyType,
-            industry: req.body.companyIndustry,
-          });
-
-          await Job.create({
-            title: req.body.title,
-            startDate: req.body.startDate,
-            endDate: req.body.endDate,
-            isCurrent: req.body.isCurrent,
-            CompanyId: company.toJSON().id,
-            PersonId: personJson.id,
-          });
-        }
+      }
       res.send({
         person: personJson,
         token: jwtSignPerson(personJson),
@@ -241,9 +242,31 @@ module.exports = {
             }}));
           }
         };
+        // check if the user has already completed the registration process with the remaining info
+        let student = (await Student.findAll({
+          where: {
+            PersonId: personData.id,
+          },
+        }));
+
+        let continueSignupLinkedin=false;
+
+        if (student.length === 0) {
+          let staff = (await Staff.findAll({
+            where: {
+              PersonId: personData.id,
+            },
+          }));
+
+          if (staff.length === 0) {
+            continueSignupLinkedin = true;
+          }
+        }
+
 
         // return the user token, to allow him to make further requests to the API
         return res.status(200).send({
+          continueSignupLinkedin: continueSignupLinkedin,
           person: personData,
           token: jwtSignPerson(personData),
         });
@@ -253,6 +276,102 @@ module.exports = {
           error: err.message,
         });
       }
+  },
+  async continue_signup_linkedin(req, res) {
+    try {
+      let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+
+      if (req.body.personType == 'student') {
+        // check if there isn't already a staff member associated to the person
+        let staff = (await Staff.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (staff.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a staff account'});
+          return;
+        }
+        // ----------------------
+
+        const student = (await Student.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            enrollmentDate: req.body.enrollmentDate,
+            graduationDate: req.body.graduationDate,
+            type: req.body.studenType,
+            PersonId: person.id,
+          },
+        }))[0].dataValues;
+
+
+        const course = (await Course.findOrCreate({
+         where: {
+          name: req.body.course,
+         },
+         defaults: {
+          creationDate: 2000,
+         },
+        }))[0].dataValues;
+
+
+        Course.findById(course.id).then((c) => {
+          c.setStudents(student.id);
+        });
+      } else {
+        // check if there isn't already a student member associated to the person
+        let student = (await Student.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (student.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a student account'});
+          return;
+        }
+        // ----------------------
+
+        const staff = (await Staff.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            jobStart: req.body.startDate,
+            jobEnd: req.body.endDate,
+            workingLocation: req.body.workingLocation,
+          },
+        }))[0].dataValues;
+
+
+        const {dpName, acronym} = req.body;
+
+        const department = (await Department.findOrCreate({
+          where: {
+            name: dpName,
+          },
+          defaults: {
+            acronym: acronym,
+          },
+        }))[0].dataValues;
+
+        Staff.findById(staff.id).then((s) => {
+          s.setDepartments(department.id);
+        });
+      }
+
+      res.status(200).send();
+    } catch (err) {
+      console.log('err: ', err);
+      res.status(400).send({
+        error: err,
+      });
+    }
   },
   async signup_facebook(req, res) {
     try {
@@ -342,6 +461,102 @@ module.exports = {
       console.log(err);
       res.status(500).send({
         error: err.message,
+      });
+    }
+  },
+  async continue_signup_facebook(req, res) {
+    try {
+      let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+
+      if (req.body.personType == 'student') {
+        // check if there isn't already a staff member associated to the person
+        let staff = (await Staff.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (staff.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a staff account'});
+          return;
+        }
+        // ----------------------
+
+        const student = (await Student.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            enrollmentDate: req.body.enrollmentDate,
+            graduationDate: req.body.graduationDate,
+            type: req.body.studenType,
+            PersonId: person.id,
+          },
+        }))[0].dataValues;
+
+
+        const course = (await Course.findOrCreate({
+         where: {
+          name: req.body.course,
+         },
+         defaults: {
+          creationDate: 2000,
+         },
+        }))[0].dataValues;
+
+
+        Course.findById(course.id).then((c) => {
+          c.setStudents(student.id);
+        });
+      } else {
+        // check if there isn't already a student member associated to the person
+        let student = (await Student.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (student.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a student account'});
+          return;
+        }
+        // ----------------------
+
+        const staff = (await Staff.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            jobStart: req.body.startDate,
+            jobEnd: req.body.endDate,
+            workingLocation: req.body.workingLocation,
+          },
+        }))[0].dataValues;
+
+
+        const {dpName, acronym} = req.body;
+
+        const department = (await Department.findOrCreate({
+          where: {
+            name: dpName,
+          },
+          defaults: {
+            acronym: acronym,
+          },
+        }))[0].dataValues;
+
+        Staff.findById(staff.id).then((s) => {
+          s.setDepartments(department.id);
+        });
+      }
+
+      res.status(200).send();
+    } catch (err) {
+      console.log('err: ', err);
+      res.status(400).send({
+        error: err,
       });
     }
   },

@@ -23,24 +23,20 @@ module.exports = (app) => {
     AuthenticationController.signup_linkedin
   );
 
+  app.post('/continue_signup_linkedin',
+    AuthenticationControllerPolicy.authenticated,
+    AuthenticationControllerPolicy.continue_signup_linkedin,
+    AuthenticationController.continue_signup_linkedin
+  );
+
   app.post('/signup_facebook',
     AuthenticationController.signup_facebook
   );
 
-  // to test the permission management
-  app.get('/authenticated_user',
-    AuthenticationControllerPolicy.authenticated
-  );
-
-  app.get('/channel_admin_user',
-    AuthenticationControllerPolicy.channel_admin
-  );
-
-  app.get('/super_admin_user',
-    AuthenticationControllerPolicy.super_admin,
-    function(req, res, next) {
-      console.log('control');
-    }
+  app.post('/continue_signup_facebook',
+    AuthenticationControllerPolicy.authenticated,
+    AuthenticationControllerPolicy.continue_signup_facebook,
+    AuthenticationController.continue_signup_facebook
   );
 };
 

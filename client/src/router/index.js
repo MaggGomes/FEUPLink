@@ -4,7 +4,10 @@ import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
+import ContinueSignupFacebook from '@/components/pages/ContinueSignupFacebook'
 import Feed from '@/components/pages/Feed'
+import LinkedINLoading from '@/components/pages/LinkedINLoading'
+import FacebookLoading from '@/components/pages/FacebookLoading'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
 import AuthenticationService from '@/services/AuthenticationService'
@@ -27,9 +30,15 @@ export default new Router({
     },
     {
       path: '/continue-signup-linkedin',
-      name: 'Continue Signup Linkedin',
+      name: 'ContinueSignupLinkedin',
       component: ContinueSignupLinkedin,
-      beforeEnter: AuthenticationPolicy.unAuthenticated
+      beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/continue-signup-facebook',
+      name: 'ContinueSignupFacebook',
+      component: ContinueSignupFacebook,
+      beforeEnter: AuthenticationPolicy.authenticated
     },
     {
       path: '/signin',
@@ -51,48 +60,15 @@ export default new Router({
         next('/');
       }
     },
-    { // just a callback for the linkedIn oauth
+    {
       path: '/linkedIn',
-      beforeEnter: async (to, from, next) => {
-        var url = new URL(window.location.href);
-        var code = url.searchParams.get("code");
-        var state = url.searchParams.get("state");
-        var error = url.searchParams.get("error");
-
-
-        try{
-          let data = (await AuthenticationService.signup_linkedin({code,state,error})).data;
-          
-          store.dispatch('setToken', data.token)
-          store.dispatch('setUser', data.person)
-          next('/feed');
-        }catch(error){
-          console.log(error.response.data.error);
-          next('/');
-        }
-
-      }
+      name: 'LinkedINLoading',
+      component: LinkedINLoading
     },
-    { // just a callback for the linkedIn oauth
+    {
       path: '/facebook',
-      beforeEnter: async (to, from, next) => {
-        var url = new URL(window.location.href);
-        var code = url.searchParams.get("code");
-        var state = url.searchParams.get("state");
-        var error = url.searchParams.get("error");
-
-        try{
-          let data = (await AuthenticationService.signup_facebook({code,state,error})).data;
-          
-          store.dispatch('setToken', data.token)
-          store.dispatch('setUser', data.person)
-          next('/feed');
-        }catch(error){
-          console.log(error.response.data.error);
-          next('/');
-        }
-
-      }
-    }
+      name: 'FacebookLoading',
+      component: FacebookLoading
+    },
   ]
 })

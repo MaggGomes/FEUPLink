@@ -1,7 +1,7 @@
 <template>
-    <v-btn v-on:click="signIn" class="signup-button indigo" large dark>   
-    Sign up with Facebook
-    </v-btn>
+    <v-btn v-on:click="signIn" large class="blue darken-3" color="primary"> 
+      <v-icon color="white" large left>fab fa-facebook</v-icon>Sign in with Facebook
+    </v-btn> 
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default {
           console.log("Facebook Sign Up");
           
           let client_id = '1602254696490199'; 
-          let redirect_uri = 'https://0cba7707.ngrok.io'+'/facebook'; 
+          let redirect_uri = 'https://localhost:8080/facebook'; 
           let state = 'Feup-Link-state'; 
           
           window.location.replace(
