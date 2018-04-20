@@ -34,4 +34,3 @@ module.exports = (app) => {
     AuthenticationController.signup_facebook
   );
 };
-
