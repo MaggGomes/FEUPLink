@@ -4,6 +4,7 @@ import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import Feed from '@/components/pages/Feed'
+import Profile from '@/components/pages/Profile'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
 
@@ -34,6 +35,11 @@ export default new Router({
       name: 'Feed',
       component: Feed,
       beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
     {
       path: '/logout',
