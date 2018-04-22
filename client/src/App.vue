@@ -18,18 +18,22 @@
       </v-list>
     </v-navigation-drawer>
   
-    <v-toolbar app dark class="red darken-4">
-      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
-      <v-toolbar-title class="font-color">
-        <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
-        <v-btn flat v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items v-else class="hidden-xs-only">
-        <v-btn flat v-for="menuItem in menuItens" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
-      </v-toolbar-items>
+    <v-toolbar floating dark id="main-bar">
+      <div id="side-main">
+        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
+        <v-toolbar-title >
+          <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
+        </v-toolbar-title>
+      </div>
+      <div id="main-bar-content">
+        <v-spacer></v-spacer>
+        <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
+          <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items flex v-else class="hidden-xs-only">
+          <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
+        </v-toolbar-items>
+      </div>
     </v-toolbar>
   
     <v-content>
@@ -48,27 +52,47 @@
     data() {
       return {
         sideNav: false,
-        menuItens: [{
-            title: 'Sign-In',
-            link: "/signin"
-          },
-          {
-            title: 'Sign-Up',
-            link: "/signup"
-          }
+        menuItens: [
+            {
+                title: 'Home',
+                link: "/"
+            },
+            {
+                title: 'News',
+                link: "/"
+            },
+            {
+                title: 'About',
+                link: "/"
+            },
+            {
+                title: 'Contact',
+                link: "/"
+            },
+            {
+                title: 'Sign-Up',
+                link: "/signup"
+            },
+            {
+                title: 'Sign-In',
+                link: "/signin"
+            }
+
         ],
-        signnedInMenuItens: [{
-            title: 'Home',
-            link: "/"
-        },
-        {
-            title: 'Feed',
-            link: "/Feed"
-        },
-        {
-            title: 'Logout',
-            link: "/logout"
-        }]
+        signnedInMenuItens: [
+            {
+                title: 'Home',
+                link: "/"
+            },
+            {
+                title: 'Feed',
+                link: "/Feed"
+            },
+            {
+                title: 'Logout',
+                link: "/logout"
+            }
+        ]
       }
     }
   };
@@ -95,7 +119,77 @@
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
   }
-  
+  #main-bar{
+    background-color: darkred;
+  }
+  .toolbar{
+    width:100%;
+    margin:0px;
+  }
+  .toolbar__content{
+    display: inline-flex;
+    width: 100%;
+  }
+  #main-bar .btn__content{
+    text-transform: none;
+  }
+
+  #main-bar .btn__content:before{
+    opacity: 0;
+  }
+
+  #side-main{
+    width: 100%;
+    display: inline-flex;
+  }
+
+  #main-bar-content{
+    width: 100%;
+    display: flex;
+  }
+
+  @media(min-width: 991px){
+    #main-bar .toolbar__content{
+      display: inline-block;
+      background: url('assets/header.png');
+      height: 225px!important;
+    }
+    #main-bar-content{
+      width: auto;
+      margin: 0px 50px;
+      color: darkred;
+    }
+    #side-main{
+      height: 50px;
+      margin-top: 50px;
+    }
+    #main-bar-content .btn{
+      width: 140px;
+      border: 2px solid white;
+      border-radius: 0%;
+      color:darkred;
+      background-color: white!important;
+    }
+    #main-bar-content .Sign-Up{
+      color: white;
+      background-color: transparent!important;
+    }
+
+    #main-bar-content .Sign-In,
+    #main-bar-content .Sign-Up{
+
+      margin-left: 20px!important;
+    }
+
+  }
+  @media (max-width: 441px) {
+    #side-main .toolbar__title{
+      display: flex;
+      margin-top: 5%;
+    }
+  }
+
+
   .font-color {
     color: white;
   }
