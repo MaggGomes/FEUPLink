@@ -264,7 +264,7 @@ module.exports = {
         }
 
         // return the user token, to allow him to make further requests to the API
-        return res.status(200).send({
+        return res.status(201).send({
           continueSignupLinkedin: continueSignupLinkedin,
           person: personData,
           token: jwtSignPerson(personData),
@@ -364,7 +364,7 @@ module.exports = {
         });
       }
 
-      res.status(200).send();
+      res.status(201).send();
     } catch (err) {
       console.log('err: ', err);
       res.status(400).send({
