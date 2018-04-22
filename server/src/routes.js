@@ -64,4 +64,3 @@ module.exports = (app) => {
     CourseController.list_all
   );
 };
-
