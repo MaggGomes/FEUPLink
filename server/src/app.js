@@ -5,7 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-const {sequelize} = require('./models');
+// eslint-disable-next-line
+const {sequelize, Person} = require('./models');
 // const createServer = require('auto-sni');
 
 const app = express();
@@ -30,12 +31,24 @@ createServer({
 */
 
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
-sequelize.sync()
+ sequelize.sync()
   .then(() => {
     app.listen(process.env.PORT, function() {
+      // insert default admin user
+      Person.findOrCreate({
+        where: {
+          email: 'admin@mail.com',
+        },
+        defaults: {
+          name: 'Admin',
+          hashedPassword: 'Password1',
+          role: 'Super Admin',
+        },
+      });
       console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
   });
+
 
 module.exports = app;
 
