@@ -13,7 +13,7 @@ module.exports = {
           defaults: req.body,
         }));
 
-          // setDepartment
+          // setCouses
 
           res.status(201).send({
             res: 'Department successfully created',
@@ -36,6 +36,8 @@ module.exports = {
               id: departmentId,
           },
         }));
+
+        // updateCouses
 
         res.status(201).send({
           res: 'Successfully updated the department information',
