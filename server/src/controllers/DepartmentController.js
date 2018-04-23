@@ -38,6 +38,7 @@ module.exports = {
         }));
 
         // updateCouses
+        // find and set courses
 
         res.status(201).send({
           res: 'Successfully updated the department information',

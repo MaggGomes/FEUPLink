@@ -66,9 +66,14 @@
             link: "/Feed"
         },
         {
+            title: 'Management',
+            link: "/management"
+        },
+        {
             title: 'Logout',
             link: "/logout"
-        }]
+        },
+      ]
       }
     }
   };
