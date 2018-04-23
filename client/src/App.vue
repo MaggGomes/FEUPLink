@@ -20,9 +20,23 @@
   
     <v-toolbar floating dark id="main-bar">
       <div id="side-main">
-        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
+        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav">
+          <v-avatar size="32px" tile>
+            <img
+                    src="assets/IconFeup.png"
+                    alt="IconFeup"
+            >
+          </v-avatar>
+        </v-toolbar-side-icon>
         <v-toolbar-title >
-          <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
+          <router-link to="/" tag="span" style="cursor: pointer">
+            <v-avatar tile>
+              <img
+                      src="assets/FEUPLinklogo.png"
+                      alt="FEUPLink"
+              >
+            </v-avatar>
+          </router-link>
         </v-toolbar-title>
       </div>
       <div id="main-bar-content">
@@ -79,6 +93,9 @@
             }
 
         ],
+
+          logo:'assets/FEUPLinklogo.png',
+
         signnedInMenuItens: [
             {
                 title: 'Home',
