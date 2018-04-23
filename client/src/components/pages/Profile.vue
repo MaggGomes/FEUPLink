@@ -1,118 +1,296 @@
-  <template>
-    <v-content>
-      <v-container>
-      </v-container>
+<template>
+  <v-content>
+    <v-container>
+      <v-layout>
+        <v-flex xs11>
+          <v-toolbar-title>Experience</v-toolbar-title>
+        </v-flex>
+        <v-flex>
+          <v-dialog v-model="dialogExperience" max-width="500px">
+            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Start date" v-model="editedItemExperience.startDate"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="End date" v-model="editedItemExperience.endDate"></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-flex>
+      </v-layout>
+      <v-data-table
+        :headers="headersExperience"
+        :items="itemsExperience"
+        hide-actions
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">{{ props.item.company }}</td>
+          <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.startDate }}</td>
+          <td class="text-xs-left">{{ props.item.endDate }}</td>
+          <td class="justify-left layout px-0">
+            <v-btn icon class="mx-0" @click="editItemExperience(props.item)">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0" @click="deleteItemExperience(props.item)">
+              <v-icon color="pink">delete</v-icon>
+            </v-btn>
+          </td>
+        </template>
+        <template slot="no-data">
+          <v-btn color="primary" @click="initialize">Reset</v-btn>
+        </template>
+      </v-data-table>
+    </v-container>
 
+    <v-container>
+      <v-layout>
+        <v-flex xs11>
+          <v-toolbar-title>Education</v-toolbar-title>
+        </v-flex>
+        <v-flex>
+          <v-dialog v-model="dialogEducation" max-width="500px">
+            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Academic degree" v-model="editedItemEducation.degree"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Course name" v-model="editedItemEducation.course"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Enrollment date" v-model="editedItemEducation.enrollmentDate"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field label="Graduation date" v-model="editedItemEducation.graduationDate"></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click.native="closeEducation">Cancel</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="saveEducation">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-flex>
+      </v-layout>
+      <v-data-table
+        :headers="headersEducation"
+        :items="itemsEducation"
+        hide-actions
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">{{ props.item.degree }}</td>
+          <td class="text-xs-left">{{ props.item.course }}</td>
+          <td class="text-xs-left">{{ props.item.enrollmentDate }}</td>
+          <td class="text-xs-left">{{ props.item.graduationDate }}</td>
+          <td class="justify-left layout px-0">
+            <v-btn icon class="mx-0" @click="editItemEducation(props.item)">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0" @click="deleteItemEducation(props.item)">
+              <v-icon color="pink">delete</v-icon>
+            </v-btn>
+          </td>
+        </template>
+        <template slot="no-data">
+          <v-btn color="primary" @click="initialize">Reset</v-btn>
+        </template>
+      </v-data-table>
+    </v-container>
+  </v-content>
+</template>
+<script>
 
+import Vue from 'vue'
+import AuthenticationService from '@/services/AuthenticationService'  
+import LinkedInButton from '@/components/elements/LinkedInButton'
+import FacebookButton from '@/components/elements/FacebookButton'
 
-
-
-
-
-      <v-container>
-        <v-label>Experiência:</v-label>
-        <v-data-table class="experienceTable"
-         :headers="experienceHeaders"
-      :items="experiences"
-      hide-actions
-      item-key="name"
-    >
-
-      <template  slot="items" slot-scope="props">
-        <tr >
-          <td class="td">{{ props.item.company }}</td>
-          <td class="td">{{ props.item.cargo }}</td>
-          <td class="td">{{ props.item.city }}</td>
-          <td class="td">{{ props.item.startYear }}</td>
-          <td class="td">{{ props.item.endYear }}</td>
-        </tr>
-      </template>    
-    </v-data-table>
-      </v-container>
-
-
-
-
-      <v-container>
-        <v-label>Educação:</v-label>
-        <v-data-table class="experienceTable"
-         :headers="studyHeaders"
-      :items="studies"
-      hide-actions
-      item-key="name"
-    >
-
-      <template  slot="items" slot-scope="props">
-        <tr >
-          <td class="td">{{ props.item.course }}</td>
-          <td class="td">{{ props.item.enrollmentDate }}</td>
-          <td class="td">{{ props.item.graduationDate }}</td>    
-           </tr>
-      </template>    
-    </v-data-table>
-      </v-container>
-
-    </v-content>
-
-  </template>
-  <script>
-
-  import Vue from 'vue'
-  import AuthenticationService from '@/services/AuthenticationService'  
-  import LinkedInButton from '@/components/elements/LinkedInButton'
-  import FacebookButton from '@/components/elements/FacebookButton'
-
-  export default {
-    name: 'Profile',
-     components: {
-      LinkedInButton,FacebookButton
+export default {
+  name: 'Profile',
+    components: {
+    LinkedInButton,FacebookButton
+  },
+  data: () => ({
+    dialogExperience: false,
+    dialogEducation: false,
+    headersExperience: [
+      { text: 'Company', value: 'company' },
+      { text: 'Title', value: 'title' },
+      { text: 'Start date', value: 'startDate' },
+      { text: 'End date', value: 'endDate' },
+      { text: 'Actions', value: 'name', sortable: false }
+    ],
+    headersEducation: [
+      { text: 'Academic Degree', value: 'degree' },
+      { text: 'Course name', value: 'cours' },
+      { text: 'Enrollment date', value: 'enrollmentDate' },
+      { text: 'Graduation date', value: 'graduationDate' },
+      { text: 'Actions', value: 'name', sortable: false }
+    ],
+    itemsExperience: [],
+    itemsEducation: [],
+    editedIndexExperience: -1,
+    editedIndexEducation: -1,
+    editedItemExperience: {
+      company: 0,
+      title: 0,
+      startDate: 0,
+      endDate: 0
     },
-    data () {
-      return {    
-        experienceHeaders: [          
-          { text: 'Empresa ', value: 'company' },
-          { text: 'Cargo', value: 'cargo' },
-          { text: 'Localidade', value: 'city'},
-          { text: 'Data de Ínicio', value: 'startYear' },
-          { text: 'Data de Fim', value: 'endYear' }
-        ],
-        experiences: [
-        {company:'feup', cargo:'professor', city:'Porto', startYear:'2005', endYear:'2010'},
-        {company:'microsoft', cargo:'developer', city:' Lisboa', startYear:'2010', endYear:'2014'}
-        ],
-        studyHeaders: [          
-          { text: 'Curso ', value: 'course' },
-          { text: 'Data de ínicio', value: 'enrollmentDate' },
-          { text: 'Data de Conclusão', value: 'graduationDate'}
-        ],
-        studies:[
-        {course:'MIEIC', enrollmentDate:'2013', graduationDate:'2018'},
-        {course:'MIEEC', enrollmentDate:'2008', graduationDate:'2013'}
-        ]
+    defaultItemExperience: {
+      company: 0,
+      title: 0,
+      startDate: 0,
+      endDate: 0
+    },
+    editedItemEducation: {
+      degree: 0,
+      course: 0,
+      enrollmentDate: 0,
+      graduationDate: 0
+    },
+    defaultItemEducation: {
+      degree: 0,
+      course: 0,
+      enrollmentDate: 0,
+      graduationDate: 0
+    }
+  }),
+
+  computed: {
+    formTitle () {
+      return this.editedIndexExperience === -1 ? 'New Item' : 'Edit Item'
+    }
+  },
+
+  watch: {
+    dialogExperience (val) {
+      val || this.close()
+    },
+    dialogEducation (val) {
+      val || this.close()
+    }
+  },
+
+  created () {
+    this.initialize()
+  },
+
+  methods: {
+    initialize () {
+      this.itemsExperience = [
+        {
+          company: 'Microsoft',
+          title: 'Developer',
+          startDate: '2010',
+          endDate: '2014'
+        }
+      ],
+      this.itemsEducation = [
+        {
+          degree: 'Integrated Masters',
+          course: 'MIEIC',
+          enrollmentDate: '2014',
+          graduationDate: '2019'
+        }
+      ]
+    },
+
+    editItemExperience (item) {
+      this.editedIndexExperience = this.itemsExperience.indexOf(item)
+      this.editedItemExperience = Object.assign({}, item)
+      this.dialogExperience = true
+    },
+
+    deleteItemExperience (item) {
+      const index = this.itemsExperience.indexOf(item)
+      confirm('Are you sure you want to delete this item?') && this.itemsExperience.splice(index, 1)
+    },
+
+    closeExperience () {
+      this.dialogExperience = false
+      setTimeout(() => {
+        this.editedItemExperience = Object.assign({}, this.defaultItemExperience)
+        this.editedIndexExperience = -1
+      }, 300)
+    },
+
+    saveExperience () {
+      if (this.editedIndexExperience > -1) {
+        Object.assign(this.itemsExperience[this.editedIndexExperience], this.editedItemExperience)
+      } else {
+        this.itemsExperience.push(this.editedItemExperience)
       }
+      this.closeExperience()
     },
-    
-    methods: {
-      
+
+
+    editItemEducation (item) {
+      this.editedIndexEducation = this.itemsEducation.indexOf(item)
+      this.editedItemEducation = Object.assign({}, item)
+      this.dialogEducation = true
+    },
+
+    deleteItemEducation (item) {
+      const index = this.itemsEducation.indexOf(item)
+      confirm('Are you sure you want to delete this item?') && this.itemsEducation.splice(index, 1)
+    },
+
+    closeEducation () {
+      this.dialogEducation = false
+      setTimeout(() => {
+        this.editedItemEducation = Object.assign({}, this.defaultItemEducation)
+        this.editedIndexEducation = -1
+      }, 300)
+    },
+
+    saveEducation () {
+      if (this.editedIndexEducation > -1) {
+        Object.assign(this.itemsEducation[this.editedIndexEducation], this.editedItemEducation)
+      } else {
+        this.itemsEducation.push(this.editedItemEducation)
+      }
+      this.closeEducation()
     }
   }
-  </script>
+}
+</script>
 
-  <style scopped>
-
-  .personalInfo{
-    background-color: yellow;
-  }
-
-  
-
-  .td{
-    border: solid 1px darkgrey; 
-    background-color: lightgrey;
-    height:30px;
-  }
-
-
-
-
-  </style>
+<style scopped>
+.primary {
+  background-color: #b71c1c !important;
+}
+</style>

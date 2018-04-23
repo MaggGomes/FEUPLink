@@ -46,7 +46,7 @@ export default new Router({
       beforeEnter: AuthenticationPolicy.authenticated
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       name: 'Profile',
       component: Profile
     },

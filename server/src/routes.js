@@ -40,7 +40,6 @@ module.exports = (app) => {
   app.post('/signup_facebook',
     AuthenticationController.signup_facebook
   );
-  
   app.get('/getPerson',
     PersonController.getPerson
   );
@@ -48,7 +47,6 @@ module.exports = (app) => {
   app.get('/getStudent',
     PersonController.getStudent
   );
-  
   // ----Course
 
   app.post('/create_course',
