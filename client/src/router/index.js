@@ -5,6 +5,7 @@ import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
 import Feed from '@/components/pages/Feed'
+import Profile from '@/components/pages/Profile'
 import LinkedINLoading from '@/components/pages/LinkedINLoading'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
@@ -43,6 +44,11 @@ export default new Router({
       name: 'Feed',
       component: Feed,
       beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
     {
       path: '/logout',

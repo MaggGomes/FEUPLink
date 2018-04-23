@@ -63,7 +63,11 @@
         },
         {
             title: 'Feed',
-            link: "/Feed"
+            link: "/feed"
+        },
+        {
+            title: 'Profile',
+            link: "/profile"
         },
         {
             title: 'Logout',

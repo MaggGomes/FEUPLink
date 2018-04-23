@@ -35,11 +35,12 @@ export default {
         this.$store.dispatch('setToken', data.token)
         this.$store.dispatch('setUser', data.person)
         
+        
         // check if needs to complete authentication
         if (data.continueSignupLinkedin) {
-          this.$router.push('ContinueSignupLinkedin')
+          this.$router.push('/continue-signup-linkedin')
         }else {
-          this.$router.push('Feed')
+          this.$router.push('/feed')
         }
         
       }catch(error){

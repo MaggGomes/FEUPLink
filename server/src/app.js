@@ -33,7 +33,7 @@ createServer({
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
  sequelize.sync()
   .then(() => {
-    app.listen(process.env.SERVER_PORT, function() {
+    app.listen(process.env.PORT, function() {
       // insert default admin user
       Person.findOrCreate({
         where: {
@@ -45,7 +45,7 @@ createServer({
           role: 'Super Admin',
         },
       });
-      console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
+      console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
   });
 
