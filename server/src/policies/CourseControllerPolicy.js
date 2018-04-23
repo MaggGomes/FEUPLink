@@ -30,7 +30,7 @@ module.exports = {
                   break;
               case 'acronym':
                   res.status(400).send({
-                      error: `You must provide a acronym field`,
+                      error: `You must provide an acronym field`,
                   });
                   break;
               case 'description':
