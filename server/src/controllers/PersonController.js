@@ -21,6 +21,40 @@ module.exports = {
             });
         }
     },
+    async getTypeOfPerson(req, res) {
+        try {
+            let result;
+            let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+
+            let student = await Student.findOne({
+                where: {
+                    PersonId: person.id,
+                },
+            });
+
+            if (student == null) {
+                let staff = await Staff.findOne({
+                    where: {
+                        PersonId: person.id,
+                    },
+                });
+                if (staff !== null) {
+                    result = 'staff';
+                }
+            } else {
+                result = 'student';
+            }
+
+            return res.status(200).send({
+                type: result,
+            });
+        } catch (err) {
+            console.log('err: ', err);
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
     async getStudent(req, res) {
         try {
             let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
