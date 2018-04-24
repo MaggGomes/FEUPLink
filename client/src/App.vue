@@ -10,7 +10,7 @@
             {{ signnedInItem.title }}
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+        <v-list-tile v-else v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
           <v-list-tile-content>
             {{ menuItem.title }}
           </v-list-tile-content>
@@ -43,64 +43,75 @@
 </template>
 
 <script>
-  export default {
-    name: "App",
-    data() {
-      return {
-        sideNav: false,
-        menuItens: [{
-            title: 'Sign-In',
-            link: "/signin"
-          },
-          {
-            title: 'Sign-Up',
-            link: "/signup"
-          }
-        ],
-        signnedInMenuItens: [{
-            title: 'Home',
-            link: "/"
+export default {
+  name: "App",
+  data() {
+    return {
+      sideNav: false,
+      menuItens: [
+        {
+          title: "Sign-In",
+          link: "/signin"
         },
         {
-            title: 'Feed',
-            link: "/feed"
+          title: "Sign-Up",
+          link: "/signup"
+        }
+      ]
+    };
+  },
+  computed: {
+    signnedInMenuItens() {
+      let userId = (this.$store.state.user != undefined ? this.$store.state.user.id : 0)
+      return [
+        {
+          title: "Home",
+          link: "/"
         },
         {
-            title: 'Profile',
-            link: "/profile"
+          title: "Feed",
+          link: "/feed"
         },
         {
-            title: 'Logout',
-            link: "/logout"
-        }]
-      }
+          title: "Profile",
+          link: "/profile/" + userId
+        },
+        {
+          title: "Logout",
+          link: "/logout"
+        }
+      ];
     }
-  };
-   window.fbAsyncInit = function() {
-    FB.init({
-      appId            : '1602254696490199',
-      autoLogAppEvents : true,
-      xfbml            : true,
-      version          : 'v2.12'
-    });
-  };
+  }
+};
+window.fbAsyncInit = function() {
+  FB.init({
+    appId: "1602254696490199",
+    autoLogAppEvents: true,
+    xfbml: true,
+    version: "v2.12"
+  });
+};
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-
+(function(d, s, id) {
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, "script", "facebook-jssdk");
 </script>
 
 <style>
-  #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-  }
-  
-  .font-color {
-    color: white;
-  }
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
+
+.font-color {
+  color: white;
+}
 </style>
