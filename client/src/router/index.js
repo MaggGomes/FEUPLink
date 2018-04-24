@@ -15,8 +15,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Homepage',
       component: Homepage
@@ -48,7 +47,8 @@ export default new Router({
     {
       path: '/profile/:id',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: AuthenticationPolicy.authenticated
     },
     {
       path: '/logout',

@@ -132,33 +132,33 @@
   </v-content>
 </template>
 <script>
-
-import Vue from 'vue'
-import AuthenticationService from '@/services/AuthenticationService'  
-import LinkedInButton from '@/components/elements/LinkedInButton'
-import FacebookButton from '@/components/elements/FacebookButton'
+import Vue from "vue";
+import AuthenticationService from "@/services/AuthenticationService";
+import LinkedInButton from "@/components/elements/LinkedInButton";
+import FacebookButton from "@/components/elements/FacebookButton";
 
 export default {
-  name: 'Profile',
-    components: {
-    LinkedInButton,FacebookButton
+  name: "Profile",
+  components: {
+    LinkedInButton,
+    FacebookButton
   },
   data: () => ({
     dialogExperience: false,
     dialogEducation: false,
     headersExperience: [
-      { text: 'Company', value: 'company' },
-      { text: 'Title', value: 'title' },
-      { text: 'Start date', value: 'startDate' },
-      { text: 'End date', value: 'endDate' },
-      { text: 'Actions', value: 'name', sortable: false }
+      { text: "Company", value: "company" },
+      { text: "Title", value: "title" },
+      { text: "Start date", value: "startDate" },
+      { text: "End date", value: "endDate" },
+      { text: "Actions", value: "name", sortable: false }
     ],
     headersEducation: [
-      { text: 'Academic Degree', value: 'degree' },
-      { text: 'Course name', value: 'cours' },
-      { text: 'Enrollment date', value: 'enrollmentDate' },
-      { text: 'Graduation date', value: 'graduationDate' },
-      { text: 'Actions', value: 'name', sortable: false }
+      { text: "Academic Degree", value: "degree" },
+      { text: "Course name", value: "cours" },
+      { text: "Enrollment date", value: "enrollmentDate" },
+      { text: "Graduation date", value: "graduationDate" },
+      { text: "Actions", value: "name", sortable: false }
     ],
     itemsExperience: [],
     itemsEducation: [],
@@ -191,102 +191,112 @@ export default {
   }),
 
   computed: {
-    formTitle () {
-      return this.editedIndexExperience === -1 ? 'New Item' : 'Edit Item'
+    formTitle() {
+      return this.editedIndexExperience === -1 ? "New Item" : "Edit Item";
     }
   },
 
   watch: {
-    dialogExperience (val) {
-      val || this.close()
+    dialogExperience(val) {
+      val || this.close();
     },
-    dialogEducation (val) {
-      val || this.close()
+    dialogEducation(val) {
+      val || this.close();
     }
   },
 
-  created () {
-    this.initialize()
+  created() {
+    this.initialize();
   },
 
   methods: {
-    initialize () {
-      this.itemsExperience = [
+    initialize() {
+      (this.itemsExperience = [
         {
-          company: 'Microsoft',
-          title: 'Developer',
-          startDate: '2010',
-          endDate: '2014'
+          company: "Microsoft",
+          title: "Developer",
+          startDate: "2010",
+          endDate: "2014"
         }
-      ],
-      this.itemsEducation = [
-        {
-          degree: 'Integrated Masters',
-          course: 'MIEIC',
-          enrollmentDate: '2014',
-          graduationDate: '2019'
-        }
-      ]
+      ]),
+        (this.itemsEducation = [
+          {
+            degree: "Integrated Masters",
+            course: "MIEIC",
+            enrollmentDate: "2014",
+            graduationDate: "2019"
+          }
+        ]);
     },
 
-    editItemExperience (item) {
-      this.editedIndexExperience = this.itemsExperience.indexOf(item)
-      this.editedItemExperience = Object.assign({}, item)
-      this.dialogExperience = true
+    editItemExperience(item) {
+      this.editedIndexExperience = this.itemsExperience.indexOf(item);
+      this.editedItemExperience = Object.assign({}, item);
+      this.dialogExperience = true;
     },
 
-    deleteItemExperience (item) {
-      const index = this.itemsExperience.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.itemsExperience.splice(index, 1)
+    deleteItemExperience(item) {
+      const index = this.itemsExperience.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.itemsExperience.splice(index, 1);
     },
 
-    closeExperience () {
-      this.dialogExperience = false
+    closeExperience() {
+      this.dialogExperience = false;
       setTimeout(() => {
-        this.editedItemExperience = Object.assign({}, this.defaultItemExperience)
-        this.editedIndexExperience = -1
-      }, 300)
+        this.editedItemExperience = Object.assign(
+          {},
+          this.defaultItemExperience
+        );
+        this.editedIndexExperience = -1;
+      }, 300);
     },
 
-    saveExperience () {
+    saveExperience() {
       if (this.editedIndexExperience > -1) {
-        Object.assign(this.itemsExperience[this.editedIndexExperience], this.editedItemExperience)
+        Object.assign(
+          this.itemsExperience[this.editedIndexExperience],
+          this.editedItemExperience
+        );
       } else {
-        this.itemsExperience.push(this.editedItemExperience)
+        this.itemsExperience.push(this.editedItemExperience);
       }
-      this.closeExperience()
+      this.closeExperience();
     },
 
-
-    editItemEducation (item) {
-      this.editedIndexEducation = this.itemsEducation.indexOf(item)
-      this.editedItemEducation = Object.assign({}, item)
-      this.dialogEducation = true
+    editItemEducation(item) {
+      this.editedIndexEducation = this.itemsEducation.indexOf(item);
+      this.editedItemEducation = Object.assign({}, item);
+      this.dialogEducation = true;
     },
 
-    deleteItemEducation (item) {
-      const index = this.itemsEducation.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.itemsEducation.splice(index, 1)
+    deleteItemEducation(item) {
+      const index = this.itemsEducation.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.itemsEducation.splice(index, 1);
     },
 
-    closeEducation () {
-      this.dialogEducation = false
+    closeEducation() {
+      this.dialogEducation = false;
       setTimeout(() => {
-        this.editedItemEducation = Object.assign({}, this.defaultItemEducation)
-        this.editedIndexEducation = -1
-      }, 300)
+        this.editedItemEducation = Object.assign({}, this.defaultItemEducation);
+        this.editedIndexEducation = -1;
+      }, 300);
     },
 
-    saveEducation () {
+    saveEducation() {
       if (this.editedIndexEducation > -1) {
-        Object.assign(this.itemsEducation[this.editedIndexEducation], this.editedItemEducation)
+        Object.assign(
+          this.itemsEducation[this.editedIndexEducation],
+          this.editedItemEducation
+        );
       } else {
-        this.itemsEducation.push(this.editedItemEducation)
+        this.itemsEducation.push(this.editedItemEducation);
       }
-      this.closeEducation()
+      this.closeEducation();
     }
   }
-}
+};
 </script>
 
 <style scopped>
