@@ -2,58 +2,124 @@
   <v-container fluid>
   <v-layout row wrap>
 
-    <v-dialog v-model="createDialog" persistent max-width="500px">
+    <!-- dialog new course --> 
+    <v-dialog v-model="createDialog" persistent max-width="700px">
       <v-card>
         <v-card-title>
-          <span class="headline">Create a new Course Profile</span>
+          <span class="headline">Create a new Course</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal first name" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
+
+              <v-flex xs12 md9>
                 <v-text-field
-                  label="Legal last name"
-                  hint="example of persistent helper text"
-                  persistent-hint
+                  label="Course name"
+                  hint="This must be unique"
+                  v-model="name"
                   required
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Email" required></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Password" type="password" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-select
-                  label="Age"
+              
+              <v-flex xs12 md3>
+                <v-text-field
+                  label="Course acronym"
+                  v-model="acronym"
                   required
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                ></v-select>
+                ></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6>
+
+              <v-flex xs12>
+                <v-text-field
+                  label="Description"
+                  v-model="description"
+                  multi-line
+                  required
+                ></v-text-field>
+              </v-flex>
+
+              <v-flex xs12 md9>
+                <v-text-field
+                  label="Website"                  
+                  v-model="website"
+                  required
+                ></v-text-field>
+              </v-flex>
+
+              <v-flex xs12 md3>
                 <v-select
-                  label="Interests"
-                  multiple
-                  autocomplete
-                  chips
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Type of degree"
+                  required
+                  :items="['Bachelor', 'Masters', 'PhD']"
                 ></v-select>
               </v-flex>
+
+              <v-flex xs12 md6>
+               <v-menu
+                ref="creationDateMenu"
+                lazy
+                :close-on-content-click="false"
+                v-model="creationDateMenu"
+                transition="scale-transition"
+                offset-y
+                full-width
+                :nudge-right="40"
+                min-width="290px"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Creation date"
+                    v-model="creationDate"
+                    prepend-icon="event"
+                    readonly
+                  ></v-text-field>
+                  <v-date-picker
+                    ref="picker"
+                    v-model="creationDate"
+                    @change="saveCreationDate"
+                    min="1950-01-01"
+                    :max="new Date().toISOString().substr(0, 10)"
+                  ></v-date-picker>
+                </v-menu>
+              </v-flex>
+
+                <v-flex xs12 md6>
+               <v-menu
+                ref="endDateMenu"
+                lazy
+                :close-on-content-click="false"
+                v-model="endDateMenu"
+                transition="scale-transition"
+                offset-y
+                full-width
+                :nudge-right="40"
+                min-width="290px"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close date"
+                    v-model="endDate"
+                    prepend-icon="event"
+                    hint="If the course has already closed"
+                    readonly
+                  ></v-text-field>
+                  <v-date-picker
+                    ref="picker"
+                    v-model="endDate"
+                    @change="saveEndDate"
+                    min="1950-01-01"
+                    :max="new Date().toISOString().substr(0, 10)"
+                  ></v-date-picker>
+                </v-menu>
+              </v-flex>
+              
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="createDialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="createDialog = false">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="cancelDialog">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="createCourse">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -67,43 +133,56 @@
         </v-flex>
       </v-layout>
 
+      <!-- list of courses --> 
       <v-layout mt-2 row wrap>
-        <v-flex xs12 offset-md1 md10 v-for="course in courses" :key="course.id">
-          <v-toolbar>
-            <v-toolbar-title>{{course.name}}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn flat  @click="updateCourse(course)">
-                <v-icon> mode edit </v-icon>
-              </v-btn>
-              <v-btn flat color="error" @click="deleteCourse(course.id)">
-                <v-icon> delete </v-icon>
-              </v-btn>
-            </v-toolbar-items>
-          </v-toolbar>
-        </v-flex>
-       <v-flex xs12>
+        <v-flex xs12 offset-md1 md10 >
+          <v-expansion-panel v-for="course in courses" :key="course.id">
+            <v-expansion-panel-content>
+              <div slot="header">
+                <v-toolbar>
+                  <v-toolbar-title>{{course.name}}</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-toolbar-items>
+                    <v-btn flat @click="updateCourse(course)">
+                      <v-icon> mode edit </v-icon>
+                    </v-btn>
+                    <v-btn flat color="error" @click="deleteCourse(course.id)">
+                      <v-icon> delete </v-icon>
+                    </v-btn>
+                  </v-toolbar-items>
+                </v-toolbar>
+              </div>
+              <v-card>
+                <v-card-text>{{course.description}}</v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+      </v-flex>
+
+      <!-- pagination -->
+      <v-flex xs12>
         <div class="text-xs-center">
           <v-pagination :length="6" v-model="page"></v-pagination>
         </div>
       </v-flex>
-      </v-layout>
-    </v-jumbotron>
+</v-layout>
+</v-jumbotron>
 
-    <v-layout row wrap>
-     
-    </v-layout>
+<v-layout row wrap>
 
-    <v-layout>
-      <v-flex xs12>
-        <v-alert type="error" :value="true">
-          {{error}}
-        </v-alert>
-      </v-flex>
-    </v-layout>
-    </v-layout>
-  </v-container>
+</v-layout>
+
+<v-layout>
+  <v-flex xs12>
+    <v-alert type="warning" :value="true">
+      {{error}}
+    </v-alert>
+  </v-flex>
+</v-layout>
+</v-layout>
+</v-container>
 </template>
+
 
 
 <script>
@@ -115,15 +194,60 @@ export default {
     return {
       error: null,
       success: null,
+      page: 1,
       createDialog: false,
       updateDialog: false,
       courses: [],
-      
+      // course dialog fields
+      name: '',
+      academicDegree: '',
+      acronym: '',
+      description: '',
+      website: '',
+      creationDate: '',
+      creationDateMenu:false,
+      endDate: '',
+      endDateMenu:false,
     }
   },
   methods: {
-    async addCourse(){
-      console.log('add: ');
+    saveCreationDate (date) {
+		  this.$refs.creationDateMenu.save(date)
+	  },
+    saveEndDate (date) {
+		  this.$refs.endDateMenu.save(date)
+	  },
+    cancelDialog(){
+      this.createDialog=false
+      this.emptyDialogFields()
+    },
+    emptyDialogFields(){
+      this.name=''
+      this.academicDegree=''
+      this.acronym=''
+      this.description=''
+      this.website=''
+      this.creationDate=''
+      this.endDate=''
+    },
+    async createCourse(){
+      this.createDialog=false
+      this.emptyDialogFields()
+      
+      try{
+        this.success = await (CourseService.create_course({
+          name: this.name,
+          academicDegree: this.academicDegree,
+          acronym: this.acronym,
+          description: this.description,
+          website: this.website,
+          creationDate: this.creationDate,
+          endDate: this.endDate,
+        }))
+      }catch(error){
+        this.error=error.response.data.error;
+      }
+      
     },
     async updateCourse(course){
       console.log('update: ', course);
@@ -149,7 +273,16 @@ export default {
   },
   mounted: async function (){
       await this.getCourses();
-  }
+  },
+   watch: {
+     // date-picker stuff
+    creationDate (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    endDate (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    }
+  },
 }
 </script>
 
