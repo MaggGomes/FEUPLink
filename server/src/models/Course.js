@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       // Course can have many students
       Course.belongsToMany(models.Student,
         {
-          through: 'CourseStudent',
+          through: models.CourseStudent,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }
