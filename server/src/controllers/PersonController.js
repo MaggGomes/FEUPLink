@@ -74,6 +74,7 @@ module.exports = {
                 },
             });
 
+            let stdExperience = [];
             for (let i = 0; i < studentExperience.length; i++) {
                 let companyId = studentExperience[i].CompanyId;
                 let company = await Company.findOne({
@@ -81,15 +82,16 @@ module.exports = {
                         id: companyId,
                     },
                 });
-
-                console.log(company);
-                /* studentExperience[i].push(company.name); */
+                stdExperience.push({
+                    job: studentExperience[i],
+                    companyName: company.name,
+                });
             }
 
             return res.status(200).send({
                 student: student,
                 courses: studentCourses,
-                experience: studentExperience,
+                experience: stdExperience,
             });
         } catch (err) {
             console.log('err: ', err);

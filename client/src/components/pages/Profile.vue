@@ -237,14 +237,14 @@ export default {
         }
 
         for(var i = 0; i < student.data.experience.length; i++) {
-          var sDate = new Date(student.data.experience[i].startDate);
+          var sDate = new Date(student.data.experience[i].job.startDate);
           var startDate = sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
-          var eDate = new Date(student.data.experience[i].endDate);
+          var eDate = new Date(student.data.experience[i].job.endDate);
           var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
 
           this.itemsExperience.push({
-            company: student.data.experience[i].CompanyId,
-            title: student.data.experience[i].title,
+            company: student.data.experience[i].companyName,
+            title: student.data.experience[i].job.title,
             startDate: startDate,
             endDate: endDate
           });
