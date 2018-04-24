@@ -31,38 +31,29 @@
             </v-list-tile>
           </v-list>
         </v-navigation-drawer>
-        <v-tabs
-                v-model="active"
-                dark
-                class="hidden-md-and-up"
-        >
-            <v-tab
-                    v-for="nav_tab in nav_tabs"
+        <v-tabs dark
+                class="hidden-md-and-up">
+            <v-tab v-for="nav_tab in nav_tabs"
                     v-bind:key="nav_tab.id"
                     v-bind:class="[{ active: currentTab === nav_tab.id }]"
                     @click="currentTab = nav_tab.id"
-                    ripple
-            >
+                    ripple>
                 {{nav_tab.name}}
             </v-tab>
-            <v-tab-item
-                v-for="nav in nav_tabs.length"
-                :key="nav"
-            >
+            <v-tab-item v-for="nav in nav_tabs.length"
+                        :key="nav"
+                        class="side_content">
                 <component
                         v-bind:is="currentTabComponent"
-                        class="nav_tab"
-                >
+                        class="nav_tab">
 
                 </component>
             </v-tab-item>
         </v-tabs>
-        <v-flex id="side_content" class="hidden-sm-and-down">
-
+        <v-flex class="side_content hidden-sm-and-down">
             <component
                     v-bind:is="currentTabComponent"
-                    class="nav_tab"
-            >
+                    class="nav_tab">
 
             </component>
 
@@ -201,11 +192,11 @@
         background-color: rgba(188, 188, 188, 0.75);
     }
 
-    #side_content .list {
+    .side_content .list {
         background-color: rgba(221, 221, 221, 0.75) ;
         padding: 1px 0px;
     }
-    #side_content .list .list__tile{
+    .side_content .list .list__tile{
         background-color: rgba(188, 188, 188, 0.75) ;
         margin:10px;
     }
@@ -214,7 +205,7 @@
         #feed_content .navigation-drawer{
             margin-left: 5%;
         }
-        #side_content{
+        .side_content{
             margin-left: 25%;
         }
     }
@@ -224,6 +215,10 @@
         #feed_content .container{
             padding: 0;
 
+        }
+        .accent{
+            background-color: red!important;
+            border-color: red!important;
         }
     }
 
