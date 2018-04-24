@@ -10,7 +10,7 @@
             {{ signnedInItem.title }}
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+        <v-list-tile v-else v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
           <v-list-tile-content>
             {{ menuItem.title }}
           </v-list-tile-content>
