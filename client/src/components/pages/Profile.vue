@@ -246,20 +246,18 @@ export default {
   methods: {
     async initialize() {
       let result = await ProfileService.getTypeOfPerson({
-        auth: this.$store.state.token
+        id: this.$route.params.id,
       });
 
       if (result.data.type == "student") {
         let student = await ProfileService.getStudentInformation({
-          auth: this.$store.state.token
+          id: this.$route.params.id,
         });
         /* Depois de alterado na base de dados deve passar a estar no ciclo for */
         var enrDate = new Date(student.data.student.enrollmentDate);
         var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
         var grdDate = new Date(student.data.student.graduationDate);
         var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
-
-        console.log(student);
 
         for(var i = 0; i < student.data.courses.length; i++) {
           this.itemsEducation.push({
@@ -285,7 +283,7 @@ export default {
         }
       } else if(result.data.type == 'staff') {
         let staff = await ProfileService.getStaffInformation({
-          auth: this.$store.state.token
+          id: this.$route.params.id,
         });
       }
     },
