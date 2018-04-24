@@ -219,28 +219,41 @@ export default {
         let student = await ProfileService.getStudentInformation({
           auth: this.$store.state.token
         });
+        /* Depois de alterado na base de dados deve passar a estar no ciclo for */
+        var enrDate = new Date(student.data.student.enrollmentDate);
+        var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+        var grdDate = new Date(student.data.student.graduationDate);
+        var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
+
         console.log(student);
+
+        for(var i = 0; i < student.data.courses.length; i++) {
+          this.itemsEducation.push({
+            degree: student.data.courses[i].academicDegree,
+            course: student.data.courses[i].name,
+            enrollmentDate: enrollmentDate,
+            graduationDate: graduationDate
+          });
+        }
+
+        for(var i = 0; i < student.data.experience.length; i++) {
+          var sDate = new Date(student.data.experience[i].startDate);
+          var startDate = sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
+          var eDate = new Date(student.data.experience[i].endDate);
+          var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
+
+          this.itemsExperience.push({
+            company: student.data.experience[i].CompanyId,
+            title: student.data.experience[i].title,
+            startDate: startDate,
+            endDate: endDate
+          });
+        }
       } else if(result.data.type == 'staff') {
         let staff = await ProfileService.getStaffInformation({
           auth: this.$store.state.token
         });
       }
-      this.itemsExperience = [
-        {
-          company: 'Microsoft',
-          title: 'Developer',
-          startDate: '2010',
-          endDate: '2014'
-        }
-      ],
-      this.itemsEducation = [
-        {
-          degree: 'Integrated Masters',
-          course: 'MIEIC',
-          enrollmentDate: '2014',
-          graduationDate: '2019'
-        }
-      ]
     },
 
     editItemExperience (item) {

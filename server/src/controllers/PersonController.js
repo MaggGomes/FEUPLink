@@ -2,6 +2,7 @@ const {
     Student,
     Staff,
     Job,
+    Company,
 } = require('../models');
 
 const jwt = require('jsonwebtoken');
@@ -72,6 +73,18 @@ module.exports = {
                     PersonId: person.id,
                 },
             });
+
+            for (let i = 0; i < studentExperience.length; i++) {
+                let companyId = studentExperience[i].CompanyId;
+                let company = await Company.findOne({
+                    where: {
+                        id: companyId,
+                    },
+                });
+
+                console.log(company);
+                /* studentExperience[i].push(company.name); */
+            }
 
             return res.status(200).send({
                 student: student,
