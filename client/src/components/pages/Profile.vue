@@ -134,7 +134,7 @@
 <script>
 
 import Vue from 'vue'
-import AuthenticationService from '@/services/AuthenticationService'  
+import ProfileService from '@/services/ProfileService'  
 import LinkedInButton from '@/components/elements/LinkedInButton'
 import FacebookButton from '@/components/elements/FacebookButton'
 
@@ -210,7 +210,21 @@ export default {
   },
 
   methods: {
-    initialize () {
+    async initialize () {
+      let result = await ProfileService.getTypeOfPerson({
+        auth: this.$store.state.token
+      });
+      
+      if(result.data.type == 'student') {
+        let student = await ProfileService.getStudentInformation({
+          auth: this.$store.state.token
+        });
+        console.log(student);
+      } else if(result.data.type == 'staff') {
+        let staff = await ProfileService.getStaffInformation({
+          auth: this.$store.state.token
+        });
+      }
       this.itemsExperience = [
         {
           company: 'Microsoft',

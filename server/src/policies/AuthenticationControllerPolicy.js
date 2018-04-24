@@ -87,7 +87,7 @@ module.exports = {
             startDate: Joi.string(),
             endDate: Joi.string(),
             isCurrent: Joi.boolean(),
-            workExperience: Joi.boolean().required(),
+            workExperience: Joi.boolean(),
         };
 
         // eslint-disable-next-line

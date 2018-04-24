@@ -40,8 +40,13 @@ module.exports = (app) => {
   app.post('/signup_facebook',
     AuthenticationController.signup_facebook
   );
+
   app.get('/getPerson',
     PersonController.getPerson
+  );
+
+  app.get('/getTypeOfPerson',
+    PersonController.getTypeOfPerson
   );
 
   app.get('/getStudent',

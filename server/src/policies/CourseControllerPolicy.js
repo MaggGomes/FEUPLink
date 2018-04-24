@@ -8,7 +8,7 @@ module.exports = {
         name: Joi.string().required(),
         academicDegree: Joi.string().required(),
         acronym: Joi.string().required(),
-        description: Joi.string().required(),
+        description: Joi.string(),
         website: Joi.string(),
         creationDate: Joi.string().required(),
         endDate: Joi.string(),
