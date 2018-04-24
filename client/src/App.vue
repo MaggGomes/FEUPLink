@@ -168,7 +168,8 @@
   @media(min-width: 991px){
     #main-bar .toolbar__content{
       display: inline-block;
-      background: url('assets/header.png');
+      background: url('assets/header.png') no-repeat center;
+      background-size: cover;
       height: 225px!important;
     }
     #main-bar-content{
