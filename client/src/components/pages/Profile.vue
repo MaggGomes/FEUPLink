@@ -352,20 +352,16 @@ export default {
 
         this.person = student.data.person;
 
-        /* Depois de alterado na base de dados deve passar a estar no ciclo for */
-        var enrDate = new Date(student.data.student.enrollmentDate);
-        var enrollmentDate =
-          enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
-        var grdDate = new Date(student.data.student.graduationDate);
-        var graduationDate =
-          grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
-
         for (var i = 0; i < student.data.courses.length; i++) {
+          var enrDate = new Date(student.data.courses[i].CourseStudent.enrollmentDate);
+          var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+          var grdDate = new Date(student.data.courses[i].CourseStudent.graduationDate);
+          var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i].name,
             enrollmentDate: enrollmentDate,
-            graduationDate: graduationDate
+            graduationDate: graduationDate,
           });
         }
 
