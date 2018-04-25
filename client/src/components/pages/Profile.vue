@@ -107,7 +107,7 @@
         <v-flex hidden-xs-only lg3 sm3>
           <v-layout row>
             <v-flex lg12 sm12>
-              <p>Contact:</p>
+              <p class="grey-color">Contact:</p>
             </v-flex>
           </v-layout>
           <v-layout row>
