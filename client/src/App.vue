@@ -21,27 +21,27 @@
     <v-toolbar floating dark id="main-bar">
       <div id="side-main">
         <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav">
-          <v-avatar size="32px" tile>
-            <img
-                    src="assets/IconFeup.png"
-                    alt="IconFeup"
-            >
-          </v-avatar>
         </v-toolbar-side-icon>
         <v-toolbar-title >
           <router-link to="/" tag="span" style="cursor: pointer">
-            <v-avatar tile>
+            <v-avatar tile id="mini-logo" class="hidden-sm-and-up">
               <img
-                      src="assets/FEUPLinklogo.png"
+                      :src="minilogo"
+                      alt="IconFeup"
+              >
+            </v-avatar>
+            <v-avatar tile id="main-logo" class="hidden-xs-only">
+              <img
+                      v-bind:src="logo"
                       alt="FEUPLink"
               >
             </v-avatar>
           </router-link>
         </v-toolbar-title>
       </div>
-      <div id="main-bar-content">
+      <div id="main-bar-content" class="hidden-xs-only">
         <v-spacer></v-spacer>
-        <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
+        <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
           <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
         </v-toolbar-items>
         <v-toolbar-items flex v-else class="hidden-xs-only">
@@ -61,6 +61,8 @@
 </template>
 
 <script>
+  import logo from './assets/FEUPLinklogo.png';
+  import minilogo from './assets/IconFeup.png';
   export default {
     name: "App",
     data() {
@@ -69,18 +71,6 @@
         menuItens: [
             {
                 title: 'Home',
-                link: "/"
-            },
-            {
-                title: 'News',
-                link: "/"
-            },
-            {
-                title: 'About',
-                link: "/"
-            },
-            {
-                title: 'Contact',
                 link: "/"
             },
             {
@@ -93,8 +83,8 @@
             }
 
         ],
-
-          logo:'assets/FEUPLinklogo.png',
+          minilogo: minilogo,
+          logo: logo,
 
         signnedInMenuItens: [
             {
@@ -165,12 +155,21 @@
     display: flex;
   }
 
+  #main-logo{
+    height: 50px!important;
+    width: auto!important;
+  }
+  #mini-logo{
+    height: 40px!important;
+    width: auto!important;
+  }
+
   @media(min-width: 991px){
     #main-bar .toolbar__content{
       display: inline-block;
       background: url('assets/header.png') no-repeat center;
       background-size: cover;
-      height: 225px!important;
+      height: 145px!important;
     }
     #main-bar-content{
       width: auto;
@@ -200,14 +199,25 @@
     }
 
   }
-  @media (max-width: 441px) {
-    #side-main .toolbar__title{
-      display: flex;
-      margin-top: 5%;
+  @media (max-width: 990px){
+    #main-logo{
+      height: 40px!important;
     }
   }
-
-
+  @media (max-width: 600px){
+    #side-main{
+      display: inline-flex;
+      margin-left: 0;
+    }
+    #side-main .btn{
+      margin-top: 0px;
+    }
+    #side-main .toolbar__title{
+      text-align: end;
+      flex:auto;
+      margin-right: 20px;
+    }
+  }
   .font-color {
     color: white;
   }
