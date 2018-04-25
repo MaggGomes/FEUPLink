@@ -65,6 +65,7 @@ module.exports = {
     async getStudent(req, res) {
         try {
             let person = await Person.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     id: req.query.id,
                 },
@@ -99,6 +100,7 @@ module.exports = {
             }
 
             return res.status(200).send({
+                person: person,
                 student: student,
                 courses: studentCourses,
                 experience: stdExperience,
@@ -113,6 +115,7 @@ module.exports = {
     async getStaff(req, res) {
         try {
             let person = await Person.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     id: req.query.id,
                 },
@@ -132,6 +135,7 @@ module.exports = {
                 },
             });
             return res.status(200).send({
+                person: person,
                 staff: staff,
                 departments: staffDepartments,
                 experience: staffExperience,

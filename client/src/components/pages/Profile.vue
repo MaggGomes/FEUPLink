@@ -1,36 +1,131 @@
 <template>
   <v-content>
     <v-container align-center>
-      <v-layout row>
-        <v-flex xs12 hidden-sm-and-up>
-          <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
-        </v-flex>
-        <v-flex hidden-xs-only lg2 sm3>
-          <img :src="defaultUserImg" width="150" height="150">
-        </v-flex>
-
-        <v-flex hidden-xs-only lg4 sm3>
-          <v-layout column>
-            <v-flex class="bottom-margin" xs12>
-              <h3>Carlos Oliveira</h3>
-            </v-flex>
+      <v-layout style="margin-bottom: 20px;" row>
+        <!-- Start region of mobile screen -->
+        <v-flex hidden-md-and-up>
+          <v-layout row>
             <v-flex xs12>
+              <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
+            </v-flex>
+          </v-layout>
+          <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
+            <v-flex xs12 wrap>
+              <h3 class="text-align-center">{{ person.name }}</h3>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
               <p class="grey-color">Studied at:</p>
             </v-flex>
-            <v-flex class="bottom-margin" xs12>
-              <h4>FEUP</h4>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">FEUP</h4>
             </v-flex>
-            <v-flex xs12>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
+              <p class="grey-color">From:</p>
+            </v-flex>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">{{ person.city }}, {{ person.country }}</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
               <p class="grey-color">Works at:</p>
             </v-flex>
-            <v-flex class="bottom-margin" xs12>
-              <h4>FEUP</h4>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">FEUP</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row style="margin-top: 15px;">
+            <v-flex xs4 wrap>
+              <p class="grey-color">Contact:</p>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-facebook</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-linkedin</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-instagram</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-skype</v-icon>
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex hidden-xs-only lg6 sm6>
+        <!-- End region of mobile screen -->
+
+        <!-- Start region of Small, medium, large and extra-large screen -->
+        <v-flex hidden-sm-and-down lg2 md3>
+          <img :src="defaultUserImg" width="150" height="150">
         </v-flex>
-        
+        <v-flex hidden-sm-and-down lg6 md6 justify-start>
+          <v-layout class="bottom-margin" row>
+            <v-flex lg12 md12>
+              <h3>{{ person.name }}</h3>
+            </v-flex>
+          </v-layout>
+          <v-layout class="bottom-margin" row>
+            <v-flex lg6 md6>
+              <v-layout row>
+                <v-flex lg3 md3>
+                  <p class="grey-color">Studied at:</p>
+                </v-flex>
+                <v-flex lg9 md9 wrap>
+                  <h4>FEUP</h4>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex lg6 md6>
+              <v-layout row>
+                <v-flex lg3 md3>
+                  <p class="grey-color">From:</p>
+                </v-flex>
+                <v-flex lg9 md9 wrap>
+                  <h4>{{ person.city }}, {{ person.country }}</h4>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+          <v-layout class="bottom-margin"  row>
+            <v-flex lg6 md6>
+              <v-layout row>
+                <v-flex lg3 md3>
+                  <p class="grey-color">Works at:</p>
+                </v-flex>
+                <v-flex lg9 md9 wrap>
+                  <h4>FEUP</h4>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <v-flex hidden-sm-and-down lg3 md3>
+          <v-layout row>
+            <v-flex lg12 md12>
+              <p class="grey-color">Contact:</p>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex lg2 md2>
+              <v-icon large>fab fa-facebook</v-icon>
+            </v-flex>
+            <v-flex lg2 md2>
+              <v-icon large>fab fa-linkedin</v-icon>
+            </v-flex>
+            <v-flex lg2 md2>
+              <v-icon large>fab fa-instagram</v-icon>
+            </v-flex>
+            <v-flex lg2 md2>
+              <v-icon large>fab fa-skype</v-icon>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <!-- End regionf of Small, medium, large and extra-large screen -->
       </v-layout>
 
       <v-layout>
@@ -196,6 +291,7 @@ export default {
     ],
     itemsExperience: [],
     itemsEducation: [],
+    person: {},
     editedIndexExperience: -1,
     editedIndexEducation: -1,
     editedItemExperience: {
@@ -246,20 +342,25 @@ export default {
   methods: {
     async initialize() {
       let result = await ProfileService.getTypeOfPerson({
-        id: this.$route.params.id,
+        id: this.$route.params.id
       });
 
       if (result.data.type == "student") {
         let student = await ProfileService.getStudentInformation({
-          id: this.$route.params.id,
+          id: this.$route.params.id
         });
+
+        this.person = student.data.person;
+
         /* Depois de alterado na base de dados deve passar a estar no ciclo for */
         var enrDate = new Date(student.data.student.enrollmentDate);
-        var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+        var enrollmentDate =
+          enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
         var grdDate = new Date(student.data.student.graduationDate);
-        var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
+        var graduationDate =
+          grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
 
-        for(var i = 0; i < student.data.courses.length; i++) {
+        for (var i = 0; i < student.data.courses.length; i++) {
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i].name,
@@ -268,9 +369,10 @@ export default {
           });
         }
 
-        for(var i = 0; i < student.data.experience.length; i++) {
+        for (var i = 0; i < student.data.experience.length; i++) {
           var sDate = new Date(student.data.experience[i].job.startDate);
-          var startDate = sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
+          var startDate =
+            sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
           var eDate = new Date(student.data.experience[i].job.endDate);
           var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
 
@@ -281,9 +383,9 @@ export default {
             endDate: endDate
           });
         }
-      } else if(result.data.type == 'staff') {
+      } else if (result.data.type == "staff") {
         let staff = await ProfileService.getStaffInformation({
-          id: this.$route.params.id,
+          id: this.$route.params.id
         });
       }
     },
@@ -377,5 +479,9 @@ p {
 
 .bottom-margin {
   margin-bottom: 10px;
+}
+
+.text-align-center {
+  text-align: center;
 }
 </style>
