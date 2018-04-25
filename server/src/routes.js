@@ -49,13 +49,13 @@ module.exports = (app) => {
     CourseController.create
   );
 
-  app.post('/update_course',
+  app.put('/update_course',
     AuthenticationControllerPolicy.super_admin,
     CourseControllerPolicy.update,
     CourseController.update
   );
 
-  app.post('/delete_course',
+  app.delete('/delete_course',
     AuthenticationControllerPolicy.super_admin,
     CourseControllerPolicy.hasId,
     CourseController.delete
@@ -74,13 +74,13 @@ module.exports = (app) => {
     DepartmentController.create
   );
 
-  app.post('/update_department',
+  app.put('/update_department',
     AuthenticationControllerPolicy.super_admin,
     DepartmentControllerPolicy.update,
     DepartmentController.update
   );
 
-  app.post('/delete_department',
+  app.delete('/delete_department',
     AuthenticationControllerPolicy.super_admin,
     DepartmentControllerPolicy.hasId,
     DepartmentController.delete

@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['Bachelor', 'Masters', 'PhD'],
       defaultValue: 'Bachelor',
-      allowNull: true,
+      allowNull: false,
     },
     acronym: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,

@@ -8,10 +8,10 @@ module.exports = {
         name: Joi.string().required(),
         academicDegree: Joi.string().required(),
         acronym: Joi.string().required(),
-        description: Joi.string().required(),
-        website: Joi.string(),
-        creationDate: Joi.string().required(),
-        endDate: Joi.string(),
+        description: Joi.string().allow(null).allow(''),
+        website: Joi.string().allow(null).allow(''),
+        creationDate: Joi.date().required(),
+        endDate: Joi.date().allow(null),
       };
 
       const {error} = Joi.validate(req.body, schema);
@@ -68,10 +68,10 @@ module.exports = {
             name: Joi.string(),
             academicDegree: Joi.string(),
             acronym: Joi.string(),
-            description: Joi.string(),
-            website: Joi.string(),
-            creationDate: Joi.string(),
-            endDate: Joi.string(),
+            description: Joi.string().allow(null).allow(''),
+            website: Joi.string().allow(null).allow(''),
+            creationDate: Joi.date(),
+            endDate: Joi.date().allow(null),
         };
 
         const {error} = Joi.validate(req.body, schema);
