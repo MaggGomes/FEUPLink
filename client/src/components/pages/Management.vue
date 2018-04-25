@@ -3,12 +3,13 @@
   <v-layout row wrap>
 
     <!-- dialog new course --> 
-    <v-dialog v-model="createDialog" persistent max-width="700px">
+    <v-dialog v-model="courseDialog" persistent max-width="700px">
       <v-card>
         <v-card-title>
-          <span class="headline">Create a new Course</span>
+          <span class="headline"> {{ updatingCourse ? 'Update Course information' : 'Create a new Course' }} </span>
         </v-card-title>
         <v-card-text>
+        <v-form v-model="formValid" ref="form" autocomplete="off" lazy-validation>
           <v-container grid-list-md>
             <v-layout wrap>
 
@@ -17,6 +18,7 @@
                   label="Course name"
                   hint="This must be unique"
                   v-model="name"
+                  :rules="[v => !!v || 'Course name is required']"
                   required
                 ></v-text-field>
               </v-flex>
@@ -25,6 +27,7 @@
                 <v-text-field
                   label="Course acronym"
                   v-model="acronym"
+                  :rules="[v => !!v || 'Course acronym is required']"
                   required
                 ></v-text-field>
               </v-flex>
@@ -34,21 +37,22 @@
                   label="Description"
                   v-model="description"
                   multi-line
-                  required
                 ></v-text-field>
               </v-flex>
 
               <v-flex xs12 md9>
                 <v-text-field
                   label="Website"                  
-                  v-model="website"
-                  required
+                  v-model="website"     
+                  prepend-icon="web"             
                 ></v-text-field>
               </v-flex>
 
               <v-flex xs12 md3>
                 <v-select
-                  label="Type of degree"
+                  label="Type of degree"                 
+                  v-model="academicDegree"
+                  :rules="[v => !!v || 'Course type of degree is required']"
                   required
                   :items="['Bachelor', 'Masters', 'PhD']"
                 ></v-select>
@@ -70,6 +74,8 @@
                     slot="activator"
                     label="Creation date"
                     v-model="creationDate"
+                    :rules="[v => !!v || 'Course creation date is required']"
+                    required
                     prepend-icon="event"
                     readonly
                   ></v-text-field>
@@ -115,11 +121,19 @@
               
             </v-layout>
           </v-container>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="cancelDialog">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="createCourse">Submit</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
+          <v-btn 
+            color="blue darken-1"
+            flat
+            @click.native="updatingCourse? updateCourse() : createCourse()"
+            :disabled="!formValid"
+          >
+            {{ updatingCourse ? 'Update' : 'Create' }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -127,7 +141,7 @@
     <v-jumbotron color="grey lighten-2">
       <v-layout>
         <v-flex xs6 md3>
-           <v-btn flat  color="success" slot="activator" @click="createDialog=true">
+           <v-btn flat  color="success" slot="activator" @click="courseDialog=true">
                 <v-icon> add </v-icon>
           </v-btn>
         </v-flex>
@@ -143,7 +157,7 @@
                   <v-toolbar-title>{{course.name}}</v-toolbar-title>
                   <v-spacer></v-spacer>
                   <v-toolbar-items>
-                    <v-btn flat @click="updateCourse(course)">
+                    <v-btn flat @click="openUpdateCourseDialog(course)">
                       <v-icon> mode edit </v-icon>
                     </v-btn>
                     <v-btn flat color="error" @click="deleteCourse(course.id)">
@@ -191,12 +205,16 @@ import CourseService from '@/services/CourseService'
 
 export default {
   data () {
-    return {
+    return {    
+      showingError: false,
       error: null,
       success: null,
       page: 1,
-      createDialog: false,
-      updateDialog: false,
+      courseDialog: false,
+      // update
+      updatingCourse: false,
+      currentCourseId: null,
+      // courses data
       courses: [],
       // course dialog fields
       name: '',
@@ -208,6 +226,8 @@ export default {
       creationDateMenu:false,
       endDate: '',
       endDateMenu:false,
+      //form-validation
+      formValid:false,
     }
   },
   methods: {
@@ -217,8 +237,9 @@ export default {
     saveEndDate (date) {
 		  this.$refs.endDateMenu.save(date)
 	  },
-    cancelDialog(){
-      this.createDialog=false
+    closeDialog(){
+      this.courseDialog=false
+      this.updatingCourse=false
       this.emptyDialogFields()
     },
     emptyDialogFields(){
@@ -230,12 +251,9 @@ export default {
       this.creationDate=''
       this.endDate=''
     },
-    async createCourse(){
-      this.createDialog=false
-      this.emptyDialogFields()
-      
-      try{
-        this.success = await (CourseService.create_course({
+    getCourseObject(){
+      // returns the object with a course based on the dialog fields
+      return {
           name: this.name,
           academicDegree: this.academicDegree,
           acronym: this.acronym,
@@ -243,21 +261,59 @@ export default {
           website: this.website,
           creationDate: this.creationDate,
           endDate: this.endDate,
-        }))
+        }
+    },
+    async createCourse(){
+        
+      try{
+        this.success = (await CourseService.create_course(this.getCourseObject())).data
+
+        // clean the dialog
+        this.courseDialog=false
+        this.emptyDialogFields()
+        
+        // update course list
+        this.getCourses()
       }catch(error){
-        this.error=error.response.data.error;
+        this.error=error.response.data.error
       }
       
     },
-    async updateCourse(course){
-      console.log('update: ', course);
+    openUpdateCourseDialog(course){
+      // update dialog fields
+      this.name=course.name
+      this.academicDegree=course.academicDegree
+      this.acronym=course.acronym
+      this.description=course.description
+      this.website=course.website
+      this.creationDate=String(course.creationDate).substring(0,10)
+      this.endDate=String(course.endDate).substring(0,10)
+
+      this.updatingCourse=true
+      this.courseDialog=true
+      this.currentCourseId=course.id
+    },
+    async updateCourse(){
+      
+      try{
+        let courseInfo = this.getCourseObject()
+        courseInfo['courseId']=this.currentCourseId
+
+        this.success=(await CourseService.update_course(courseInfo)).data
+        
+        this.closeDialog()
+        // update course list
+        this.getCourses()
+      }catch(error){
+        this.error=error
+      }
+    
     },
     async deleteCourse(id){
-      console.log('delete: ' + id);
       try{
         this.success = (await CourseService.delete_course(id)).data
         
-        //update course list
+        // update course list
         this.getCourses()
       }catch(error){
         this.error=error;
