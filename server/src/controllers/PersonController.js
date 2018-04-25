@@ -61,6 +61,7 @@ module.exports = {
             let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
 
             let student = await Student.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     PersonId: person.id,
                 },
@@ -87,6 +88,7 @@ module.exports = {
             }
 
             return res.status(200).send({
+                person: person,
                 student: student,
                 courses: studentCourses,
                 experience: studentExperience,
@@ -103,6 +105,7 @@ module.exports = {
             let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
 
             let staff = await Staff.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     PersonId: person.id,
                 },
@@ -116,6 +119,7 @@ module.exports = {
                 },
             });
             return res.status(200).send({
+                person: person,
                 staff: staff,
                 departments: staffDepartments,
                 experience: staffExperience,

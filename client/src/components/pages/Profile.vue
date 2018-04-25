@@ -9,10 +9,37 @@
           <img :src="defaultUserImg" width="150" height="150">
         </v-flex>
 
-        <v-flex hidden-xs-only lg4 sm3>
+        <v-flex hidden-xs-only lg6 sm6 justify-start>
+          <v-layout row>
+            <v-flex xs12>
+              <h3>{{ person.name }}</h3>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex lg6 sm6>
+              <p class="grey-color">Studied at:</p>
+              <h4>FEUP</h4>
+            </v-flex>
+            <v-flex lg6 sm6>
+              <p class="grey-color">From:</p>
+              <h4>{{ person.city }}, {{ person.country }}</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs12>
+              <p class="grey-color">Works at:</p>
+            </v-flex>
+            <v-flex xs12>
+              <h4>FEUP</h4>
+            </v-flex>
+          </v-layout>
+
+        </v-flex>
+
+        <!--<v-flex hidden-xs-only lg3 sm3>
           <v-layout column>
             <v-flex class="bottom-margin" xs12>
-              <h3>Carlos Oliveira</h3>
+              <h3>{{ person.name }}</h3>
             </v-flex>
             <v-flex xs12>
               <p class="grey-color">Studied at:</p>
@@ -28,7 +55,23 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex hidden-xs-only lg6 sm6>
+
+        <v-flex hidden-xs-only lg3 sm3>
+          <v-layout column>
+            <v-flex class="bottom-margin" xs12>
+              <h3></h3>
+            </v-flex>
+            <v-flex xs12>
+              <p class="grey-color">From:</p>
+            </v-flex>
+            <v-flex class="bottom-margin" xs12>
+              <h4>{{ person.city }}, {{ person.country }}</h4>
+            </v-flex>
+          </v-layout>
+        </v-flex>-->
+
+
+        <v-flex hidden-xs-only lg3 sm3>
         </v-flex>
         
       </v-layout>
@@ -196,6 +239,7 @@ export default {
     ],
     itemsExperience: [],
     itemsEducation: [],
+    person: {},
     editedIndexExperience: -1,
     editedIndexEducation: -1,
     editedItemExperience: {
@@ -253,15 +297,20 @@ export default {
         let student = await ProfileService.getStudentInformation({
           auth: this.$store.state.token
         });
+
+        this.person = student.data.person;
+
         /* Depois de alterado na base de dados deve passar a estar no ciclo for */
         var enrDate = new Date(student.data.student.enrollmentDate);
-        var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+        var enrollmentDate =
+          enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
         var grdDate = new Date(student.data.student.graduationDate);
-        var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
+        var graduationDate =
+          grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
 
         console.log(student);
 
-        for(var i = 0; i < student.data.courses.length; i++) {
+        for (var i = 0; i < student.data.courses.length; i++) {
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i].name,
@@ -270,9 +319,10 @@ export default {
           });
         }
 
-        for(var i = 0; i < student.data.experience.length; i++) {
+        for (var i = 0; i < student.data.experience.length; i++) {
           var sDate = new Date(student.data.experience[i].startDate);
-          var startDate = sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
+          var startDate =
+            sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
           var eDate = new Date(student.data.experience[i].endDate);
           var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
 
@@ -283,7 +333,7 @@ export default {
             endDate: endDate
           });
         }
-      } else if(result.data.type == 'staff') {
+      } else if (result.data.type == "staff") {
         let staff = await ProfileService.getStaffInformation({
           auth: this.$store.state.token
         });
