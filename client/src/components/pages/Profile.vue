@@ -2,13 +2,66 @@
   <v-content>
     <v-container align-center>
       <v-layout style="margin-bottom: 20px;" row>
-        <v-flex xs12 hidden-sm-and-up>
-          <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
+        <!-- Start region of mobile screen -->
+        <v-flex hidden-sm-and-up>
+          <v-layout row>
+            <v-flex xs12>
+              <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
+            </v-flex>
+          </v-layout>
+          <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
+            <v-flex xs12 wrap>
+              <h3 class="text-align-center">{{ person.name }}</h3>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
+              <p class="grey-color">Studied at:</p>
+            </v-flex>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">FEUP</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
+              <p class="grey-color">From:</p>
+            </v-flex>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">{{ person.city }}, {{ person.country }}</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs4 wrap>
+              <p class="grey-color">Works at:</p>
+            </v-flex>
+            <v-flex xs8 wrap>
+              <h4 class="text-align-center">FEUP</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row style="margin-top: 15px;">
+            <v-flex xs4 wrap>
+              <p class="grey-color">Contact:</p>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-facebook</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-linkedin</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-instagram</v-icon>
+            </v-flex>
+            <v-flex xs2>
+              <v-icon>fab fa-skype</v-icon>
+            </v-flex>
+          </v-layout>
         </v-flex>
+        <!-- End region of mobile screen -->
+
+        <!-- Start region of Small, medium, large and extra-large screen -->
         <v-flex hidden-xs-only lg2 sm3>
           <img :src="defaultUserImg" width="150" height="150">
         </v-flex>
-
         <v-flex hidden-xs-only lg6 sm6 justify-start>
           <v-layout class="bottom-margin" row>
             <v-flex xs12>
@@ -72,7 +125,7 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        
+        <!-- End regionf of Small, medium, large and extra-large screen -->
       </v-layout>
 
       <v-layout>
@@ -426,5 +479,9 @@ p {
 
 .bottom-margin {
   margin-bottom: 10px;
+}
+
+.text-align-center {
+  text-align: center;
 }
 </style>
