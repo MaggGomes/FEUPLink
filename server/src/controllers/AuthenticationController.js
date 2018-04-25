@@ -6,6 +6,7 @@ const {
   Course,
   Company,
   Job,
+  CourseStudent,
 } = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
@@ -33,8 +34,6 @@ module.exports = {
 
         const student = await Student.create({
           mecNumber: req.body.mecNumber,
-          enrollmentDate: req.body.enrollmentDate,
-          graduationDate: req.body.graduationDate,
           type: req.body.type,
           PersonId: personJson.id,
         });
@@ -46,6 +45,12 @@ module.exports = {
 
         Course.findById(course.toJSON().id).then((course) => {
           course.setStudents(student.toJSON().id);
+        });
+
+        CourseStudent.findOne([course.toJSON().id, student.toJSON().id]).then((cs) => {
+          console.log(cs);
+          cs.setEnrollmentDate(req.body.enrollmentDate);
+          cs.setGraduationDate(req.body.graduationDate);
         });
 
         if (!req.body.workExperience) {
@@ -300,8 +305,6 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            enrollmentDate: req.body.enrollmentDate,
-            graduationDate: req.body.graduationDate,
             type: req.body.studenType,
             PersonId: person.id,
           },
@@ -320,6 +323,11 @@ module.exports = {
 
         Course.findById(course.id).then((c) => {
           c.setStudents(student.id);
+        });
+
+        CourseStudent.findById([course.toJSON().id, student.toJSON().id]).then((cs) => {
+          cs.setEnrollmentDate(req.body.enrollmentDate);
+          cs.setGraduationDate(req.body.graduationDate);
         });
       } else {
         // check if there isn't already a student member associated to the person

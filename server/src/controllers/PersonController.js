@@ -1,16 +1,19 @@
 const {
+    Person,
     Student,
     Staff,
     Job,
     Company,
 } = require('../models');
 
-const jwt = require('jsonwebtoken');
-
 module.exports = {
     async getPerson(req, res) {
         try {
-            let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let person = await Person.findOne({
+                where: {
+                    id: req.body.id,
+                },
+            });
 
             return res.status(200).send({
                 person: person,
@@ -25,8 +28,11 @@ module.exports = {
     async getTypeOfPerson(req, res) {
         try {
             let result;
-            let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
-
+            let person = await Person.findOne({
+                where: {
+                    id: req.query.id,
+                },
+            });
             let student = await Student.findOne({
                 where: {
                     PersonId: person.id,
@@ -58,7 +64,11 @@ module.exports = {
     },
     async getStudent(req, res) {
         try {
-            let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let person = await Person.findOne({
+                where: {
+                    id: req.query.id,
+                },
+            });
 
             let student = await Student.findOne({
                 attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
@@ -75,6 +85,7 @@ module.exports = {
                 },
             });
 
+            let stdExperience = [];
             for (let i = 0; i < studentExperience.length; i++) {
                 let companyId = studentExperience[i].CompanyId;
                 let company = await Company.findOne({
@@ -82,16 +93,17 @@ module.exports = {
                         id: companyId,
                     },
                 });
-
-                console.log(company);
-                /* studentExperience[i].push(company.name); */
+                stdExperience.push({
+                    job: studentExperience[i],
+                    companyName: company.name,
+                });
             }
 
             return res.status(200).send({
                 person: person,
                 student: student,
                 courses: studentCourses,
-                experience: studentExperience,
+                experience: stdExperience,
             });
         } catch (err) {
             console.log('err: ', err);
@@ -102,7 +114,11 @@ module.exports = {
     },
     async getStaff(req, res) {
         try {
-            let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let person = await Person.findOne({
+                where: {
+                    id: req.query.id,
+                },
+            });
 
             let staff = await Staff.findOne({
                 attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],

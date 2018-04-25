@@ -108,11 +108,7 @@ window.fbAsyncInit = function() {
 
 <style>
 #app {
-  font-family: Georgia, 'Times New Roman', Times, serif
-}
-
-h1 h2 h3 h4 h5 h6 {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  font-family: "Avenir", Helvetica, Arial, sans-serif; 
 }
 
 .font-color {
