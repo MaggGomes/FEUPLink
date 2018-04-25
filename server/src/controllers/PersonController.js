@@ -65,13 +65,13 @@ module.exports = {
     async getStudent(req, res) {
         try {
             let person = await Person.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     id: req.query.id,
                 },
             });
 
             let student = await Student.findOne({
-                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     PersonId: person.id,
                 },
@@ -115,13 +115,13 @@ module.exports = {
     async getStaff(req, res) {
         try {
             let person = await Person.findOne({
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     id: req.query.id,
                 },
             });
 
             let staff = await Staff.findOne({
-                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
                 where: {
                     PersonId: person.id,
                 },
