@@ -3,7 +3,7 @@
     <v-container align-center>
       <v-layout style="margin-bottom: 20px;" row>
         <!-- Start region of mobile screen -->
-        <v-flex hidden-sm-and-up>
+        <v-flex hidden-md-and-up>
           <v-layout row>
             <v-flex xs12>
               <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
@@ -59,44 +59,44 @@
         <!-- End region of mobile screen -->
 
         <!-- Start region of Small, medium, large and extra-large screen -->
-        <v-flex hidden-xs-only lg2 sm3>
+        <v-flex hidden-sm-and-down lg2 md3>
           <img :src="defaultUserImg" width="150" height="150">
         </v-flex>
-        <v-flex hidden-xs-only lg6 sm6 justify-start>
+        <v-flex hidden-sm-and-down lg6 md6 justify-start>
           <v-layout class="bottom-margin" row>
-            <v-flex xs12>
+            <v-flex lg12 md12>
               <h3>{{ person.name }}</h3>
             </v-flex>
           </v-layout>
           <v-layout class="bottom-margin" row>
-            <v-flex lg6 sm6>
+            <v-flex lg6 md6>
               <v-layout row>
-                <v-flex lg3 sm3>
+                <v-flex lg3 md3>
                   <p class="grey-color">Studied at:</p>
                 </v-flex>
-                <v-flex lg9 sm9 wrap>
+                <v-flex lg9 md9 wrap>
                   <h4>FEUP</h4>
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex lg6 sm6>
+            <v-flex lg6 md6>
               <v-layout row>
-                <v-flex lg3 sm3>
+                <v-flex lg3 md3>
                   <p class="grey-color">From:</p>
                 </v-flex>
-                <v-flex lg9 sm9 wrap>
+                <v-flex lg9 md9 wrap>
                   <h4>{{ person.city }}, {{ person.country }}</h4>
                 </v-flex>
               </v-layout>
             </v-flex>
           </v-layout>
           <v-layout class="bottom-margin"  row>
-            <v-flex lg6 sm6>
+            <v-flex lg6 md6>
               <v-layout row>
-                <v-flex lg3 sm3>
+                <v-flex lg3 md3>
                   <p class="grey-color">Works at:</p>
                 </v-flex>
-                <v-flex lg9 sm9 wrap>
+                <v-flex lg9 md9 wrap>
                   <h4>FEUP</h4>
                 </v-flex>
               </v-layout>
@@ -104,23 +104,23 @@
           </v-layout>
         </v-flex>
 
-        <v-flex hidden-xs-only lg3 sm3>
+        <v-flex hidden-sm-and-down lg3 md3>
           <v-layout row>
-            <v-flex lg12 sm12>
+            <v-flex lg12 md12>
               <p class="grey-color">Contact:</p>
             </v-flex>
           </v-layout>
           <v-layout row>
-            <v-flex lg2 sm2>
+            <v-flex lg2 md2>
               <v-icon large>fab fa-facebook</v-icon>
             </v-flex>
-            <v-flex lg2 sm2>
+            <v-flex lg2 md2>
               <v-icon large>fab fa-linkedin</v-icon>
             </v-flex>
-            <v-flex lg2 sm2>
+            <v-flex lg2 md2>
               <v-icon large>fab fa-instagram</v-icon>
             </v-flex>
-            <v-flex lg2 sm2>
+            <v-flex lg2 md2>
               <v-icon large>fab fa-skype</v-icon>
             </v-flex>
           </v-layout>
