@@ -86,8 +86,15 @@ module.exports = (app) => {
       PostController.delete
   );
 
+  // Returns all posts
   app.get('/post',
       AuthenticationControllerPolicy.authenticated,
       PostController.list_all
+  );
+
+  // Returns all post from a specified type
+  app.get('/post/:type',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.list_by_type
   );
 };

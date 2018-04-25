@@ -8,7 +8,7 @@ module.exports = {
         try {
             (await Post.findOrCreate({
                 where: {
-                    name: req.body.name,
+                    title: req.body.title,
                 },
                 defaults: req.body,
             }));
@@ -81,6 +81,30 @@ module.exports = {
         } catch (err) {
             res.status(400).send({
                 error: err,
+            });
+        }
+    },
+    async list_by_type(req, res) {
+        try {
+            let posts = (await Post.findAll({
+                where: {
+                    type: req.params.type
+                },
+
+                attribute: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+                include: [{
+                    all: true,
+                }],
+                order: [
+                    ['id', 'DESC'],
+                ],
+            }));
+
+
+            res.status(201).send(posts);
+        } catch (err) {
+            res.status(401).send({
+                error: "no results found"
             });
         }
     },
