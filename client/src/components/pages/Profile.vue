@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <div>
     <v-container align-center>
       <v-layout style="margin-bottom: 20px;" row>
         <!-- Start region of mobile screen -->
@@ -256,7 +256,7 @@
         </template>
       </v-data-table>
     </v-container>
-  </v-content>
+  </div>
 </template>
 <script>
 import Vue from "vue";
