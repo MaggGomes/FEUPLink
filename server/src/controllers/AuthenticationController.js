@@ -42,16 +42,12 @@ module.exports = {
           name: req.body.course,
           creationDate: 2000,
         });
-
-        Course.findById(course.toJSON().id).then((course) => {
-          course.setStudents(student.toJSON().id);
-        });
-
-        CourseStudent.findOne([course.toJSON().id, student.toJSON().id]).then((cs) => {
-          console.log(cs);
-          cs.setEnrollmentDate(req.body.enrollmentDate);
-          cs.setGraduationDate(req.body.graduationDate);
-        });
+        (await CourseStudent.create({
+          CourseId: course.toJSON().id,
+          StudentId: student.toJSON().id,
+          enrollmentDate: req.body.enrollmentDate,
+            graduationDate: req.body.graduationDate,
+        }));
 
         if (!req.body.workExperience) {
           const company = await Company.create({
