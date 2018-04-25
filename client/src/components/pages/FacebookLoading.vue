@@ -21,30 +21,31 @@ export default {
         }
     },
     mounted: async function() {
-      // just a callback for the linkedIn oauth
-    
+      // just a callback for the linkedIn oauth  
+      
       var url = new URL(window.location.href);
       var code = url.searchParams.get("code");
       var state = url.searchParams.get("state");
-      var error = url.searchParams.get("error");
+      var error = url.searchParams.get("error");      
 
-      
-      try{
+      try{        
         let data = (await AuthenticationService.signup_facebook({code,state,error})).data;
-        
+        console.log(data);
         this.$store.dispatch('setToken', data.token)
         this.$store.dispatch('setUser', data.person)
         
         // check if needs to complete authentication
         if (data.continueSignupFacebook) {
-          this.$router.push('ContinueSignupFacebook')
+          this.$router.push('/continue-signup-facebook')
         }else {
-          this.$router.push('Feed')
+          this.$router.push('/feed')
         }
         
       }catch(error){
-        this.$router.push('/')
+        console.log(error);        
+        this.$router.push('/');
       }
+      //debugger
     },
 }
 </script>

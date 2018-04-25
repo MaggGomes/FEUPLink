@@ -401,12 +401,12 @@ module.exports = {
             switch (error.details[0].context.key) {
                 case 'code':
                     res.status(400).send({
-                        error: 'You must provide your LinkedIn Authorization Code',
+                        error: 'You must provide your Facebook Authorization Code',
                     });
                     break;
                 case 'state':
                     res.status(400).send({
-                        error: `You must provide your LinkedIn state for validation purposes`,
+                        error: `You must provide your Facebook state for validation purposes`,
                     });
                     break;
                 case 'error':

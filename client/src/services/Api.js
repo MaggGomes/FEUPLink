@@ -4,11 +4,9 @@ import store from '@/store/store'
 
 let baseURL;
 
-if(process.env.NODE_ENV === 'https'){
-    baseURL = 'https://82e2df57.ngrok.io'
-}
-else if(process.env.NODE_ENV !== 'production'){
-    baseURL = 'http://localhost:8081/'
+if(process.env.NODE_ENV !== 'production'){
+    baseURL = 'https://6082376d.ngrok.io'
+    //baseURL = 'http://localhost:8081/'
 }
 else {
     baseURL = 'https://feup-link-dev-api.herokuapp.com/'
@@ -17,7 +15,7 @@ else {
 export default () => {
     return axios.create({
         baseURL: baseURL,
-        timeout: 500,
+        timeout: 5000,
         headers: {auth: store.state.token},
     })
 }

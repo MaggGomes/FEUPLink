@@ -453,8 +453,30 @@ module.exports = {
       } else {
         personData = seqUser.dataValues;
       }
+
+      let student = (await Student.findAll({
+        where: {
+          PersonId: personData.id,
+        },
+      }));
+
+      let continueSignupFacebook = false;
+
+      if (student.length === 0) {
+        let staff = (await Staff.findAll({
+          where: {
+            PersonId: personData.id,
+          },
+        }));
+
+        if (staff.length === 0) {
+          continueSignupFacebook = true;
+        }
+      }
+
       // return the user token, to allow him to make further requests to the API
       return res.status(200).send({
+        continueSignupFacebook: continueSignupFacebook,
         person: personData,
         token: jwtSignPerson(personData),
       });

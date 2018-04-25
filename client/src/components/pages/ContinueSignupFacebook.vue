@@ -355,6 +355,7 @@ export default {
   },
   methods: {
     async submitData () {
+		debugger
 				try{
 					if (this.$refs.form.validate()) {
 						await AuthenticationService.continue_signup_facebook({
@@ -374,7 +375,7 @@ export default {
 							mecNumber: this.number,
 						});
 						
-						this.$router.push('Feed');
+						this.$router.push('/feed');
 					}
 				}catch(error){
 					this.e1=1;
@@ -383,7 +384,8 @@ export default {
 				}
 		},
 		save (date) {
-			this.$refs.menu.save(date)
+			//debugger
+			//this.$refs.picker.save(date)
 		}
   }
 }

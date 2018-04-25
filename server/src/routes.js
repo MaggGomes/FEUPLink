@@ -30,6 +30,7 @@ module.exports = (app) => {
   );
 
   app.post('/signup_facebook',
+    AuthenticationControllerPolicy.signup_facebook,
     AuthenticationController.signup_facebook
   );
 
