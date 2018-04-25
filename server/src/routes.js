@@ -1,10 +1,12 @@
 // policies
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 const CourseControllerPolicy = require('./policies/CourseControllerPolicy');
+const PostControllerPolicy = require('./policies/PostControllerPolicy');
 
 // controllers
 const AuthenticationController = require('./controllers/AuthenticationController');
 const CourseController = require('./controllers/CourseController');
+const PostController = require('./controllers/PostController');
 
 
 module.exports = (app) => {
@@ -62,5 +64,37 @@ module.exports = (app) => {
   app.get('/list_all_courses',
     AuthenticationControllerPolicy.authenticated,
     CourseController.list_all
+  );
+
+    // ----Post
+
+  app.post('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.create,
+      PostController.create
+  );
+
+  app.put('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.update,
+      PostController.update
+  );
+
+  app.delete('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.hasId,
+      PostController.delete
+  );
+
+  // Returns all posts
+  app.get('/post',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.list_all
+  );
+
+  // Returns all post from a specified type
+  app.get('/post/:type',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.list_by_type
   );
 };
