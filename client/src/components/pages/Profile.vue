@@ -127,135 +127,148 @@
         </v-flex>
         <!-- End regionf of Small, medium, large and extra-large screen -->
       </v-layout>
-
-      <v-layout>
-        <v-flex xs11>
-          <v-toolbar-title>Experience</v-toolbar-title>
-        </v-flex>
-        <v-flex>
-          <v-dialog v-model="dialogExperience" max-width="500px">
-            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Start date" v-model="editedItemExperience.startDate"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="End date" v-model="editedItemExperience.endDate"></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-flex>
-      </v-layout>
-      <v-data-table
-        :headers="headersExperience"
-        :items="itemsExperience"
-        hide-actions
-        class="elevation-1"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.company }}</td>
-          <td class="text-xs-left">{{ props.item.title }}</td>
-          <td class="text-xs-left">{{ props.item.startDate }}</td>
-          <td class="text-xs-left">{{ props.item.endDate }}</td>
-          <td class="justify-left layout px-0">
-            <v-btn icon class="mx-0" @click="editItemExperience(props.item)">
-              <v-icon color="teal">edit</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-0" @click="deleteItemExperience(props.item)">
-              <v-icon color="pink">delete</v-icon>
-            </v-btn>
-          </td>
-        </template>
-        <template slot="no-data">
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
-        </template>
-      </v-data-table>
     </v-container>
 
-    <v-container>
-      <v-layout>
-        <v-flex xs11>
-          <v-toolbar-title>Education</v-toolbar-title>
-        </v-flex>
-        <v-flex>
-          <v-dialog v-model="dialogEducation" max-width="500px">
-            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Academic degree" v-model="editedItemEducation.degree"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Course name" v-model="editedItemEducation.course"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Enrollment date" v-model="editedItemEducation.enrollmentDate"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field label="Graduation date" v-model="editedItemEducation.graduationDate"></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="closeEducation">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="saveEducation">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-flex>
-      </v-layout>
-      <v-data-table
-        :headers="headersEducation"
-        :items="itemsEducation"
-        hide-actions
-        class="elevation-1"
-      >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.degree }}</td>
-          <td class="text-xs-left">{{ props.item.course }}</td>
-          <td class="text-xs-left">{{ props.item.enrollmentDate }}</td>
-          <td class="text-xs-left">{{ props.item.graduationDate }}</td>
-          <td class="justify-left layout px-0">
-            <v-btn icon class="mx-0" @click="editItemEducation(props.item)">
-              <v-icon color="teal">edit</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-0" @click="deleteItemEducation(props.item)">
-              <v-icon color="pink">delete</v-icon>
-            </v-btn>
-          </td>
-        </template>
-        <template slot="no-data">
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
-        </template>
-      </v-data-table>
-    </v-container>
+    <v-tabs centered v-model="active" color="grey lighten-5" slider-color="black">
+      <v-tab style="color: black;" v-for="item in tabsItems" :key="item" ripple>{{ item }}</v-tab>
+      
+      <v-tab-item>
+        <v-container>
+          <v-layout>
+            <v-flex xs11>
+              <v-toolbar-title>Experience</v-toolbar-title>
+            </v-flex>
+            <v-flex>
+              <v-dialog v-model="dialogExperience" max-width="500px">
+                <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Start date" v-model="editedItemExperience.startDate"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="End date" v-model="editedItemExperience.endDate"></v-text-field>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-flex>
+          </v-layout>
+          <v-data-table
+            :headers="headersExperience"
+            :items="itemsExperience"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td class="text-xs-left">{{ props.item.company }}</td>
+              <td class="text-xs-left">{{ props.item.title }}</td>
+              <td class="text-xs-left">{{ props.item.startDate }}</td>
+              <td class="text-xs-left">{{ props.item.endDate }}</td>
+              <td class="justify-left layout px-0">
+                <v-btn icon class="mx-0" @click="editItemExperience(props.item)">
+                  <v-icon color="teal">edit</v-icon>
+                </v-btn>
+                <v-btn icon class="mx-0" @click="deleteItemExperience(props.item)">
+                  <v-icon color="pink">delete</v-icon>
+                </v-btn>
+              </td>
+            </template>
+            <template slot="no-data">
+              <v-btn color="primary" @click="initialize">Reset</v-btn>
+            </template>
+          </v-data-table>
+        </v-container>
+    
+        <v-container>
+          <v-layout>
+            <v-flex xs11>
+              <v-toolbar-title>Education</v-toolbar-title>
+            </v-flex>
+            <v-flex>
+              <v-dialog v-model="dialogEducation" max-width="500px">
+                <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Academic degree" v-model="editedItemEducation.degree"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Course name" v-model="editedItemEducation.course"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Enrollment date" v-model="editedItemEducation.enrollmentDate"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Graduation date" v-model="editedItemEducation.graduationDate"></v-text-field>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click.native="closeEducation">Cancel</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native="saveEducation">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-flex>
+          </v-layout>
+          <v-data-table
+            :headers="headersEducation"
+            :items="itemsEducation"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td class="text-xs-left">{{ props.item.degree }}</td>
+              <td class="text-xs-left">{{ props.item.course }}</td>
+              <td class="text-xs-left">{{ props.item.enrollmentDate }}</td>
+              <td class="text-xs-left">{{ props.item.graduationDate }}</td>
+              <td class="justify-left layout px-0">
+                <v-btn icon class="mx-0" @click="editItemEducation(props.item)">
+                  <v-icon color="teal">edit</v-icon>
+                </v-btn>
+                <v-btn icon class="mx-0" @click="deleteItemEducation(props.item)">
+                  <v-icon color="pink">delete</v-icon>
+                </v-btn>
+              </td>
+            </template>
+            <template slot="no-data">
+              <v-btn color="primary" @click="initialize">Reset</v-btn>
+            </template>
+          </v-data-table>
+        </v-container>
+      </v-tab-item>
+
+      <v-tab-item>
+        <p>Boas</p>
+      </v-tab-item>
+    </v-tabs>
+
   </div>
 </template>
 <script>
@@ -317,7 +330,8 @@ export default {
       course: 0,
       enrollmentDate: 0,
       graduationDate: 0
-    }
+    },
+    tabsItems: ["Experience", "Visibility Options"]
   }),
 
   computed: {
@@ -353,15 +367,21 @@ export default {
         this.person = student.data.person;
 
         for (var i = 0; i < student.data.courses.length; i++) {
-          var enrDate = new Date(student.data.courses[i].CourseStudent.enrollmentDate);
-          var enrollmentDate = enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
-          var grdDate = new Date(student.data.courses[i].CourseStudent.graduationDate);
-          var graduationDate = grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
+          var enrDate = new Date(
+            student.data.courses[i].CourseStudent.enrollmentDate
+          );
+          var enrollmentDate =
+            enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+          var grdDate = new Date(
+            student.data.courses[i].CourseStudent.graduationDate
+          );
+          var graduationDate =
+            grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i].name,
             enrollmentDate: enrollmentDate,
-            graduationDate: graduationDate,
+            graduationDate: graduationDate
           });
         }
 
