@@ -15,5 +15,11 @@ export default {
     },
     insertCourseStudent (userInfo) {
         return Api().post('create_course_student', userInfo)
+    },
+    updateJobExperience (userInfo) {
+        return Api().post('update_job', userInfo)
+    },
+    updateCourseStudent (userInfo) {
+        return Api().post('update_course_student', userInfo)
     }
 }

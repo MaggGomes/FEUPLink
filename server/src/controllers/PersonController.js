@@ -208,4 +208,70 @@ module.exports = {
         });
         }
     },
+    async updateJobExperience(req, res) {
+        try {
+            const personId = req.body.personId;
+            delete req.body.personId;
+            const company = (await Company.findOne({
+                where: {
+                  name: req.body.company,
+                },
+            }));
+            delete req.body.company;
+
+            (await Job.update(
+                req.body,
+                {
+                  where: {
+                    CompanyId: company.toJSON().id,
+                    PersonId: personId,
+                },
+              }));
+              res.status(201).send({
+                res: 'Successfully updated the job information',
+              });
+          } catch (err) {
+            res.status(400).send({
+              error: err,
+            });
+          }
+    },
+    async updateCourseStudent(req, res) {
+        try {
+            const student = (await Student.findOne({
+                where: {
+                  PersonId: req.body.PersonId,
+                },
+            }));
+            delete req.body.PersonId;
+
+            const course = (await Course.findOne({
+                where: {
+                  name: req.body.name,
+                  academicDegree: req.body.academicDegree,
+                },
+            }));
+            delete req.body.name;
+            delete req.body.academicDegree;
+
+            console.log(req.body);
+            console.log(course.toJSON().id);
+            console.log(student.toJSON().id);
+            (await CourseStudent.update(
+                req.body,
+                {
+                  where: {
+                    CourseId: course.toJSON().id,
+                    StudentId: student.toJSON().id,
+                },
+              }));
+              res.status(201).send({
+                res: 'Successfully updated the course student information',
+              });
+          } catch (err) {
+            res.status(400).send({
+              error: err,
+            });
+          }
+    },
 };

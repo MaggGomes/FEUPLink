@@ -544,13 +544,11 @@ export default {
           var enrDate = new Date(
             student.data.courses[i].CourseStudent.enrollmentDate
           );
-          var enrollmentDate =
-            enrDate.getUTCMonth() + 1 + "/" + enrDate.getUTCFullYear();
+          var enrollmentDate = enrDate.getUTCFullYear() + "-" + (enrDate.getUTCMonth() + 1);
           var grdDate = new Date(
             student.data.courses[i].CourseStudent.graduationDate
           );
-          var graduationDate =
-            grdDate.getUTCMonth() + 1 + "/" + grdDate.getUTCFullYear();
+          var graduationDate = grdDate.getUTCFullYear() + "-" + (grdDate.getUTCMonth() + 1);
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i].name,
@@ -561,10 +559,9 @@ export default {
 
         for (var i = 0; i < student.data.experience.length; i++) {
           var sDate = new Date(student.data.experience[i].job.startDate);
-          var startDate =
-            sDate.getUTCMonth() + 1 + "/" + sDate.getUTCFullYear();
+          var startDate = sDate.getUTCFullYear() + "-" + (sDate.getUTCMonth() + 1);
           var eDate = new Date(student.data.experience[i].job.endDate);
-          var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
+          var endDate = eDate.getUTCFullYear() + "-" + (eDate.getUTCMonth() + 1);
 
           var current = '';
           if(student.data.experience[i].job.isCurrent)
@@ -616,6 +613,15 @@ export default {
           this.itemsExperience[this.editedIndexExperience],
           this.editedItemExperience
         );
+
+        (await ProfileService.updateJobExperience({
+          company: this.editedItemExperience.company,
+          title: this.editedItemExperience.title,
+          startDate: this.editedItemExperience.startDate,
+          endDate: this.editedItemExperience.endDate,
+          isCurrent: this.editedItemExperience.isCurrent,
+          personId: this.$store.state.user.id
+        }));
       } else {
         this.itemsExperience.push(this.editedItemExperience);
         (await ProfileService.insertExperience({
@@ -656,6 +662,13 @@ export default {
           this.itemsEducation[this.editedIndexEducation],
           this.editedItemEducation
         );
+        (await ProfileService.updateCourseStudent({
+          name: this.editedItemEducation.course,
+          academicDegree: this.editedItemEducation.degree,
+          enrollmentDate: this.editedItemEducation.enrollmentDate,
+          graduationDate: this.editedItemEducation.graduationDate,
+          PersonId: this.$store.state.user.id
+        }));
       } else {
         this.itemsEducation.push(this.editedItemEducation);
         (await ProfileService.insertCourseStudent({
