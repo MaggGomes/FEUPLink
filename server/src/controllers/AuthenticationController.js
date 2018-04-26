@@ -511,8 +511,8 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            enrollmentDate: req.body.enrollmentDate,
-            graduationDate: req.body.graduationDate,
+            createdAt: req.body.enrollmentDate,
+            updatedAt: req.body.graduationDate,
             type: req.body.studenType,
             PersonId: person.id,
           },

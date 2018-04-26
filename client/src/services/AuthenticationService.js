@@ -13,6 +13,9 @@ export default {
     continue_signup_linkedin (userInfo) {
         return Api().post('continue_signup_linkedin', userInfo)
     },
+    continue_signup_facebook (userInfo) {
+        return Api().post('continue_signup_facebook', userInfo)
+    },
     signup_staff (userInfo) {
         return Api().post('signup_staff', userInfo)
     },

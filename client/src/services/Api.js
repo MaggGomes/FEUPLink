@@ -5,8 +5,7 @@ import store from '@/store/store'
 let baseURL;
 
 if(process.env.NODE_ENV !== 'production'){
-    baseURL = 'https://6082376d.ngrok.io'
-    //baseURL = 'http://localhost:8081/'
+    baseURL = 'http://localhost:8081/'
 }
 else {
     baseURL = 'https://feup-link-dev-api.herokuapp.com/'

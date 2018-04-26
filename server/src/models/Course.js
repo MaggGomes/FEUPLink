@@ -5,6 +5,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    academicDegree: {
+      type: DataTypes.ENUM,
+      values: ['Bachelor', 'Masters', 'PhD'],
+      defaultValue: 'Bachelor',
+      allowNull: true,
+    },
     acronym: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -21,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
@@ -31,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       // Course can have many students
       Course.belongsToMany(models.Student,
         {
-          through: 'CourseStudent',
+          through: models.CourseStudent,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }

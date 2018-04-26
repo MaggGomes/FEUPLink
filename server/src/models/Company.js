@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     industry: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

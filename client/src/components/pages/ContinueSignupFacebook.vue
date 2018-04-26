@@ -355,7 +355,6 @@ export default {
   },
   methods: {
     async submitData () {
-		debugger
 				try{
 					if (this.$refs.form.validate()) {
 						await AuthenticationService.continue_signup_facebook({
