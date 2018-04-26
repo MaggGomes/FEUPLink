@@ -34,10 +34,12 @@
   
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <div class="max-width">
+          <router-view></router-view>
+        </div>
       </v-container>
     </v-content>
-    <v-footer app></v-footer>
+    <v-footer absolute="false" app></v-footer>
   </div>
   </v-app>
 </template>
@@ -108,10 +110,17 @@ window.fbAsyncInit = function() {
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif; 
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 }
 
 .font-color {
   color: white;
+}
+
+@media screen and (min-width: 960px) {
+  .max-width {
+    width: 80%; 
+    margin: 0 auto;
+  }   
 }
 </style>
