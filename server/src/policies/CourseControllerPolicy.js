@@ -14,7 +14,7 @@ module.exports = {
         endDate: Joi.date().allow(null),
         departmentId: Joi.number().required(),
       };
-      console.log(req.body);
+
       const {error} = Joi.validate(req.body, schema);
 
       if (error) {
