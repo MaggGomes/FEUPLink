@@ -66,7 +66,7 @@ module.exports = (app) => {
   );
 
   app.post('/update_course_student',
-    PersonController.updateJobExperience
+    PersonController.updateCourseStudent
   );
   // ----Course
 

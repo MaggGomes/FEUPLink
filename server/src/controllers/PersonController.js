@@ -253,10 +253,6 @@ module.exports = {
             }));
             delete req.body.name;
             delete req.body.academicDegree;
-
-            console.log(req.body);
-            console.log(course.toJSON().id);
-            console.log(student.toJSON().id);
             (await CourseStudent.update(
                 req.body,
                 {
