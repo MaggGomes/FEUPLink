@@ -127,7 +127,7 @@
     font-family: "Avenir", Helvetica, Arial, sans-serif;
   }
   #main-bar{
-    background-color: darkred;
+    background-color: rgb(140,45,25);
   }
   .toolbar{
     width:100%;
@@ -174,7 +174,7 @@
     #main-bar-content{
       width: auto;
       margin: 0px 50px;
-      color: darkred;
+      color: rgb(140,45,25);
     }
     #side-main{
       height: 50px;
@@ -184,7 +184,7 @@
       width: 140px;
       border: 2px solid white;
       border-radius: 0%;
-      color:darkred;
+      color:rgb(140,45,25);
       background-color: white!important;
     }
     #main-bar-content .Sign-Up{
