@@ -1,321 +1,115 @@
 <template>
-  <v-container fluid>
-    <v-layout row wrap>
+  <div class="text-lg-center text-md-center text-sm-center" id="feed_content">
+    <v-container>
+      <v-navigation-drawer fixed permanent floating hide-overlay class="hidden-sm-and-down" v-model="drawer">
+        <v-list class="pt-0" dense>
+          <v-list-tile v-for="nav_tab in nav_tabs" :key="nav_tab.id" v-bind:class="[{ active: currentTab === nav_tab.id }]" @click="currentTab = nav_tab.id">
+            <v-list-tile-content>
+              <v-list-tile-title>{{ nav_tab.name }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-navigation-drawer>
 
-      <!-- provide feedback to the user -->
-      <v-snackbar :timeout="6000" :color="feedbackColor" v-model="showingFeedback" top multi-line>
-        <div v-if="error!=null">
-          {{error.response.data.error}}
-        </div>
-        <div v-if="success!=null">
-          {{success.res}}
-        </div>
-        <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
-      </v-snackbar>
-
-      <!-- warning dialog -->
-      <v-dialog v-model="warningDialog">
-        <v-card>
-          <v-card-title class="headline">Be Careful!</v-card-title>
-          <v-card-text>
-            {{warningTitle}}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
-            <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-      <!-- dialog new course -->
-      <v-dialog v-model="courseDialog" persistent max-width="700px">
-        <v-card>
-          <v-card-title>
-            <span class="headline"> {{ updatingCourse ? 'Update Course information' : 'Create a new Course' }} </span>
-          </v-card-title>
-          <v-card-text>
-            <v-form v-model="formValid" ref="form" autocomplete="off">
-              <v-container grid-list-md>
-                <v-layout wrap>
-
-                  <v-flex xs12 md9>
-                    <v-text-field label="Course name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Course name is required']"
-                      required></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12 md3>
-                    <v-text-field label="Course acronym" v-model="acronym" :rules="[v => !!v || 'Course acronym is required']" required></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12>
-                    <v-text-field label="Description" v-model="description" multi-line></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12 md9>
-                    <v-text-field label="Website" v-model="website" prepend-icon="web"></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12 md3>
-                    <v-select label="Type of degree" v-model="academicDegree" :rules="[v => !!v || 'Course type of degree is required']" required
-                      :items="['Bachelor', 'Masters', 'PhD']"></v-select>
-                  </v-flex>
-
-                  <v-flex xs12 md6>
-                    <v-menu ref="creationDateMenu" lazy :close-on-content-click="false" v-model="creationDateMenu" transition="scale-transition"
-                      offset-y full-width :nudge-right="40" min-width="290px">
-                      <v-text-field slot="activator" label="Creation date" v-model="creationDate" :rules="[v => !!v || 'Course creation date is required']"
-                        required prepend-icon="event" readonly></v-text-field>
-                      <v-date-picker ref="picker" v-model="creationDate" @change="saveCreationDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-
-                  <v-flex xs12 md6>
-                    <v-layout>
-                      <v-flex xs10>
-                        <v-menu ref="endDateMenu" lazy :close-on-content-click="false" v-model="endDateMenu" transition="scale-transition" offset-y
-                          full-width :nudge-right="40" min-width="290px">
-                          <v-text-field slot="activator" label="Close date" v-model="endDate" prepend-icon="event" hint="If the course has already closed"
-                            readonly></v-text-field>
-                          <v-date-picker ref="picker" v-model="endDate" @change="saveEndDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
-                        </v-menu>
-                      </v-flex>
-
-                      <v-flex xs2>
-                        <v-btn flat color="blue-grey lighten-3" @click="endDate=''">
-                          <v-icon> clear </v-icon>
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-
-
-                </v-layout>
-              </v-container>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="() => {                
-                  if(updatingCourse)
-                    showConfirmDialog(updateCourse, 'Are you sure you want to update the course?')
-                   else
-                     showConfirmDialog(createCourse, 'Are you sure you want to create the course?')
-                }" :disabled="!formValid">
-              {{ updatingCourse ? 'Update' : 'Create' }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-
-
-      <v-btn flat color="success" slot="activator" @click="courseDialog=true">
-        <v-icon> add </v-icon>
-      </v-btn>
-
-
-      <!-- list of courses -->
-
-
-      <v-toolbar v-for="course in courses" :key="course.id">
-        <v-toolbar-title>{{course.name}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn flat @click="openUpdateCourseDialog(course)">
-            <v-icon> mode edit </v-icon>
-          </v-btn>
-          <v-btn flat color="error" @click="() => {
-                      currentCourseId=course.id
-                      showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
-                  }">
-            <v-icon> delete </v-icon>
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-
-
-      <!-- pagination -->
-    <v-flex xs12>
-      <div class="text-xs-center">
-        <v-pagination :length="6" v-model="page"></v-pagination>
-      </div>
-    </v-flex>
-
-
-
-    </v-layout>
-  </v-container>
+      <v-tabs dark class="hidden-md-and-up">
+        <v-tab v-for="nav_tab in nav_tabs" :key="nav_tab.id" :class="[{ active: currentTab === nav_tab.id }]" @click="currentTab = nav_tab.id" ripple>
+          {{nav_tab.name}}
+        </v-tab>
+        <v-tab-item v-for="nav in nav_tabs.length" :key="nav" class="side_content">
+          <span v-if="currentTab === 1">
+          <course-management></course-management>
+        </span>
+        <span v-else-if="currentTab === 2">
+          <department-management></department-management>
+        </span>
+        </v-tab-item>
+      </v-tabs>
+      
+      <v-flex class="side_content hidden-sm-and-down">
+        <span v-if="currentTab === 1">
+          <course-management></course-management>
+        </span>
+        <span v-else-if="currentTab === 2">
+          <department-management></department-management>
+        </span>
+      </v-flex>
+     
+    </v-container>
+  </div>
 </template>
 
 
 <script>
-import CourseService from '@/services/CourseService'
+  import Vue from 'vue'
+  import CourseManagement from '@/components/elements/managementTabs/CourseManagement'
+  import DepartmentManagement from '@/components/elements/managementTabs/DepartmentManagement'
 
-
-export default {
-  data () {
-    return {    
-      // warning dialog
-      warningDialog: false,
-      warningTitle: null,
-      // feedback
-      showingFeedback: false,
-      feedbackColor: 'error',
-      error: null,
-      success: null,
-      // pagination
-      page: 1,
-      courseDialog: false,
-      // update
-      updatingCourse: false,
-      currentCourseId: null,
-      // courses data
-      courses: [],
-      // course dialog fields
-      name: null,
-      academicDegree: null,
-      acronym: null,
-      description: null,
-      website: null,
-      creationDate: null,
-      creationDateMenu:false,
-      endDate: null,
-      endDateMenu:false,
-      //form-validation
-      formValid:false,
-    }
-  },
-  methods: {
-    showConfirmDialog(action, title){
-        this.warningDialog=true
-        this.warningAction=action 
-        this.warningTitle=title
+  export default {
+    components: {
+      CourseManagement,
+      DepartmentManagement,
     },
-    warningAction(){ // function to be ovewritten by the correct action
-    },
-    saveCreationDate (date) {
-		  this.$refs.creationDateMenu.save(date)
-	  },
-    saveEndDate (date) {
-		  this.$refs.endDateMenu.save(date)
-	  },
-    closeDialog(){
-      this.courseDialog=false
-      this.updatingCourse=false      
-    },    
-    getCourseObject(){
-      // returns the object with a course based on the dialog fields
-      return {
-          name: this.name,
-          academicDegree: this.academicDegree,
-          acronym: this.acronym,
-          description: this.description,
-          website: this.website,
-          creationDate: this.creationDate,
-          endDate: this.endDate,
+    data () {
+        return {
+            drawer: true,           
+            currentTab: 1,
+            nav_tabs: [{name:'Courses', id:1}, {name:'Departments', id:2}, ],
         }
     },
-    async createCourse(){
-        
-      try{
-        this.success = (await CourseService.create_course(this.getCourseObject())).data
 
-        this.closeDialog()
-        
-        // update course list
-        this.getCourses()
-      }catch(error){
-        this.error=error
-      }
-      
-    },
-    openUpdateCourseDialog(course){
-      // update dialog fields
-      this.name=course.name
-      this.academicDegree=course.academicDegree
-      this.acronym=course.acronym
-      this.description=course.description
-      this.website=course.website
-      this.creationDate=(course.creationDate !== null) ? String(course.creationDate).substring(0,10) : course.creationDate
-      this.endDate=(course.endDate !== null) ? String(course.endDate).substring(0,10) : course.endDate
-
-      this.updatingCourse=true
-      this.courseDialog=true
-      this.currentCourseId=course.id
-    },
-    async updateCourse(){
-      
-      try{
-        let courseInfo = this.getCourseObject()
-        courseInfo['courseId']=this.currentCourseId
-
-        this.success=(await CourseService.update_course(courseInfo)).data
-        
-        this.closeDialog()
-        // update course list
-        this.getCourses()
-      }catch(error){
-        this.error=error
-      }
-    
-    },
-    async deleteCourse(){
-      try{
-        this.success = (await CourseService.delete_course(this.currentCourseId)).data
-        
-        // update course list
-        this.getCourses()
-      }catch(error){
-        this.error=error
-      }
-    },
-    async getCourses(){
-      try{
-        this.courses = (await CourseService.list_all_courses()).data
-      }catch(error){
-        this.error=error
-      }
-    }
-  },
-  mounted: async function (){
-      await this.getCourses();
-  },
-   watch: {
-     // date-picker stuff
-    creationDate (val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-    },
-    endDate (val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-    },
-    courseDialog (val) {
-      // to clear red fields and form data
-      if(val && !this.updatingCourse)
-        this.$refs.form.reset()
-    },
-    success (val){
-      if(val !== null){
-        this.error=null
-        this.feedbackColor='success'
-        this.showingFeedback=true
-      }
-    },
-    error(val){
-      if(val !== null){
-        this.success=null
-        this.feedbackColor='error'
-        this.showingFeedback=true
-      }
-    }
-  },
-}
+};
 </script>
 
-<style scoped>
 
+<style>
+  
+    #feed_content .navigation-drawer{
+        max-width: 170px;
+        margin-top: 90px!important;
+        background-color: transparent;
+    }
+
+    #feed_content .list{
+        margin-bottom: 10px !important;
+    }
+
+    #feed_content .navigation-drawer>.list .list__tile{
+        background-color: rgba(221, 221, 221, 0.75);
+        margin: 5px 10px;
+    }
+
+    #feed_content .navigation-drawer>.list .active .list__tile {
+        background-color: rgba(188, 188, 188, 0.75);
+    }
+
+    .side_content .list {
+        background-color: rgba(221, 221, 221, 0.75) ;
+        padding: 1px 0px;
+    }
+    .side_content .list .list__tile{
+        background-color: rgba(188, 188, 188, 0.75) ;
+        margin:10px;
+    }
+
+    @media(min-width: 1024px ){
+        #feed_content .navigation-drawer{
+            margin-left: 5%;
+        }
+        .side_content{
+            margin-left: 25%;
+        }
+    }
+
+    @media(max-width: 960px ){
+        .container.fluid,
+        #feed_content .container{
+            padding: 0;
+
+        }
+        .accent{
+            background-color: red!important;
+            border-color: red!important;
+        }
+    }
 
 </style>
