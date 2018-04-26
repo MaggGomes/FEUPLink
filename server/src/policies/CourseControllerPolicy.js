@@ -8,10 +8,11 @@ module.exports = {
         name: Joi.string().required(),
         academicDegree: Joi.string().required(),
         acronym: Joi.string().required(),
-        description: Joi.string(),
-        website: Joi.string(),
-        creationDate: Joi.string().required(),
-        endDate: Joi.string(),
+        description: Joi.string().allow(null).allow(''),
+        website: Joi.string().allow(null).allow(''),
+        creationDate: Joi.date().required(),
+        endDate: Joi.date().allow(null),
+        departmentId: Joi.number().required(),
       };
 
       const {error} = Joi.validate(req.body, schema);
@@ -30,7 +31,7 @@ module.exports = {
                   break;
               case 'acronym':
                   res.status(400).send({
-                      error: `You must provide a acronym field`,
+                      error: `You must provide an acronym field`,
                   });
                   break;
               case 'description':
@@ -48,9 +49,14 @@ module.exports = {
                     error: `You must provide a creationDate field`,
                 });
                 break;
-            case 'endDate':
+              case 'endDate':
                 res.status(400).send({
                     error: `endDate must be a date in a string format`,
+                });
+                break;
+              case 'departmentId':
+                res.status(400).send({
+                    error: `You must provide a departmentId`,
                 });
                 break;
               default:
@@ -68,10 +74,11 @@ module.exports = {
             name: Joi.string(),
             academicDegree: Joi.string(),
             acronym: Joi.string(),
-            description: Joi.string(),
-            website: Joi.string(),
-            creationDate: Joi.string(),
-            endDate: Joi.string(),
+            description: Joi.string().allow(null).allow(''),
+            website: Joi.string().allow(null).allow(''),
+            creationDate: Joi.date(),
+            endDate: Joi.date().allow(null),
+            departmentId: Joi.number(),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -116,6 +123,11 @@ module.exports = {
             case 'endDate':
                 res.status(400).send({
                     error: 'endDate must be a date in a string format',
+                });
+                break;
+            case 'departmentId':
+                res.status(400).send({
+                    error: `departmentId must be a number`,
                 });
                 break;
             default:

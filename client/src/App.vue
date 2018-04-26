@@ -75,6 +75,10 @@ export default {
           link: "/feed"
         },
         {
+            title: 'Management',
+            link: "/management"
+        },
+        {
           title: "Profile",
           link: "/profile/" + userId
         },

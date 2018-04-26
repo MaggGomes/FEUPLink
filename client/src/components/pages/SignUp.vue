@@ -210,15 +210,20 @@
          					<form autocomplete="off">
          						<v-container fluid>
 											<v-layout row wrap align-center v-if="role == 'staff'">
-											<v-flex xs9 sm5 text-xs-center>
-												<v-text-field
-													prepend-icon="person"
-													label="Department name"
-													v-model="dpName"
-													></v-text-field>
+											<v-flex xs9 text-xs-center>
+												<v-select
+													:items="departments"													
+													v-model="departmentId"
+													item-text="name"
+													item-value="id"
+													label="Select your department"
+													prepend-icon="person"													
+													:rules="[v => !!v || 'You must select a department']"
+													required
+												></v-select>		
 											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="dpNameVisible">
+											<v-flex xs3 text-xs-center>
+												<v-btn-toggle v-model="dpVisible">
 															<v-btn flat>
 																<v-icon>visibility</v-icon>
 															</v-btn>
@@ -226,24 +231,7 @@
 																<v-icon>visibility_off</v-icon>
 															</v-btn>
 														</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>
-												<v-text-field
-												prepend-icon="person"
-												label="Department acronym"
-												v-model="dpAcr"
-												></v-text-field>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="dpAcrVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
+											</v-flex>									
 										 </v-layout>	
 										
 										<v-layout row wrap align-center v-if="role == 'student'">
@@ -254,24 +242,19 @@
 												label="Academic degree"
 												prepend-icon="person"
 												></v-select>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="degreeVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>		
-												<v-select
-												:items="courses"
-												v-model="course"
-												label="Course"
-												prepend-icon="person"
-												></v-select>
+											</v-flex>											
+											<v-flex xs9 sm5 offset-sm1 text-xs-center>		
+											  <v-select
+													:items="courses"													
+													v-model="courseId"
+													item-text="name"
+													item-value="id"
+													label="Select your course"
+													prepend-icon="person"
+													autocomplete
+													:rules="[v => !!v || 'You must select a course']"
+													required
+												></v-select>									
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
 												<v-btn-toggle v-model="courseVisible">
@@ -677,6 +660,8 @@ import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
 import LinkedInButton from '@/components/elements/LinkedInButton'
 import FacebookButton from '@/components/elements/FacebookButton'
+import DepartmentService from '@/services/DepartmentService'
+import CourseService from '@/services/CourseService'
 
 export default {
   name: 'SignUp',
@@ -700,64 +685,62 @@ export default {
       date5: null,
       gender: null,
       country: '',
-	  companyType: null,
-	  types: ['public', 'private'],
-      menu: false,
-      menu2: false,
-      menu3: false,
-      menu4: false,
-      menu5: false,
-	  type: null,
-	  studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
+			companyType: null,
+			types: ['public', 'private'],
+			menu: false,
+			menu2: false,
+			menu3: false,
+			menu4: false,
+			menu5: false,
+			type: null,
+			studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
       checkboxWork: false,
       checkboxNoExperience: false,
       number: '',
       genders: ['Male', 'Female', 'Not Specified' ],
-      course: null,
-      courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
+      courseId: null,
+      courses: null,
+			departmentId: null,
+      departments: null,
       company: '',
       city: '',
       position: '',
-      role: 'student',
-	  dpName: '',
-	  dpAcr: '',
-	  degree: null,
-	  degrees: ['Bachelor', 'Masters', 'PhD'],
-	  birthdayVisible: 0,
-	  genderVisible: 0,
-	  countryVisible: 0,
-	  cityVisible: 0,
-	  dpNameVisible: 0,
-	  dpAcrVisible: 0,
-	  degreeVisible: 0,
-	  courseVisible: 0,
-	  date2Visible: 0,
-	  date3Visible: 0,
-	  typeVisible: 0,
-	  numberVisible: 0,
-	  companyVisible: 0,
-	  positionVisible: 0,
-	  companyTypeVisible: 0,
-	  checkboxWorkVisible: 0,
-	  checkboxNoExperienceVisible: 0,
-	  date4Visible: 0,
-	  date5Visible: 0,
-	  companyIndustry: '',
-	  companyIndustryVisible: 0,
-	  workingLocationVisible: 0,
-	  workingLocation: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => v.length <= 50 || 'Name must be less than 50 characters'
-      ],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-      ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
-      ]
+      role: 'student',	
+			degree: null,
+			degrees: ['Bachelor', 'Masters', 'PhD'],
+			birthdayVisible: 0,
+			genderVisible: 0,
+			countryVisible: 0,
+			cityVisible: 0,
+			dpVisible: 0,
+			courseVisible: 0,
+			date2Visible: 0,
+			date3Visible: 0,
+			typeVisible: 0,
+			numberVisible: 0,
+			companyVisible: 0,
+			positionVisible: 0,
+			companyTypeVisible: 0,
+			checkboxWorkVisible: 0,
+			checkboxNoExperienceVisible: 0,
+			date4Visible: 0,
+			date5Visible: 0,
+			companyIndustry: '',
+			companyIndustryVisible: 0,
+			workingLocationVisible: 0,
+			workingLocation: '',
+			nameRules: [
+				v => !!v || 'Name is required',
+				v => v.length <= 50 || 'Name must be less than 50 characters'
+			],
+			emailRules: [
+				v => !!v || 'E-mail is required',
+				v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+			],
+			passwordRules: [
+				v => !!v || 'Password is required',
+				v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+			],
     }
   },
   watch: {
@@ -780,7 +763,7 @@ export default {
 				gender: this.gender,
 				country: this.country,
 				city: this.city,
-				course: this.course,
+				courseId: this.courseId,
 				enrollmentDate: this.date2,
 				graduationDate: this.date3,
 				type: this.type,
@@ -804,8 +787,7 @@ export default {
 				gender: this.gender,
 				country: this.country,
 				city: this.city,
-				dpName: this.dpName,
-				acronym: this.dpAcr,
+				departmentId: this.departmentId,
 				workingLocation: this.workingLocation,
 				startDate: this.date2,
 				endDate: this.date3,
@@ -819,12 +801,30 @@ export default {
 				isCurrent: this.checkboxWork,
 				workExperience: this.checkboxNoExperience
 			})
-		}
+		}	
 	},
 	save (date) {
 		this.$refs.menu.save(date)
-	}
-  }
+	},
+	async getCourses(){
+      try{
+        this.courses = (await CourseService.list_all_courses()).data
+      }catch(error){
+        this.error=error
+      }
+    },
+    async getDepartments(){
+      try{
+        this.departments = (await DepartmentService.list_all_departments()).data
+      }catch(error){
+        this.error=error
+      }
+    }
+  },
+	mounted: async function (){
+		await this.getCourses();
+		await this.getDepartments()
+  },
 }
 </script>
 

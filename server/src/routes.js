@@ -1,12 +1,14 @@
 // policies
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 const CourseControllerPolicy = require('./policies/CourseControllerPolicy');
+const DepartmentControllerPolicy = require('./policies/DepartmentControllerPolicy');
 
 // controllers
 const AuthenticationController = require('./controllers/AuthenticationController');
 const CourseController = require('./controllers/CourseController');
 const PersonController = require('./controllers/PersonController');
 // const PersonControllerPolicy = require('./policies/PersonControllerPolicy');
+const DepartmentController = require('./controllers/DepartmentController');
 
 
 module.exports = (app) => {
@@ -84,20 +86,43 @@ module.exports = (app) => {
     CourseController.create
   );
 
-  app.post('/update_course',
+  app.put('/update_course',
     AuthenticationControllerPolicy.super_admin,
     CourseControllerPolicy.update,
     CourseController.update
   );
 
-  app.post('/delete_course',
+  app.delete('/delete_course',
     AuthenticationControllerPolicy.super_admin,
     CourseControllerPolicy.hasId,
     CourseController.delete
   );
 
   app.get('/list_all_courses',
-    AuthenticationControllerPolicy.authenticated,
     CourseController.list_all
+  );
+
+  // ----Department
+
+  app.post('/create_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.create,
+    DepartmentController.create
+  );
+
+  app.put('/update_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.update,
+    DepartmentController.update
+  );
+
+  app.delete('/delete_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.hasId,
+    DepartmentController.delete
+  );
+
+  app.get('/list_all_departments',
+    DepartmentController.list_all
   );
 };
