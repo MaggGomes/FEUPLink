@@ -137,7 +137,7 @@
           <v-flex xs11>
             <v-toolbar-title>Experience</v-toolbar-title>
           </v-flex>
-          <v-flex>
+          <v-flex v-if="person.id == this.$store.state.user.id">
             <v-dialog v-model="dialogExperience" max-width="500px">
               <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
               <v-card>
@@ -171,8 +171,8 @@
             </v-dialog>
           </v-flex>
         </v-layout>
-        <v-data-table
-          :headers="headersExperience"
+        <v-data-table v-if="person.id == this.$store.state.user.id"
+          :headers="headersExperienceEdit"
           :items="itemsExperience"
           hide-actions
           class="elevation-1"
@@ -195,6 +195,22 @@
             <v-btn color="primary" @click="initialize">Reset</v-btn>
           </template>
         </v-data-table>
+        <v-data-table v-else
+          :headers="headersExperience"
+          :items="itemsExperience"
+          hide-actions
+          class="elevation-1"
+        >
+          <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.company }}</td>
+            <td class="text-xs-left">{{ props.item.title }}</td>
+            <td class="text-xs-left">{{ props.item.startDate }}</td>
+            <td class="text-xs-left">{{ props.item.endDate }}</td>
+          </template>
+          <template slot="no-data">
+            <v-btn color="primary" @click="initialize">Reset</v-btn>
+          </template>
+        </v-data-table>
       </v-container>
   
       <v-container>
@@ -202,7 +218,7 @@
           <v-flex xs11>
             <v-toolbar-title>Education</v-toolbar-title>
           </v-flex>
-          <v-flex>
+          <v-flex v-if="person.id == this.$store.state.user.id">
             <v-dialog v-model="dialogEducation" max-width="500px">
               <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
               <v-card>
@@ -236,8 +252,8 @@
             </v-dialog>
           </v-flex>
         </v-layout>
-        <v-data-table
-          :headers="headersEducation"
+        <v-data-table v-if="person.id == this.$store.state.user.id"
+          :headers="headersEducationEdit"
           :items="itemsEducation"
           hide-actions
           class="elevation-1"
@@ -255,6 +271,22 @@
                 <v-icon color="pink">delete</v-icon>
               </v-btn>
             </td>
+          </template>
+          <template slot="no-data">
+            <v-btn color="primary" @click="initialize">Reset</v-btn>
+          </template>
+        </v-data-table>
+        <v-data-table v-else
+          :headers="headersEducation"
+          :items="itemsEducation"
+          hide-actions
+          class="elevation-1"
+        >
+          <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.degree }}</td>
+            <td class="text-xs-left">{{ props.item.course }}</td>
+            <td class="text-xs-left">{{ props.item.enrollmentDate }}</td>
+            <td class="text-xs-left">{{ props.item.graduationDate }}</td>
           </template>
           <template slot="no-data">
             <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -282,19 +314,31 @@ export default {
     defaultUserImg: defaultUserImg,
     dialogExperience: false,
     dialogEducation: false,
-    headersExperience: [
+    headersExperienceEdit: [
       { text: "Company", value: "company" },
       { text: "Title", value: "title" },
       { text: "Start date", value: "startDate" },
       { text: "End date", value: "endDate" },
       { text: "Actions", value: "name", sortable: false }
     ],
-    headersEducation: [
+    headersEducationEdit: [
       { text: "Academic Degree", value: "degree" },
       { text: "Course name", value: "cours" },
       { text: "Enrollment date", value: "enrollmentDate" },
       { text: "Graduation date", value: "graduationDate" },
       { text: "Actions", value: "name", sortable: false }
+    ],
+    headersExperience: [
+      { text: "Company", value: "company" },
+      { text: "Title", value: "title" },
+      { text: "Start date", value: "startDate" },
+      { text: "End date", value: "endDate" }
+    ],
+    headersEducation: [
+      { text: "Academic Degree", value: "degree" },
+      { text: "Course name", value: "cours" },
+      { text: "Enrollment date", value: "enrollmentDate" },
+      { text: "Graduation date", value: "graduationDate" }
     ],
     itemsExperience: [],
     itemsEducation: [],
