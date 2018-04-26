@@ -30,7 +30,6 @@ export default {
 
       try{        
         let data = (await AuthenticationService.signup_facebook({code,state,error})).data;
-        console.log(data);
         this.$store.dispatch('setToken', data.token)
         this.$store.dispatch('setUser', data.person)
         
@@ -41,8 +40,7 @@ export default {
           this.$router.push('/feed')
         }
         
-      }catch(error){
-        console.log(error);        
+      }catch(error){       
         this.$router.push('/');
       }
       //debugger
