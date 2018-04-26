@@ -1,6 +1,5 @@
 const {
   Person,
-  Department,
   Staff,
   Student,
   Course,
@@ -39,12 +38,7 @@ module.exports = {
           PersonId: personJson.id,
         });
 
-        const course = await Course.create({
-          name: req.body.course,
-          creationDate: 2000,
-        });
-
-        Course.findById(course.toJSON().id).then((course) => {
+        Course.findById(req.body.courseId).then((course) => {
           course.setStudents(student.toJSON().id);
         });
 
@@ -89,16 +83,10 @@ module.exports = {
         PersonId: personJson.id,
       });
 
-      const {dpName, acronym} = req.body;
-
-      const department = await Department.create({
-        name: dpName,
-        acronym: acronym,
-      });
-
       Staff.findById(staff.toJSON().id).then((staff) => {
-        staff.setDepartments(department.toJSON().id);
+        staff.addDepartment(req.body.departmentId);
       });
+
       if (!req.body.workExperience) {
         const company = await Company.create({
           name: req.body.company,
@@ -308,17 +296,7 @@ module.exports = {
         }))[0].dataValues;
 
 
-        const course = (await Course.findOrCreate({
-         where: {
-          name: req.body.course,
-         },
-         defaults: {
-          creationDate: 2000,
-         },
-        }))[0].dataValues;
-
-
-        Course.findById(course.id).then((c) => {
+        Course.findById(req.body.courseId).then((c) => {
           c.addStudent(student.id);
         });
       } else {
@@ -348,19 +326,8 @@ module.exports = {
         }))[0].dataValues;
 
 
-        const {dpName, acronym} = req.body;
-
-        const department = (await Department.findOrCreate({
-          where: {
-            name: dpName,
-          },
-          defaults: {
-            acronym: acronym,
-          },
-        }))[0].dataValues;
-
         Staff.findById(staff.id).then((s) => {
-          s.addDepartment(department.id);
+          s.addDepartment(req.body.departmentId);
         });
       }
 

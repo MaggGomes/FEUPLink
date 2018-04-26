@@ -62,7 +62,6 @@ module.exports = (app) => {
   );
 
   app.get('/list_all_courses',
-    AuthenticationControllerPolicy.authenticated,
     CourseController.list_all
   );
 
@@ -87,7 +86,6 @@ module.exports = (app) => {
   );
 
   app.get('/list_all_departments',
-    AuthenticationControllerPolicy.authenticated,
     DepartmentController.list_all
   );
 };
