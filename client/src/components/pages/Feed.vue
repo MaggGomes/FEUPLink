@@ -65,6 +65,7 @@
 
 <script>
     import Vue from 'vue'
+    import AuthenticationService from '@/services/AuthenticationService'
 
     Vue.component('nav_tab-1', {
             data () {
