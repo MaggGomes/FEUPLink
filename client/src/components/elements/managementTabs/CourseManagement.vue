@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid pa-0>
     <v-layout row wrap>
 
       <!-- provide feedback to the user -->
@@ -14,7 +14,7 @@
       </v-snackbar>
 
       <!-- warning dialog -->
-      <v-dialog v-model="warningDialog">
+      <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
           <v-card-title class="headline">Be Careful!</v-card-title>
           <v-card-text>
@@ -57,10 +57,13 @@
                     <v-select
                       :items="departments"
                       :filter="customDepartmentFilter"
-                      v-model="selectedDepartment"
+                      v-model="selectedDepartmentId"
                       item-text="name"
+                      item-value="id"
                       label="Select the course department"
                       autocomplete
+                      :rules="[v => !!v || 'Course department is required']"
+                      required
                     ></v-select>
                   </v-flex>
 
@@ -210,7 +213,7 @@ export default {
       creationDateMenu:false,
       endDate: null,
       endDateMenu:false,
-      selectedDepartment: null,
+      selectedDepartmentId: null,
       //show course details dialog
       showCourseDetails: false,
       //form-validation
@@ -254,6 +257,7 @@ export default {
           website: this.website,
           creationDate: this.creationDate,
           endDate: this.endDate,
+          departmentId: this.selectedDepartmentId,
         }
     },
     async createCourse(){
@@ -279,7 +283,8 @@ export default {
       this.website=course.website
       this.creationDate=(course.creationDate !== null) ? String(course.creationDate).substring(0,10) : course.creationDate
       this.endDate=(course.endDate !== null) ? String(course.endDate).substring(0,10) : course.endDate
-
+      this.selectedDepartmentId=course.DepartmentId
+      
       this.updatingCourse=true
       this.courseDialog=true
       this.currentCourse=course
@@ -355,7 +360,7 @@ export default {
         this.feedbackColor='error'
         this.showingFeedback=true
       }
-    }
+    },
   },
 }
 </script>

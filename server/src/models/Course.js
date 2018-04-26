@@ -54,6 +54,14 @@ module.exports = (sequelize, DataTypes) => {
           onUpdate: 'CASCADE',
         }
       );
+
+      // Course belongs to a department
+      Course.belongsTo(models.Department,
+        {
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        }
+      );
     };
 
   return Course;

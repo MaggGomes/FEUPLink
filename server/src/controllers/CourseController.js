@@ -6,18 +6,21 @@ const {
 module.exports = {
   async create(req, res) {
       try {
-        (await Course.findOrCreate({
+        let course = (await Course.findOrCreate({
           where: {
             name: req.body.name,
           },
           defaults: req.body,
-        }));
+        }))[0].dataValues;
 
-          // setDepartment
+        Course.findById(course.id).then((c) => {
+          c.setDepartment(req.body.departmentId);
+        });
 
-          res.status(201).send({
-            res: 'Course successfully created',
-          });
+
+        res.status(201).send({
+          res: 'Course successfully created',
+        });
       } catch (err) {
         res.status(400).send({
           error: err,
@@ -36,6 +39,10 @@ module.exports = {
               id: courseId,
           },
         }));
+
+        Course.findById(courseId).then((c) => {
+          c.setDepartment(req.body.departmentId);
+        });
 
         res.status(201).send({
           res: 'Successfully updated the course information',

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid pa-0>
     <v-layout row wrap>
 
       <!-- provide feedback to the user -->
@@ -14,7 +14,7 @@
       </v-snackbar>
 
       <!-- warning dialog -->
-      <v-dialog v-model="warningDialog">
+      <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
           <v-card-title class="headline">Be Careful!</v-card-title>
           <v-card-text>
@@ -94,7 +94,7 @@
       <v-toolbar v-for="department in departments" :key="department.id">
         <v-toolbar-title>{{department.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items class="hidden-sm-and-down">
+        <v-toolbar-items >
          <v-btn flat @click="() => {
                       currentDepartment=department  
                       showDepartmentDetails=true                    

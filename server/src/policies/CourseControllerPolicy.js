@@ -12,8 +12,9 @@ module.exports = {
         website: Joi.string().allow(null).allow(''),
         creationDate: Joi.date().required(),
         endDate: Joi.date().allow(null),
+        departmentId: Joi.number().required(),
       };
-
+      console.log(req.body);
       const {error} = Joi.validate(req.body, schema);
 
       if (error) {
@@ -48,9 +49,14 @@ module.exports = {
                     error: `You must provide a creationDate field`,
                 });
                 break;
-            case 'endDate':
+              case 'endDate':
                 res.status(400).send({
                     error: `endDate must be a date in a string format`,
+                });
+                break;
+              case 'departmentId':
+                res.status(400).send({
+                    error: `You must provide a departmentId`,
                 });
                 break;
               default:
@@ -72,6 +78,7 @@ module.exports = {
             website: Joi.string().allow(null).allow(''),
             creationDate: Joi.date(),
             endDate: Joi.date().allow(null),
+            departmentId: Joi.number(),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -116,6 +123,11 @@ module.exports = {
             case 'endDate':
                 res.status(400).send({
                     error: 'endDate must be a date in a string format',
+                });
+                break;
+            case 'departmentId':
+                res.status(400).send({
+                    error: `departmentId must be a number`,
                 });
                 break;
             default:

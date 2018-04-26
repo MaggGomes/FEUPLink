@@ -319,7 +319,7 @@ module.exports = {
 
 
         Course.findById(course.id).then((c) => {
-          c.setStudents(student.id);
+          c.addStudent(student.id);
         });
       } else {
         // check if there isn't already a student member associated to the person
@@ -360,7 +360,7 @@ module.exports = {
         }))[0].dataValues;
 
         Staff.findById(staff.id).then((s) => {
-          s.setDepartments(department.id);
+          s.addDepartment(department.id);
         });
       }
 
