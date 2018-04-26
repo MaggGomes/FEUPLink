@@ -154,10 +154,70 @@
                         <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="Start date" v-model="editedItemExperience.startDate"></v-text-field>
+                        <v-menu
+                          ref="menu"
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="menu"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          min-width="290px"
+                          >
+                          <v-text-field
+                          slot="activator"
+                          label="Start date"
+                          v-model="editedItemExperience.startDate"
+                          prepend-icon="event"
+                          readonly
+                          ></v-text-field>
+                          <v-date-picker
+                          ref="picker"
+                          v-model="editedItemExperience.startDate"
+                          @change="save"
+                          min="1950-01-01"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          type="month"
+                          ></v-date-picker>
+                        </v-menu>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="End date" v-model="editedItemExperience.endDate"></v-text-field>
+                        <v-menu
+                          ref="menu2"
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="menu2"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          min-width="290px"
+                          >
+                          <v-text-field
+                          slot="activator"
+                          label="End date"
+                          v-model="editedItemExperience.endDate"
+                          prepend-icon="event"
+                          readonly
+                          ></v-text-field>
+                          <v-date-picker
+                          ref="picker"
+                          v-model="editedItemExperience.endDate"
+                          @change="save"
+                          min="1950-01-01"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          type="month"
+                          ></v-date-picker>
+                        </v-menu>
+                      </v-flex>
+                      <v-flex xs12 sm6 md4>
+                        <v-select
+															:items="jobOptions"
+															v-model="editedItemExperience.isCurrent"
+															label="Current job"
+															prepend-icon="person"
+                        ></v-select>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -182,6 +242,7 @@
             <td class="text-xs-left">{{ props.item.title }}</td>
             <td class="text-xs-left">{{ props.item.startDate }}</td>
             <td class="text-xs-left">{{ props.item.endDate }}</td>
+            <td class="text-xs-left">{{ props.item.isCurrent }}</td>
             <td class="justify-left layout px-0">
               <v-btn icon class="mx-0" @click="editItemExperience(props.item)">
                 <v-icon color="teal">edit</v-icon>
@@ -206,6 +267,7 @@
             <td class="text-xs-left">{{ props.item.title }}</td>
             <td class="text-xs-left">{{ props.item.startDate }}</td>
             <td class="text-xs-left">{{ props.item.endDate }}</td>
+            <td class="text-xs-left">{{ props.item.isCurrent }}</td>
           </template>
           <template slot="no-data">
             <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -229,16 +291,78 @@
                   <v-container grid-list-md>
                     <v-layout wrap>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="Academic degree" v-model="editedItemEducation.degree"></v-text-field>
+                        <v-select
+                          :items="degreeOptions"
+                          v-model="editedItemEducation.degree"
+                          label="Academic degree"
+                          prepend-icon="person"
+                        ></v-select>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="Course name" v-model="editedItemEducation.course"></v-text-field>
+                        <v-select
+                          :items="coursesOptions"
+                          v-model="editedItemEducation.course"
+                          label="Course name"
+                          prepend-icon="person"
+                        ></v-select>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="Enrollment date" v-model="editedItemEducation.enrollmentDate"></v-text-field>
+                        <v-menu
+                          ref="menu3"
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="menu3"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          min-width="290px"
+                          >
+                          <v-text-field
+                          slot="activator"
+                          label="Enrollment date"
+                          v-model="editedItemEducation.enrollmentDate"
+                          prepend-icon="event"
+                          readonly
+                          ></v-text-field>
+                          <v-date-picker
+                          ref="picker"
+                          v-model="editedItemEducation.enrollmentDate"
+                          @change="save"
+                          min="1950-01-01"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          type="month"
+                          ></v-date-picker>
+                        </v-menu>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                        <v-text-field label="Graduation date" v-model="editedItemEducation.graduationDate"></v-text-field>
+                        <v-menu
+                          ref="menu4"
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="menu4"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          min-width="290px"
+                          >
+                          <v-text-field
+                          slot="activator"
+                          label="Graduation date"
+                          v-model="editedItemEducation.graduationDate"
+                          prepend-icon="event"
+                          readonly
+                          ></v-text-field>
+                          <v-date-picker
+                          ref="picker"
+                          v-model="editedItemEducation.graduationDate"
+                          @change="save"
+                          min="1950-01-01"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          type="month"
+                          ></v-date-picker>
+                        </v-menu>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -311,6 +435,13 @@ export default {
     FacebookButton
   },
   data: () => ({
+    menu: false,
+    menu2: false,
+    menu3: false,
+    menu4: false,
+    jobOptions: ['Yes', 'No'],
+    degreeOptions: ['Bachelor', 'Masters', 'PhD'],
+    coursesOptions: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
     defaultUserImg: defaultUserImg,
     dialogExperience: false,
     dialogEducation: false,
@@ -319,6 +450,7 @@ export default {
       { text: "Title", value: "title" },
       { text: "Start date", value: "startDate" },
       { text: "End date", value: "endDate" },
+      { text: "Current job", value: "isCurrent" },
       { text: "Actions", value: "name", sortable: false }
     ],
     headersEducationEdit: [
@@ -332,7 +464,8 @@ export default {
       { text: "Company", value: "company" },
       { text: "Title", value: "title" },
       { text: "Start date", value: "startDate" },
-      { text: "End date", value: "endDate" }
+      { text: "End date", value: "endDate" },
+      { text: "Current job", value: "isCurrent" }
     ],
     headersEducation: [
       { text: "Academic Degree", value: "degree" },
@@ -346,28 +479,30 @@ export default {
     editedIndexExperience: -1,
     editedIndexEducation: -1,
     editedItemExperience: {
-      company: 0,
-      title: 0,
-      startDate: 0,
-      endDate: 0
+      company: '',
+      title: '',
+      startDate: null,
+      endDate: null,
+      isCurrent: null
     },
     defaultItemExperience: {
-      company: 0,
-      title: 0,
-      startDate: 0,
-      endDate: 0
+      company: '',
+      title: '',
+      startDate: null,
+      endDate: null,
+      isCurrent: null
     },
     editedItemEducation: {
-      degree: 0,
-      course: 0,
-      enrollmentDate: 0,
-      graduationDate: 0
+      degree: null,
+      course: null,
+      enrollmentDate: null,
+      graduationDate: null
     },
     defaultItemEducation: {
-      degree: 0,
-      course: 0,
-      enrollmentDate: 0,
-      graduationDate: 0
+      degree: null,
+      course: null,
+      enrollmentDate: null,
+      graduationDate: null
     },
     tabsItems: ["Experience", "Visibility Options"]
   }),
@@ -401,8 +536,9 @@ export default {
         let student = await ProfileService.getStudentInformation({
           id: this.$route.params.id
         });
-
+        
         this.person = student.data.person;
+        console.log(student.data);
 
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
@@ -430,11 +566,18 @@ export default {
           var eDate = new Date(student.data.experience[i].job.endDate);
           var endDate = eDate.getUTCMonth() + 1 + "/" + eDate.getUTCFullYear();
 
+          var current = '';
+          if(student.data.experience[i].job.isCurrent)
+            current = 'Yes';
+          else
+            current = 'No';
+
           this.itemsExperience.push({
             company: student.data.experience[i].companyName,
             title: student.data.experience[i].job.title,
             startDate: startDate,
-            endDate: endDate
+            endDate: endDate,
+            isCurrent: current
           });
         }
       } else if (result.data.type == "staff") {
@@ -467,7 +610,7 @@ export default {
       }, 300);
     },
 
-    saveExperience() {
+    async saveExperience() {
       if (this.editedIndexExperience > -1) {
         Object.assign(
           this.itemsExperience[this.editedIndexExperience],
@@ -475,6 +618,14 @@ export default {
         );
       } else {
         this.itemsExperience.push(this.editedItemExperience);
+        (await ProfileService.insertExperience({
+          company: this.editedItemExperience.company,
+          title: this.editedItemExperience.title,
+          startDate: this.editedItemExperience.startDate,
+          endDate: this.editedItemExperience.endDate,
+          isCurrent: this.editedItemExperience.isCurrent,
+          personId: this.$store.state.user.id
+        }));
       }
       this.closeExperience();
     },
@@ -499,7 +650,7 @@ export default {
       }, 300);
     },
 
-    saveEducation() {
+    async saveEducation() {
       if (this.editedIndexEducation > -1) {
         Object.assign(
           this.itemsEducation[this.editedIndexEducation],
@@ -507,6 +658,13 @@ export default {
         );
       } else {
         this.itemsEducation.push(this.editedItemEducation);
+        (await ProfileService.insertCourseStudent({
+          name: this.editedItemEducation.course,
+          academicDegree: this.editedItemEducation.degree,
+          enrollmentDate: this.editedItemEducation.enrollmentDate,
+          graduationDate: this.editedItemEducation.graduationDate,
+          PersonId: this.$store.state.user.id
+        }));
       }
       this.closeEducation();
     },

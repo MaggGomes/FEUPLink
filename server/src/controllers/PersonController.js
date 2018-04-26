@@ -4,6 +4,8 @@ const {
     Staff,
     Job,
     Company,
+    CourseStudent,
+    Course,
 } = require('../models');
 
 module.exports = {
@@ -145,6 +147,65 @@ module.exports = {
             res.status(400).send({
                 error: err,
             });
+        }
+    },
+    async insertExperience(req, res) {
+        try {
+            const company = (await Company.findOrCreate({
+                where: {
+                name: req.body.company,
+                },
+                defaults: {
+                    name: req.body.company,
+                },
+            }))[0].dataValues;
+
+            await Job.create({
+                title: req.body.title,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                isCurrent: req.body.isCurrent,
+                CompanyId: company.id,
+                PersonId: req.body.personId,
+            });
+
+            res.status(201).send({
+                res: 'Job successfully created',
+            });
+        } catch (err) {
+        res.status(400).send({
+            error: err,
+        });
+        }
+    },
+    async insertCourseStudent(req, res) {
+        try {
+            const course = (await Course.findOne({
+                where: {
+                  name: req.body.name,
+                  academicDegree: req.body.academicDegree,
+                },
+            }));
+            const student = (await Student.findOne({
+                where: {
+                  PersonId: req.body.PersonId,
+                },
+            }));
+
+            await CourseStudent.create({
+                enrollmentDate: req.body.enrollmentDate,
+                graduationDate: req.body.graduationDate,
+                CourseId: course.toJSON().id,
+                StudentId: student.toJSON().id,
+            });
+
+            res.status(201).send({
+                res: 'Course successfully associated to student',
+            });
+        } catch (err) {
+        res.status(400).send({
+            error: err,
+        });
         }
     },
 };

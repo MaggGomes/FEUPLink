@@ -10,4 +10,10 @@ export default {
     getStaffInformation (userInfo) {
         return Api().get('getStaff', {params:  userInfo});
     },
+    insertExperience (userInfo) {
+        return Api().post('create_job', userInfo)
+    },
+    insertCourseStudent (userInfo) {
+        return Api().post('create_course_student', userInfo)
+    }
 }

@@ -52,6 +52,14 @@ module.exports = (app) => {
   app.get('/getStudent',
     PersonController.getStudent
   );
+
+  app.post('/create_job',
+    PersonController.insertExperience
+  );
+
+  app.post('/create_course_student',
+    PersonController.insertCourseStudent
+  );
   // ----Course
 
   app.post('/create_course',
