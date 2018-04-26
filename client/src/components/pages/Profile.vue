@@ -17,7 +17,7 @@
             </v-layout>
             <v-layout row>
               <v-flex xs4 wrap>
-                <p class="grey-color">Studied at:</p>
+                <p class="grey-color">Studied:</p>
               </v-flex>
               <v-flex xs8 wrap>
                 <h4 class="text-align-center">FEUP</h4>
@@ -73,7 +73,7 @@
               <v-flex lg6 md6>
                 <v-layout row>
                   <v-flex lg3 md3>
-                    <p class="grey-color">Studied at:</p>
+                    <p class="grey-color">Studied:</p>
                   </v-flex>
                   <v-flex lg9 md9 wrap>
                     <h4>FEUP</h4>
@@ -465,7 +465,7 @@ export default {
         this.itemsEducation.push(this.editedItemEducation);
       }
       this.closeEducation();
-    }
+    },
   }
 };
 </script>

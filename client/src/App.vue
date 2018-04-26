@@ -39,7 +39,7 @@
         </div>
       </v-container>
     </v-content>
-    <v-footer absolute="false" app></v-footer>
+    <v-footer absolute app></v-footer>
   </div>
   </v-app>
 </template>
