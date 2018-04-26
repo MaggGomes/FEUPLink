@@ -590,10 +590,14 @@ export default {
       this.dialogExperience = true;
     },
 
-    deleteItemExperience(item) {
+    async deleteItemExperience(item) {
       const index = this.itemsExperience.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.itemsExperience.splice(index, 1);
+      (await ProfileService.deleteJobExperience({
+        company: item.company,
+        personId: this.$store.state.user.id
+      }));
     },
 
     closeExperience() {
@@ -642,10 +646,15 @@ export default {
       this.dialogEducation = true;
     },
 
-    deleteItemEducation(item) {
+    async deleteItemEducation(item) {
       const index = this.itemsEducation.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.itemsEducation.splice(index, 1);
+      (await ProfileService.deleteCourseStudent({
+        name: item.course,
+        academicDegree: item.degree,
+        PersonId: this.$store.state.user.id
+      }));
     },
 
     closeEducation() {

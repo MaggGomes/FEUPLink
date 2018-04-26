@@ -68,6 +68,14 @@ module.exports = (app) => {
   app.post('/update_course_student',
     PersonController.updateCourseStudent
   );
+
+  app.post('/delete_job',
+    PersonController.deleteJobExperience
+  );
+
+  app.post('/delete_course_student',
+    PersonController.deleteCourseStudent
+  );
   // ----Course
 
   app.post('/create_course',

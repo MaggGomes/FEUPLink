@@ -21,5 +21,11 @@ export default {
     },
     updateCourseStudent (userInfo) {
         return Api().post('update_course_student', userInfo)
-    }
+    },
+    deleteJobExperience (userInfo) {
+        return Api().post('delete_job', userInfo)
+    },
+    deleteCourseStudent (userInfo) {
+        return Api().post('delete_course_student', userInfo)
+    },
 }

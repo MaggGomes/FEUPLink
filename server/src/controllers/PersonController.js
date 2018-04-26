@@ -270,4 +270,62 @@ module.exports = {
             });
           }
     },
+    async deleteJobExperience(req, res) {
+        try {
+            const personId = req.body.personId;
+            delete req.body.personId;
+            const company = (await Company.findOne({
+                where: {
+                  name: req.body.company,
+                },
+            }));
+            delete req.body.company;
+
+            (await Job.destroy({
+                where: {
+                    CompanyId: company.toJSON().id,
+                    PersonId: personId,
+                },
+              }));
+              res.status(201).send({
+                res: 'Job successfully deleted',
+              });
+          } catch (err) {
+            res.status(400).send({
+              error: err,
+            });
+          }
+    },
+    async deleteCourseStudent(req, res) {
+        try {
+            const student = (await Student.findOne({
+                where: {
+                  PersonId: req.body.PersonId,
+                },
+            }));
+            delete req.body.PersonId;
+
+            const course = (await Course.findOne({
+                where: {
+                  name: req.body.name,
+                  academicDegree: req.body.academicDegree,
+                },
+            }));
+            delete req.body.name;
+            delete req.body.academicDegree;
+            (await CourseStudent.destroy({
+                  where: {
+                    CourseId: course.toJSON().id,
+                    StudentId: student.toJSON().id,
+                },
+              }));
+              res.status(201).send({
+                res: 'Successfully updated the course student information',
+              });
+          } catch (err) {
+            res.status(400).send({
+              error: err,
+            });
+          }
+    },
 };
