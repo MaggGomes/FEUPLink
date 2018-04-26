@@ -11,9 +11,9 @@ export default {
     return Api().delete('post', postId)
   },
   get_all_posts () {
-    return Api().post('post')
+    return Api().get('post/')
   },
   get_posts_by_type (postType) {
-    return Api().post('post/'+postType)
+    return Api().get('post/'+postType)
   }
 }

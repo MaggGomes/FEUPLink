@@ -13,23 +13,13 @@
 </template>
 
 <script>
-  import FeedService from '@/services/FeedService'
 
   export default {
-    name: "nav_tab_2",
     contents: [],
     data() {
       return {
-        contents: null,
+        contents: null
       };
-    },
-    mounted: async function() {
-      try{
-        this.contents = (await FeedService.get_posts_by_type('Education')).data;
-
-      }catch(error){
-
-      }
     }
   }
 </script>
@@ -44,4 +34,3 @@
     margin:10px;
   }
 </style>
-

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.ENUM,
-      values: ['New', 'Job', 'Event', 'Educational Activity'],
+      values: ['New', 'Job', 'Event', 'Education'],
       allowNull: false,
     },
     tags: {
