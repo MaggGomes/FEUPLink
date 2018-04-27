@@ -137,6 +137,10 @@
     display: inline-flex;
     width: 100%;
   }
+  #main-bar .toolbar__content{
+    background: url('assets/header.png') no-repeat center;
+    background-size: cover;
+  }
   #main-bar .btn__content{
     text-transform: none;
   }
@@ -167,8 +171,6 @@
   @media(min-width: 991px){
     #main-bar .toolbar__content{
       display: inline-block;
-      background: url('assets/header.png') no-repeat center;
-      background-size: cover;
       height: 145px!important;
     }
     #main-bar-content{
