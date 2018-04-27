@@ -75,7 +75,7 @@ module.exports = {
             gender: Joi.string().required(),
             country: Joi.string().required(),
             city: Joi.string().required(),
-            course: Joi.string().required(),
+            courseId: Joi.number().required(),
             enrollmentDate: Joi.string().required(),
             graduationDate: Joi.string(),
             type: Joi.string().required(),
@@ -87,7 +87,7 @@ module.exports = {
             startDate: Joi.string(),
             endDate: Joi.string(),
             isCurrent: Joi.boolean(),
-            workExperience: Joi.boolean().required(),
+            workExperience: Joi.boolean(),
         };
 
         // eslint-disable-next-line
@@ -134,9 +134,9 @@ module.exports = {
                         error: 'You must provide a city field',
                     });
                     break;
-                case 'course':
+                case 'courseId':
                     res.status(400).send({
-                        error: 'You must provide a course field',
+                        error: 'You must provide a courseId field',
                     });
                     break;
                 case 'enrollmentDate':
@@ -174,8 +174,7 @@ module.exports = {
             gender: Joi.string().required(),
             country: Joi.string().required(),
             city: Joi.string().required(),
-            dpName: Joi.string().required(),
-            acronym: Joi.string().required(),
+            departmentId: Joi.number().required(),
             workingLocation: Joi.string().required(),
             startDate: Joi.string(),
             endDate: Joi.string(),
@@ -187,7 +186,7 @@ module.exports = {
             startDate: Joi.string(),
             endDate: Joi.string(),
             isCurrent: Joi.boolean(),
-            workExperience: Joi.boolean().required(),
+            workExperience: Joi.boolean(),
         };
 
         // eslint-disable-next-line
@@ -234,14 +233,9 @@ module.exports = {
                         error: 'You must provide a city field',
                     });
                     break;
-                case 'dpName':
+                case 'departmentId':
                     res.status(400).send({
-                        error: 'You must provide a dpName field',
-                    });
-                    break;
-                case 'acronym':
-                    res.status(400).send({
-                        error: 'You must provide a acronym field',
+                        error: 'You must provide a departmentId field',
                     });
                     break;
                 case 'workingLocation':
@@ -307,12 +301,11 @@ module.exports = {
     continue_signup_linkedin(req, res, next) {
         const schema = {
             personType: Joi.required(),
-            course: Joi.required(),
+            courseId: Joi.required(),
             enrollmentDate: Joi.required(),
             graduationDate: Joi.required(),
             studenType: Joi.required(),
-            dpName: Joi.required(),
-            acronym: Joi.required(),
+            departmentId: Joi.required(),
             workingLocation: Joi.required(),
             startDate: Joi.required(),
             endDate: Joi.required(),
@@ -328,9 +321,9 @@ module.exports = {
                         error: 'You must provide a personType field',
                     });
                     break;
-                case 'course':
+                case 'courseId':
                     res.status(400).send({
-                        error: 'You must provide a course field',
+                        error: 'You must provide a courseId field',
                     });
                     break;
                 case 'enrollmentDate':
@@ -348,14 +341,122 @@ module.exports = {
                         error: 'You must provide a studenType field',
                     });
                     break;
-                case 'dpName':
+                case 'departmentId':
                     res.status(400).send({
-                        error: 'You must provide a dpName field',
+                        error: 'You must provide a departmentId field',
                     });
                     break;
-                case 'acronym':
+                case 'workingLocation':
                     res.status(400).send({
-                        error: 'You must provide a acronym field',
+                        error: 'You must provide a workingLocation field',
+                    });
+                    break;
+                case 'startDate':
+                    res.status(400).send({
+                        error: 'You must provide a startDate field',
+                    });
+                    break;
+                case 'endDate':
+                    res.status(400).send({
+                        error: 'You must provide a endDate field',
+                    });
+                    break;
+                case 'mecNumber':
+                    res.status(400).send({
+                        error: 'You must provide a mecNumber field',
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Invalid registration information',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    signup_facebook(req, res, next) {
+        const schema = {
+            code: Joi.string().required(),
+            state: Joi.string().required(),
+            error: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'code':
+                    res.status(400).send({
+                        error: 'You must provide your Facebook Authorization Code',
+                    });
+                    break;
+                case 'state':
+                    res.status(400).send({
+                        error: `You must provide your Facebook state for validation purposes`,
+                    });
+                    break;
+                case 'error':
+                    res.status(400).send({
+                        error: `You must provide a error field`,
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Bad request',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    continue_signup_facebook(req, res, next) {
+        const schema = {
+            personType: Joi.required(),
+            courseId: Joi.required(),
+            enrollmentDate: Joi.required(),
+            graduationDate: Joi.required(),
+            studenType: Joi.required(),
+            departmentId: Joi.required(),
+            workingLocation: Joi.required(),
+            startDate: Joi.required(),
+            endDate: Joi.required(),
+            mecNumber: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'personType':
+                    res.status(400).send({
+                        error: 'You must provide a personType field',
+                    });
+                    break;
+                case 'courseId':
+                    res.status(400).send({
+                        error: 'You must provide a courseId field',
+                    });
+                    break;
+                case 'enrollmentDate':
+                    res.status(400).send({
+                        error: 'You must provide a enrollmentDate field',
+                    });
+                    break;
+                case 'graduationDate':
+                res.status(400).send({
+                    error: 'You must provide a graduationDate field',
+                });
+                    break;
+                case 'studenType':
+                    res.status(400).send({
+                        error: 'You must provide a studenType field',
+                    });
+                    break;
+                case 'departmentId':
+                    res.status(400).send({
+                        error: 'You must provide a departmentId field',
                     });
                     break;
                 case 'workingLocation':

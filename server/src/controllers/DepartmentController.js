@@ -1,30 +1,26 @@
 const {
-  Course,
-  Person,
-  Student,
-  Channel,
   Department,
+  Person,
+  Staff,
+  Course,
 } = require('../models');
 
 
 module.exports = {
   async create(req, res) {
       try {
-        let course = (await Course.findOrCreate({
+        (await Department.findOrCreate({
           where: {
             name: req.body.name,
           },
           defaults: req.body,
-        }))[0].dataValues;
+        }));
 
-        Course.findById(course.id).then((c) => {
-          c.setDepartment(req.body.departmentId);
-        });
+          // setCouses
 
-
-        res.status(201).send({
-          res: 'Course successfully created',
-        });
+          res.status(201).send({
+            res: 'Department successfully created',
+          });
       } catch (err) {
         res.status(400).send({
           error: err,
@@ -33,23 +29,22 @@ module.exports = {
   },
   async update(req, res) {
     try {
-      const courseId = req.body.courseId;
-      delete req.body.courseId;
+      const departmentId = req.body.departmentId;
+      delete req.body.departmentId;
 
-      (await Course.update(
+      (await Department.update(
           req.body,
           {
             where: {
-              id: courseId,
+              id: departmentId,
           },
         }));
 
-        Course.findById(courseId).then((c) => {
-          c.setDepartment(req.body.departmentId);
-        });
+        // updateCouses
+        // find and set courses
 
         res.status(201).send({
-          res: 'Successfully updated the course information',
+          res: 'Successfully updated the department information',
         });
     } catch (err) {
       res.status(400).send({
@@ -59,15 +54,15 @@ module.exports = {
   },
   async delete(req, res) {
     try {
-      (await Course.destroy({
+      (await Department.destroy({
           where: {
-            id: req.body.courseId,
+            id: req.body.departmentId,
           },
         }));
 
 
         res.status(201).send({
-          res: 'Course successfully deleted',
+          res: 'Department successfully deleted',
         });
     } catch (err) {
       res.status(400).send({
@@ -77,20 +72,17 @@ module.exports = {
   },
   async list_all(req, res) {
     try {
-      let courses = (await Course.findAll({
-          attribute: ['id', 'name', 'academicDegree', 'acronym', 'description', 'website', 'creationDate', 'endDate'],
+      let departments = (await Department.findAll({
+          attribute: ['id', 'name', 'acronym'],
           include: [
             {
-              model: Student,
+              model: Staff,
               include: [{
                 model: Person,
               }],
             },
             {
-              model: Channel,
-            },
-            {
-              model: Department,
+              model: Course,
             },
           ],
           order: [
@@ -99,7 +91,7 @@ module.exports = {
         }));
 
 
-        res.status(201).send(courses);
+        res.status(201).send(departments);
     } catch (err) {
       res.status(400).send({
         error: err,

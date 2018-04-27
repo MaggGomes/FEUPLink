@@ -14,11 +14,16 @@ if (process.env.HEROKU_ENV === 'production') {
   dbUser = process.env.DB_USER_PROD;
   dbPass = process.env.DB_PASS_PROD;
   dbHost = process.env.DB_HOST_PROD;
-} if (process.env.NODE_ENV === 'testing') {
+} else if (process.env.NODE_ENV === 'testing') {
   dbName = process.env.DB_NAME_TEST;
   dbUser = process.env.DB_USER_TEST;
   dbPass = process.env.DB_PASS_TEST;
   dbHost = process.env.DB_HOST_TEST;
+} else if (process.env.ENV === 'localhost') {
+  dbName = process.env.DB_NAME_LOCAL;
+  dbUser = process.env.DB_USER_LOCAL;
+  dbPass = process.env.DB_PASS_LOCAL;
+  dbHost = process.env.DB_HOST_LOCAL;
 } else { // localhost developing or staging server
   dbName = process.env.DB_NAME_DEV;
   dbUser = process.env.DB_USER_DEV;
