@@ -18,18 +18,36 @@
       </v-list>
     </v-navigation-drawer>
   
-    <v-toolbar app dark class="red darken-4">
-      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
-      <v-toolbar-title class="font-color">
-        <router-link to="/" tag="span" style="cursor: pointer">FEUPLink</router-link>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items v-if="$store.state.isUserLoggedIn" class="hidden-xs-only">
-        <v-btn flat v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items v-else class="hidden-xs-only">
-        <v-btn flat v-for="menuItem in menuItens" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
-      </v-toolbar-items>
+    <v-toolbar floating dark id="main-bar">
+      <div id="side-main">
+        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav">
+        </v-toolbar-side-icon>
+        <v-toolbar-title >
+          <router-link to="/" tag="span" style="cursor: pointer">
+            <v-avatar tile id="mini-logo" class="hidden-sm-and-up">
+              <img
+                      :src="minilogo"
+                      alt="IconFeup"
+              >
+            </v-avatar>
+            <v-avatar tile id="main-logo" class="hidden-xs-only">
+              <img
+                      v-bind:src="logo"
+                      alt="FEUPLink"
+              >
+            </v-avatar>
+          </router-link>
+        </v-toolbar-title>
+      </div>
+      <div id="main-bar-content" class="hidden-xs-only">
+        <v-spacer></v-spacer>
+        <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
+          <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items flex v-else class="hidden-xs-only">
+          <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
+        </v-toolbar-items>
+      </div>
     </v-toolbar>
   
     <v-content>
@@ -45,10 +63,14 @@
 </template>
 
 <script>
+  import logo from './assets/FEUPLinklogo.png';
+  import minilogo from './assets/IconFeup.png';
 export default {
   name: "App",
   data() {
     return {
+      minilogo: minilogo,
+      logo: logo,
       sideNav: false,
       menuItens: [
         {
@@ -93,18 +115,104 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+  }
+  #main-bar{
+    background-color: rgb(140,45,25);
+  }
+  .toolbar{
+    width:100%;
+    margin:0px;
+  }
+  .toolbar__content{
+    display: inline-flex;
+    width: 100%;
+  }
+  #main-bar .toolbar__content{
+    background: url('assets/header.png') no-repeat center;
+    background-size: cover;
+  }
+  #main-bar .btn__content{
+    text-transform: none;
+  }
 
-.font-color {
-  color: white;
-}
+  #main-bar .btn__content:before{
+    opacity: 0;
+  }
 
-@media screen and (min-width: 960px) {
-  .max-width {
-    width: 80%; 
-    margin: 0 auto;
-  }   
-}
+  #side-main{
+    width: 100%;
+    display: inline-flex;
+  }
+
+  #main-bar-content{
+    width: 100%;
+    display: flex;
+  }
+
+  #main-logo{
+    height: 50px!important;
+    width: auto!important;
+  }
+  #mini-logo{
+    height: 40px!important;
+    width: auto!important;
+  }
+
+  @media(min-width: 991px){
+    #main-bar .toolbar__content{
+      display: inline-block;
+      height: 145px!important;
+    }
+    #main-bar-content{
+      width: auto;
+      margin: 0px 50px;
+      color: rgb(140,45,25);
+    }
+    #side-main{
+      height: 50px;
+      margin-top: 50px;
+    }
+    #main-bar-content .btn{
+      width: 140px;
+      border: 2px solid white;
+      border-radius: 0%;
+      color:rgb(140,45,25);
+      background-color: white!important;
+    }
+    #main-bar-content .Sign-Up{
+      color: white;
+      background-color: transparent!important;
+    }
+
+    #main-bar-content .Sign-In,
+    #main-bar-content .Sign-Up{
+
+      margin-left: 20px!important;
+    }
+
+  }
+  @media (max-width: 990px){
+    #main-logo{
+      height: 40px!important;
+    }
+  }
+  @media (max-width: 600px){
+    #side-main{
+      display: inline-flex;
+      margin-left: 0;
+    }
+    #side-main .btn{
+      margin-top: 0px;
+    }
+    #side-main .toolbar__title{
+      text-align: end;
+      flex:auto;
+      margin-right: 20px;
+    }
+  }
+  .font-color {
+    color: white;
+  }
 </style>
