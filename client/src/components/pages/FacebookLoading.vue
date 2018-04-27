@@ -21,8 +21,6 @@ export default {
         }
     },
     mounted: async function() {
-      // just a callback for the linkedIn oauth  
-      
       var url = new URL(window.location.href);
       var code = url.searchParams.get("code");
       var state = url.searchParams.get("state");

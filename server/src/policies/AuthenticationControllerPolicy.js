@@ -375,6 +375,119 @@ module.exports = {
             next();
         }
     },
+    signup_facebook(req, res, next) {
+        const schema = {
+            code: Joi.string().required(),
+            state: Joi.string().required(),
+            error: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'code':
+                    res.status(400).send({
+                        error: 'You must provide your Facebook Authorization Code',
+                    });
+                    break;
+                case 'state':
+                    res.status(400).send({
+                        error: `You must provide your Facebook state for validation purposes`,
+                    });
+                    break;
+                case 'error':
+                    res.status(400).send({
+                        error: `You must provide a error field`,
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Bad request',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
+    continue_signup_facebook(req, res, next) {
+        const schema = {
+            personType: Joi.required(),
+            courseId: Joi.required(),
+            enrollmentDate: Joi.required(),
+            graduationDate: Joi.required(),
+            studenType: Joi.required(),
+            departmentId: Joi.required(),
+            workingLocation: Joi.required(),
+            startDate: Joi.required(),
+            endDate: Joi.required(),
+            mecNumber: Joi.required(),
+        };
+
+        // eslint-disable-next-line
+        const {error, value} = Joi.validate(req.body, schema);
+        if (error) {
+            switch (error.details[0].context.key) {
+                case 'personType':
+                    res.status(400).send({
+                        error: 'You must provide a personType field',
+                    });
+                    break;
+                case 'courseId':
+                    res.status(400).send({
+                        error: 'You must provide a courseId field',
+                    });
+                    break;
+                case 'enrollmentDate':
+                    res.status(400).send({
+                        error: 'You must provide a enrollmentDate field',
+                    });
+                    break;
+                case 'graduationDate':
+                res.status(400).send({
+                    error: 'You must provide a graduationDate field',
+                });
+                    break;
+                case 'studenType':
+                    res.status(400).send({
+                        error: 'You must provide a studenType field',
+                    });
+                    break;
+                case 'departmentId':
+                    res.status(400).send({
+                        error: 'You must provide a departmentId field',
+                    });
+                    break;
+                case 'workingLocation':
+                    res.status(400).send({
+                        error: 'You must provide a workingLocation field',
+                    });
+                    break;
+                case 'startDate':
+                    res.status(400).send({
+                        error: 'You must provide a startDate field',
+                    });
+                    break;
+                case 'endDate':
+                    res.status(400).send({
+                        error: 'You must provide a endDate field',
+                    });
+                    break;
+                case 'mecNumber':
+                    res.status(400).send({
+                        error: 'You must provide a mecNumber field',
+                    });
+                    break;
+                default:
+                    res.status(400).send({
+                        error: 'Invalid registration information',
+                    });
+            }
+        } else {
+            next();
+        }
+    },
     signin(req, res, next) {
         const schema = {
             email: Joi.string().required().email(),

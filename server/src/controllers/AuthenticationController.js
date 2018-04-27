@@ -377,43 +377,20 @@ module.exports = {
           },
         }
       )).data.access_token;
-/*
-      let appAccessToken = (await axios.get(
-        'https://graph.facebook.com/v2.12/oauth/access_token',
-        {
-          params:
-          {
-            grant_type: 'client_credentials',
-            client_id: process.env.FB_ID,
-            client_secret: process.env.FB_SECRET,
-          },
-        }
-      )).data.access_token;
 
-      let userId = (await axios.get(
-        'https://graph.facebook.com/v2.12/oauth/debug_token',
-        {
-          params:
-          {
-            input_token: userAccessToken,
-            access_token: appAccessToken,
-          },
-        }
-      )).data.user_id;
-*/
       let userData = (await axios.get(
         `https://graph.facebook.com/v2.11/me?access_token=${userAccessToken}&` +
         'fields=first_name,last_name,email,birthday,gender,location{city,country}&' +
         'format=json&method=get&pretty=0'
       )).data;
 
-      let seqUser = (await Person.findOne({where: {email: userData.email}}));
+      let seqUser = (await Person.findOne({where: {email: userData.emailAddress}}));
       let personData= '';
 
       if (seqUser == null) {
         personData = (await Person.create(
           {
-            name: `${userData.first_name} ${userData.last_name}`,
+            name: `${userData.first_name}  ${userData.last_name}`,
             email: userData.email,
             hashedPassword: '',
             validated: false,
@@ -424,14 +401,14 @@ module.exports = {
       } else {
         personData = seqUser.dataValues;
       }
-
+      // check if the user has already completed the registration process with the remaining info
       let student = (await Student.findAll({
         where: {
           PersonId: personData.id,
         },
       }));
 
-      let continueSignupFacebook = false;
+      let continueSignupFacebook=false;
 
       if (student.length === 0) {
         let staff = (await Staff.findAll({
@@ -446,7 +423,7 @@ module.exports = {
       }
 
       // return the user token, to allow him to make further requests to the API
-      return res.status(200).send({
+      return res.status(201).send({
         continueSignupFacebook: continueSignupFacebook,
         person: personData,
         token: jwtSignPerson(personData),
@@ -482,26 +459,14 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            createdAt: req.body.enrollmentDate,
-            updatedAt: req.body.graduationDate,
             type: req.body.studenType,
             PersonId: person.id,
           },
         }))[0].dataValues;
 
 
-        const course = (await Course.findOrCreate({
-         where: {
-          name: req.body.course,
-         },
-         defaults: {
-          creationDate: 2000,
-         },
-        }))[0].dataValues;
-
-
-        Course.findById(course.id).then((c) => {
-          c.setStudents(student.id);
+        Course.findById(req.body.courseId).then((c) => {
+          c.addStudent(student.id);
         });
       } else {
         // check if there isn't already a student member associated to the person
@@ -530,23 +495,12 @@ module.exports = {
         }))[0].dataValues;
 
 
-        const {dpName, acronym} = req.body;
-
-        const department = (await Department.findOrCreate({
-          where: {
-            name: dpName,
-          },
-          defaults: {
-            acronym: acronym,
-          },
-        }))[0].dataValues;
-
         Staff.findById(staff.id).then((s) => {
-          s.setDepartments(department.id);
+          s.addDepartment(req.body.departmentId);
         });
       }
 
-      res.status(200).send();
+      res.status(201).send();
     } catch (err) {
       console.log('err: ', err);
       res.status(400).send({
