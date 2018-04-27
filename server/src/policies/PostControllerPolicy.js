@@ -10,7 +10,7 @@ module.exports = {
             link: Joi.string(),
             numViews: Joi.number().integer().min(0),
             type: Joi.string().required(),
-            tags: Joi.array().items(Joi.string())
+            tags: Joi.array().items(Joi.string()),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -70,7 +70,7 @@ module.exports = {
             link: Joi.string(),
             numViews: Joi.number(),
             type: Joi.string(),
-            tags: Joi.array().items(Joi.string())
+            tags: Joi.array().items(Joi.string()),
         };
 
         const {error} = Joi.validate(req.body, schema);

@@ -26,8 +26,7 @@
                          v-bind:class="[{ active: currentTab === nav_tab.id }]"
                          @click="currentTab = nav_tab.id">
               <v-list-tile-content>
-                <v-list-tile-title>{{ user.username }}</v-list-tile-title>
-                <v-list-tile-sub-title> {{ user.type }}</v-list-tile-sub-title>
+                <v-list-tile-title>{{ nav_tab.name }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -116,62 +115,68 @@
 
             }
         },
-        currentTab: 1,
-        nav_tabs: [{
-            name: "Feed",
-            id: 1
-          },
-          {
-            name: "Events",
-            id: 2
-          },
-          {
-            name: "Job Opportunities",
-            id: 3
-          },
-          {
-            name: "Newsletter",
-            id: 4
-          },
-          {
-            name: "News",
-            id: 5
-          },
-          {
-            name: "Education",
-            id: 6
-          }
-        ]
-      };
+        template: '<v-list two-line>'+
+        '<v-list-tile ripple avatar v-for="content in contents" :key="content.title" @click="">'+
+        '<v-list-tile-avatar>'+
+        '<img :src="content.avatar">'+
+        '</v-list-tile-avatar>'+
+        '<v-list-tile-content>'+
+        '<v-list-tile-title v-html="content.title"></v-list-tile-title>'+
+        '<v-list-tile-sub-title v-html="content.description"></v-list-tile-sub-title>'+
+        '</v-list-tile-content>'+
+        '<v-list-tile-action>'+
+        '<v-list-tile-action-text>{{content.date}}</v-list-tile-action-text>'+
+        '</v-list-tile-action>'+
+        '</v-list-tile>'+
+        '</v-list>'
+    })
+    Vue.component('nav_tab-3', {
+        template: '<div>Job Opportunities component</div>'
+    })
+    Vue.component('nav_tab-4', {
+        template: '<div>Newsletter component</div>'
+    })
+    Vue.component('nav_tab-5', {
+        template: '<div>News component</div>'
+    })
+    Vue.component('nav_tab-6', {
+        template: '<div>Education component</div>'
+    })
+
+    export default {
+  name: "Feed",
+  mounted () {
+    if (!this.$store.state.isUserLoggedIn){
+        this.$router.push('/');
+    }
+  },
+    data () {
+        return {
+            drawer: true,
+            user: {username: 'John Doe', type: 'Student',img: 'https://www.w3schools.com/howto/img_avatar.png'},
+            currentTab: 1,
+            nav_tabs: [{name:'Feed', id:1}, {name:'Events', id:2}, {name:'Job Opportunities', id:3}, {name:'Newsletter', id:4}, {name:'News', id:5}, {name:'Education', id:6}],
+        }
     },
     computed: {
-      currentTabComponent: function() {
-        return "nav_tab-" + this.currentTab;
-      }
+        currentTabComponent: function () {
+            return 'nav_tab-' + this.currentTab
+        }
     }
-  };
+
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .avatar,
-  .avatar .icon,
-  .avatar img {
-    border-radius: 0%;
-  }
-  
-  #feed_content .navigation-drawer {
-    max-width: 170px;
-    margin-top: 90px !important;
-    background-color: transparent;
-  }
-  
-  @media (min-width: 1024px) {
-    #feed_content .navigation-drawer {
-      margin-left: 5%;
+<style>
+    .avatar, .avatar .icon, .avatar img{
+        border-radius: 0%;
     }
-    #side_content {
-      margin-left: 25%;
+
+    #feed_content .navigation-drawer{
+        max-width: 170px;
+        margin-top: 90px!important;
+        background-color: transparent;
     }
 
     #feed_content .list{
