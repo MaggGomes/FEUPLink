@@ -73,7 +73,7 @@
 <style scoped>
   
     #feed_content .navigation-drawer{       
-        margin-top: 90px!important;
+        margin-top: 170px!important;
         margin-left: 40px!important;
         background-color: transparent;
     }
