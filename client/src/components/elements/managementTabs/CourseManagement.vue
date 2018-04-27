@@ -124,7 +124,7 @@
       </v-dialog>
 
        <!-- course details dialog -->
-      <v-dialog v-model="showCourseDetails">
+      <v-dialog scrollable v-model="showCourseDetails">
         <v-card>
           <v-card-title v-if="currentCourse !== null" class="headline">{{currentCourse.name}}</v-card-title>
           <v-card-text>
@@ -148,10 +148,10 @@
 
 
       <!-- list of courses -->
-
-
       <v-toolbar v-for="course in courses" :key="course.id">
-        <v-toolbar-title>{{course.name}}</v-toolbar-title>
+        <v-toolbar-title class="hidden-sm-and-down">{{course.name}}</v-toolbar-title>
+        <v-toolbar-title class="hidden-md-and-up">{{course.acronym}}</v-toolbar-title>
+
         <v-spacer></v-spacer>
         <v-toolbar-items >
           <v-btn flat @click="() => {

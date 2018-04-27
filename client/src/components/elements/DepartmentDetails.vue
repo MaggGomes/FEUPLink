@@ -17,7 +17,7 @@
           </v-tab>
 
           <!-- Department Info -->
-          <v-tab-item >
+          <v-tab-item style="height: 400px;">
             <v-card flat>
               <v-card-text>
                 <v-layout row wrap>
@@ -34,7 +34,7 @@
 
 
           <!-- Staff -->
-          <v-tab-item>
+          <v-tab-item style="height: 400px;">
             <v-expansion-panel>
               <v-expansion-panel-content  v-for="staff in department.Staffs" :key="staff.id">
                 <div slot="header">
@@ -42,8 +42,7 @@
                     <v-spacer> </v-spacer>    
                   {{staff.Person.name}}
                 </div>
-                <v-card class="grey lighten-3">
-                  <v-card-title> </v-card-title>
+                <v-card class="grey lighten-3">                  
                   <v-card-text>
                     <v-layout row wrap>
                       <v-flex class="body-1" xs4 mt-2>Working Location</v-flex>
@@ -68,7 +67,7 @@
 
 
           <!-- Courses -->
-          <v-tab-item>
+          <v-tab-item style="height: 400px;">
             <v-expansion-panel>
               <v-expansion-panel-content  v-for="course in department.Courses" :key="course.id">
                 <div slot="header">
@@ -76,8 +75,7 @@
                     <v-spacer> </v-spacer>    
                   {{course.acronym}}
                 </div>
-                <v-card class="grey lighten-3">
-                  <v-card-title> </v-card-title>
+                <v-card class="grey lighten-3">                 
                   <v-card-text>
                     <v-layout row wrap>
                       <v-flex class="body-1" xs4 mt-2>Description</v-flex>

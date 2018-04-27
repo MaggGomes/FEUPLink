@@ -12,32 +12,32 @@
           <v-tab ripple>
             Course associated channels
           </v-tab>
-          <v-tab-item>
+          <v-tab-item style="height: 400px;">
             <v-card flat>
               <v-card-text>
                 <v-layout row wrap>
-                  <v-flex class="title" xs4 mt-2>Name</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Name</v-flex>
                   <v-flex xs8 mt-2>{{course.name}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>Acronym</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Acronym</v-flex>
                   <v-flex xs8 mt-2>{{course.acronym}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>Type of Degree</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Type of Degree</v-flex>
                   <v-flex xs8 mt-2>{{course.academicDegree}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>Description</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Description</v-flex>
                   <v-flex xs8 mt-2>{{course.description}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>Department</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Department</v-flex>
                   <v-flex xs8 mt-2>{{course.Department.name}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>website</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>website</v-flex>
                   <v-flex xs8 mt-2>{{course.website}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>Creation Date</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>Creation Date</v-flex>
                   <v-flex xs8 mt-2>{{String(course.creationDate).substring(0,10)}}</v-flex>
 
-                  <v-flex class="title" xs4 mt-2>End Date</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>End Date</v-flex>
                   <v-flex xs8 mt-2>{{String(course.endDate).substring(0,10)}}</v-flex>
 
                 </v-layout>
@@ -46,7 +46,7 @@
           </v-tab-item>
 
           <!-- students -->
-          <v-tab-item>
+          <v-tab-item style="height: 400px;">
             <v-expansion-panel>
               <v-expansion-panel-content  v-for="student in course.Students" :key="student.id">
                 <div slot="header">
@@ -54,15 +54,14 @@
                     <v-spacer> </v-spacer>    
                   {{student.Person.name}}
                 </div>
-                <v-card class="grey lighten-3">
-                  <v-card-title> </v-card-title>
+                <v-card class="grey lighten-3">                
                   <v-card-text>
                     <v-layout row wrap>
                      
-                      <v-flex class="body-1" xs4 mt-2>Enrrolment Date</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>Enrrolment Date</v-flex>
                       <v-flex xs8 mt-2>{{String(student.CourseStudent.enrollmentDate).substring(0,10)}}</v-flex>
                     
-                      <v-flex class="body-1" mt-2 xs4>Graduation Date</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>Graduation Date</v-flex>
                       <v-flex xs8 mt-2>{{String(student.CourseStudent.graduationDate).substring(0,10)}}</v-flex>                    
                                 
                     </v-layout>
@@ -77,7 +76,7 @@
           </v-tab-item>
 
           <!-- Channels -->
-          <v-tab-item>
+          <v-tab-item style="height: 400px;">
             <v-expansion-panel>
               <v-expansion-panel-content v-for="channel in course.Channels" :key="channel.id">
                 <div slot="header">Channel</div>

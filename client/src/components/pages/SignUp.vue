@@ -754,54 +754,66 @@ export default {
         this.firstStep = false;
     },
     async signup () {
-		if(this.role == 'student') {
-			await AuthenticationService.signup_student({
-				name: this.name,
-				email: this.email,
-				hashedPassword: this.password,
-				birthDate: this.date,
-				gender: this.gender,
-				country: this.country,
-				city: this.city,
-				courseId: this.courseId,
-				enrollmentDate: this.date2,
-				graduationDate: this.date3,
-				type: this.type,
-				mecNumber: this.number,
-				company: this.company,
-				companyType: this.companyType,
-				companyIndustry: this.companyIndustry,
-				title: this.position,
-				startDate: this.date4,
-				endDate: this.date5,
-				isCurrent: this.checkboxWork,
-				workExperience: this.checkboxNoExperience
-			})
-		}
-		else {
-			await AuthenticationService.signup_staff({
-				name: this.name,
-				email: this.email,
-				hashedPassword: this.password,
-				birthDate: this.date,
-				gender: this.gender,
-				country: this.country,
-				city: this.city,
-				departmentId: this.departmentId,
-				workingLocation: this.workingLocation,
-				startDate: this.date2,
-				endDate: this.date3,
-				mecNumber: this.number,
-				company: this.company,
-				companyType: this.companyType,
-				companyIndustry: this.companyIndustry,
-				title: this.position,
-				jobStartDate: this.date4,
-				jobEndDate: this.date5,
-				isCurrent: this.checkboxWork,
-				workExperience: this.checkboxNoExperience
-			})
-		}	
+			try {
+				let resp
+				if(this.role == 'student') {
+					resp = (await AuthenticationService.signup_student({
+						name: this.name,
+						email: this.email,
+						hashedPassword: this.password,
+						birthDate: this.date,
+						gender: this.gender,
+						country: this.country,
+						city: this.city,
+						courseId: this.courseId,
+						enrollmentDate: this.date2,
+						graduationDate: this.date3,
+						type: this.type,
+						mecNumber: this.number,
+						company: this.company,
+						companyType: this.companyType,
+						companyIndustry: this.companyIndustry,
+						title: this.position,
+						startDate: this.date4,
+						endDate: this.date5,
+						isCurrent: this.checkboxWork,
+						workExperience: this.checkboxNoExperience
+					})).data
+				}
+				else {
+					resp = (await AuthenticationService.signup_staff({
+						name: this.name,
+						email: this.email,
+						hashedPassword: this.password,
+						birthDate: this.date,
+						gender: this.gender,
+						country: this.country,
+						city: this.city,
+						departmentId: this.departmentId,
+						workingLocation: this.workingLocation,
+						startDate: this.date2,
+						endDate: this.date3,
+						mecNumber: this.number,
+						company: this.company,
+						companyType: this.companyType,
+						companyIndustry: this.companyIndustry,
+						title: this.position,
+						jobStartDate: this.date4,
+						jobEndDate: this.date5,
+						isCurrent: this.checkboxWork,
+						workExperience: this.checkboxNoExperience
+					})).data
+				}	
+				
+				if (resp != null) {
+          this.$store.dispatch("setToken", resp.token);
+          this.$store.dispatch("setUser", resp.person);
+          this.loading = false;
+          this.$router.push("Feed");
+        }
+			}catch(error){
+				 this.error=error
+			}
 	},
 	save (date) {
 		this.$refs.menu.save(date)
