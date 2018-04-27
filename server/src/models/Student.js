@@ -11,14 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'Actual Student',
         allowNull: false,
       },
-      enrollmentDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      graduationDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
     },
     {
       freezeTableName: true,
@@ -42,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     // Student can have many courses
     Student.belongsToMany(models.Course,
       {
-        through: 'CourseStudent',
+        through: models.CourseStudent,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }
