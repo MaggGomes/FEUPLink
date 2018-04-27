@@ -4,9 +4,11 @@ import Homepage from '@/components/pages/Homepage'
 import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
+import ContinueSignupFacebook from '@/components/pages/ContinueSignupFacebook'
 import Feed from '@/components/pages/Feed'
 import Profile from '@/components/pages/Profile'
 import Management from '@/components/pages/Management'
+import FacebookLoading from '@/components/pages/FacebookLoading'
 import LinkedINLoading from '@/components/pages/LinkedINLoading'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
@@ -31,6 +33,12 @@ export default new Router({
       path: '/continue-signup-linkedin',
       name: 'ContinueSignupLinkedin',
       component: ContinueSignupLinkedin,
+      beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/continue-signup-facebook',
+      name: 'ContinueSignupFacebook',
+      component: ContinueSignupFacebook,
       beforeEnter: AuthenticationPolicy.authenticated
     },
     {
@@ -69,6 +77,11 @@ export default new Router({
       path: '/linkedIn',
       name: 'LinkedINLoading',
       component: LinkedINLoading
-    }
+    },
+    {
+      path: '/facebook',
+      name: 'FacebookLoading',
+      component: FacebookLoading
+    },
   ]
 })
