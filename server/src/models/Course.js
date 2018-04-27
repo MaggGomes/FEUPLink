@@ -5,9 +5,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    academicDegree: {
+      type: DataTypes.ENUM,
+      values: ['Bachelor', 'Masters', 'PhD'],
+      defaultValue: 'Bachelor',
+      allowNull: false,
+    },
     acronym: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,
@@ -21,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
@@ -31,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       // Course can have many students
       Course.belongsToMany(models.Student,
         {
-          through: 'CourseStudent',
+          through: models.CourseStudent,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }
@@ -39,6 +49,14 @@ module.exports = (sequelize, DataTypes) => {
 
       // Course can have many channels
       Course.hasMany(models.Channel,
+        {
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        }
+      );
+
+      // Course belongs to a department
+      Course.belongsTo(models.Department,
         {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',

@@ -10,7 +10,7 @@
             {{ signnedInItem.title }}
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+        <v-list-tile v-else v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
           <v-list-tile-content>
             {{ menuItem.title }}
           </v-list-tile-content>
@@ -52,10 +52,12 @@
   
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <div class="max-width">
+          <router-view></router-view>
+        </div>
       </v-container>
     </v-content>
-    <v-footer app></v-footer>
+    <v-footer absolute app></v-footer>
   </div>
   </v-app>
 </template>
@@ -63,63 +65,53 @@
 <script>
   import logo from './assets/FEUPLinklogo.png';
   import minilogo from './assets/IconFeup.png';
-  export default {
-    name: "App",
-    data() {
-      return {
-        sideNav: false,
-        menuItens: [
-            {
-                title: 'Home',
-                link: "/"
-            },
-            {
-                title: 'Sign-Up',
-                link: "/signup"
-            },
-            {
-                title: 'Sign-In',
-                link: "/signin"
-            }
-
-        ],
-          minilogo: minilogo,
-          logo: logo,
-
-        signnedInMenuItens: [
-            {
-                title: 'Home',
-                link: "/"
-            },
-            {
-                title: 'Feed',
-                link: "/Feed"
-            },
-            {
-                title: 'Logout',
-                link: "/logout"
-            }
-        ]
-      }
+export default {
+  name: "App",
+  data() {
+    return {
+      minilogo: minilogo,
+      logo: logo,
+      sideNav: false,
+      menuItens: [
+        {
+          title: "Sign-In",
+          link: "/signin"
+        },
+        {
+          title: "Sign-Up",
+          link: "/signup"
+        }
+      ]
+    };
+  },
+  computed: {
+    signnedInMenuItens() {
+      let userId = (this.$store.state.user != undefined ? this.$store.state.user.id : 0)
+      return [
+        {
+          title: "Home",
+          link: "/"
+        },
+        {
+          title: "Feed",
+          link: "/feed"
+        },
+        {
+            title: 'Management',
+            link: "/management"
+        },
+        {
+          title: "Profile",
+          link: "/profile/" + userId
+        },
+        {
+          title: "Logout",
+          link: "/logout"
+        }
+      ];
     }
-  };
-   window.fbAsyncInit = function() {
-    FB.init({
-      appId            : '1602254696490199',
-      autoLogAppEvents : true,
-      xfbml            : true,
-      version          : 'v2.12'
-    });
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-
+  },
+}
 </script>
 
 <style>
