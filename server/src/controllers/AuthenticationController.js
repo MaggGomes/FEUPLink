@@ -37,10 +37,6 @@ module.exports = {
           PersonId: personJson.id,
         });
 
-        Course.findById(req.body.courseId).then((course) => {
-          course.setStudents(student.toJSON().id);
-        });
-
         (await CourseStudent.create({
           CourseId: req.body.courseId,
           StudentId: student.toJSON().id,

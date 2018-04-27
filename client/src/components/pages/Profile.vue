@@ -147,13 +147,13 @@
                 <v-card-text>
                   <v-container grid-list-md>
                     <v-layout wrap>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12>
                         <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12>
                         <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12 sm6>
                         <v-menu
                           ref="menu"
                           lazy
@@ -182,7 +182,7 @@
                           ></v-date-picker>
                         </v-menu>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12 sm6>
                         <v-menu
                           ref="menu2"
                           lazy
@@ -211,7 +211,7 @@
                           ></v-date-picker>
                         </v-menu>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12>
                         <v-select
 															:items="jobOptions"
 															v-model="editedItemExperience.isCurrent"
@@ -290,7 +290,7 @@
                 <v-card-text>
                   <v-container grid-list-md>
                     <v-layout wrap>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12>
                         <v-select
                           :items="degreeOptions"
                           v-model="editedItemEducation.degree"
@@ -298,15 +298,17 @@
                           prepend-icon="person"
                         ></v-select>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12>
                         <v-select
                           :items="coursesOptions"
+                          item-text="name"
+                          autocomplete
                           v-model="editedItemEducation.course"
                           label="Course name"
                           prepend-icon="person"
                         ></v-select>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12 sm6>
                         <v-menu
                           ref="menu3"
                           lazy
@@ -335,7 +337,7 @@
                           ></v-date-picker>
                         </v-menu>
                       </v-flex>
-                      <v-flex xs12 sm6 md4>
+                      <v-flex xs12 sm6>
                         <v-menu
                           ref="menu4"
                           lazy
@@ -384,7 +386,7 @@
         >
           <template slot="items" slot-scope="props">
             <td class="text-xs-left">{{ props.item.degree }}</td>
-            <td class="text-xs-left">{{ props.item.course }}</td>
+            <td class="text-xs-left">{{ props.item.course.name }}</td>
             <td class="text-xs-left">{{ props.item.enrollmentDate }}</td>
             <td class="text-xs-left">{{ props.item.graduationDate }}</td>
             <td class="justify-left layout px-0">
@@ -424,6 +426,7 @@
 <script>
 import Vue from "vue";
 import ProfileService from "@/services/ProfileService";
+import CourseService from '@/services/CourseService'
 import LinkedInButton from "@/components/elements/LinkedInButton";
 import FacebookButton from "@/components/elements/FacebookButton";
 import defaultUserImg from "@/assets/defaultUser.jpg";
@@ -441,7 +444,7 @@ export default {
     menu4: false,
     jobOptions: ['Yes', 'No'],
     degreeOptions: ['Bachelor', 'Masters', 'PhD'],
-    coursesOptions: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
+    coursesOptions: null,
     defaultUserImg: defaultUserImg,
     dialogExperience: false,
     dialogEducation: false,
@@ -551,7 +554,7 @@ export default {
           var graduationDate = grdDate.getUTCFullYear() + "-" + (grdDate.getUTCMonth() + 1);
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
-            course: student.data.courses[i].name,
+            course: student.data.courses[i],
             enrollmentDate: enrollmentDate,
             graduationDate: graduationDate
           });
@@ -583,13 +586,18 @@ export default {
         });
       }
     },
-
+    async getCourses(){
+      try{
+        this.coursesOptions = (await CourseService.list_all_courses()).data
+      }catch(error){
+        this.error=error
+      }
+    },
     editItemExperience(item) {
       this.editedIndexExperience = this.itemsExperience.indexOf(item);
       this.editedItemExperience = Object.assign({}, item);
       this.dialogExperience = true;
     },
-
     async deleteItemExperience(item) {
       const index = this.itemsExperience.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
@@ -651,7 +659,7 @@ export default {
       confirm("Are you sure you want to delete this item?") &&
         this.itemsEducation.splice(index, 1);
       (await ProfileService.deleteCourseStudent({
-        name: item.course,
+        name: item.course.name,
         academicDegree: item.degree,
         PersonId: this.$store.state.user.id
       }));
@@ -672,7 +680,7 @@ export default {
           this.editedItemEducation
         );
         (await ProfileService.updateCourseStudent({
-          name: this.editedItemEducation.course,
+          name: this.editedItemEducation.course.name,
           academicDegree: this.editedItemEducation.degree,
           enrollmentDate: this.editedItemEducation.enrollmentDate,
           graduationDate: this.editedItemEducation.graduationDate,
@@ -681,7 +689,7 @@ export default {
       } else {
         this.itemsEducation.push(this.editedItemEducation);
         (await ProfileService.insertCourseStudent({
-          name: this.editedItemEducation.course,
+          name: this.editedItemEducation.course.name,
           academicDegree: this.editedItemEducation.degree,
           enrollmentDate: this.editedItemEducation.enrollmentDate,
           graduationDate: this.editedItemEducation.graduationDate,
@@ -690,6 +698,9 @@ export default {
       }
       this.closeEducation();
     },
+  },
+  mounted: async function (){
+      await this.getCourses();
   }
 };
 </script>
