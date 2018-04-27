@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      allowNull: false,
+      allowNull: true,
     },
     link: {
       type: DataTypes.STRING,
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     numViews: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
-      allowNull: false,
+      allowNull: true,
     },
     type: {
       type: DataTypes.ENUM,

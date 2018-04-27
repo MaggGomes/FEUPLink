@@ -1,5 +1,17 @@
-const AuthenticationController = require('./controllers/AuthenticationController');
+// policies
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
+const CourseControllerPolicy = require('./policies/CourseControllerPolicy');
+const DepartmentControllerPolicy = require('./policies/DepartmentControllerPolicy');
+const PostControllerPolicy = require('./policies/PostControllerPolicy');
+
+// controllers
+const AuthenticationController = require('./controllers/AuthenticationController');
+const CourseController = require('./controllers/CourseController');
+const PersonController = require('./controllers/PersonController');
+// const PersonControllerPolicy = require('./policies/PersonControllerPolicy');
+const DepartmentController = require('./controllers/DepartmentController');
+const PostController = require('./controllers/PostController');
+
 
 module.exports = (app) => {
   // ----Authentication
@@ -39,5 +51,119 @@ module.exports = (app) => {
     AuthenticationControllerPolicy.continue_signup_facebook,
     AuthenticationController.continue_signup_facebook
   );
-};
 
+  app.get('/getPerson',
+    PersonController.getPerson
+  );
+
+  app.get('/getTypeOfPerson',
+    PersonController.getTypeOfPerson
+  );
+
+  app.get('/getStudent',
+    PersonController.getStudent
+  );
+
+  app.post('/create_job',
+    PersonController.insertExperience
+  );
+
+  app.post('/create_course_student',
+    PersonController.insertCourseStudent
+  );
+
+  app.post('/update_job',
+    PersonController.updateJobExperience
+  );
+
+  app.post('/update_course_student',
+    PersonController.updateCourseStudent
+  );
+
+  app.post('/delete_job',
+    PersonController.deleteJobExperience
+  );
+
+  app.post('/delete_course_student',
+    PersonController.deleteCourseStudent
+  );
+  // ----Course
+
+  app.post('/create_course',
+    AuthenticationControllerPolicy.super_admin,
+    CourseControllerPolicy.create,
+    CourseController.create
+  );
+
+  app.put('/update_course',
+    AuthenticationControllerPolicy.super_admin,
+    CourseControllerPolicy.update,
+    CourseController.update
+  );
+
+  app.delete('/delete_course',
+    AuthenticationControllerPolicy.super_admin,
+    CourseControllerPolicy.hasId,
+    CourseController.delete
+  );
+
+  app.get('/list_all_courses',
+    CourseController.list_all
+  );
+
+  // ----Department
+
+  app.post('/create_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.create,
+    DepartmentController.create
+  );
+
+  app.put('/update_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.update,
+    DepartmentController.update
+  );
+
+  app.delete('/delete_department',
+    AuthenticationControllerPolicy.super_admin,
+    DepartmentControllerPolicy.hasId,
+    DepartmentController.delete
+  );
+
+  app.get('/list_all_departments',
+    DepartmentController.list_all
+  );
+
+    // ----Post
+
+  app.post('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.create,
+      PostController.create
+  );
+
+  app.put('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.update,
+      PostController.update
+  );
+
+  app.delete('/post',
+      AuthenticationControllerPolicy.super_admin,
+      PostControllerPolicy.hasId,
+      PostController.delete
+  );
+
+  // Returns all posts
+  app.get('/post',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.list_all
+  );
+
+  // Returns all post from a specified type
+  app.get('/post/:type',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.list_by_type
+  );
+};

@@ -1,11 +1,11 @@
 const {
   Person,
-  Department,
   Staff,
   Student,
   Course,
   Company,
   Job,
+  CourseStudent,
 } = require('../models');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
@@ -33,20 +33,16 @@ module.exports = {
 
         const student = await Student.create({
           mecNumber: req.body.mecNumber,
-          enrollmentDate: req.body.enrollmentDate,
-          graduationDate: req.body.graduationDate,
           type: req.body.type,
           PersonId: personJson.id,
         });
 
-        const course = await Course.create({
-          name: req.body.course,
-          creationDate: 2000,
-        });
-
-        Course.findById(course.toJSON().id).then((course) => {
-          course.setStudents(student.toJSON().id);
-        });
+        (await CourseStudent.create({
+          CourseId: req.body.courseId,
+          StudentId: student.toJSON().id,
+          enrollmentDate: req.body.enrollmentDate,
+            graduationDate: req.body.graduationDate,
+        }));
 
         if (!req.body.workExperience) {
           const company = await Company.create({
@@ -89,16 +85,10 @@ module.exports = {
         PersonId: personJson.id,
       });
 
-      const {dpName, acronym} = req.body;
-
-      const department = await Department.create({
-        name: dpName,
-        acronym: acronym,
-      });
-
       Staff.findById(staff.toJSON().id).then((staff) => {
-        staff.setDepartments(department.toJSON().id);
+        staff.addDepartment(req.body.departmentId);
       });
+
       if (!req.body.workExperience) {
         const company = await Company.create({
           name: req.body.company,
@@ -263,9 +253,8 @@ module.exports = {
           }
         }
 
-
         // return the user token, to allow him to make further requests to the API
-        return res.status(200).send({
+        return res.status(201).send({
           continueSignupLinkedin: continueSignupLinkedin,
           person: personData,
           token: jwtSignPerson(personData),
@@ -301,26 +290,19 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            enrollmentDate: req.body.enrollmentDate,
-            graduationDate: req.body.graduationDate,
             type: req.body.studenType,
             PersonId: person.id,
           },
         }))[0].dataValues;
 
 
-        const course = (await Course.findOrCreate({
-         where: {
-          name: req.body.course,
-         },
-         defaults: {
-          creationDate: 2000,
-         },
-        }))[0].dataValues;
+        Course.findById(req.body.courseId).then((c) => {
+          c.addStudent(student.id);
+        });
 
-
-        Course.findById(course.id).then((c) => {
-          c.setStudents(student.id);
+        CourseStudent.findById([course.toJSON().id, student.toJSON().id]).then((cs) => {
+          cs.setEnrollmentDate(req.body.enrollmentDate);
+          cs.setGraduationDate(req.body.graduationDate);
         });
       } else {
         // check if there isn't already a student member associated to the person
@@ -349,23 +331,12 @@ module.exports = {
         }))[0].dataValues;
 
 
-        const {dpName, acronym} = req.body;
-
-        const department = (await Department.findOrCreate({
-          where: {
-            name: dpName,
-          },
-          defaults: {
-            acronym: acronym,
-          },
-        }))[0].dataValues;
-
         Staff.findById(staff.id).then((s) => {
-          s.setDepartments(department.id);
+          s.addDepartment(req.body.departmentId);
         });
       }
 
-      res.status(200).send();
+      res.status(201).send();
     } catch (err) {
       console.log('err: ', err);
       res.status(400).send({

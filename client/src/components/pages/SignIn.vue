@@ -58,60 +58,64 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import AuthenticationService from '@/services/AuthenticationService'
-import FacebookButton from '@/components/elements/FacebookButton'
-import LinkedInButton from '@/components/elements/LinkedInButton'
-import BufferingWheel from '@/components/elements/BufferingWheel'
+import Vue from "vue";
+import AuthenticationService from "@/services/AuthenticationService";
+import FacebookButton from "@/components/elements/FacebookButton";
+import LinkedInButton from "@/components/elements/LinkedInButton";
+import BufferingWheel from "@/components/elements/BufferingWheel";
 
 export default {
-  name: 'SignIn',
+  name: "SignIn",
   components: {
-      LinkedInButton,
-      BufferingWheel,
-      FacebookButton
+    LinkedInButton,
+    BufferingWheel,
+    FacebookButton
   },
-  data () {
+  data() {
     return {
       loading: false,
       valid: false,
-      email: '',
-      password: '',
-      checkbox:'',
+      email: "",
+      password: "",
+      checkbox: "",
       error: null,
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+        v => !!v || "E-mail is required",
+        v =>
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail must be valid"
       ],
       passwordRules: [
-        v => !!v || 'Password is required',
-        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+        v => !!v || "Password is required",
+        v =>
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) ||
+          "Password must be valid"
       ]
-    }
+    };
   },
   methods: {
-    async signin () {
+    async signin() {
       try {
-        this.loading=true;
-      
+        this.loading = true;
+
         let resp = (await AuthenticationService.signin({
           email: this.email,
           hashedPassword: this.password
-        })).data
-      
-        if(resp != null){
-          this.$store.dispatch('setToken', resp.token)      
-          this.$store.dispatch('setUser', resp.person)
-          this.loading=false;
-          this.$router.push('Feed')
+        })).data;
+
+        if (resp != null) {
+          this.$store.dispatch("setToken", resp.token);
+          this.$store.dispatch("setUser", resp.person);
+          this.loading = false;
+          this.$router.push("Feed");
         }
       } catch (error) {
-        this.loading=false;
-        this.error = error.response.data.error
+        this.loading = false;
+        this.error = error.response.data.error;
       }
-    },
+    }
   }
-}
+};
 </script>
 
 <style scopped>
@@ -120,8 +124,7 @@ export default {
 }
 .signin-button {
   width: 100%;
-  height:60px;
+  height: 60px;
   font-size: 125%;
 }
-
 </style>

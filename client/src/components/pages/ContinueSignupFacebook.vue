@@ -38,17 +38,20 @@
          					<v-form v-model="valid" ref="form" autocomplete="off" lazy-validation>
          						<v-container fluid>
 											<v-layout row wrap align-center v-if="role == 'staff'">
-											<v-flex xs9 sm5 text-xs-center>
-												<v-text-field
-													prepend-icon="person"
-													label="Department name"
-													v-model="dpName"
-													:rules="[v => !!v || 'Department is required']"
+										<v-flex xs9 text-xs-center>
+												<v-select
+													:items="departments"													
+													v-model="departmentId"
+													item-text="name"
+													item-value="id"
+													label="Select your department"
+													prepend-icon="person"													
+													:rules="[v => !!v || 'You must select a department']"
 													required
-													></v-text-field>
+												></v-select>		
 											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="dpNameVisible">
+											<v-flex xs3 text-xs-center>
+												<v-btn-toggle v-model="dpVisible">
 															<v-btn flat>
 																<v-icon>visibility</v-icon>
 															</v-btn>
@@ -56,24 +59,7 @@
 																<v-icon>visibility_off</v-icon>
 															</v-btn>
 														</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>
-												<v-text-field
-												prepend-icon="person"
-												label="Department acronym"
-												v-model="dpAcr"
-												></v-text-field>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="dpAcrVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
+											</v-flex>									
 										 </v-layout>	
 										
 										<v-layout row wrap align-center v-if="role == 'student'">
@@ -83,29 +69,21 @@
 												v-model="degree"
 												label="Academic degree"
 												prepend-icon="person"
-												:rules="[v => !!v || 'Degree is required']"
-												required
+												:rules="[v => !!v || 'Academic Degree is required']"
 												></v-select>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="degreeVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>		
-												<v-select
-												:items="courses"
-												v-model="course"
-												label="Course"
-												prepend-icon="person"
-												:rules="[v => !!v || 'Course is required']"
-												required
-												></v-select>
+											</v-flex>											
+											<v-flex xs9 sm5 offset-sm1 text-xs-center>		
+											  <v-select
+													:items="courses"													
+													v-model="courseId"
+													item-text="name"
+													item-value="id"
+													label="Select your course"
+													prepend-icon="person"
+													autocomplete
+													:rules="[v => !!v || 'You must select a course']"
+													required
+												></v-select>									
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
 												<v-btn-toggle v-model="courseVisible">
@@ -118,7 +96,6 @@
 												</v-btn-toggle>
 											</v-flex>
 										</v-layout>
-
 									<v-layout align-center v-if="role == 'staff'">
 										<v-flex xs9 sm11 text-xs-center>
 											<v-text-field
@@ -309,6 +286,8 @@
 import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
 import BufferingWheel from '@/components/elements/BufferingWheel'
+import DepartmentService from '@/services/DepartmentService'
+import CourseService from '@/services/CourseService'
 
 export default {
 	 components: {
@@ -328,16 +307,15 @@ export default {
       menu3: false,
 			studenType: null,
 			studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
-      course: null,
-      courses: ['MIEIC', 'MIEC', 'MIEQ', 'MIEIG', 'MIEEC'],
-      role: 'student',
-	  	dpName: '',
-      dpAcr: '',
+      courseId: null,
+      courses: null,
+			departmentId: null,
+      departments: null,
+      role: 'student',	  
       number: '',
 			degree: null,
 			degrees: ['Bachelor', 'Masters', 'PhD'],
-			dpNameVisible: 0,
-			dpAcrVisible: 0,
+			dpVisible: 0,
 			degreeVisible: 0,
 			courseVisible: 0,
 			date2Visible: 0,
@@ -360,13 +338,12 @@ export default {
 						await AuthenticationService.continue_signup_facebook({
 							personType: this.role,
 							//student stuff
-							course: this.course,
+							courseId: this.courseId,
 							enrollmentDate: this.date2,
 							graduationDate: this.date3,
 							studenType: this.studenType,
 							// staff stuff
-							dpName: this.dpName,
-							acronym: this.dpAcr,
+							departmentId: this.departmentId,						
 							workingLocation: this.workingLocation,
 							startDate: this.date2,
 							endDate: this.date3,
@@ -374,7 +351,7 @@ export default {
 							mecNumber: this.number,
 						});
 						
-						this.$router.push('/feed');
+						this.$router.push('Feed');
 					}
 				}catch(error){
 					this.e1=1;
@@ -383,10 +360,27 @@ export default {
 				}
 		},
 		save (date) {
-			//debugger
-			//this.$refs.picker.save(date)
-		}
-  }
+			this.$refs.menu.save(date)
+		},
+		async getCourses(){
+      try{
+        this.courses = (await CourseService.list_all_courses()).data
+      }catch(error){
+        this.error=error
+      }
+    },
+    async getDepartments(){
+      try{
+        this.departments = (await DepartmentService.list_all_departments()).data
+      }catch(error){
+        this.error=error
+      }
+    }
+  },
+	mounted: async function (){
+		await this.getCourses();
+		await this.getDepartments()
+  },	
 }
 </script>
 

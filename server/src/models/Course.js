@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['Bachelor', 'Masters', 'PhD'],
       defaultValue: 'Bachelor',
-      allowNull: true,
+      allowNull: false,
     },
     acronym: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,
@@ -49,6 +49,14 @@ module.exports = (sequelize, DataTypes) => {
 
       // Course can have many channels
       Course.hasMany(models.Channel,
+        {
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        }
+      );
+
+      // Course belongs to a department
+      Course.belongsTo(models.Department,
         {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
