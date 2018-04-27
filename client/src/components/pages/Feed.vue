@@ -175,7 +175,7 @@
 
     #feed_content .navigation-drawer{
         max-width: 170px;
-        margin-top: 90px!important;
+        margin-top: 170px!important;
         background-color: transparent;
     }
 
