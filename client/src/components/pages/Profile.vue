@@ -12,49 +12,32 @@
             </v-layout>
             <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
               <v-flex xs12 wrap>
-                <h3 class="text-align-center">{{ person.name }}</h3>
+                <h2 class="text-align-center">{{ person.name }}</h2>
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">Studied:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">FEUP</h4>
+              <v-flex xs12 wrap>
+                <p class="grey-color text-align-center">{{ personType }}</p>
               </v-flex>
             </v-layout>
-            <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">From:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">{{ person.city }}, {{ person.country }}</h4>
+            <v-layout v-if="locationString.length !== 0" row>
+              <v-flex xs12 wrap>
+                <p class="grey-color text-align-center">{{ locationString }}</p>
               </v-flex>
             </v-layout>
-            <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">Works at:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">FEUP</h4>
-              </v-flex>
-            </v-layout>
-            <v-layout row style="margin-top: 15px;">
-              <v-flex xs4 wrap>
-                <p class="grey-color">Contact:</p>
-              </v-flex>
-              <v-flex xs2>
+            <v-layout row style="margin-top: 15px;" justify-center>
+              <v-flex xs1>
                 <v-icon>fab fa-facebook</v-icon>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs1>
                 <v-icon>fab fa-linkedin</v-icon>
               </v-flex>
-              <v-flex xs2>
+              <!--<v-flex xs1>
                 <v-icon>fab fa-instagram</v-icon>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs1>
                 <v-icon>fab fa-skype</v-icon>
-              </v-flex>
+              </v-flex> -->
             </v-layout>
           </v-flex>
           <!-- End region of mobile screen -->
@@ -63,54 +46,25 @@
           <v-flex hidden-sm-and-down lg2 md3>
             <img :src="defaultUserImg" width="150" height="150">
           </v-flex>
-          <v-flex hidden-sm-and-down lg6 md6 justify-start>
+          <v-flex hidden-sm-and-down lg2 md2 justify-start style="margin: auto;">
             <v-layout class="bottom-margin" row>
               <v-flex lg12 md12>
                 <h3>{{ person.name }}</h3>
               </v-flex>
             </v-layout>
-            <v-layout class="bottom-margin" row>
-              <v-flex lg6 md6>
-                <v-layout row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">Studied:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4>FEUP</h4>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex lg6 md6>
-                <v-layout row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">From:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4>{{ person.city }}, {{ person.country }}</h4>
-                  </v-flex>
-                </v-layout>
+            <v-layout class="bottom-margin"  row>
+              <v-flex lg12 md12>
+                <p class="grey-color">{{ personType }}</p>
               </v-flex>
             </v-layout>
-            <v-layout class="bottom-margin"  row>
-              <v-flex lg6 md6>
-                <v-layout row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">Works at:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4>FEUP</h4>
-                  </v-flex>
-                </v-layout>
+            <v-layout v-if="locationString.length !== 0" class="bottom-margin" row>
+              <v-flex lg12 md12>
+                <p class="grey-color">{{ locationString }}</p>
               </v-flex>
             </v-layout>
           </v-flex>
 
-          <v-flex hidden-sm-and-down lg3 md3>
-            <v-layout row>
-              <v-flex lg12 md12>
-                <p class="grey-color">Contact:</p>
-              </v-flex>
-            </v-layout>
+          <v-flex hidden-sm-and-down lg3 md3 style="margin: auto;">
             <v-layout row>
               <v-flex lg2 md2>
                 <v-icon large>fab fa-facebook</v-icon>
@@ -118,12 +72,12 @@
               <v-flex lg2 md2>
                 <v-icon large>fab fa-linkedin</v-icon>
               </v-flex>
-              <v-flex lg2 md2>
+              <!--<v-flex lg2 md2>
                 <v-icon large>fab fa-instagram</v-icon>
               </v-flex>
               <v-flex lg2 md2>
                 <v-icon large>fab fa-skype</v-icon>
-              </v-flex>
+              </v-flex>-->
             </v-layout>
           </v-flex>
           <!-- End regionf of Small, medium, large and extra-large screen -->
@@ -426,7 +380,7 @@
 <script>
 import Vue from "vue";
 import ProfileService from "@/services/ProfileService";
-import CourseService from '@/services/CourseService'
+import CourseService from "@/services/CourseService";
 import LinkedInButton from "@/components/elements/LinkedInButton";
 import FacebookButton from "@/components/elements/FacebookButton";
 import defaultUserImg from "@/assets/defaultUser.jpg";
@@ -442,8 +396,8 @@ export default {
     menu2: false,
     menu3: false,
     menu4: false,
-    jobOptions: ['Yes', 'No'],
-    degreeOptions: ['Bachelor', 'Masters', 'PhD'],
+    jobOptions: ["Yes", "No"],
+    degreeOptions: ["Bachelor", "Masters", "PhD"],
     coursesOptions: null,
     defaultUserImg: defaultUserImg,
     dialogExperience: false,
@@ -479,18 +433,20 @@ export default {
     itemsExperience: [],
     itemsEducation: [],
     person: {},
+    locationString: "",
+    personType: "",
     editedIndexExperience: -1,
     editedIndexEducation: -1,
     editedItemExperience: {
-      company: '',
-      title: '',
+      company: "",
+      title: "",
       startDate: null,
       endDate: null,
       isCurrent: null
     },
     defaultItemExperience: {
-      company: '',
-      title: '',
+      company: "",
+      title: "",
       startDate: null,
       endDate: null,
       isCurrent: null
@@ -536,22 +492,30 @@ export default {
       });
 
       if (result.data.type == "student") {
+        this.personType = "Student"
         let student = await ProfileService.getStudentInformation({
           id: this.$route.params.id
         });
-        
+
         this.person = student.data.person;
         console.log(student.data);
+
+        this.locationString =
+          this.person.contry !== null && this.person.city !== null
+            ? this.person.city + ", " + this.person.country
+            : [this.person.city, this.person.country].join('');
 
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
             student.data.courses[i].CourseStudent.enrollmentDate
           );
-          var enrollmentDate = enrDate.getUTCFullYear() + "-" + (enrDate.getUTCMonth() + 1);
+          var enrollmentDate =
+            enrDate.getUTCFullYear() + "-" + (enrDate.getUTCMonth() + 1);
           var grdDate = new Date(
             student.data.courses[i].CourseStudent.graduationDate
           );
-          var graduationDate = grdDate.getUTCFullYear() + "-" + (grdDate.getUTCMonth() + 1);
+          var graduationDate =
+            grdDate.getUTCFullYear() + "-" + (grdDate.getUTCMonth() + 1);
           this.itemsEducation.push({
             degree: student.data.courses[i].academicDegree,
             course: student.data.courses[i],
@@ -562,15 +526,15 @@ export default {
 
         for (var i = 0; i < student.data.experience.length; i++) {
           var sDate = new Date(student.data.experience[i].job.startDate);
-          var startDate = sDate.getUTCFullYear() + "-" + (sDate.getUTCMonth() + 1);
+          var startDate =
+            sDate.getUTCFullYear() + "-" + (sDate.getUTCMonth() + 1);
           var eDate = new Date(student.data.experience[i].job.endDate);
-          var endDate = eDate.getUTCFullYear() + "-" + (eDate.getUTCMonth() + 1);
+          var endDate =
+            eDate.getUTCFullYear() + "-" + (eDate.getUTCMonth() + 1);
 
-          var current = '';
-          if(student.data.experience[i].job.isCurrent)
-            current = 'Yes';
-          else
-            current = 'No';
+          var current = "";
+          if (student.data.experience[i].job.isCurrent) current = "Yes";
+          else current = "No";
 
           this.itemsExperience.push({
             company: student.data.experience[i].companyName,
@@ -581,16 +545,20 @@ export default {
           });
         }
       } else if (result.data.type == "staff") {
+        this.personType = "Staff"
         let staff = await ProfileService.getStaffInformation({
           id: this.$route.params.id
         });
       }
     },
-    async getCourses(){
-      try{
-        this.coursesOptions = (await CourseService.list_all_courses()).data
-      }catch(error){
-        this.error=error
+    save(date) {
+      this.$refs.menu.save(date);
+    },
+    async getCourses() {
+      try {
+        this.coursesOptions = (await CourseService.list_all_courses()).data;
+      } catch (error) {
+        this.error = error;
       }
     },
     editItemExperience(item) {
@@ -602,10 +570,10 @@ export default {
       const index = this.itemsExperience.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.itemsExperience.splice(index, 1);
-      (await ProfileService.deleteJobExperience({
+      await ProfileService.deleteJobExperience({
         company: item.company,
         personId: this.$store.state.user.id
-      }));
+      });
     },
 
     closeExperience() {
@@ -626,24 +594,24 @@ export default {
           this.editedItemExperience
         );
 
-        (await ProfileService.updateJobExperience({
+        await ProfileService.updateJobExperience({
           company: this.editedItemExperience.company,
           title: this.editedItemExperience.title,
           startDate: this.editedItemExperience.startDate,
           endDate: this.editedItemExperience.endDate,
           isCurrent: this.editedItemExperience.isCurrent,
           personId: this.$store.state.user.id
-        }));
+        });
       } else {
         this.itemsExperience.push(this.editedItemExperience);
-        (await ProfileService.insertExperience({
+        await ProfileService.insertExperience({
           company: this.editedItemExperience.company,
           title: this.editedItemExperience.title,
           startDate: this.editedItemExperience.startDate,
           endDate: this.editedItemExperience.endDate,
           isCurrent: this.editedItemExperience.isCurrent,
           personId: this.$store.state.user.id
-        }));
+        });
       }
       this.closeExperience();
     },
@@ -658,11 +626,11 @@ export default {
       const index = this.itemsEducation.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.itemsEducation.splice(index, 1);
-      (await ProfileService.deleteCourseStudent({
+      await ProfileService.deleteCourseStudent({
         name: item.course.name,
         academicDegree: item.degree,
         PersonId: this.$store.state.user.id
-      }));
+      });
     },
 
     closeEducation() {
@@ -679,28 +647,28 @@ export default {
           this.itemsEducation[this.editedIndexEducation],
           this.editedItemEducation
         );
-        (await ProfileService.updateCourseStudent({
+        await ProfileService.updateCourseStudent({
           name: this.editedItemEducation.course.name,
           academicDegree: this.editedItemEducation.degree,
           enrollmentDate: this.editedItemEducation.enrollmentDate,
           graduationDate: this.editedItemEducation.graduationDate,
           PersonId: this.$store.state.user.id
-        }));
+        });
       } else {
         this.itemsEducation.push(this.editedItemEducation);
-        (await ProfileService.insertCourseStudent({
+        await ProfileService.insertCourseStudent({
           name: this.editedItemEducation.course.name,
           academicDegree: this.editedItemEducation.degree,
           enrollmentDate: this.editedItemEducation.enrollmentDate,
           graduationDate: this.editedItemEducation.graduationDate,
           PersonId: this.$store.state.user.id
-        }));
+        });
       }
       this.closeEducation();
-    },
+    }
   },
-  mounted: async function (){
-      await this.getCourses();
+  mounted: async function() {
+    await this.getCourses();
   }
 };
 </script>

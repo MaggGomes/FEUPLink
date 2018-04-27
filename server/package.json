@@ -7,7 +7,7 @@
     "test": "mocha --exit",
     "debug": "./node_modules/nodemon/bin/nodemon.js --inspect=55555 src/app.js",
     "startnode": "node src/app.js",
-    "start": "./node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
+    "start": "nodemon src/app.js --exec 'npm run lint && node'",
     "lint": "./node_modules/.bin/eslint . --ext .js"
   },
   "repository": {
