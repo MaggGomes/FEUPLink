@@ -6,6 +6,7 @@ import SignIn from '@/components/pages/SignIn'
 import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
 import Feed from '@/components/pages/Feed'
 import LinkedINLoading from '@/components/pages/LinkedINLoading'
+import CreateFeed from '@/components/pages/CreateFeed'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
 import AuthenticationService from '@/services/AuthenticationService'
@@ -43,6 +44,12 @@ export default new Router({
       name: 'Feed',
       component: Feed,
       beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/feed/create',
+      name: 'CreateFeed',
+      component: CreateFeed,
+      beforeEnter: AuthenticationPolicy.super_admin
     },
     {
       path: '/logout',
