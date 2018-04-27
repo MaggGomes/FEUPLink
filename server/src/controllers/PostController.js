@@ -88,7 +88,7 @@ module.exports = {
         try {
             let posts = (await Post.findAll({
                 where: {
-                    type: req.params.type
+                    type: req.params.type,
                 },
 
                 attribute: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
@@ -104,7 +104,7 @@ module.exports = {
             res.status(201).send(posts);
         } catch (err) {
             res.status(401).send({
-                error: "no results found"
+                error: 'no results found',
             });
         }
     },

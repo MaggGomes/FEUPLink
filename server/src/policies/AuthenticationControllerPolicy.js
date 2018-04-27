@@ -75,7 +75,7 @@ module.exports = {
             gender: Joi.string().required(),
             country: Joi.string().required(),
             city: Joi.string().required(),
-            course: Joi.string().required(),
+            courseId: Joi.number().required(),
             enrollmentDate: Joi.string().required(),
             graduationDate: Joi.string(),
             type: Joi.string().required(),
@@ -87,7 +87,7 @@ module.exports = {
             startDate: Joi.string(),
             endDate: Joi.string(),
             isCurrent: Joi.boolean(),
-            workExperience: Joi.boolean().required(),
+            workExperience: Joi.boolean(),
         };
 
         // eslint-disable-next-line
@@ -134,9 +134,9 @@ module.exports = {
                         error: 'You must provide a city field',
                     });
                     break;
-                case 'course':
+                case 'courseId':
                     res.status(400).send({
-                        error: 'You must provide a course field',
+                        error: 'You must provide a courseId field',
                     });
                     break;
                 case 'enrollmentDate':
@@ -174,8 +174,7 @@ module.exports = {
             gender: Joi.string().required(),
             country: Joi.string().required(),
             city: Joi.string().required(),
-            dpName: Joi.string().required(),
-            acronym: Joi.string().required(),
+            departmentId: Joi.number().required(),
             workingLocation: Joi.string().required(),
             startDate: Joi.string(),
             endDate: Joi.string(),
@@ -187,7 +186,7 @@ module.exports = {
             startDate: Joi.string(),
             endDate: Joi.string(),
             isCurrent: Joi.boolean(),
-            workExperience: Joi.boolean().required(),
+            workExperience: Joi.boolean(),
         };
 
         // eslint-disable-next-line
@@ -234,14 +233,9 @@ module.exports = {
                         error: 'You must provide a city field',
                     });
                     break;
-                case 'dpName':
+                case 'departmentId':
                     res.status(400).send({
-                        error: 'You must provide a dpName field',
-                    });
-                    break;
-                case 'acronym':
-                    res.status(400).send({
-                        error: 'You must provide a acronym field',
+                        error: 'You must provide a departmentId field',
                     });
                     break;
                 case 'workingLocation':
@@ -307,12 +301,11 @@ module.exports = {
     continue_signup_linkedin(req, res, next) {
         const schema = {
             personType: Joi.required(),
-            course: Joi.required(),
+            courseId: Joi.required(),
             enrollmentDate: Joi.required(),
             graduationDate: Joi.required(),
             studenType: Joi.required(),
-            dpName: Joi.required(),
-            acronym: Joi.required(),
+            departmentId: Joi.required(),
             workingLocation: Joi.required(),
             startDate: Joi.required(),
             endDate: Joi.required(),
@@ -328,9 +321,9 @@ module.exports = {
                         error: 'You must provide a personType field',
                     });
                     break;
-                case 'course':
+                case 'courseId':
                     res.status(400).send({
-                        error: 'You must provide a course field',
+                        error: 'You must provide a courseId field',
                     });
                     break;
                 case 'enrollmentDate':
@@ -348,14 +341,9 @@ module.exports = {
                         error: 'You must provide a studenType field',
                     });
                     break;
-                case 'dpName':
+                case 'departmentId':
                     res.status(400).send({
-                        error: 'You must provide a dpName field',
-                    });
-                    break;
-                case 'acronym':
-                    res.status(400).send({
-                        error: 'You must provide a acronym field',
+                        error: 'You must provide a departmentId field',
                     });
                     break;
                 case 'workingLocation':

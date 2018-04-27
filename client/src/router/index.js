@@ -5,17 +5,18 @@ import SignUp from '@/components/pages/SignUp'
 import SignIn from '@/components/pages/SignIn'
 import ContinueSignupLinkedin from '@/components/pages/ContinueSignupLinkedin'
 import Feed from '@/components/pages/Feed'
+import Profile from '@/components/pages/Profile'
+import Management from '@/components/pages/Management'
 import LinkedINLoading from '@/components/pages/LinkedINLoading'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
-import AuthenticationService from '@/services/AuthenticationService'
+
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Homepage',
       component: Homepage
@@ -42,6 +43,18 @@ export default new Router({
       path: '/feed',
       name: 'Feed',
       component: Feed,
+      beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/profile/:id',
+      name: 'Profile',
+      component: Profile,
+      beforeEnter: AuthenticationPolicy.authenticated
+    },
+    {
+      path: '/management',
+      name: 'Management',
+      component: Management,
       beforeEnter: AuthenticationPolicy.authenticated
     },
     {
