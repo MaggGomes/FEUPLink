@@ -242,6 +242,7 @@ createServer({
       /* eslint-enable */
       console.log(`FEUPLink started on port ${process.env.PORT}`);
     });
+    console.log(`FEUPLink started on port ${process.env.SERVER_PORT}`);
 });
 
 module.exports = app;

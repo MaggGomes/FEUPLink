@@ -42,7 +42,14 @@ module.exports = (app) => {
   );
 
   app.post('/signup_facebook',
+    AuthenticationControllerPolicy.signup_facebook,
     AuthenticationController.signup_facebook
+  );
+
+  app.post('/continue_signup_facebook',
+    AuthenticationControllerPolicy.authenticated,
+    AuthenticationControllerPolicy.continue_signup_facebook,
+    AuthenticationController.continue_signup_facebook
   );
 
   app.get('/getPerson',

@@ -346,33 +346,166 @@ module.exports = {
   },
   async signup_facebook(req, res) {
     try {
-      let accessToken = req.accessToken;
-      let userId = req.userId;
-      // const person = await Person.create(req.body);
-      console.log('\n\n accessToken -> ' + accessToken);
+      let code = req.body.code;
+      let error = req.body.error;
+      let state = req.body.state;
 
-        let userData = (await axios.get(`https://graph.facebook.com/v2.11/${userId}/?fields=first_name,last_name,location,profile_pic,gender`)).data;
-
-        await Person.create({
-          name: `${userData.firstName}  ${userData.lastName}`,
-          email: userData.emailAddress,
-          headline: userData.headline,
-          hashedPassword: 'Password1', // this is useless on the login with facebook
-          validated: false,
-          country: userData.location.country.code,
-          city: userData.location.name,
-          summary: userData.summary,
-          signIn_type: 'facebook',
-          gender: `Male`,
-          role: 'User',
-        });
-
-        res.redirect(process.env.FRONT_END_URL);
-      } catch (err) {
-        console.log(err);
-        res.status(500).send({
-          error: err.message,
+      if (state !== 'Feup-Link-state') {
+        // send error this is possibly a CSRF attack.
+        return res.status(500).send({
+          error: 'Wrong facebook state',
         });
       }
+
+      if (error !== null) {
+        // send error object error and error_description available.
+        return res.status(500).send({
+          error: error,
+        });
+      }
+
+      // get the access token
+      let userAccessToken = (await axios.get(
+        'https://graph.facebook.com/v2.12/oauth/access_token',
+        {
+          params:
+          {
+            code: code,
+            redirect_uri: 'https://localhost:8080/facebook',
+            client_id: process.env.FB_ID,
+            client_secret: process.env.FB_SECRET,
+          },
+        }
+      )).data.access_token;
+
+      let userData = (await axios.get(
+        `https://graph.facebook.com/v2.11/me?access_token=${userAccessToken}&` +
+        'fields=first_name,last_name,email,birthday,gender,location{city,country}&' +
+        'format=json&method=get&pretty=0'
+      )).data;
+
+      let seqUser = (await Person.findOne({where: {email: userData.emailAddress}}));
+      let personData= '';
+
+      if (seqUser == null) {
+        personData = (await Person.create(
+          {
+            name: `${userData.first_name}  ${userData.last_name}`,
+            email: userData.email,
+            hashedPassword: '',
+            validated: false,
+            country: 'location.country' in userData ? userData.location.country : null,
+            city: 'location.city' in userData ? userData.location.city : null,
+            signIn_type: 'facebook',
+          })).dataValues;
+      } else {
+        personData = seqUser.dataValues;
+      }
+      // check if the user has already completed the registration process with the remaining info
+      let student = (await Student.findAll({
+        where: {
+          PersonId: personData.id,
+        },
+      }));
+
+      let continueSignupFacebook=false;
+
+      if (student.length === 0) {
+        let staff = (await Staff.findAll({
+          where: {
+            PersonId: personData.id,
+          },
+        }));
+
+        if (staff.length === 0) {
+          continueSignupFacebook = true;
+        }
+      }
+
+      // return the user token, to allow him to make further requests to the API
+      return res.status(201).send({
+        continueSignupFacebook: continueSignupFacebook,
+        person: personData,
+        token: jwtSignPerson(personData),
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        error: err.message,
+      });
+    }
+  },
+  async continue_signup_facebook(req, res) {
+    try {
+      let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+
+      if (req.body.personType == 'student') {
+        // check if there isn't already a staff member associated to the person
+        let staff = (await Staff.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (staff.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a staff account'});
+          return;
+        }
+        // ----------------------
+
+        const student = (await Student.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            type: req.body.studenType,
+            PersonId: person.id,
+          },
+        }))[0].dataValues;
+
+
+        Course.findById(req.body.courseId).then((c) => {
+          c.addStudent(student.id);
+        });
+      } else {
+        // check if there isn't already a student member associated to the person
+        let student = (await Student.findAll({
+          where: {
+            PersonId: person.id,
+          },
+        }));
+
+        if (student.length !== 0) {
+          res.status(400).send({error: 'Person already associated to a student account'});
+          return;
+        }
+        // ----------------------
+
+        const staff = (await Staff.findOrCreate({
+          where: {
+            PersonId: person.id,
+          },
+          defaults: {
+            mecNumber: req.body.mecNumber,
+            jobStart: req.body.startDate,
+            jobEnd: req.body.endDate,
+            workingLocation: req.body.workingLocation,
+          },
+        }))[0].dataValues;
+
+
+        Staff.findById(staff.id).then((s) => {
+          s.addDepartment(req.body.departmentId);
+        });
+      }
+
+      res.status(201).send();
+    } catch (err) {
+      console.log('err: ', err);
+      res.status(400).send({
+        error: err,
+      });
+    }
   },
 };
