@@ -1,5 +1,8 @@
 const {
   Department,
+  Person,
+  Staff,
+  Course,
 } = require('../models');
 
 
@@ -71,9 +74,17 @@ module.exports = {
     try {
       let departments = (await Department.findAll({
           attribute: ['id', 'name', 'acronym'],
-          include: [{
-            all: true,
-          }],
+          include: [
+            {
+              model: Staff,
+              include: [{
+                model: Person,
+              }],
+            },
+            {
+              model: Course,
+            },
+          ],
           order: [
             ['id', 'DESC'],
           ],

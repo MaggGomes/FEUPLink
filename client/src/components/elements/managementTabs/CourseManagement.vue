@@ -319,6 +319,7 @@ export default {
       try{
         this.courses = (await CourseService.list_all_courses()).data
       }catch(error){
+        console.log(error.response.data.error)
         this.error=error
       }
     },

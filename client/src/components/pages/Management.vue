@@ -15,7 +15,7 @@
           </v-navigation-drawer>
         </v-flex>
 
-        <v-flex class="hidden-md-and-up">>
+        <v-flex class="hidden-md-and-up">
           <v-tabs dark>
             <v-tab v-for="nav_tab in nav_tabs" :key="nav_tab.id" :class="[{ active: currentTab === nav_tab.id }]" @click="currentTab = nav_tab.id"
               ripple>
