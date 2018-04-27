@@ -334,8 +334,7 @@ export default {
   methods: {
     async submitData () {
 				try{
-					if (this.$refs.form.validate()) {
-						debugger
+					if (this.$refs.form.validate()) {						
 						await AuthenticationService.continue_signup_facebook({
 							personType: this.role,
 							//student stuff
@@ -354,8 +353,7 @@ export default {
 						
 						this.$router.push('/feed');
 					}
-				}catch(error){
-					debugger
+				}catch(error){					
 					this.e1=1;
 					this.showingError=true;
 					this.errorMessage=error.response.data.error;
