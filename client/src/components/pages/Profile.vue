@@ -12,47 +12,30 @@
             </v-layout>
             <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
               <v-flex xs12 wrap>
-                <h3 class="text-align-center">{{ person.name }}</h3>
+                <h2 class="text-align-center">{{ person.name }}</h2>
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">Studied:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">FEUP</h4>
+              <v-flex xs12 wrap>
+                <p class="grey-color text-align-center">{{ personType }}</p>
               </v-flex>
             </v-layout>
-            <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">From:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">{{ person.city }}, {{ person.country }}</h4>
+            <v-layout v-if="locationString.length !== 0" row>
+              <v-flex xs12 wrap>
+                <p class="grey-color text-align-center">{{ locationString }}</p>
               </v-flex>
             </v-layout>
-            <v-layout row>
-              <v-flex xs4 wrap>
-                <p class="grey-color">Works at:</p>
-              </v-flex>
-              <v-flex xs8 wrap>
-                <h4 class="text-align-center">FEUP</h4>
-              </v-flex>
-            </v-layout>
-            <v-layout row style="margin-top: 15px;">
-              <v-flex xs4 wrap>
-                <p class="grey-color">Contact:</p>
-              </v-flex>
-              <v-flex xs2>
+            <v-layout row style="margin-top: 15px;" justify-center>
+              <v-flex xs1>
                 <v-icon>fab fa-facebook</v-icon>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs1>
                 <v-icon>fab fa-linkedin</v-icon>
               </v-flex>
-              <!--<v-flex xs2>
+              <!--<v-flex xs1>
                 <v-icon>fab fa-instagram</v-icon>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs1>
                 <v-icon>fab fa-skype</v-icon>
               </v-flex> -->
             </v-layout>
@@ -63,54 +46,25 @@
           <v-flex hidden-sm-and-down lg2 md3>
             <img :src="defaultUserImg" width="150" height="150">
           </v-flex>
-          <v-flex hidden-sm-and-down lg6 md6 justify-start>
+          <v-flex hidden-sm-and-down lg2 md2 justify-start style="margin: auto;">
             <v-layout class="bottom-margin" row>
               <v-flex lg12 md12>
                 <h3>{{ person.name }}</h3>
               </v-flex>
             </v-layout>
-            <v-layout class="bottom-margin" row>
-              <v-flex lg6 md6>
-                <v-layout row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">Studied:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4>FEUP</h4>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex lg6 md6>
-                <v-layout v-if="person.city !== null || person.country !== null" row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">From:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4 v-if="person.city != null">{{ computeLocation() }}</h4>
-                  </v-flex>
-                </v-layout>
+            <v-layout class="bottom-margin"  row>
+              <v-flex lg12 md12>
+                <p class="grey-color">{{ personType }}</p>
               </v-flex>
             </v-layout>
-            <v-layout class="bottom-margin"  row>
-              <v-flex lg6 md6>
-                <v-layout row>
-                  <v-flex lg3 md3>
-                    <p class="grey-color">Works at:</p>
-                  </v-flex>
-                  <v-flex lg9 md9 wrap>
-                    <h4>FEUP</h4>
-                  </v-flex>
-                </v-layout>
+            <v-layout v-if="locationString.length !== 0" class="bottom-margin" row>
+              <v-flex lg12 md12>
+                <p class="grey-color">{{ locationString }}</p>
               </v-flex>
             </v-layout>
           </v-flex>
 
-          <v-flex hidden-sm-and-down lg3 md3>
-            <v-layout row>
-              <v-flex lg12 md12>
-                <p class="grey-color">Contact:</p>
-              </v-flex>
-            </v-layout>
+          <v-flex hidden-sm-and-down lg3 md3 style="margin: auto;">
             <v-layout row>
               <v-flex lg2 md2>
                 <v-icon large>fab fa-facebook</v-icon>
@@ -479,6 +433,8 @@ export default {
     itemsExperience: [],
     itemsEducation: [],
     person: {},
+    locationString: "",
+    personType: "",
     editedIndexExperience: -1,
     editedIndexEducation: -1,
     editedItemExperience: {
@@ -536,6 +492,7 @@ export default {
       });
 
       if (result.data.type == "student") {
+        this.personType = "Student"
         let student = await ProfileService.getStudentInformation({
           id: this.$route.params.id
         });
@@ -543,7 +500,10 @@ export default {
         this.person = student.data.person;
         console.log(student.data);
 
-        this.computeLocation();
+        this.locationString =
+          this.person.contry !== null && this.person.city !== null
+            ? this.person.city + ", " + this.person.country
+            : [this.person.city, this.person.country].join('');
 
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
@@ -585,6 +545,7 @@ export default {
           });
         }
       } else if (result.data.type == "staff") {
+        this.personType = "Staff"
         let staff = await ProfileService.getStaffInformation({
           id: this.$route.params.id
         });
@@ -704,10 +665,6 @@ export default {
         });
       }
       this.closeEducation();
-    },
-    computeLocation() {
-      return (this.person.contry !== null && this.person.city !== null ? 
-        this.person.city + ', ' + this.person.country : this.person.city + this.person.country);
     }
   },
   mounted: async function() {
