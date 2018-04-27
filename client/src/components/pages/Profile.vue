@@ -81,12 +81,12 @@
                 </v-layout>
               </v-flex>
               <v-flex lg6 md6>
-                <v-layout row>
+                <v-layout v-if="person.city !== null || person.country !== null" row>
                   <v-flex lg3 md3>
                     <p class="grey-color">From:</p>
                   </v-flex>
                   <v-flex lg9 md9 wrap>
-                    <h4>{{ person.city }}, {{ person.country }}</h4>
+                    <h4 v-if="person.city != null">{{ computeLocation() }}</h4>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -543,6 +543,8 @@ export default {
         this.person = student.data.person;
         console.log(student.data);
 
+        this.computeLocation();
+
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
             student.data.courses[i].CourseStudent.enrollmentDate
@@ -702,6 +704,10 @@ export default {
         });
       }
       this.closeEducation();
+    },
+    computeLocation() {
+      return (this.person.contry !== null && this.person.city !== null ? 
+        this.person.city + ', ' + this.person.country : this.person.city + this.person.country);
     }
   },
   mounted: async function() {
