@@ -300,10 +300,12 @@ module.exports = {
           c.addStudent(student.id);
         });
 
-        CourseStudent.findById([course.toJSON().id, student.toJSON().id]).then((cs) => {
+        /* TO-DO
+        CourseStudent.findById([req.body.courseId, student.id]).then((cs) => {
           cs.setEnrollmentDate(req.body.enrollmentDate);
           cs.setGraduationDate(req.body.graduationDate);
         });
+        */
       } else {
         // check if there isn't already a student member associated to the person
         let student = (await Student.findAll({

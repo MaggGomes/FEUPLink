@@ -15,7 +15,7 @@
           </v-navigation-drawer>
         </v-flex>
 
-        <v-flex class="hidden-md-and-up">>
+        <v-flex class="hidden-md-and-up">
           <v-tabs dark>
             <v-tab v-for="nav_tab in nav_tabs" :key="nav_tab.id" :class="[{ active: currentTab === nav_tab.id }]" @click="currentTab = nav_tab.id"
               ripple>
@@ -70,11 +70,11 @@
 </script>
 
 
-<style>
+<style scoped>
   
-    #feed_content .navigation-drawer{
-        /*max-width: 170px;*/
+    #feed_content .navigation-drawer{       
         margin-top: 90px!important;
+        margin-left: 40px!important;
         background-color: transparent;
     }
 
@@ -98,11 +98,7 @@
 
 
     @media(max-width: 960px ){
-        .container.fluid,
-        #feed_content .container{
-            padding: 0;
-
-        }
+  
         .accent{
             background-color: red!important;
             border-color: red!important;

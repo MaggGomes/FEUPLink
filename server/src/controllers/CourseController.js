@@ -1,5 +1,9 @@
 const {
   Course,
+  Person,
+  Student,
+  Channel,
+  Department,
 } = require('../models');
 
 
@@ -75,9 +79,20 @@ module.exports = {
     try {
       let courses = (await Course.findAll({
           attribute: ['id', 'name', 'academicDegree', 'acronym', 'description', 'website', 'creationDate', 'endDate'],
-          include: [{
-            all: true,
-          }],
+          include: [
+            {
+              model: Student,
+              include: [{
+                model: Person,
+              }],
+            },
+            {
+              model: Channel,
+            },
+            {
+              model: Department,
+            },
+          ],
           order: [
             ['id', 'DESC'],
           ],

@@ -76,7 +76,7 @@
       </v-btn>
 
       <!-- department details dialog -->
-      <v-dialog v-model="showDepartmentDetails">
+      <v-dialog scrollable v-model="showDepartmentDetails">
         <v-card>
           <v-card-title v-if="currentDepartment !== null" class="headline">{{currentDepartment.name}}</v-card-title>
           <v-card-text>
@@ -92,7 +92,8 @@
       <!-- list of departments -->
 
       <v-toolbar v-for="department in departments" :key="department.id">
-        <v-toolbar-title>{{department.name}}</v-toolbar-title>
+         <v-toolbar-title class="hidden-sm-and-down">{{department.name}}</v-toolbar-title>
+        <v-toolbar-title class="hidden-md-and-up">{{department.acronym}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items >
          <v-btn flat @click="() => {
