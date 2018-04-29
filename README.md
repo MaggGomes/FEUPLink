@@ -9,14 +9,14 @@ To run both of the projects you just need nodejs and npm installed:
 
 To run the API, just do:
 ```
-cd server
-npm install
-npm start
+    cd server
+    npm install
+    npm start
 ```
 
 To run the front-end, just do:
 ```
-cd client
-npm install
-npm start
+    cd client
+    npm install
+    npm start
 ```
