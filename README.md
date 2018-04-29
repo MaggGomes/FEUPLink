@@ -3,10 +3,11 @@
 FEUPLink is an online platform for the FEUP Alumni, staff and mobility students whose main goal is to allow content sharing from higher tiers to alumni.
 
 The project consists in a front-end and an API.
+To run both of the projects you just need nodejs and npm installed:
+* NodeJS (https://nodejs.org/en/download/)n
+* npm (https://www.npmjs.com/get-npm)
 
 To run the API, just do:
-
-* NodeJS (https://nodejs.org/en/download/)
     ```
     cd server
     npm install
@@ -14,8 +15,6 @@ To run the API, just do:
     ```
 
 To run the front-end, just do:
-
-* NodeJS (https://nodejs.org/en/download/)
     ```
     cd client
     npm install
