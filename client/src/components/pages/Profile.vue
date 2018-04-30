@@ -3,6 +3,9 @@
     <profile-header :person="person" :personType="personType" :locationString="locationString">
     </profile-header>
 
+    <profile-content :title="'Experience'" :person="person" :itemsExperience="itemsExperience">
+    </profile-content>
+
     <v-card flat raised>
       <v-container>
         <v-layout>
@@ -301,15 +304,16 @@ import ProfileService from "@/services/ProfileService";
 import CourseService from "@/services/CourseService";
 import LinkedInButton from "@/components/elements/LinkedInButton";
 import FacebookButton from "@/components/elements/FacebookButton";
-import defaultUserImg from "@/assets/defaultUser.jpg";
 import ProfileHeader from "@/components/elements/profileElements/Header"
+import ProfileContent from "@/components/elements/profileElements/Content"
 
 export default {
   name: "Profile",
   components: {
     LinkedInButton,
     FacebookButton,
-    ProfileHeader
+    ProfileHeader,
+    ProfileContent
   },
   data: () => ({
     menu: false,
@@ -319,7 +323,6 @@ export default {
     jobOptions: ["Yes", "No"],
     degreeOptions: ["Bachelor", "Masters", "PhD"],
     coursesOptions: null,
-    defaultUserImg: defaultUserImg,
     dialogExperience: false,
     dialogEducation: false,
     headersExperienceEdit: [
@@ -464,6 +467,7 @@ export default {
             isCurrent: current
           });
         }
+        console.log(this.itemsExperience)
       } else if (result.data.type == "staff") {
         this.personType = "Staff"
         let staff = await ProfileService.getStaffInformation({
@@ -596,25 +600,5 @@ export default {
 <style scopped>
 .primary {
   background-color: #b71c1c !important;
-}
-.align-img-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.grey-color {
-  color: grey;
-}
-
-p {
-  margin: 0;
-}
-
-.bottom-margin {
-  margin-bottom: 10px;
-}
-
-.text-align-center {
-  text-align: center;
 }
 </style>

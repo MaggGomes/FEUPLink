@@ -106,6 +106,25 @@ export default {
 </script>
 
 <style scopped>
+.align-img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.grey-color {
+  color: grey;
+}
 
+p {
+  margin: 0;
+}
+
+.bottom-margin {
+  margin-bottom: 10px;
+}
+
+.text-align-center {
+  text-align: center;
+}
 </style>
 
