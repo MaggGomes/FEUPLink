@@ -20,3 +20,11 @@ To run the front-end, just do:
     npm install
     npm start
 ```
+
+### Staging Link
+
+https://feup-link-staging.netlify.com
+
+### Production Link
+
+https://feup-link.netlify.com
