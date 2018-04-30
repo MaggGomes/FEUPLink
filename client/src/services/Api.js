@@ -1,8 +1,8 @@
 import axios from 'axios'
 import store from '@/store/store'
 
-let baseURL = 'https://eb19a4c3.ngrok.io';
-/*
+let baseURL;
+
 if(process.env.NODE_ENV !== 'production'){
     baseURL = 'http://localhost:8081/'
 }
@@ -12,7 +12,7 @@ else if(process.env.API_ENV === 'staging') { // checking if deploy env is stagin
 else if(process.env.API_ENV === 'production') {
     baseURL = 'https://feup-link-prod-api.herokuapp.com/'
 }
-*/
+
 export default () => {
     return axios.create({
         baseURL: baseURL,
