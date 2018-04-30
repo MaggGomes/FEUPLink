@@ -386,7 +386,7 @@ module.exports = {
         'format=json&method=get&pretty=0'
       )).data;
 
-      let seqUser = (await Person.findOne({where: {email: userData.emailAddress}}));
+      let seqUser = (await Person.findOne({where: {email: userData.email}}));
       let personData= '';
 
       if (seqUser == null) {
@@ -441,7 +441,7 @@ module.exports = {
     try {
       let person = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
 
-      if (req.body.personType == 'student') {
+      if (req.body.personType === 'student') {
         // check if there isn't already a staff member associated to the person
         let staff = (await Staff.findAll({
           where: {
@@ -499,6 +499,23 @@ module.exports = {
 
         Staff.findById(staff.id).then((s) => {
           s.addDepartment(req.body.departmentId);
+        });
+      }
+
+      if (!req.body.workExperience) {
+        const company = await Company.create({
+          name: req.body.company,
+          type: req.body.companyType,
+          industry: req.body.companyIndustry,
+        });
+
+        await Job.create({
+          title: req.body.title,
+          startDate: req.body.startDate,
+          endDate: req.body.endDate,
+          isCurrent: req.body.isCurrent,
+          CompanyId: company.toJSON().id,
+          PersonId: person.id,
         });
       }
 
