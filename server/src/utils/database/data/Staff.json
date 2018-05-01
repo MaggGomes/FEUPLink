@@ -1,0 +1,24 @@
+{
+  "José": {
+    "name": "José",
+    "gender": "Male", 
+    "email": "jose@gmail.com",
+    "hashedPassword": "1234jose",
+    "mecNumber": "201403745",
+    "startDate": "2017-05",
+    "endDate": "2018-08",
+    "workingLocation": "I001",
+    "departmentId": 1
+  },
+  "Manuel": {
+    "name": "Manuel",
+    "gender": "Male", 
+    "email": "manuel@gmail.com",
+    "hashedPassword": "1234manuel",
+    "mecNumber": "201403746",
+    "startDate": "2017-05",
+    "endDate": "2018-04",
+    "workingLocation": "I011",
+    "departmentId": 1
+  }
+}

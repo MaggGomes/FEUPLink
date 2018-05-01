@@ -1,3 +1,4 @@
+/* eslint-disable */
 const {
   Person,
   Course,
@@ -9,10 +10,63 @@ const {
   Staff,
 } = require('../../models');
 
+const DepartmentsAndCourses = require('./data/DepartmentsAndCourses.json');
+const Students = require('./data/Students.json');
+const Staffs = require('./data/Staff.json');
 
 module.exports = {
   async populateDatabase() {
-     // insert default admin user
+
+    // Create departments
+    for (let key in DepartmentsAndCourses) {
+       (await Department.findOrCreate({
+        where: {
+          name: DepartmentsAndCourses[key].departmentName,
+        },
+        defaults: {
+          name: DepartmentsAndCourses[key].departmentName,
+          acronym: DepartmentsAndCourses[key].departmentAcronym,
+        },
+      }));
+    }
+
+    // Create courses
+    for (let key in DepartmentsAndCourses) {
+      const depId = (await Department.findOne({
+        where: {
+          name: DepartmentsAndCourses[key].departmentName,
+        },
+      })).dataValues.id;
+
+      if (DepartmentsAndCourses[key].creationDate === '') {
+        DepartmentsAndCourses[key].creationDate = null;
+        }
+
+
+      if (DepartmentsAndCourses[key].endDate === '') {
+        DepartmentsAndCourses[key].endDate = null;
+        }
+
+      Course.findOrCreate({
+        where: {
+          name: DepartmentsAndCourses[key].courseName,
+        },
+        defaults: {
+          name: DepartmentsAndCourses[key].courseName,
+          academicDegree: DepartmentsAndCourses[key].academicDegree,
+          acronym: DepartmentsAndCourses[key].acronym,
+          description: DepartmentsAndCourses[key].description,
+          website: DepartmentsAndCourses[key].website,
+          creationDate: DepartmentsAndCourses[key].creationDate,
+          endDate: DepartmentsAndCourses[key].endDate,
+          DepartmentId: depId,
+        },
+      });
+    }
+
+    // Create users
+
+     // insert default super admin user
      Person.findOrCreate({
       where: {
         email: 'admin@mail.com',
@@ -24,94 +78,10 @@ module.exports = {
       },
     });
 
-    // Todo make a proper script
-    let departments = {
-      'Automação, Instrumentação e Controlo': {
-        'departmentName': 'Engenharia Mecânica',
-        'departmentAcronym': 'EM',
-      },
-      'Bioengenharia': {
-        'departmentName': 'Engenharia Química',
-        'departmentAcronym': 'EQ',
-      },
-      'Ciência da Informação': {
-        'departmentName': 'Engenharia Informática ',
-        'departmentAcronym': 'EI',
-      },
-    };
-
-    let courses = {
-      'Automação, Instrumentação e Controlo': {
-        'courseName': 'Automação, Instrumentação e Controlo',
-        'academicDegree': 'Masters',
-        'acronym': 'MAIC',
-        'departmentId': 1,
-        'website': '',
-        'creationDate': '1990-05-01',
-        'endDate': null,
-      },
-      'Bioengenharia': {
-        'courseName': 'Bioengenharia',
-        'academicDegree': 'Masters',
-        'acronym': 'MIB',
-        'departmentId': 2,
-        'website': '',
-        'creationDate': '1990-05-02',
-        'endDate': null,
-      },
-      'Ciência da Informação': {
-        'courseName': 'Ciência da Informação',
-        'academicDegree': 'Masters',
-        'acronym': 'MCI',
-        'departmentId': 3,
-        'website': '',
-        'creationDate': '1990-05-03',
-        'endDate': null,
-      },
-      'Ciência e Tecnologia de Polímeros': {
-        'courseName': 'Ciência e Tecnologia de Polímeros',
-        'academicDegree': 'Masters',
-        'acronym': 'PDCTP',
-        'departmentId': 2,
-        'website': '',
-        'creationDate': '1990-05-04',
-        'endDate': null,
-      },
-    };
-    /* eslint-disable */
-    for (let key in departments) {
-       Department.findOrCreate({
-        where: {
-          name: departments[key].departmentName,
-        },
-        defaults: {
-          name: departments[key].departmentName,
-          acronym: departments[key].departmentAcronym,
-        },
-      });
-    }
-
-    for (let key in courses) {
-      Course.findOrCreate({
-        where: {
-          name: courses[key].courseName,
-        },
-        defaults: {
-          name: courses[key].courseName,
-          academicDegree: courses[key].academicDegree,
-          acronym: courses[key].acronym,
-          description: '',
-          website: courses[key].website,
-          creationDate: courses[key].creationDate,
-          endDate: courses[key].endDate,
-          DepartmentId: courses[key].departmentId,
-        },
-      });
-    }
 
     async function createStudent(name, gender, email, hashedPassword, mecNumber, type, courseId,
     enrollmentDate, graduationDate, nameCompany, typeCompany, industry, title, startDate,
-  endDate, isCurrent, ) {
+  endDate, isCurrent) {
       let person = (await Person.findOrCreate({
         where: {
           email: email,
@@ -121,7 +91,7 @@ module.exports = {
           gender: gender,
           email: email,
           hashedPassword: hashedPassword,
-        }
+        },
       }))[0].dataValues;
 
       let student = (await Student.findOrCreate({
@@ -132,8 +102,8 @@ module.exports = {
           mecNumber: mecNumber,
           type: type,
           PersonId: person.id,
-        }
-      }))[0].dataValues;
+        },
+      }))[0].dataValues;    
 
       CourseStudent.findOrCreate({
         where: {
@@ -145,7 +115,7 @@ module.exports = {
           StudentId: student.id,
           enrollmentDate: enrollmentDate,
           graduationDate: graduationDate,
-        }
+        },
       });
 
       const company = (await Company.findOrCreate({
@@ -156,7 +126,7 @@ module.exports = {
           name: nameCompany,
           type: typeCompany,
           industry: industry,
-        }
+        },
       }))[0].dataValues;
 
       Job.create({
@@ -179,7 +149,7 @@ module.exports = {
           gender: gender,
           email: email,
           hashedPassword: hashedPassword,
-        }
+        },
       }))[0].dataValues;
 
       const staff = (await Staff.findOrCreate({
@@ -199,13 +169,47 @@ module.exports = {
         s.addDepartment(departmentId);
       });
     };
+    
+    // create students 
+    for (let key in Students) {      
+      await createStudent(
+          Students[key].name,
+          Students[key].gender,
+          Students[key].email,
+          Students[key].hashedPassword,
+          Students[key].mecNumber,
+          Students[key].type,
+          Students[key].courseId,
+          Students[key].enrollmentDate,
+          Students[key].graduationDate,
+          Students[key].nameCompany,
+          Students[key].typeCompany,
+          Students[key].industry,
+          Students[key].title,
+          Students[key].startDate,
+          Students[key].endDate,
+          Students[key].isCurrent,          
+      );
+    }
 
-    createStudent('Paulo', 'Male', 'paulo@gmail.com', '1234paulo', '201403745', 'Actual Student',
-    1, '2014-09', '2018-04', 'Microsoft', 'public', 'Technology', 'Developer', '2018-01', '2018-04', true);
-    createStaff('José', 'Male', 'jose@gmail.com', '1234jose', '201403744', '2017-05', '2018-02', 'I001', 1);
-    createStudent('Nuno', 'Male', 'nuno@gmail.com', '1234nuno', '201403743', 'Actual Student',
-    1, '2014-09', '2018-04', 'Microsoft', 'public', 'Technology', 'Developer', '2018-01', '2018-04', true);
-    createStaff('Manuel', 'Male', 'manuel@gmail.com', '1234manuel', '201403742', '2017-05', '2018-02', 'I001', 1);
+    
+    // create staffs
+    for (let key in Staffs) {
+      await createStaff(
+          Staffs[key].name,
+          Staffs[key].gender,
+          Staffs[key].email,
+          Staffs[key].hashedPassword,
+          Staffs[key].mecNumber,
+          Staffs[key].startDate,
+          Staffs[key].endDate,
+          Staffs[key].workingLocation,
+          Staffs[key].departmentId,         
+      );
+    }
 
+
+ 
+   
   },
 };
