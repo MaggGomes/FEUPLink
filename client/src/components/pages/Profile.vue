@@ -3,8 +3,8 @@
     <profile-header :person="person" :personType="personType" :locationString="locationString">
     </profile-header>
 
-    <profile-content :title="'Experience'" :person="person" :itemsExperience="itemsExperience">
-    </profile-content>
+    <profile-experience-content :person="person" :itemsExperience="itemsExperience">
+    </profile-experience-content>
 
     <v-card flat raised>
       <v-container>
@@ -305,7 +305,7 @@ import CourseService from "@/services/CourseService";
 import LinkedInButton from "@/components/elements/LinkedInButton";
 import FacebookButton from "@/components/elements/FacebookButton";
 import ProfileHeader from "@/components/elements/profileElements/Header"
-import ProfileContent from "@/components/elements/profileElements/Content"
+import ProfileExperienceContent from "@/components/elements/profileElements/ExperienceContent"
 
 export default {
   name: "Profile",
@@ -313,7 +313,7 @@ export default {
     LinkedInButton,
     FacebookButton,
     ProfileHeader,
-    ProfileContent
+    ProfileExperienceContent
   },
   data: () => ({
     menu: false,
