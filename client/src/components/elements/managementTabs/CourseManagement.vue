@@ -53,18 +53,10 @@
                     <v-text-field label="Description" v-model="description" multi-line></v-text-field>
                   </v-flex>
 
-                  <v-flex xs12 >
-                    <v-select
-                      :items="departments"
-                      :filter="customDepartmentFilter"
-                      v-model="selectedDepartmentId"
-                      item-text="name"
-                      item-value="id"
-                      label="Select the course department"
-                      autocomplete
-                      :rules="[v => !!v || 'Course department is required']"
-                      required
-                    ></v-select>
+                  <v-flex xs12>
+                    <v-select :items="departments" :filter="customDepartmentFilter" v-model="selectedDepartmentId" item-text="name" item-value="id"
+                      label="Select the course department" autocomplete :rules="[v => !!v || 'Course department is required']"
+                      required></v-select>
                   </v-flex>
 
                   <v-flex xs12 md9>
@@ -77,17 +69,27 @@
                   </v-flex>
 
                   <v-flex xs12 md6>
-                    <v-menu ref="creationDateMenu" lazy :close-on-content-click="false" v-model="creationDateMenu" transition="scale-transition"
-                      offset-y full-width :nudge-right="40" min-width="290px">
-                      <v-text-field slot="activator" label="Creation date" v-model="creationDate" :rules="[v => !!v || 'Course creation date is required']"
-                        required prepend-icon="event" readonly></v-text-field>
-                      <v-date-picker ref="picker" v-model="creationDate" @change="saveCreationDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
-                    </v-menu>
+                    <v-layout>
+                      <v-flex xs8>
+                        <v-menu ref="creationDateMenu" lazy :close-on-content-click="false" v-model="creationDateMenu" transition="scale-transition"
+                          offset-y full-width :nudge-right="40" min-width="290px">
+                          <v-text-field slot="activator" label="Creation date" v-model="creationDate" prepend-icon="event" readonly></v-text-field>
+                          <v-date-picker ref="picker" v-model="creationDate" @change="saveCreationDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
+                        </v-menu>
+
+                      </v-flex>
+                      <v-flex xs2>
+                        <v-btn flat color="blue-grey lighten-3" @click="creationDate=''">
+                          <v-icon> clear </v-icon>
+                        </v-btn>
+                      </v-flex>
+                    </v-layout>
                   </v-flex>
+
 
                   <v-flex xs12 md6>
                     <v-layout>
-                      <v-flex xs10>
+                      <v-flex xs8>
                         <v-menu ref="endDateMenu" lazy :close-on-content-click="false" v-model="endDateMenu" transition="scale-transition" offset-y
                           full-width :nudge-right="40" min-width="290px">
                           <v-text-field slot="activator" label="Close date" v-model="endDate" prepend-icon="event" hint="If the course has already closed"
@@ -102,11 +104,12 @@
                         </v-btn>
                       </v-flex>
                     </v-layout>
-                  </v-flex>                 
+                  </v-flex>
 
                 </v-layout>
               </v-container>
             </v-form>
+
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -123,7 +126,7 @@
         </v-card>
       </v-dialog>
 
-       <!-- course details dialog -->
+      <!-- course details dialog -->
       <v-dialog scrollable v-model="showCourseDetails">
         <v-card>
           <v-card-title v-if="currentCourse !== null" class="headline">{{currentCourse.name}}</v-card-title>
@@ -132,9 +135,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> Dismiss </v-btn>          
+            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> Dismiss </v-btn>
           </v-card-actions>
-        </v-card>        
+        </v-card>
       </v-dialog>
 
 
@@ -146,14 +149,14 @@
         <v-icon> add </v-icon>
       </v-btn>
 
-
+  <v-flex xs12>
       <!-- list of courses -->
       <v-toolbar v-for="course in courses" :key="course.id">
         <v-toolbar-title class="hidden-sm-and-down">{{course.name}}</v-toolbar-title>
         <v-toolbar-title class="hidden-md-and-up">{{course.acronym}}</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-toolbar-items >
+        <v-toolbar-items>
           <v-btn flat @click="() => {
                       currentCourse=course  
                       showCourseDetails=true                    
@@ -166,15 +169,17 @@
           <v-btn flat color="error" @click="() => {
                       currentCourse=course
                       showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
-                  }"> <v-icon> delete </v-icon>
-          </v-btn>        
+                  }">
+            <v-icon> delete </v-icon>
+          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-
+  </v-flex>
 
     </v-layout>
   </v-container>
 </template>
+
 
 
 <script>
@@ -294,13 +299,14 @@ export default {
       try{
         let courseInfo = this.getCourseObject()
         courseInfo['courseId']=this.currentCourse.id
-
+        console.log(courseInfo)
         this.success=(await CourseService.update_course(courseInfo)).data
         
         this.closeDialog()
         // update course list
         this.getCourses()
       }catch(error){
+        console.log(error.response.data.error)
         this.error=error
       }
     
@@ -319,7 +325,6 @@ export default {
       try{
         this.courses = (await CourseService.list_all_courses()).data
       }catch(error){
-        console.log(error.response.data.error)
         this.error=error
       }
     },
@@ -339,9 +344,15 @@ export default {
      // date-picker stuff
     creationDate (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+
+      if(val === '')
+        this.creationDate = null;
     },
     endDate (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+      
+      if(val === '')
+        this.endDate = null;
     },
     courseDialog (val) {
       // to clear red fields and form data

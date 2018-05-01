@@ -10,7 +10,7 @@ module.exports = {
         acronym: Joi.string().required(),
         description: Joi.string().allow(null).allow(''),
         website: Joi.string().allow(null).allow(''),
-        creationDate: Joi.date().required(),
+        creationDate: Joi.date().allow(null),
         endDate: Joi.date().allow(null),
         departmentId: Joi.number().required(),
       };
@@ -46,12 +46,12 @@ module.exports = {
                 break;
               case 'creationDate':
                 res.status(400).send({
-                    error: `You must provide a creationDate field`,
+                    error: `You must be a date or null`,
                 });
                 break;
               case 'endDate':
                 res.status(400).send({
-                    error: `endDate must be a date in a string format`,
+                    error: `endDate must be a date or null`,
                 });
                 break;
               case 'departmentId':
@@ -76,7 +76,7 @@ module.exports = {
             acronym: Joi.string(),
             description: Joi.string().allow(null).allow(''),
             website: Joi.string().allow(null).allow(''),
-            creationDate: Joi.date(),
+            creationDate: Joi.date().allow(null),
             endDate: Joi.date().allow(null),
             departmentId: Joi.number(),
         };
@@ -117,12 +117,12 @@ module.exports = {
                 break;
                 case 'creationDate':
                 res.status(400).send({
-                    error: 'creationDate must be a date in a string format',
+                    error: 'creationDate must be a date or null',
                 });
                 break;
             case 'endDate':
                 res.status(400).send({
-                    error: 'endDate must be a date in a string format',
+                    error: 'endDate must be a date or null',
                 });
                 break;
             case 'departmentId':
