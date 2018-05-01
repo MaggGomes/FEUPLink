@@ -15,7 +15,7 @@ else if(process.env.API_ENV === 'production') {
 export default () => {
     return axios.create({
         baseURL: baseURL,
-        timeout: 5000,
+        timeout: 15000,
         headers: {auth: store.state.token},
     })
 }

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     academicDegree: {
       type: DataTypes.ENUM,
-      values: ['Bachelor', 'Masters', 'PhD'],
+      values: ['Bachelor', 'Masters', 'Integrated Master', 'PhD'],
       defaultValue: 'Bachelor',
       allowNull: false,
     },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     creationDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     endDate: {
       type: DataTypes.DATE,
