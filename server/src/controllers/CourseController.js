@@ -93,13 +93,58 @@ module.exports = {
               model: Department,
             },
           ],
-          order: [
-            ['id', 'DESC'],
-          ],
         }));
 
 
         res.status(201).send(courses);
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+  },
+  async list_courses_range(req, res) {
+    try {
+      let from = req.params.from;
+      let numInstances = req.params.numInstances;
+
+      let courses = (await Course.findAll({
+          attribute: ['id', 'name', 'academicDegree', 'acronym', 'description', 'website', 'creationDate', 'endDate'],
+          include: [
+            {
+              model: Student,
+              include: [{
+                model: Person,
+              }],
+            },
+            {
+              model: Channel,
+            },
+            {
+              model: Department,
+            },
+          ],
+          offset: from,
+          limit: numInstances,
+        }));
+
+
+        res.status(201).send(courses);
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+  },
+  async num_courses(req, res) {
+    try {
+      let coursesNumber = (await Course.count());
+
+        console.log(coursesNumber);
+
+        res.status(201).send({
+          count: coursesNumber,
+        });
     } catch (err) {
       res.status(400).send({
         error: err,

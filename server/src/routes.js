@@ -111,6 +111,14 @@ module.exports = (app) => {
     CourseController.list_all
   );
 
+  app.get('/list_courses_in_range/:from-:numInstances',
+    CourseController.list_courses_range
+  );
+
+  app.get('/count_courses',
+    CourseController.num_courses
+  );
+
   // ----Department
 
   app.post('/create_department',

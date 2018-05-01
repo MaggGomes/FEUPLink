@@ -143,38 +143,59 @@
 
 
       <!-- Page Content -->
-      <span class="display-1"> Manage Courses </span>
+      <v-flex>
+        <v-layout>
+          <v-flex xs7>
+            <span class="display-1"> Manage Courses </span>
+            <v-btn flat color="success" slot="activator" @click="courseDialog=true">
+              <v-icon> add </v-icon>
+            </v-btn>
+          </v-flex>
 
-      <v-btn flat color="success" slot="activator" @click="courseDialog=true">
-        <v-icon> add </v-icon>
-      </v-btn>
+          <v-flex xs2 offset-xs2>
+            <v-select
+              :items="numPagesOptions"
+              v-model="coursesPerPage"
+              label="Courses p/page"
+              class="input-group--focused"
+              item-value="pa"
+            ></v-select>
+          </v-flex>
+        </v-layout>
+      </v-flex>
 
-  <v-flex xs12>
-      <!-- list of courses -->
-      <v-toolbar v-for="course in courses" :key="course.id">
-        <v-toolbar-title class="hidden-sm-and-down">{{course.name}}</v-toolbar-title>
-        <v-toolbar-title class="hidden-md-and-up">{{course.acronym}}</v-toolbar-title>
+      
 
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn flat @click="() => {
+      <v-flex xs12>
+        <!-- list of courses -->
+        <v-toolbar v-for="course in courses" :key="course.id">
+          <v-toolbar-title class="hidden-sm-and-down">{{course.name}}</v-toolbar-title>
+          <v-toolbar-title class="hidden-md-and-up">{{course.acronym}}</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn flat @click="() => {
                       currentCourse=course  
                       showCourseDetails=true                    
                   }">
-            <v-icon> remove_red_eye </v-icon>
-          </v-btn>
-          <v-btn flat @click="openUpdateCourseDialog(course)">
-            <v-icon> mode_edit </v-icon>
-          </v-btn>
-          <v-btn flat color="error" @click="() => {
+              <v-icon> remove_red_eye </v-icon>
+            </v-btn>
+            <v-btn flat @click="openUpdateCourseDialog(course)">
+              <v-icon> mode_edit </v-icon>
+            </v-btn>
+            <v-btn flat color="error" @click="() => {
                       currentCourse=course
                       showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
                   }">
-            <v-icon> delete </v-icon>
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-  </v-flex>
+              <v-icon> delete </v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </v-flex>
+
+      <v-flex xs12 pt-4>
+        <v-pagination :length="numPages" v-model="currentPage" ></v-pagination>
+      </v-flex>
 
     </v-layout>
   </v-container>
@@ -208,6 +229,12 @@ export default {
       currentCourse: null,
       // courses data
       courses: [],
+      // pagination
+      numPages: 1,
+      numPagesOptions: [5,10,15,20],
+      currentPage: 1,
+      coursesPerPage: 5,
+      coursesCount: null,
       // course dialog fields
       name: null,
       academicDegree: null,
@@ -299,14 +326,13 @@ export default {
       try{
         let courseInfo = this.getCourseObject()
         courseInfo['courseId']=this.currentCourse.id
-        console.log(courseInfo)
+
         this.success=(await CourseService.update_course(courseInfo)).data
         
         this.closeDialog()
         // update course list
         this.getCourses()
       }catch(error){
-        console.log(error.response.data.error)
         this.error=error
       }
     
@@ -321,9 +347,11 @@ export default {
         this.error=error
       }
     },
-    async getCourses(){
+    async getCourses(){      
       try{
-        this.courses = (await CourseService.list_all_courses()).data
+        this.coursesCount = (await CourseService.get_courses_count()).data.count
+        const from = (this.currentPage - 1) * this.coursesPerPage
+        this.courses = (await CourseService.list_courses_in_range(from, this.coursesPerPage)).data
       }catch(error){
         this.error=error
       }
@@ -337,7 +365,7 @@ export default {
     }
   },     
   mounted: async function (){
-      await this.getCourses();
+      await this.getCourses()
       await this.getDepartments()
   },
    watch: {
@@ -373,6 +401,16 @@ export default {
         this.showingFeedback=true
       }
     },
+    currentPage(val){
+      this.getCourses();
+    },
+    coursesCount(val){
+      this.numPages = Math.ceil(val / this.coursesPerPage)
+      console.log('npages ', this.numPages, val, this.coursesPerPage)
+    },
+    coursesPerPage(val){
+      this.getCourses()
+    }
   },
 }
 </script>

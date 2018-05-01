@@ -81,15 +81,10 @@
     }
 
     #management_content .list{
-        margin-bottom: 10px !important;
+          background-color: rgba(221, 221, 221, 0.75) !important;
+          
     }
-
   
-     #management_content .list {
-        background-color: rgba(221, 221, 221, 0.75) ;
-        padding: 1px 0px;
-    }
-
     #management_content .active{
         background-color: rgba(188, 188, 188, 0.75) !important;
     }
