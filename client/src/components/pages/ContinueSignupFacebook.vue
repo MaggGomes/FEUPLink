@@ -12,6 +12,8 @@
          				<v-stepper-step step="1" :complete="e1 > 1">Profile type</v-stepper-step>
          				<v-divider></v-divider>
          				<v-stepper-step step="2">In FEUP</v-stepper-step>
+						<v-divider></v-divider>
+						<v-stepper-step step="3">Experience</v-stepper-step>
          			</v-stepper-header>
          			<v-stepper-items>
                         <v-stepper-content step="1">
@@ -263,13 +265,221 @@
          			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 1" flat>Back</v-btn>					
-					<v-btn 
-						color="primary" 
-						v-on:click="submitData" 
-						:disabled="!valid">
-							Finish
-					</v-btn>
+					<v-btn  @click.native="e1 = 1" flat>Back</v-btn>
+					<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">Continue</v-btn>					
+				</v-flex>
+         	</v-stepper-content>
+			 <v-stepper-content step="3">
+         		<v-card color="grey lighten-3" class="mb-5">
+
+         		<form autocomplete="off">
+							<v-container fluid>
+								<v-layout align-center>
+									<v-flex xs9 sm11 text-xs-center>
+										<v-text-field
+												prepend-icon="person"
+												label="Company"
+												v-model="company"
+												></v-text-field>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+
+								<v-layout row wrap align-center>
+									<v-flex xs9 sm5 text-xs-center>
+										<v-select
+											:items="types"
+											v-model="companyType"
+											label="Company type"
+											prepend-icon="person"
+										></v-select>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyTypeVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+									<v-flex xs9 sm5 text-xs-center>
+										<v-text-field
+										prepend-icon="person"
+										label="Company industry"
+										v-model="companyIndustry"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="companyIndustryVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+
+								<v-layout align-center>
+									<v-flex xs9 sm11 text-xs-center>
+										<v-text-field
+										prepend-icon="person"
+										label="Position"
+										v-model="position"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="positionVisible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+								<v-layout row wrap align-center>
+									<v-flex xs9 sm5 text-xs-center>
+										<v-menu
+											ref="menu4"
+											lazy
+											:close-on-content-click="false"
+											v-model="menu4"
+											transition="scale-transition"
+											offset-y
+											full-width
+											:nudge-right="40"
+											min-width="290px"
+											>
+											<v-text-field
+											slot="activator"
+											label="Start period"
+											v-model="date4"
+											prepend-icon="event"
+											readonly
+											></v-text-field>
+											<v-date-picker
+											ref="picker"
+											v-model="date4"
+											@change="save"
+											min="1950-01-01"
+											:max="new Date().toISOString().substr(0, 10)"
+											type="month"
+											></v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="date4Visible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+
+									<v-flex class="to" xs12 sm1 text-xs-center>
+										to
+									</v-flex>
+
+									<v-flex xs9 sm4 text-xs-center>
+										<v-menu
+											ref="menu5"
+											lazy
+											:close-on-content-click="false"
+											v-model="menu5"
+											transition="scale-transition"
+											offset-y
+											full-width
+											:nudge-right="40"
+											min-width="290px"
+											>
+											<v-text-field
+											slot="activator"
+											label="End period"
+											v-model="date5"
+											prepend-icon="event"
+											readonly
+											></v-text-field>
+											<v-date-picker
+											ref="picker"
+											v-model="date5"
+											@change="save"
+											min="1950-01-01"
+											:max="new Date().toISOString().substr(0, 10)"
+											type="month"
+											></v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs3 sm1 text-xs-center>
+										<v-btn-toggle v-model="date5Visible">
+											<v-btn flat>
+												<v-icon>visibility</v-icon>
+											</v-btn>
+											<v-btn flat>
+												<v-icon>visibility_off</v-icon>
+											</v-btn>
+										</v-btn-toggle>
+									</v-flex>
+								</v-layout>
+							
+							<v-layout row wrap align-center>
+								<v-flex xs12 sm2 text-xs-center>
+									<v-checkbox
+									:label="`I currently work here`"
+									v-model="checkboxWork"
+									></v-checkbox>
+								</v-flex>
+								<v-flex xs3 offset-xs9 sm1 text-xs-center>
+									<v-btn-toggle v-model="checkboxWorkVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
+							<v-layout row wrap align-center>
+								<v-flex xs12 sm3 text-xs-center>
+									<v-checkbox
+									:label="`I have no work experience`"
+									v-model="checkboxNoExperience"
+									></v-checkbox>
+								</v-flex>
+								<v-flex xs3 offset-xs8 sm1 text-xs-center>
+									<v-btn-toggle v-model="checkboxNoExperienceVisible">
+										<v-btn flat>
+											<v-icon>visibility</v-icon>
+										</v-btn>
+										<v-btn flat>
+											<v-icon>visibility_off</v-icon>
+										</v-btn>
+									</v-btn-toggle>
+								</v-flex>
+							</v-layout>
+							
+         				</v-container>
+         			</form>
+         			</v-card>
+				<v-flex xs12 sm12 text-right class="text-xs-right">
+					<v-btn @click.native="e1 = 3" flat>Back</v-btn>					
+					<v-btn color="primary" v-on:click="submitData">Finish</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
@@ -295,35 +505,54 @@ export default {
   },
   data () {
     return {
-			valid:false,
-			showingError: false,
-			errorMessage: '',
-			// form-fields
-			loading: false,
-      e1: 0,
-      date2: null,
-      date3: null,
-      menu2: false,
-      menu3: false,
-			studenType: null,
-			studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
-      courseId: null,
-      courses: null,
-			departmentId: null,
-      departments: null,
-      role: 'student',	  
-      number: '',
-			degree: null,
-			degrees: ['Bachelor', 'Masters', 'PhD'],
-			dpVisible: 0,
-			degreeVisible: 0,
-			courseVisible: 0,
-			date2Visible: 0,
-			date3Visible: 0,
-			typeVisible: 0,
-      numberVisible: 0,
-			workingLocationVisible: 0,
-			workingLocation: '',
+		valid:false,
+		showingError: false,
+		errorMessage: '',
+		// form-fields
+		loading: false,
+		e1: 0,
+		date2: null,
+		date3: null,
+		menu2: false,
+		menu3: false,
+		studenType: null,
+		studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
+		courseId: null,
+		courses: null,
+		departmentId: null,
+		departments: null,
+		role: 'student',	  
+		number: '',
+		degree: null,
+		degrees: ['Bachelor', 'Masters', 'PhD'],
+		dpVisible: 0,
+		degreeVisible: 0,
+		courseVisible: 0,
+		date2Visible: 0,
+		date3Visible: 0,
+		typeVisible: 0,
+		numberVisible: 0,
+		workingLocationVisible: 0,
+		workingLocation: '',
+		companyType: null,
+		types: ['public', 'private'],
+		checkboxWork: false,
+		checkboxNoExperience: false,
+		company: '',
+		position: '',
+		companyVisible: 0,
+		positionVisible: 0,
+		companyTypeVisible: 0,
+		checkboxWorkVisible: 0,
+		checkboxNoExperienceVisible: 0,
+		date4Visible: 0,
+		date5Visible: 0,
+		companyIndustry: '',
+		companyIndustryVisible: 0,
+		menu4: false,
+		date4: null,
+		menu5: false,
+		date5: null,
     }
   },
   watch: {
@@ -334,21 +563,26 @@ export default {
   methods: {
     async submitData () {
 				try{
-					if (this.$refs.form.validate()) {						
+					if (this.$refs.form.validate()) {			
 						await AuthenticationService.continue_signup_facebook({
 							personType: this.role,
-							//student stuff
 							courseId: this.courseId,
 							enrollmentDate: this.date2,
 							graduationDate: this.date3,
 							studenType: this.studenType,
-							// staff stuff
 							departmentId: this.departmentId,						
 							workingLocation: this.workingLocation,
 							startDate: this.date2,
 							endDate: this.date3,
-							// commmon
 							mecNumber: this.number,
+							company: this.company,
+							companyType: this.companyType,
+							companyIndustry: this.companyIndustry,
+							title: this.position,
+							startDate: this.date4,
+							endDate: this.date5,
+							isCurrent: this.checkboxWork,
+							workExperience: this.checkboxNoExperience
 						});
 						
 						this.$router.push('/feed');

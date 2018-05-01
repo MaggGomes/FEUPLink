@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store/store'
 
 let baseURL;
+
 if(process.env.NODE_ENV !== 'production'){
     baseURL = 'http://localhost:8081/'
 }
