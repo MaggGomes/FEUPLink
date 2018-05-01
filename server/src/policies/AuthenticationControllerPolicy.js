@@ -423,6 +423,12 @@ module.exports = {
             startDate: Joi.required(),
             endDate: Joi.required(),
             mecNumber: Joi.required(),
+            company: Joi.required(),
+            companyType: Joi.required(),
+            companyIndustry: Joi.required(),
+            title: Joi.required(),
+            isCurrent: Joi.required(),
+            workExperience: Joi.required(),
         };
 
         // eslint-disable-next-line
@@ -477,6 +483,16 @@ module.exports = {
                 case 'mecNumber':
                     res.status(400).send({
                         error: 'You must provide a mecNumber field',
+                    });
+                    break;
+                case 'workingLocation':
+                    res.status(400).send({
+                        error: 'You must provide a workingLocation field',
+                    });
+                    break;
+                case 'workExperience':
+                    res.status(400).send({
+                        error: 'You must provide a workExperience field',
                     });
                     break;
                 default:
