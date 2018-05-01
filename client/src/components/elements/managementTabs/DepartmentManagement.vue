@@ -69,11 +69,28 @@
       </v-dialog>
 
 
-      <span class="display-1"> Manage Departments </span>
+      
+      <v-flex>
+        <v-layout>
+          <v-flex xs10>
+            <span class="display-1"> Manage Departments </span>
+            <v-btn flat color="success" slot="activator" @click="departmentDialog=true">
+              <v-icon> add </v-icon>
+            </v-btn>
+          </v-flex>
 
-      <v-btn flat color="success" slot="activator" @click="departmentDialog=true">
-        <v-icon> add </v-icon>
-      </v-btn>
+          <v-flex xs2 offset-xs1>
+            <v-select
+              :items="numPagesOptions"
+              v-model="itemsPerPage"
+              label="Items"
+              class="input-group--focused"
+              item-value="pa"
+            ></v-select>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+     
 
       <!-- department details dialog -->
       <v-dialog scrollable v-model="showDepartmentDetails">
@@ -92,29 +109,29 @@
       <!-- list of departments -->
 
       <v-toolbar v-for="department in departments" :key="department.id">
-         <v-toolbar-title class="hidden-sm-and-down">{{department.name}}</v-toolbar-title>
+        <v-toolbar-title class="hidden-sm-and-down">{{department.name}}</v-toolbar-title>
         <v-toolbar-title class="hidden-md-and-up">{{department.acronym}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items >
-         <v-btn flat @click="() => {
-                      currentDepartment=department  
-                      showDepartmentDetails=true                    
-                  }">
-            <v-icon> remove_red_eye </v-icon>
-          </v-btn>
-          <v-btn flat @click="openUpdateDepartmentDialog(department)">
-            <v-icon> mode_edit </v-icon>
-          </v-btn>
-          <v-btn flat color="error" @click="() => {
-                      currentDepartment=department
-                      showConfirmDialog(deleteDepartment, `Are you sure you want to delete \'${department.name}\' ?`)
-                  }">
-            <v-icon> delete </v-icon>
-          </v-btn>
-        </v-toolbar-items>
+        <v-spacer></v-spacer>      
+        <v-btn fab flat @click="() => {
+                    currentDepartment=department  
+                    showDepartmentDetails=true                    
+                }">
+          <v-icon> remove_red_eye </v-icon>
+        </v-btn>
+        <v-btn fab flat @click="openUpdateDepartmentDialog(department)">
+          <v-icon> mode_edit </v-icon>
+        </v-btn>
+        <v-btn fab flat color="error" @click="() => {
+                    currentDepartment=department
+                    showConfirmDialog(deleteDepartment, `Are you sure you want to delete \'${department.name}\' ?`)
+                }">
+          <v-icon > delete </v-icon>
+        </v-btn>     
       </v-toolbar>
 
-
+      <v-flex xs12 pt-4>
+        <v-pagination :length="numPages" v-model="currentPage" ></v-pagination>
+      </v-flex>
 
 
     </v-layout>
@@ -147,6 +164,12 @@ export default {
       currentDepartment: null,
       // departments data
       departments: [],
+      // pagination
+      numPages: 1,
+      numPagesOptions: [5,10,15,20],
+      currentPage: 1,
+      itemsPerPage: 5,
+      itemsCount: null,
       // department dialog fields
       name: null,
       acronym: null,
@@ -226,7 +249,10 @@ export default {
     },
     async getDepartments(){
       try{
-        this.departments = (await DepartmentService.list_all_departments()).data
+        this.itemsCount = (await DepartmentService.get_departments_count()).data.count
+        this.numPages = Math.ceil(this.itemsCount / this.itemsPerPage)
+        const from = (this.currentPage - 1) * this.itemsPerPage
+        this.departments = (await DepartmentService.list_departments_in_range(from,this.itemsPerPage)).data
       }catch(error){
         this.error=error
       }
@@ -254,6 +280,12 @@ export default {
         this.feedbackColor='error'
         this.showingFeedback=true
       }
+    },
+    currentPage(val){
+      this.getDepartments();
+    },
+    itemsPerPage(val){
+      this.getDepartments()
     }
   },
 }

@@ -23,6 +23,9 @@
           <span v-else-if="currentTab === 2">
             <department-management></department-management>
           </span>
+          <span v-else-if="currentTab === 3">
+            <channel-management></channel-management>
+          </span>
         </v-flex>
 
         <!-- small screen --> 
@@ -39,6 +42,9 @@
               <span v-else-if="currentTab === 2">
                 <department-management></department-management>
               </span>
+              <span v-else-if="currentTab === 3">
+                <channel-management></channel-management>
+              </span>
             </v-tab-item>
           </v-tabs>
         </v-flex>
@@ -54,17 +60,19 @@
   import Vue from 'vue'
   import CourseManagement from '@/components/elements/managementTabs/CourseManagement'
   import DepartmentManagement from '@/components/elements/managementTabs/DepartmentManagement'
+  import ChannelManagement from '@/components/elements/managementTabs/ChannelManagement'
 
   export default {
     components: {
       CourseManagement,
       DepartmentManagement,
+      ChannelManagement,
     },
     data () {
         return {
             drawer: true,           
             currentTab: 1,
-            nav_tabs: [{name:'Courses', id:1}, {name:'Departments', id:2}, ],
+            nav_tabs: [{name:'Courses', id:1}, {name:'Departments', id:2}, {name:'Channels', id:3}, ],
         }
     },
 

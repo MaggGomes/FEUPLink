@@ -34,7 +34,16 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     freezeTableName: true,
-  }
+    hooks: {
+      afterCreate: (course, options) => {
+        sequelize.models.Channel.create({
+          name: `${course.dataValues.name} Channel`,
+        }).then((channel)=> {
+            course.setChannel(course.dataValues.id);
+        });
+      },
+    },
+  },
   );
 
     Course.associate = (models) => {
@@ -48,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       );
 
       // Course can have many channels
-      Course.hasMany(models.Channel,
+      Course.belongsTo(models.Channel,
         {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',

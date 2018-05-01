@@ -79,6 +79,9 @@ module.exports = {
     try {
       let courses = (await Course.findAll({
           attribute: ['id', 'name', 'academicDegree', 'acronym', 'description', 'website', 'creationDate', 'endDate'],
+          order: [
+            ['name', 'ASC'],
+          ],
           include: [
             {
               model: Student,
@@ -105,11 +108,11 @@ module.exports = {
   },
   async list_courses_range(req, res) {
     try {
-      let from = req.params.from;
-      let numInstances = req.params.numInstances;
-
       let courses = (await Course.findAll({
           attribute: ['id', 'name', 'academicDegree', 'acronym', 'description', 'website', 'creationDate', 'endDate'],
+          order: [
+            ['name', 'ASC'],
+          ],
           include: [
             {
               model: Student,
@@ -124,8 +127,8 @@ module.exports = {
               model: Department,
             },
           ],
-          offset: from,
-          limit: numInstances,
+          offset: req.params.from,
+          limit: req.params.numInstances,
         }));
 
 
@@ -139,8 +142,6 @@ module.exports = {
   async num_courses(req, res) {
     try {
       let coursesNumber = (await Course.count());
-
-        console.log(coursesNumber);
 
         res.status(201).send({
           count: coursesNumber,

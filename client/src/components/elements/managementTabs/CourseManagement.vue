@@ -155,8 +155,8 @@
           <v-flex xs2 offset-xs2>
             <v-select
               :items="numPagesOptions"
-              v-model="coursesPerPage"
-              label="Courses p/page"
+              v-model="itemsPerPage"
+              label="Items"
               class="input-group--focused"
               item-value="pa"
             ></v-select>
@@ -174,16 +174,16 @@
 
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn flat @click="() => {
+            <v-btn fab flat @click="() => {
                       currentCourse=course  
                       showCourseDetails=true                    
                   }">
               <v-icon> remove_red_eye </v-icon>
             </v-btn>
-            <v-btn flat @click="openUpdateCourseDialog(course)">
+            <v-btn fab flat @click="openUpdateCourseDialog(course)">
               <v-icon> mode_edit </v-icon>
             </v-btn>
-            <v-btn flat color="error" @click="() => {
+            <v-btn fab flat color="error" @click="() => {
                       currentCourse=course
                       showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
                   }">
@@ -233,8 +233,8 @@ export default {
       numPages: 1,
       numPagesOptions: [5,10,15,20],
       currentPage: 1,
-      coursesPerPage: 5,
-      coursesCount: null,
+      itemsPerPage: 5,
+      itemsCount: null,
       // course dialog fields
       name: null,
       academicDegree: null,
@@ -349,9 +349,10 @@ export default {
     },
     async getCourses(){      
       try{
-        this.coursesCount = (await CourseService.get_courses_count()).data.count
-        const from = (this.currentPage - 1) * this.coursesPerPage
-        this.courses = (await CourseService.list_courses_in_range(from, this.coursesPerPage)).data
+        this.itemsCount = (await CourseService.get_courses_count()).data.count
+        this.numPages = Math.ceil(this.itemsCount / this.itemsPerPage)
+        const from = (this.currentPage - 1) * this.itemsPerPage
+        this.courses = (await CourseService.list_courses_in_range(from, this.itemsPerPage)).data
       }catch(error){
         this.error=error
       }
@@ -404,11 +405,7 @@ export default {
     currentPage(val){
       this.getCourses();
     },
-    coursesCount(val){
-      this.numPages = Math.ceil(val / this.coursesPerPage)
-      console.log('npages ', this.numPages, val, this.coursesPerPage)
-    },
-    coursesPerPage(val){
+    itemsPerPage(val){
       this.getCourses()
     }
   },
