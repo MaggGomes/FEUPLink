@@ -5,17 +5,37 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    mecNumber_visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
+    },
     jobStart: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    jobStart_visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
     },
     jobEnd: {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    jobEnd_visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
+    },
     workingLocation: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    workingLocation_visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
     },
   },
   {

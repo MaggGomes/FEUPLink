@@ -5,11 +5,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique: true,
       },
+      mecNumber_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       type: {
         type: DataTypes.ENUM,
         values: ['Actual Student', 'Mobility Student', 'Alumni'],
         defaultValue: 'Actual Student',
         allowNull: false,
+      },
+      type_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
     },
     {

@@ -246,8 +246,18 @@
 												prepend-icon="person"
 												:rules="[v => !!v || 'Academic degree is required']" required
 												></v-select>
+											</v-flex>
+											<v-flex xs3 sm1 text-xs-center>
+												<v-btn-toggle v-model="academicDegreeVisible">
+													<v-btn flat>
+														<v-icon>visibility</v-icon>
+													</v-btn>
+													<v-btn flat>
+														<v-icon>visibility_off</v-icon>
+													</v-btn>
+												</v-btn-toggle>
 											</v-flex>											
-											<v-flex xs9 sm5 offset-sm1 text-xs-center>		
+											<v-flex xs9 sm5 text-xs-center>		
 											  <v-select
 													:items="courses"													
 													v-model="courseId"
@@ -632,18 +642,13 @@
 								</v-layout>
 							
 							<v-layout row wrap align-center>
-								<v-flex xs12 sm2 text-xs-center>
-									<v-checkbox v-if="checkboxNoExperience"
+								<v-flex xs12 sm3 text-xs-center>
+									<v-checkbox
 									:label="`I currently work here`"
 									v-model="checkboxWork"
-									></v-checkbox>
-									<v-checkbox v-else
-									:label="`I currently work here`"
-									v-model="checkboxWork"
-									:rules="[v => !!v || 'Checkbox required']" required
 									></v-checkbox>
 								</v-flex>
-								<v-flex xs3 offset-xs9 sm1 text-xs-center>
+								<v-flex xs3 offset-xs8 sm1 text-xs-center>
 									<v-btn-toggle v-model="checkboxWorkVisible">
 										<v-btn flat>
 											<v-icon>visibility</v-icon>
@@ -722,15 +727,15 @@ export default {
       date5: null,
       gender: null,
       country: '',
-			companyType: null,
-			types: ['public', 'private'],
-			menu: false,
-			menu2: false,
-			menu3: false,
-			menu4: false,
-			menu5: false,
-			type: null,
-			studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
+	  companyType: null,
+	  types: ['public', 'private'],
+	  menu: false,
+	  menu2: false,
+	  menu3: false,
+	  menu4: false,
+	  menu5: false,
+	  type: null,
+	  studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
       checkboxWork: false,
       checkboxNoExperience: false,
       number: '',
@@ -743,41 +748,42 @@ export default {
       city: '',
       position: '',
       role: 'student',	
-			degree: null,
-			degrees: ['Bachelor', 'Masters', 'PhD'],
-			birthdayVisible: 0,
-			genderVisible: 0,
-			countryVisible: 0,
-			cityVisible: 0,
-			dpVisible: 0,
-			courseVisible: 0,
-			date2Visible: 0,
-			date3Visible: 0,
-			typeVisible: 0,
-			numberVisible: 0,
-			companyVisible: 0,
-			positionVisible: 0,
-			companyTypeVisible: 0,
-			checkboxWorkVisible: 0,
-			checkboxNoExperienceVisible: 0,
-			date4Visible: 0,
-			date5Visible: 0,
-			companyIndustry: '',
-			companyIndustryVisible: 0,
-			workingLocationVisible: 0,
-			workingLocation: '',
-			nameRules: [
-				v => !!v || 'Name is required',
-				v => v.length <= 50 || 'Name must be less than 50 characters'
-			],
-			emailRules: [
-				v => !!v || 'E-mail is required',
-				v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-			],
-			passwordRules: [
-				v => !!v || 'Password is required',
-				v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
-			],
+	  degree: null,
+	  degrees: ['Bachelor', 'Masters', 'PhD'],
+	  birthdayVisible: 0,
+	  genderVisible: 0,
+	  countryVisible: 0,
+	  cityVisible: 0,
+	  dpVisible: 0,
+	  academicDegreeVisible: 0,
+	  courseVisible: 0,
+	  date2Visible: 0,
+	  date3Visible: 0,
+	  typeVisible: 0,
+	  numberVisible: 0,
+	  companyVisible: 0,
+	  positionVisible: 0,
+	  companyTypeVisible: 0,
+	  checkboxWorkVisible: 0,
+	  checkboxNoExperienceVisible: 0,
+	  date4Visible: 0,
+	  date5Visible: 0,
+	  companyIndustry: '',
+	  companyIndustryVisible: 0,
+	  workingLocationVisible: 0,
+	  workingLocation: '',
+	  nameRules: [
+		v => !!v || 'Name is required',
+		v => v.length <= 50 || 'Name must be less than 50 characters'
+	  ],
+	  emailRules: [
+		v => !!v || 'E-mail is required',
+		v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+	  ],
+	  passwordRules: [
+		v => !!v || 'Password is required',
+		v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+	  ],
     }
   },
   watch: {
@@ -799,21 +805,33 @@ export default {
 						email: this.email,
 						hashedPassword: this.password,
 						birthDate: this.date,
+						birthDate_visibility: ((this.birthdayVisible == 0) ? true : false),
 						gender: this.gender,
+						gender_visibility: ((this.genderVisible == 0) ? true : false),
 						country: this.country,
+						country_visibility: ((this.countryVisible == 0) ? true : false),
 						city: this.city,
+						city_visibility: ((this.cityVisible == 0) ? true : false),
 						courseId: this.courseId,
 						enrollmentDate: this.date2,
+						enrollmentDate_visibility: ((this.date2Visible == 0) ? true : false),
 						graduationDate: this.date3,
+						graduationDate_visibility: ((this.date3 == 0) ? true : false),
 						type: this.type,
+						type_visibility: ((this.typeVisible == 0) ? true : false),
 						mecNumber: this.number,
+						mecNumber_visibility: ((this.numberVisible == 0) ? true : false),
 						company: this.company,
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
+						title_visibility: ((this.positionVisible == 0) ? true : false),
 						startDate: this.date4,
+						startDate_visibility: ((this.date4Visible == 0) ? true : false),
 						endDate: this.date5,
+						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
+						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}
@@ -823,21 +841,33 @@ export default {
 						email: this.email,
 						hashedPassword: this.password,
 						birthDate: this.date,
+						birthDate_visibility: ((this.birthdayVisible == 0) ? true : false),
 						gender: this.gender,
+						gender_visibility: ((this.genderVisible == 0) ? true : false),
 						country: this.country,
+						country_visibility: ((this.countryVisible == 0) ? true : false),
 						city: this.city,
+						city_visibility: ((this.cityVisible == 0) ? true : false),
 						departmentId: this.departmentId,
 						workingLocation: this.workingLocation,
+						workingLocation_visibility: ((this.workingLocationVisible == 0) ? true : false),
 						startDate: this.date2,
+						startDate_visibility: ((this.date2Visible == 0) ? true : false),
 						endDate: this.date3,
+						endDate_visibility: ((this.date3Visible == 0) ? true : false),
 						mecNumber: this.number,
+						mecNumber_visibility: ((this.numberVisible == 0) ? true : false),
 						company: this.company,
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
-						jobStartDate: this.date4,
-						jobEndDate: this.date5,
+						title_visibility: ((this.positionVisible == 0) ? true : false),
+						startDate: this.date4,
+						startDate_visibility: ((this.date4Visible == 0) ? true : false),
+						endDate: this.date5,
+						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
+						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}	
