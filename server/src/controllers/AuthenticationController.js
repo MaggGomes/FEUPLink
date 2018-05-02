@@ -48,6 +48,7 @@ module.exports = {
           graduationDate_visibility: req.body.graduationDate_visibility,
         }));
 
+
         if (!req.body.workExperience) {
           const company = await Company.create({
             name: req.body.company,

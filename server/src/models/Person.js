@@ -168,15 +168,6 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Person.associate = (models) => {
-    // many-to-many channel admins
-    Person.belongsToMany(models.Channel,
-      {
-        through: 'ChannelAdmins',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }
-    );
-
     // many-to-many users on the channel
     Person.belongsToMany(models.Channel,
       {

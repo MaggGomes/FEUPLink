@@ -16,5 +16,11 @@ export default {
     },
     list_all_departments () {
         return Api().get('list_all_departments')
+    },
+    list_departments_in_range (from, numInstances) {
+        return Api().get(`list_departments_in_range/${from}-${numInstances}`)
+    },
+    get_departments_count () {
+        return Api().get('count_departments')
     }
 }

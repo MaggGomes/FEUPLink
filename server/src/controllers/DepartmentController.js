@@ -16,8 +16,6 @@ module.exports = {
           defaults: req.body,
         }));
 
-          // setCouses
-
           res.status(201).send({
             res: 'Department successfully created',
           });
@@ -39,9 +37,6 @@ module.exports = {
               id: departmentId,
           },
         }));
-
-        // updateCouses
-        // find and set courses
 
         res.status(201).send({
           res: 'Successfully updated the department information',
@@ -74,6 +69,9 @@ module.exports = {
     try {
       let departments = (await Department.findAll({
           attribute: ['id', 'name', 'acronym'],
+          order: [
+            ['name', 'ASC'],
+          ],
           include: [
             {
               model: Staff,
@@ -85,13 +83,52 @@ module.exports = {
               model: Course,
             },
           ],
-          order: [
-            ['id', 'DESC'],
-          ],
         }));
 
 
         res.status(201).send(departments);
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+  },
+  async list_departments_range(req, res) {
+    try {
+      let departments = (await Department.findAll({
+          attribute: ['id', 'name', 'acronym'],
+          order: [
+            ['name', 'ASC'],
+          ],
+          include: [
+            {
+              model: Staff,
+              include: [{
+                model: Person,
+              }],
+            },
+            {
+              model: Course,
+            },
+          ],
+          offset: req.params.from,
+          limit: req.params.numInstances,
+        }));
+
+        res.status(201).send(departments);
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+  },
+  async num_departments(req, res) {
+    try {
+      let departmentsNumber = (await Department.count());
+
+        res.status(201).send({
+          count: departmentsNumber,
+        });
     } catch (err) {
       res.status(400).send({
         error: err,
