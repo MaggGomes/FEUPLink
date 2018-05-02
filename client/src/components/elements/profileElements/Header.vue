@@ -1,5 +1,5 @@
 <template>
-  <v-card class="short-width" flat raised style="margin-bottom: 20px;">
+  <v-card class="short-width" flat raised style="margin-bottom: 20px; margin-top: 20px;">
     <v-container align-center>
       <v-layout style="margin-bottom: 20px;" row>
         <!-- Start region of mobile screen -->
