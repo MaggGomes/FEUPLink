@@ -164,6 +164,11 @@ module.exports = (app) => {
     ChannelController.remove_channel_admin,
   );
 
+  app.post('/set_channel_visibility',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.set_channel_visibility,
+  );
+
   app.get('/list_enrolled_channels_in_range/:PersonId/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_enrolled_channels,

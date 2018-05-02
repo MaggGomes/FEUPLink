@@ -66,6 +66,25 @@ async function manageChannelAdmin(req, res, isAdmin) {
 
 
 module.exports = {
+  async set_channel_visibility(req, res) {
+    const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+     // update association table
+     (await ChannelMembers.update(
+      {
+        isVisible: req.body.isVisible,
+      },
+      {
+        where: {
+          ChannelId: req.body.ChannelId,
+          PersonId: userData.id,
+        },
+      }
+    ));
+
+    res.status(201).send({
+      res: `Visibility successfully updated`,
+    });
+  },
   async add_channel_admin(req, res) {
     manageChannelAdmin(req, res, true);
   },
