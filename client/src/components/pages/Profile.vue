@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <profile-header :person="person" :personType="personType" :locationString="locationString">
+    <profile-header class="cards-width" :person="person" :personType="personType" :locationString="locationString">
     </profile-header>
 
-    <profile-experience-content :person="person" :itemsExperience="itemsExperience">
+    <profile-experience-content class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content :person="person" :itemsEducation="itemsEducation">
+    <profile-education-content class="cards-width" :person="person" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
@@ -111,5 +111,12 @@ export default {
 <style scopped>
 .primary {
   background-color: #b71c1c !important;
+}
+
+@media screen and (max-width: 960px) {
+  .cards-width {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 </style>

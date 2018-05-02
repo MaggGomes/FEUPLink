@@ -7,7 +7,9 @@
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
           <v-dialog v-model="dialogEducation" max-width="500px">
-            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
+            <v-btn icon slot="activator" class="mx-0">
+              <v-icon>fa-plus</v-icon>
+            </v-btn>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
