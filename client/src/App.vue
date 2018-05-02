@@ -191,13 +191,15 @@
       color:rgb(140,45,25);
       background-color: white!important;
     }
-    #main-bar-content .Sign-Up{
+    #main-bar-content .Sign-Up,
+    #main-bar-content .Logout{
       color: white;
       background-color: transparent!important;
     }
 
     #main-bar-content .Sign-In,
-    #main-bar-content .Sign-Up{
+    #main-bar-content .Sign-Up,
+    #main-bar-content .Logout{
 
       margin-left: 20px!important;
     }
