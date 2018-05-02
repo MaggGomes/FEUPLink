@@ -46,7 +46,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-on:click="continueSignup" dark class="red darken-4">Continue</v-btn>
+                <v-btn v-if="valid" v-on:click="continueSignup" dark class="red darken-4">Continue</v-btn>
+				<v-btn v-else disabled>Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
