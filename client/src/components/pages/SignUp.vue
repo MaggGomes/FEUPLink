@@ -76,7 +76,7 @@
          				<v-stepper-content step="1">
          					<v-card color="grey lighten-3" class="mb-4">
 
-         						<form autocomplete="off">
+         						<v-form autocomplete="off" ref="form" v-model="formValid1">
          							<v-container fluid>
 												<v-layout align-center>
 													<v-flex xs9 sm11 text-xs-center>
@@ -179,11 +179,12 @@
 													</v-flex>
 											</v-layout>
          						</v-container>
-         					</form>
+         					</v-form>
 							 		
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+							<v-btn v-if="formValid1" dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+							<v-btn v-else disabled>Continue</v-btn>
 						</v-flex>
          			</v-stepper-content>
          			<v-stepper-content step="2">
@@ -208,7 +209,7 @@
 					 </v-stepper-content>
          			<v-stepper-content step="3">
          				<v-card color="grey lighten-3" class="mb-5">
-         					<form autocomplete="off">
+         					<v-form autocomplete="off" ref="form" v-model="formValid2">
          						<v-container fluid>
 											<v-layout row wrap align-center v-if="role == 'staff'">
 											<v-flex xs9 text-xs-center>
@@ -309,6 +310,8 @@
 												v-model="date2"
 												prepend-icon="event"
 												readonly
+												:rules="[v => !!v || 'Enrollment date is required']"
+												required
 												></v-text-field>
 												<v-text-field v-if="role == 'staff'"
 												slot="activator"
@@ -431,17 +434,18 @@
 								</v-flex>
 							</v-layout>
          				</v-container>
-         			</form>
+         			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
 					<v-btn  @click.native="e1 = 2" flat>Back</v-btn>					
-					<v-btn dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">Continue</v-btn>
+					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">Continue</v-btn>
+					<v-btn v-else disabled>Continue</v-btn>
 				</v-flex>
 			 </v-stepper-content>
          	<v-stepper-content step="4">
          		<v-card color="grey lighten-3" class="mb-5">
 
-         		<form autocomplete="off">
+         		<v-form autocomplete="off" ref="form" v-model="formValid3">
 							<v-container fluid>
 								<v-layout align-center>
 									<v-flex xs9 sm11 text-xs-center>
@@ -669,11 +673,12 @@
 							</v-layout>
 							
          				</v-container>
-         			</form>
+         			</v-form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
 					<v-btn @click.native="e1 = 3" flat>Back</v-btn>					
-					<v-btn color="primary" v-on:click="signup">Finish</v-btn>
+					<v-btn v-if="formValid3" color="primary" v-on:click="signup">Finish</v-btn>
+					<v-btn v-else disabled>Finish</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
@@ -698,7 +703,10 @@ export default {
   },
   data () {
     return {    
-      valid: false,
+	  valid: false,
+	  formValid1: false,
+	  formValid2: false,
+	  formValid3: false,
       name: 'paulo',
       email: 'paulo@gmail.com',
       password: '1234paulo',
