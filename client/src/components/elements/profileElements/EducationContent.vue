@@ -63,7 +63,7 @@
             <v-divider v-if="index !== 0" :key="index"></v-divider>
             <v-list-tile :key="index + 'tile'">
               <v-list-tile-avatar>
-                <img :src="defaultCompanyImg">
+                <img :src="defaultCourseImg">
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.course.name }}</v-list-tile-title>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import defaultCompanyImg from "@/assets/defaultCompany.png";
+import defaultCourseImg from "@/assets/defaultCourse.png";
 import ProfileService from "@/services/ProfileService";
 import CourseService from "@/services/CourseService";
 
@@ -116,7 +116,7 @@ export default {
 
   data() {
     return {
-      defaultCompanyImg: defaultCompanyImg,
+      defaultCourseImg: defaultCourseImg,
       menu: false,
       menu2: false,
       degreeOptions: ["Bachelor", "Masters", "PhD"],
