@@ -104,7 +104,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
     .avatar, .avatar .icon, .avatar img{
         border-radius: 0%;
     }
@@ -128,11 +128,11 @@
         background-color: rgba(188, 188, 188, 0.75);
     }
 
-    .side_content .list {
+    #feed_content .side_content .list {
         background-color: rgba(221, 221, 221, 0.75) ;
         padding: 1px 0px;
     }
-    .side_content .list .list__tile{
+    #feed_content .side_content .list .list__tile{
         background-color: rgba(188, 188, 188, 0.75) ;
         margin:10px;
     }
@@ -141,18 +141,18 @@
         #feed_content .navigation-drawer{
             margin-left: 5%;
         }
-        .side_content{
+        #feed_content .side_content{
             margin-left: 25%;
         }
     }
 
     @media(max-width: 960px ){
-        .container.fluid,
+        #feed_content .container.fluid,
         #feed_content .container{
             padding: 0;
 
         }
-        .accent{
+        #feed_content .accent{
             background-color: red!important;
             border-color: red!important;
         }

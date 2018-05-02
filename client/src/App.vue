@@ -51,7 +51,7 @@
       </v-toolbar>
 
       <v-content>
-        <v-container fluid>
+        <v-container fluid pa-0>
           <div class="max-width">
             <router-view></router-view>
           </div>
