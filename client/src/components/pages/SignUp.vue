@@ -933,17 +933,8 @@ a{color:#444;text-decoration:none;}
 p{margin-bottom:.3em;}
 
 @media only screen and (max-width: 720px) {
-	#createContent {
-		padding: 0 !important;
-	}
-	#createNewAcc {
-		padding: 0;
-	}
 	#social {
 		padding-top: 1.5em !important;
-	}
-	#userInfo {
-		padding: 0;
 	}
 	.stepper__content {
 		padding: 0;
