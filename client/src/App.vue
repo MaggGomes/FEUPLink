@@ -117,6 +117,7 @@
 <style>
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
+    background-color: #EEEEEE;
   }
   #main-bar{
     background-color: rgb(140,45,25);
