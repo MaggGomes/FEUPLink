@@ -15,8 +15,6 @@ const jwt = require('jsonwebtoken');
  */
 async function manageChannelAdmin(req, res, isAdmin) {
   try {
-    // To-do verify if the user is already channel member
-
     // update association table
     (await ChannelMembers.update(
       {
@@ -74,9 +72,23 @@ module.exports = {
   async remove_channel_admin(req, res) {
     manageChannelAdmin(req, res, false);
   },
+  // To-do list channel members
   async list_enrolled_channels(req, res) {
     try {
-        // res.status(201).send(channels);
+        let channels = (await ChannelMembers.findAll(
+          {
+              where: {
+                PersonId: req.params.PersonId,
+              },
+              include: [{
+                all: true,
+              }],
+              offset: req.params.from,
+              limit: req.params.numInstances,
+          },
+        ));
+
+        res.status(201).send(channels);
     } catch (err) {
       res.status(400).send({
         error: err,
@@ -85,12 +97,26 @@ module.exports = {
   },
   async list_admin_channels(req, res) {
     try {
-        // res.status(201).send(channels);
-    } catch (err) {
-      res.status(400).send({
-        error: err,
-      });
-    }
+      let channels = (await ChannelMembers.findAll(
+        {
+            where: {
+              PersonId: req.params.PersonId,
+              isAdmin: true,
+            },
+            include: [{
+              all: true,
+            }],
+            offset: req.params.from,
+            limit: req.params.numInstances,
+        },
+      ));
+
+      res.status(201).send(channels);
+  } catch (err) {
+    res.status(400).send({
+      error: err,
+    });
+  }
   },
   async list_channel_range(req, res) {
     try {

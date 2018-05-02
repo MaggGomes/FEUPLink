@@ -164,6 +164,16 @@ module.exports = (app) => {
     ChannelController.remove_channel_admin,
   );
 
+  app.get('/list_enrolled_channels_in_range/:PersonId/:from-:numInstances',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.list_enrolled_channels,
+  );
+
+  app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.list_admin_channels,
+  );
+
   app.get('/list_channels_in_range/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_channel_range,
