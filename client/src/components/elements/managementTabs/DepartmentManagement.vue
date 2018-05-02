@@ -70,26 +70,26 @@
 
 
       
-      <v-flex>
-        <v-layout>
-          <v-flex xs10>
-            <span class="display-1"> Manage Departments </span>
-            <v-btn flat color="success" slot="activator" @click="departmentDialog=true">
-              <v-icon> add </v-icon>
-            </v-btn>
-          </v-flex>
+    
+      <v-layout>
+        <v-flex xs10>
+          <span class="display-1"> Manage Departments </span>
+          <v-btn flat color="success" slot="activator" @click="departmentDialog=true">
+            <v-icon> add </v-icon>
+          </v-btn>
+        </v-flex>
 
-          <v-flex xs2 offset-xs1>
-            <v-select
-              :items="numPagesOptions"
-              v-model="itemsPerPage"
-              label="Items"
-              class="input-group--focused"
-              item-value="pa"
-            ></v-select>
-          </v-flex>
-        </v-layout>
-      </v-flex>
+        <v-flex xs2 offset-xs1>
+          <v-select
+            :items="numPagesOptions"
+            v-model="itemsPerPage"
+            label="Items"
+            class="input-group--focused"
+            item-value="pa"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      
      
 
       <!-- department details dialog -->

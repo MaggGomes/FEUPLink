@@ -44,6 +44,7 @@ module.exports = {
             graduationDate: req.body.graduationDate,
         }));
 
+
         if (!req.body.workExperience) {
           const company = await Company.create({
             name: req.body.company,

@@ -10,10 +10,12 @@ module.exports = {
   async list_channel_range(req, res) {
     try {
       let channels = (await Channel.findAll({
-          attribute: ['id', 'name', 'description'],
           order: [
             ['name', 'ASC'],
           ],
+          include: [{
+            all: true,
+          }],
           offset: req.params.from,
           limit: req.params.numInstances,
         }));
