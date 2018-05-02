@@ -126,6 +126,7 @@
 															v-model="gender"
 															label="Gender"
 															prepend-icon="person"
+															:rules="[v => !!v || 'Gender is required']" required
 														></v-select>
 													</v-flex>
 													<v-flex xs3 sm1 text-xs-center>
@@ -241,6 +242,7 @@
 												v-model="degree"
 												label="Academic degree"
 												prepend-icon="person"
+												:rules="[v => !!v || 'Academic degree is required']" required
 												></v-select>
 											</v-flex>											
 											<v-flex xs9 sm5 offset-sm1 text-xs-center>		
@@ -395,6 +397,7 @@
 											v-model="type"
 											label="Student type"
 											prepend-icon="person"
+											:rules="[v => !!v || 'Student type is required']" required
 											></v-select>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
@@ -442,11 +445,17 @@
 							<v-container fluid>
 								<v-layout align-center>
 									<v-flex xs9 sm11 text-xs-center>
-										<v-text-field
+										<v-text-field v-if="checkboxNoExperience"
 												prepend-icon="person"
 												label="Company"
 												v-model="company"
-												></v-text-field>
+										></v-text-field>
+										<v-text-field v-else
+												prepend-icon="person"
+												label="Company"
+												v-model="company"
+												:rules="[v => !!v || 'Company name is required']" required
+										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
 										<v-btn-toggle v-model="companyVisible">
@@ -500,10 +509,16 @@
 
 								<v-layout align-center>
 									<v-flex xs9 sm11 text-xs-center>
-										<v-text-field
+										<v-text-field v-if="checkboxNoExperience"
 										prepend-icon="person"
 										label="Position"
 										v-model="position"
+										></v-text-field>
+										<v-text-field v-else
+										prepend-icon="person"
+										label="Position"
+										v-model="position"
+										:rules="[v => !!v || 'Position is required']" required
 										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
@@ -530,12 +545,20 @@
 											:nudge-right="40"
 											min-width="290px"
 											>
-											<v-text-field
+											<v-text-field v-if="checkboxNoExperience"
 											slot="activator"
 											label="Start period"
 											v-model="date4"
 											prepend-icon="event"
 											readonly
+											></v-text-field>
+											<v-text-field v-else
+											slot="activator"
+											label="Start period"
+											v-model="date4"
+											prepend-icon="event"
+											readonly
+											:rules="[v => !!v || 'Start date is required']" required
 											></v-text-field>
 											<v-date-picker
 											ref="picker"
@@ -605,9 +628,14 @@
 							
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm2 text-xs-center>
-									<v-checkbox
+									<v-checkbox v-if="checkboxNoExperience"
 									:label="`I currently work here`"
 									v-model="checkboxWork"
+									></v-checkbox>
+									<v-checkbox v-else
+									:label="`I currently work here`"
+									v-model="checkboxWork"
+									:rules="[v => !!v || 'Checkbox required']" required
 									></v-checkbox>
 								</v-flex>
 								<v-flex xs3 offset-xs9 sm1 text-xs-center>

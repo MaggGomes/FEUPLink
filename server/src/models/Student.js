@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
       mecNumber: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
       type: {
