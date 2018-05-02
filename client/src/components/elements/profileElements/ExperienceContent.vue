@@ -64,9 +64,9 @@
                 <img :src="defaultCompanyImg">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-title>{{ item.company }}</v-list-tile-title>
                 <v-list-tile-sub-title>
-                  <p>{{ item.company }}</p>
+                  <p>{{ item.ttle }}</p>
                   <p>{{ item.startDate }} - {{ item.endDate }}</p>
                 </v-list-tile-sub-title>
               </v-list-tile-content>
@@ -107,9 +107,9 @@ import defaultCompanyImg from "@/assets/defaultCompany.png";
 import ProfileService from "@/services/ProfileService";
 
 export default {
-  name: "profile-content",
+  name: "profile-experience-content",
 
-  props: ["title", "person", "itemsExperience"],
+  props: ["person", "itemsExperience"],
 
   data() {
     return {

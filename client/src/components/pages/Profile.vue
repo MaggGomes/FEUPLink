@@ -6,6 +6,9 @@
     <profile-experience-content :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
+    <profile-education-content :person="person" :itemsEducation="itemsEducation">
+    </profile-education-content>
+
     <v-card flat raised>
       <v-container>
         <v-layout>
@@ -306,6 +309,7 @@ import LinkedInButton from "@/components/elements/LinkedInButton";
 import FacebookButton from "@/components/elements/FacebookButton";
 import ProfileHeader from "@/components/elements/profileElements/Header"
 import ProfileExperienceContent from "@/components/elements/profileElements/ExperienceContent"
+import ProfileEducationContent from "@/components/elements/profileElements/EducationContent"
 
 export default {
   name: "Profile",
@@ -313,7 +317,8 @@ export default {
     LinkedInButton,
     FacebookButton,
     ProfileHeader,
-    ProfileExperienceContent
+    ProfileExperienceContent,
+    ProfileEducationContent
   },
   data: () => ({
     menu: false,
@@ -467,7 +472,7 @@ export default {
             isCurrent: current
           });
         }
-        console.log(this.itemsExperience)
+        console.log(this.itemsEducation)
       } else if (result.data.type == "staff") {
         this.personType = "Staff"
         let staff = await ProfileService.getStaffInformation({
