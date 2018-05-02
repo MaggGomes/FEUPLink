@@ -70,6 +70,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      whatsAppProfile: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      instagramProfile: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       validated: {
         type: DataTypes.BOOLEAN,
         allowNull: true,

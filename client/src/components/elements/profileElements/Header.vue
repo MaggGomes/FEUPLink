@@ -77,14 +77,29 @@
           </v-layout>
 
           <v-layout row justify-center>
-            <v-flex lg1 md1>
+            <v-flex v-if="person.facebookProfile !== undefined" lg1 md1>
               <v-layout justify-center>
                 <v-icon large>fab fa-facebook</v-icon>
               </v-layout>
             </v-flex>
-            <v-flex lg1 md1>
+            <v-flex v-if="person.facebookProfile !== undefined" lg1 md1>
               <v-layout justify-center>
                 <v-icon large>fab fa-linkedin</v-icon>
+              </v-layout>
+            </v-flex>
+            <v-flex v-if="person.whatsAppProfile !== undefined" lg1 md1>
+              <v-layout justify-center>
+                <v-icon large>fab fa-whatsapp</v-icon>
+              </v-layout>
+            </v-flex>
+            <v-flex v-if="person.instagramProfile !== undefined" lg1 md1>
+              <v-layout justify-center>
+                <v-icon large>fab fa-instagram</v-icon>
+              </v-layout>
+            </v-flex>
+            <v-flex v-if="person.email !== undefined" 2 lg1 md1>
+              <v-layout justify-center>
+                <v-icon large>email</v-icon>
               </v-layout>
             </v-flex>
             <!--<v-flex lg2 md2>

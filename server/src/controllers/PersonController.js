@@ -67,7 +67,8 @@ module.exports = {
     async getStudent(req, res) {
         try {
             let person = await Person.findOne({
-                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
+                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email',
+                'facebookProfile', 'linkedInProfile', 'whatsAppProfile', 'instagramProfile'],
                 where: {
                     id: req.query.id,
                 },
