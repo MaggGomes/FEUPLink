@@ -19,35 +19,37 @@
       </v-navigation-drawer>
 
       <v-toolbar floating dark id="main-bar">
-        <div id="side-main">
-          <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav">
-          </v-toolbar-side-icon>
-          <v-toolbar-title >
-            <router-link to="/" tag="span" style="cursor: pointer">
-              <v-avatar tile id="mini-logo" class="hidden-sm-and-up">
-                <img
-                  :src="minilogo"
-                  alt="IconFeup"
-                >
-              </v-avatar>
-              <v-avatar tile id="main-logo" class="hidden-xs-only">
-                <img
-                  v-bind:src="logo"
-                  alt="FEUPLink"
-                >
-              </v-avatar>
-            </router-link>
-          </v-toolbar-title>
-        </div>
-        <div id="main-bar-content" class="hidden-xs-only">
-          <v-spacer></v-spacer>
-          <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
-            <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
-          </v-toolbar-items>
-          <v-toolbar-items flex v-else class="hidden-xs-only">
-            <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
-          </v-toolbar-items>
-        </div>
+        <v-container id="container_mainbar">
+          <div id="side-main">
+            <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideNav = !sideNav">
+            </v-toolbar-side-icon>
+            <v-toolbar-title >
+              <router-link to="/" tag="span" style="cursor: pointer">
+                <v-avatar tile id="mini-logo" class="hidden-sm-and-up">
+                  <img
+                          :src="minilogo"
+                          alt="IconFeup"
+                  >
+                </v-avatar>
+                <v-avatar tile id="main-logo" class="hidden-xs-only">
+                  <img
+                          v-bind:src="logo"
+                          alt="FEUPLink"
+                  >
+                </v-avatar>
+              </router-link>
+            </v-toolbar-title>
+          </div>
+          <div id="main-bar-content" class="hidden-xs-only">
+            <v-spacer></v-spacer>
+            <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
+              <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+            </v-toolbar-items>
+            <v-toolbar-items flex v-else class="hidden-xs-only">
+              <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
+            </v-toolbar-items>
+          </div>
+        </v-container>
       </v-toolbar>
 
       <v-content>
@@ -137,7 +139,10 @@
   #main-bar .btn__content{
     text-transform: none;
   }
-
+  #container_mainbar{
+    padding-top:0px;
+    padding-bottom:0px;
+  }
   #main-bar .btn__content:before{
     opacity: 0;
   }
@@ -161,7 +166,7 @@
     width: auto!important;
   }
 
-  @media(min-width: 991px){
+  @media(min-width: 600px){
     #main-bar .toolbar__content{
       display: inline-block;
       height: 145px!important;
@@ -175,6 +180,10 @@
       height: 50px;
       margin-top: 50px;
     }
+    #side-main .toolbar__title{
+      margin-left: 50px;
+    }
+
     #main-bar-content .btn{
       width: 140px;
       border: 2px solid white;
@@ -194,12 +203,23 @@
     }
 
   }
+  
+  @media (max-width: 959px) and (min-width: 600px) {
+    #side-main{
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    #side-main .toolbar__title{
+      margin-left: 20px;
+    }
+  }
+  
   @media (max-width: 990px){
     #main-logo{
       height: 40px!important;
     }
   }
-  @media (max-width: 600px){
+  @media (max-width: 599px){
     #side-main{
       display: inline-flex;
       margin-left: 0;
