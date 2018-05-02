@@ -1,5 +1,8 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const {
+    ChannelMembers,
+  } = require('../models');
 
 /**
  * Represents a book.
@@ -39,11 +42,28 @@ module.exports = {
           });
         }
     },
+    // verifies either a channel_admin of the specified channel or a super_admin
     channel_admin(req, res, next) {
         try {
           const user = jwtSignedUser(req);
-          if (user.role === 'Channel Admin') {
+
+          if (user.role === 'Super Admin') {
             next();
+          } else if (user.role === 'Channel Admin') {
+            ChannelMembers.findOne(
+              {
+                  where: {
+                    ChannelId: req.body.ChannelId,
+                    PersonId: user.id,
+                  },
+              },
+            ).then((channelInfo) => {
+                if (channelInfo !== null && channelInfo.dataValues.isAdmin) {
+                    next();
+                } else {
+                    res.status(403).send({error: 'Access Forbiden'});
+                }
+            });
           } else {
             res.status(403).send({error: 'Access Forbiden'});
           }

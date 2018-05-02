@@ -154,6 +154,15 @@ module.exports = (app) => {
 
 
   // ----Channels
+  app.post('/add_channel_admin',
+      AuthenticationControllerPolicy.channel_admin,
+      ChannelController.add_channel_admin,
+  );
+
+  app.post('/remove_channel_admin',
+    AuthenticationControllerPolicy.channel_admin,
+    ChannelController.remove_channel_admin,
+  );
 
   app.get('/list_channels_in_range/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,

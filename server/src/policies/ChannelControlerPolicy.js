@@ -2,8 +2,6 @@ const Joi = require('joi');
 
 
 module.exports = {
-    // is channel admin
-    //
     hasId(req, res, next) {
         const schema = {
             channelId: Joi.number().required(),

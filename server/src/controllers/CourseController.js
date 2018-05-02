@@ -41,8 +41,9 @@ module.exports = {
           {
             where: {
               id: courseId,
-          },
-        }));
+            },
+          }
+      ));
 
         Course.findById(courseId).then((c) => {
           c.setDepartment(req.body.departmentId);
