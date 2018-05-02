@@ -6,7 +6,9 @@
         <v-flex hidden-md-and-up>
           <v-layout row>
             <v-flex xs12>
-              <img class="align-img-center" :src="defaultUserImg" width="150" height="150">
+              <v-avatar class="align-img-center" size="150px">
+                <img class="align-img-center" :src="defaultUserImg">
+              </v-avatar>
             </v-flex>
           </v-layout>
           <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
@@ -25,11 +27,15 @@
             </v-flex>
           </v-layout>
           <v-layout row style="margin-top: 15px;" justify-center>
-            <v-flex xs1>
-              <v-icon>fab fa-facebook</v-icon>
+            <v-flex xs2>
+              <v-layout justify-center>
+                <v-icon>fab fa-facebook</v-icon>
+              </v-layout>
             </v-flex>
-            <v-flex xs1>
-              <v-icon>fab fa-linkedin</v-icon>
+            <v-flex xs2>
+              <v-layout justify-center>
+                <v-icon>fab fa-linkedin</v-icon>
+              </v-layout>
             </v-flex>
             <!--<v-flex xs1>
               <v-icon>fab fa-instagram</v-icon>
@@ -47,7 +53,7 @@
           <v-layout row>
             <v-flex lg12 md12>
               <v-avatar class="align-img-center" size="150px">
-                <img :src="defaultUserImg" width="150" height="150">
+                <img :src="defaultUserImg">
               </v-avatar>
             </v-flex>
           </v-layout>
