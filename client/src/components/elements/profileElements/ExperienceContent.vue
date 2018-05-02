@@ -71,7 +71,7 @@
                 </v-list-tile-sub-title>
               </v-list-tile-content>
               <v-layout row class="hidden-sm-and-down">
-                <v-flex lg12 md12>
+                <v-flex v-if="person.id == userId" lg12 md12>
                   <v-list-tile-action>
                     <v-btn icon class="mx-0" @click="editItemExperience(item)">
                       <v-icon>edit</v-icon>
@@ -133,6 +133,7 @@ export default {
         isCurrent: null
       },
       dialogExperience: false,
+      userId: this.$store.state.user.id
     };
   },
 

@@ -72,7 +72,7 @@
                   <p>{{ item.enrollmentDate }} - {{ item.graduationDate }}</p>
                 </v-list-tile-sub-title>
               </v-list-tile-content>
-              <v-layout row class="hidden-sm-and-down">
+              <v-layout v-if="person.id == userId" row class="hidden-sm-and-down">
                 <v-flex lg12 md12>
                   <v-list-tile-action>
                     <v-btn icon class="mx-0" @click="editItemEducation(item)">
@@ -134,7 +134,8 @@ export default {
         course: null,
         enrollmentDate: null,
         graduationDate: null
-      }
+      },
+      userId: this.$store.state.user.id
     };
   },
 
