@@ -35,18 +35,28 @@
                   v-bind:src="logo"
                   alt="FEUPLink"
                 >
-              </v-avatar>
-            </router-link>
+              </v-avatar>              
+            </router-link>                    
           </v-toolbar-title>
         </div>
-        <div id="main-bar-content" class="hidden-xs-only">
-          <v-spacer></v-spacer>
+        <div id="main-bar-content" class="hidden-xs-only">                 
+          <v-spacer></v-spacer>          
           <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
             <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
           </v-toolbar-items>
           <v-toolbar-items flex v-else class="hidden-xs-only">
             <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
           </v-toolbar-items>
+            <v-menu>
+
+            <v-btn flat slot="activator">{{this.language}}</v-btn>
+            <v-list>
+              <v-list-tile v-for="language in languages" :key="language" @click="changeLanguage">
+              <v-list-tile-title>{{ language }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+
         </div>
       </v-toolbar>
 
@@ -69,6 +79,7 @@
     name: "App",
     data() {
       return {
+        languages: ['PT', 'EN'],
         minilogo: minilogo,
         logo: logo,
         sideNav: false,
@@ -83,6 +94,9 @@
           }
         ]
       };
+    },
+    methods: {
+      changeLanguage() {},
     },
     computed: {
       signnedInMenuItens() {

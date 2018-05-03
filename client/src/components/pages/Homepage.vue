@@ -11,7 +11,7 @@
           >
           </v-carousel-item>
         </v-carousel>
-        <p>The FEUPLink community encompasses all those who are part of this huge family that is FEUP, from current and former students to teachers and collaborators. <a href="...">Join us!</a></p>
+        <p v-lang.close><a href="...">Join us!</a></p>
     </div>
   </v-app>
 </template>
@@ -23,6 +23,14 @@ import homepage_2 from '@/assets/homepage_2.jpg'
 import homepage_3 from '@/assets/homepage_3.jpg' 
 
 export default {
+    messages:{
+        en:{
+            motivation: 'The FEUPLink community encompasses all those who are part of this huge family that is FEUP, from current and former students to teachers and collaborators.',
+        },
+        pt:{
+            motivation: 'A comunidade FEUPLink abrange toda a gente, desde atuais ou antigos alunos a professores e colaboradores.',
+        },
+    },
     name: 'Homepage',
     data () {
         return {

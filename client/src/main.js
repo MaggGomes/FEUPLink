@@ -10,7 +10,25 @@ import { sync } from 'vuex-router-sync'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import store from '@/store/store'
+import MultiLanguage from 'vue-multilanguage'
 
+Vue.use(MultiLanguage, {
+	default: 'en',
+  en: {
+    close: 'Close',
+    waning:'Warning!',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    dismiss: 'Dismiss',
+  },
+  pt: {
+    close: 'Fechar',
+    waning:'Cuidado!',
+    cancel: 'Cancelar',
+    confirm: 'Confirmar',
+    dismiss: 'Descartar',
+  }
+})
 Vue.use(Vuetify)
 Vue.use(VeeValidate)
 
