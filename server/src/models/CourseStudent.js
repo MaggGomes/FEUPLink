@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
               });
             },
           },
+          // To-Do Delete
     }
 );
     return CourseStudent;

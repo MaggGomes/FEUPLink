@@ -171,7 +171,7 @@ module.exports = (sequelize, DataTypes) => {
     // many-to-many users on the channel
     Person.belongsToMany(models.Channel,
       {
-        through: 'ChannelMembers',
+        through: models.ChannelMembers,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }
