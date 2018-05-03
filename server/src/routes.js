@@ -2,16 +2,17 @@
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 const CourseControllerPolicy = require('./policies/CourseControllerPolicy');
 const DepartmentControllerPolicy = require('./policies/DepartmentControllerPolicy');
+// const ChannelControlerPolicy = require('./policies/ChannelControlerPolicy');
 const PostControllerPolicy = require('./policies/PostControllerPolicy');
+// const PersonControllerPolicy = require('./policies/PersonControllerPolicy');
 
 // controllers
 const AuthenticationController = require('./controllers/AuthenticationController');
 const CourseController = require('./controllers/CourseController');
-const PersonController = require('./controllers/PersonController');
-// const PersonControllerPolicy = require('./policies/PersonControllerPolicy');
 const DepartmentController = require('./controllers/DepartmentController');
+const ChannelController = require('./controllers/ChannelController');
 const PostController = require('./controllers/PostController');
-
+const PersonController = require('./controllers/PersonController');
 
 module.exports = (app) => {
   // ----Authentication
@@ -111,6 +112,14 @@ module.exports = (app) => {
     CourseController.list_all
   );
 
+  app.get('/list_courses_in_range/:from-:numInstances',
+    CourseController.list_courses_range
+  );
+
+  app.get('/count_courses',
+    CourseController.num_courses
+  );
+
   // ----Department
 
   app.post('/create_department',
@@ -133,6 +142,51 @@ module.exports = (app) => {
 
   app.get('/list_all_departments',
     DepartmentController.list_all
+  );
+
+  app.get('/list_departments_in_range/:from-:numInstances',
+    DepartmentController.list_departments_range
+  );
+
+  app.get('/count_departments',
+    DepartmentController.num_departments
+  );
+
+
+  // ----Channels
+  app.post('/add_channel_admin',
+      AuthenticationControllerPolicy.channel_admin,
+      ChannelController.add_channel_admin,
+  );
+
+  app.post('/remove_channel_admin',
+    AuthenticationControllerPolicy.channel_admin,
+    ChannelController.remove_channel_admin,
+  );
+
+  app.post('/set_channel_visibility',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.set_channel_visibility,
+  );
+
+  app.get('/list_enrolled_channels_in_range/:PersonId/:from-:numInstances',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.list_enrolled_channels,
+  );
+
+  app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.list_admin_channels,
+  );
+
+  app.get('/list_channels_in_range/:from-:numInstances',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.list_channel_range,
+  );
+
+  app.get('/count_channels',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_channels,
   );
 
     // ----Post

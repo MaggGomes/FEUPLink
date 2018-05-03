@@ -34,6 +34,8 @@ module.exports = {
         const student = await Student.create({
           mecNumber: req.body.mecNumber,
           type: req.body.type,
+          mecNumber_visibility: req.body.mecNumber_visibility,
+          type_visibility: req.body.type_visibility,
           PersonId: personJson.id,
         });
 
@@ -41,8 +43,11 @@ module.exports = {
           CourseId: req.body.courseId,
           StudentId: student.toJSON().id,
           enrollmentDate: req.body.enrollmentDate,
-            graduationDate: req.body.graduationDate,
+          enrollmentDate_visibility: req.body.enrollmentDate_visibility,
+          graduationDate: req.body.graduationDate,
+          graduationDate_visibility: req.body.graduationDate_visibility,
         }));
+
 
         if (!req.body.workExperience) {
           const company = await Company.create({
@@ -56,6 +61,10 @@ module.exports = {
             startDate: req.body.startDate,
             endDate: req.body.endDate,
             isCurrent: req.body.isCurrent,
+            title_visibility: req.body.title_visibility,
+            startDate_visibility: req.body.startDate_visibility,
+            endDate_visibility: req.body.endDate_visibility,
+            isCurrent_visibility: req.body.isCurrent_visibility,
             CompanyId: company.toJSON().id,
             PersonId: personJson.id,
           });
@@ -82,6 +91,10 @@ module.exports = {
         jobStart: req.body.startDate,
         jobEnd: req.body.endDate,
         workingLocation: req.body.workingLocation,
+        mecNumber_visibility: req.body.mecNumber_visibility,
+        jobStart_visibility: req.body.startDate_visibility,
+        jobEnd_visibility: req.body.endDate_visibility,
+        workingLocation_visibility: req.body.workingLocation_visibility,
         PersonId: personJson.id,
       });
 
@@ -101,6 +114,10 @@ module.exports = {
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           isCurrent: req.body.isCurrent,
+          title_visibility: req.body.title_visibility,
+          startDate_visibility: req.body.startDate_visibility,
+          endDate_visibility: req.body.endDate_visibility,
+          isCurrent_visibility: req.body.isCurrent_visibility,
           CompanyId: company.toJSON().id,
           PersonId: personJson.id,
         });
@@ -290,7 +307,9 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            type: req.body.studenType,
+            type: req.body.type,
+            mecNumber_visibility: req.body.mecNumber_visibility,
+            type_visibility: req.body.type_visibility,
             PersonId: person.id,
           },
         }))[0].dataValues;
@@ -329,6 +348,10 @@ module.exports = {
             jobStart: req.body.startDate,
             jobEnd: req.body.endDate,
             workingLocation: req.body.workingLocation,
+            mecNumber_visibility: req.body.mecNumber_visibility,
+            jobStart_visibility: req.body.startDate_visibility,
+            jobEnd_visibility: req.body.endDate_visibility,
+            workingLocation_visibility: req.body.workingLocation_visibility,
           },
         }))[0].dataValues;
 
@@ -461,7 +484,9 @@ module.exports = {
           },
           defaults: {
             mecNumber: req.body.mecNumber,
-            type: req.body.studenType,
+            type: req.body.type,
+            mecNumber_visibility: req.body.mecNumber_visibility,
+            type_visibility: req.body.type_visibility,
             PersonId: person.id,
           },
         }))[0].dataValues;
@@ -493,6 +518,10 @@ module.exports = {
             jobStart: req.body.startDate,
             jobEnd: req.body.endDate,
             workingLocation: req.body.workingLocation,
+            mecNumber_visibility: req.body.mecNumber_visibility,
+            jobStart_visibility: req.body.startDate_visibility,
+            jobEnd_visibility: req.body.endDate_visibility,
+            workingLocation_visibility: req.body.workingLocation_visibility,
           },
         }))[0].dataValues;
 
@@ -514,6 +543,10 @@ module.exports = {
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           isCurrent: req.body.isCurrent,
+          title_visibility: req.body.title_visibility,
+          startDate_visibility: req.body.startDate_visibility,
+          endDate_visibility: req.body.endDate_visibility,
+          isCurrent_visibility: req.body.isCurrent_visibility,
           CompanyId: company.toJSON().id,
           PersonId: person.id,
         });
