@@ -124,9 +124,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      whatsAppProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       instagramProfile: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      instagramProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       validated: {
         type: DataTypes.BOOLEAN,
