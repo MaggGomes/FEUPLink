@@ -94,6 +94,8 @@
     },
     mounted () {
       this.userRole = this.$store.state.user.role;
+      if(this.userRole == 'Channel Admin')
+        this.currentTab = 3
     }
 };
 </script>

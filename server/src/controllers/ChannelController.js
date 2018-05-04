@@ -4,11 +4,12 @@ const {
   Person,
 } = require('../models');
 const jwt = require('jsonwebtoken');
+const Utils = require('../utils/Utils');
 
 // aux functions
 
 /**
- * Represents a book.
+ * Changes the admins of a channel.
  * @param {req} req - The request.
  * @param {req} res - The response.
  * @param {req} isAdmin - Boolean wich tells if the user will become an admin or not.
@@ -65,6 +66,52 @@ async function manageChannelAdmin(req, res, isAdmin) {
 };
 
 
+/**
+ * lists the channels at a given range.
+ * @param {req} req - The request.
+ * @param {req} res - The response.
+ */
+async function listChannelsInRange(req, res) {
+  try {
+    let channels = (await Channel.findAll({
+        order: [
+          ['name', 'ASC'],
+        ],
+        include: [{
+          all: true,
+        }],
+        offset: req.params.from,
+        limit: req.params.numInstances,
+      }));
+
+      res.status(201).send(channels);
+  } catch (err) {
+    res.status(400).send({
+      error: err,
+    });
+  }
+};
+
+/**
+ * gets the total amount of channels.
+ * @param {req} req - The request.
+ * @param {req} res - The response.
+ */
+async function listChannelsCount(req, res) {
+  try {
+    let channelsNumber = (await Channel.count());
+
+      res.status(201).send({
+        count: channelsNumber,
+      });
+  } catch (err) {
+    res.status(400).send({
+      error: err,
+    });
+  }
+};
+
+
 module.exports = {
   async set_channel_visibility(req, res) {
     const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
@@ -91,16 +138,28 @@ module.exports = {
   async remove_channel_admin(req, res) {
     manageChannelAdmin(req, res, false);
   },
+  async list_channel_range(req, res) {
+    listChannelsInRange(req, res);
+  },
+  async num_channels(req, res) {
+    listChannelsCount(req, res);
+  },
   // To-do list channel members
   async list_enrolled_channels(req, res) {
     try {
         let channels = (await ChannelMembers.findAll(
           {
+              attributes: [],
               where: {
                 PersonId: req.params.PersonId,
               },
               include: [{
-                all: true,
+                model: Channel,
+                include: [
+                  {
+                    all: true,
+                  },
+                ],
               }],
               offset: req.params.from,
               limit: req.params.numInstances,
@@ -114,21 +173,53 @@ module.exports = {
       });
     }
   },
+  async num_enrolled_channels(req, res) {
+    try {
+      let channelsNumber = (await ChannelMembers.count({
+        where: {
+          PersonId: req.params.PersonId,
+        },
+      }));
+
+        res.status(201).send({
+          count: channelsNumber,
+        });
+    } catch (err) {
+      res.status(400).send({
+        error: err,
+      });
+    }
+  },
   async list_admin_channels(req, res) {
     try {
-      let channels = (await ChannelMembers.findAll(
-        {
-            where: {
-              PersonId: req.params.PersonId,
-              isAdmin: true,
-            },
-            include: [{
-              all: true,
-            }],
-            offset: req.params.from,
-            limit: req.params.numInstances,
-        },
-      ));
+      const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+      let channels = [];
+
+      if (userData.role === 'Super Admin') { // return all channels
+        listChannelsInRange(req, res);
+        return;
+      } else {
+        channels = (await ChannelMembers.findAll(
+          {
+              attributes: [],
+              where: {
+                PersonId: req.params.PersonId,
+                isAdmin: true,
+              },
+              include: [{
+                model: Channel,
+                include: [
+                  {
+                    all: true,
+                  },
+                ],
+              }],
+              offset: req.params.from,
+              limit: req.params.numInstances,
+          },
+        ));
+        console.log('\n\ncalling: \n\n', Utils.removeJsonKeyInArray('Channel', channels));
+      }
 
       res.status(201).send(channels);
   } catch (err) {
@@ -137,33 +228,26 @@ module.exports = {
     });
   }
   },
-  async list_channel_range(req, res) {
+  async num_admin_channels(req, res) {
     try {
-      let channels = (await Channel.findAll({
-          order: [
-            ['name', 'ASC'],
-          ],
-          include: [{
-            all: true,
-          }],
-          offset: req.params.from,
-          limit: req.params.numInstances,
+      const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+      let channelsNumber = 0;
+
+      if (userData.role === 'Super Admin') { // return all channels
+        listChannelsCount(req, res);
+        return;
+      } else {
+        channelsNumber = (await ChannelMembers.count({
+          where: {
+            PersonId: req.params.PersonId,
+            isAdmin: true,
+          },
         }));
+      }
 
-        res.status(201).send(channels);
-    } catch (err) {
-      res.status(400).send({
-        error: err,
+      res.status(201).send({
+        count: channelsNumber,
       });
-    }
-  },
-  async num_channels(req, res) {
-    try {
-      let channelsNumber = (await Channel.count());
-
-        res.status(201).send({
-          count: channelsNumber,
-        });
     } catch (err) {
       res.status(400).send({
         error: err,

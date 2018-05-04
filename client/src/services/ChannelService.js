@@ -13,8 +13,14 @@ export default {
     get_admin_channels_in_range (personId, from, numInstances) {
         return Api().get(`list_admin_channels_in_range/${personId}/${from}-${numInstances}`)
     },
+    get_admin_channels_count (personId) {
+        return Api().get(`num_admin_channels/${personId}`)
+    },
     get_enrolled_channels_in_range (personId, from, numInstances) {
         return Api().get(`list_enrolled_channels_in_range/${personId}/${from}-${numInstances}`)
+    },
+    get_enrolled_channels_count (personId) {
+        return Api().get(`num_enrolled_channels/${personId}`)
     },
     list_channels_in_range (from, numInstances) {
         return Api().get(`list_channels_in_range/${from}-${numInstances}`)

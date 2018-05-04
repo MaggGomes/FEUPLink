@@ -52,5 +52,41 @@
     "startDate": "2018-01",
     "endDate": "2018-04",
     "isCurrent": true
+  },
+  "Gonçalo": {
+    "name": "Gonçalo",
+    "gender": "Male", 
+    "email": "goncalo@gmail.com",
+    "hashedPassword": "1234goncalo",
+    "mecNumber": "201403788",
+    "type": "Mobility Student",
+    "courseId": 3,
+    "enrollmentDate": "2014-09",
+    "graduationDate": "2018-04",
+    "nameCompany": "Mindera",
+    "typeCompany": "public",
+    "industry": "Technology",
+    "title": "Developer",
+    "startDate": "2018-01",
+    "endDate": "2018-04",
+    "isCurrent": true
+  },
+  "Fidalgo": {
+    "name": "Fidalgo",
+    "gender": "Male", 
+    "email": "fidalgo@gmail.com",
+    "hashedPassword": "1234fidalgo",
+    "mecNumber": "201403738",
+    "type": "Mobility Student",
+    "courseId": 2,
+    "enrollmentDate": "2014-09",
+    "graduationDate": "2018-04",
+    "nameCompany": "Mindera",
+    "typeCompany": "public",
+    "industry": "Technology",
+    "title": "Developer",
+    "startDate": "2018-01",
+    "endDate": "2018-04",
+    "isCurrent": true
   }
 }

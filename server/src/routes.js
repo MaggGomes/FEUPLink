@@ -174,9 +174,19 @@ module.exports = (app) => {
     ChannelController.list_enrolled_channels,
   );
 
+  app.get('/num_enrolled_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_enrolled_channels,
+  );
+
   app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_admin_channels,
+  );
+
+  app.get('/num_admin_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_admin_channels,
   );
 
   app.get('/list_channels_in_range/:from-:numInstances',
