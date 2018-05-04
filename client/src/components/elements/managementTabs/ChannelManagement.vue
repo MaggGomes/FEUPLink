@@ -30,7 +30,7 @@
 
 
       <!-- dialog new channel -->
-      <v-dialog v-model="itemDialog" persistent max-width="700px">
+      <v-dialog v-model="itemDialog" v-if="currentItem !== null" persistent max-width="700px">
         <v-card>
           <v-card-title>
             <span class="headline"> Update channel information </span>
@@ -47,7 +47,17 @@
 
                   <v-flex xs12>
                     <v-text-field label="Description" v-model="description" multi-line></v-text-field>
-                  </v-flex>                 
+                  </v-flex>  
+
+                  <v-flex xs12>
+                     <v-select
+                      label="Administrators"
+                      :items="currentItem.name"
+                      v-model="channelAdmins"
+                      multiple
+                      max-height="400"
+                    ></v-select>
+                  </v-flex>               
 
                 </v-layout>
               </v-container>
@@ -68,10 +78,10 @@
 
       <!-- channel details dialog -->
       <v-dialog scrollable v-model="showItemDetails">
-        <v-card>
-          <v-card-title v-if="currentItem !== null" class="headline">{{currentItem.Channel.name}}</v-card-title>
+        <v-card v-if="currentItem !== null">
+          <v-card-title class="headline">{{currentItem.Channel.name}}</v-card-title>
           <v-card-text>
-           <!-- <channel-details :channel="currentItem"> </channel-details> -->
+             <channel-details :channel="currentItem.Channel"> </channel-details> 
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -216,13 +226,23 @@ export default {
         this.numPages = Math.ceil(this.itemsCount / this.itemsPerPage)
         const from = (this.currentPage - 1) * this.itemsPerPage
         this.items = (await ChannelService.get_admin_channels_in_range(personId, from, this.itemsPerPage)).data
+        
+        if(this.$store.state.user.role == 'Super Admin'){
+          let finObj=[];
+          for(let i in this.items){
+            finObj.push({Channel: this.items[i]});
+          }
+
+          this.items = finObj;
+        }
+
       }catch(error){
         this.error=error
       }
     },
   },     
   mounted: async function (){
-      await this.getItems()
+      (await this.getItems())
   },
    watch: {
     itemDialog (val) {
@@ -245,10 +265,10 @@ export default {
       }
     },
     currentPage(val){
-      this.getCourses();
+      this.getItems();
     },
     itemsPerPage(val){
-      this.getCourses()
+      this.getItems()
     }
   },
 }

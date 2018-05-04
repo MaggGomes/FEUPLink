@@ -4,7 +4,6 @@ const {
   Person,
 } = require('../models');
 const jwt = require('jsonwebtoken');
-const Utils = require('../utils/Utils');
 
 // aux functions
 
@@ -218,7 +217,7 @@ module.exports = {
               limit: req.params.numInstances,
           },
         ));
-        console.log('\n\ncalling: \n\n', Utils.removeJsonKeyInArray('Channel', channels));
+        // console.log('\n\ncalling: \n\n', Utils.removeJsonKeyInArray('Channel', channels));
       }
 
       res.status(201).send(channels);

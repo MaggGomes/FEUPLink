@@ -1,5 +1,11 @@
 module.exports = {
   async removeJsonKeyInArray(key, array) {
-    console.log('removing', key, array);
+    /*
+    let finalObj = [];
+    for (var i in array) {
+      finalObj.push(array[i]['dataValues'][key])
+    }
+
+    return finalObj;*/
   },
 };
