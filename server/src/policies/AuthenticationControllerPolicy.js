@@ -44,6 +44,7 @@ module.exports = {
     },
     // verifies either a channel_admin of the specified channel or a super_admin
     channel_admin(req, res, next) {
+        console.log(req.body);
         try {
           const user = jwtSignedUser(req);
 
