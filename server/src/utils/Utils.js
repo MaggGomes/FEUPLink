@@ -1,11 +1,11 @@
 module.exports = {
-  async removeJsonKeyInArray(key, array) {
-    /*
+  // remove sub element key when querying with includes
+  removeJsonKeyInArray(key, array) {
     let finalObj = [];
-    for (var i in array) {
-      finalObj.push(array[i]['dataValues'][key])
-    }
+    array.forEach((elem)=> {
+      finalObj.push(elem['dataValues'][key].dataValues);
+    });
 
-    return finalObj;*/
+    return finalObj;
   },
 };

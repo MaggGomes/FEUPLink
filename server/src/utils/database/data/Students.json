@@ -39,7 +39,7 @@
     "name": "Mariana",
     "gender": "Female", 
     "email": "mariana@gmail.com",
-    "hashedPassword": "1234nuno",
+    "hashedPassword": "1234mariana",
     "mecNumber": "2014037",
     "type": "Mobility Student",
     "courseId": 2,

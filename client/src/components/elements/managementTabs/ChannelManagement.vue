@@ -41,24 +41,14 @@
                 <v-layout wrap>
 
                   <v-flex xs12 md9>
-                    <v-text-field label="Course name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Course name is required']"
+                    <v-text-field label="Channel name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Channel name is required']"
                       required></v-text-field>
                   </v-flex>               
 
                   <v-flex xs12>
                     <v-text-field label="Description" v-model="description" multi-line></v-text-field>
                   </v-flex>  
-
-                  <v-flex xs12>
-                     <v-select
-                      label="Administrators"
-                      :items="currentItem.name"
-                      v-model="channelAdmins"
-                      multiple
-                      max-height="400"
-                    ></v-select>
-                  </v-flex>               
-
+            
                 </v-layout>
               </v-container>
             </v-form>
@@ -79,9 +69,9 @@
       <!-- channel details dialog -->
       <v-dialog scrollable v-model="showItemDetails">
         <v-card v-if="currentItem !== null">
-          <v-card-title class="headline">{{currentItem.Channel.name}}</v-card-title>
+          <v-card-title class="headline">{{currentItem.name}}</v-card-title>
           <v-card-text>
-             <channel-details :channel="currentItem.Channel"> </channel-details> 
+             <channel-details :channel="currentItem"> </channel-details> 
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -115,9 +105,9 @@
 
       <v-flex xs12>
         <!-- list of items -->
-        <v-toolbar v-for="item in items" :key="item.Channel.id">
-          <v-toolbar-title class="hidden-sm-and-down">{{item.Channel.name}}</v-toolbar-title>
-          <v-toolbar-title class="hidden-md-and-up">{{item.Channel.id}}</v-toolbar-title>
+        <v-toolbar v-for="item in items" :key="item.id">
+          <v-toolbar-title class="hidden-sm-and-down">{{item.name}}</v-toolbar-title>
+          <v-toolbar-title class="hidden-md-and-up">{{item.id}}</v-toolbar-title>
 
           <v-spacer></v-spacer>
           <v-toolbar-items>
@@ -210,14 +200,21 @@ export default {
       this.itemDialog=true
       this.currentItem=item
     },
-    async updateChannel(){
-      
-      try{
-       
+    async addChannelAdmin(personId){
+      try{        
+        this.success = (await ChannelService.add_channel_admin(this.currentItem.id, personId)).data
       }catch(error){
         this.error=error
       }
-    
+    },
+    async updateChannel(){
+      try{        
+        this.success = (await ChannelService.update_channel(this.currentItem.id, this.name, this.description)).data
+        this.closeDialog()
+        this.getItems()
+      }catch(error){
+        this.error=error
+      }
     },
     async getItems(){      
       try{
@@ -226,16 +223,6 @@ export default {
         this.numPages = Math.ceil(this.itemsCount / this.itemsPerPage)
         const from = (this.currentPage - 1) * this.itemsPerPage
         this.items = (await ChannelService.get_admin_channels_in_range(personId, from, this.itemsPerPage)).data
-        
-        if(this.$store.state.user.role == 'Super Admin'){
-          let finObj=[];
-          for(let i in this.items){
-            finObj.push({Channel: this.items[i]});
-          }
-
-          this.items = finObj;
-        }
-
       }catch(error){
         this.error=error
       }
@@ -245,11 +232,6 @@ export default {
       (await this.getItems())
   },
    watch: {
-    itemDialog (val) {
-      // to clear red fields and form data
-      if(val)
-        this.$refs.form.reset()
-    },
     success (val){
       if(val !== null){
         this.error=null

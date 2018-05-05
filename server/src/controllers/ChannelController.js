@@ -4,6 +4,7 @@ const {
   Person,
 } = require('../models');
 const jwt = require('jsonwebtoken');
+const Utils = require('../utils/Utils');
 
 // aux functions
 
@@ -112,24 +113,70 @@ async function listChannelsCount(req, res) {
 
 
 module.exports = {
-  async set_channel_visibility(req, res) {
-    const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
-     // update association table
-     (await ChannelMembers.update(
-      {
-        isVisible: req.body.isVisible,
-      },
-      {
-        where: {
-          ChannelId: req.body.ChannelId,
-          PersonId: userData.id,
+  async update(req, res) {
+    try {
+      (await Channel.update(
+        {
+          name: req.body.name,
+          description: req.body.description,
         },
-      }
-    ));
+        {
+          where: {
+            id: req.body.ChannelId,
+          },
+        }
+      ));
 
-    res.status(201).send({
-      res: `Visibility successfully updated`,
-    });
+      res.status(201).send({
+        res: `Channel successfully updated`,
+      });
+    } catch (error) {
+      res.status(400).send({
+        error: err,
+      });
+    };
+  },
+  async set_channel_visibility(req, res) {
+    try {
+      const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+      // update association table
+      (await ChannelMembers.update(
+        {
+          isVisible: req.body.isVisible,
+        },
+        {
+          where: {
+            ChannelId: req.body.ChannelId,
+            PersonId: userData.id,
+          },
+        }
+      ));
+
+      res.status(201).send({
+        res: `Visibility successfully updated`,
+      });
+    } catch (error) {
+      res.status(400).send({
+        error: err,
+      });
+    };
+  },
+  async channel_by_id(req, res) {
+    try {
+       let channel = (await Channel.findById(
+         req.params.ChannelId,
+          {
+            include: [{
+              all: true,
+            }],
+          }));
+
+      res.status(201).send(channel);
+    } catch (error) {
+      res.status(400).send({
+        error: err,
+      });
+    };
   },
   async add_channel_admin(req, res) {
     manageChannelAdmin(req, res, true);
@@ -164,7 +211,7 @@ module.exports = {
               limit: req.params.numInstances,
           },
         ));
-
+        channels = Utils.removeJsonKeyInArray('Channel', channels);
         res.status(201).send(channels);
     } catch (err) {
       res.status(400).send({
@@ -217,7 +264,7 @@ module.exports = {
               limit: req.params.numInstances,
           },
         ));
-        // console.log('\n\ncalling: \n\n', Utils.removeJsonKeyInArray('Channel', channels));
+        channels = Utils.removeJsonKeyInArray('Channel', channels);
       }
 
       res.status(201).send(channels);
