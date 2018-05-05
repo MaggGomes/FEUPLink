@@ -5,13 +5,13 @@
 
       <v-navigation-drawer app temporary v-model="sideNav" absolute>
         <v-list>
-          <v-list-tile v-if="$store.state.isUserLoggedIn">
-            <v-list-tile-content v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" route :to="signnedInItem.link">
+          <v-list-tile v-if="$store.state.isUserLoggedIn" v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" route :to="signnedInItem.link">
+            <v-list-tile-content>
               {{ signnedInItem.title }}
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-else>
-            <v-list-tile-content v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+          <v-list-tile v-else v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
+            <v-list-tile-content>
               {{ menuItem.title }}
             </v-list-tile-content>
           </v-list-tile>

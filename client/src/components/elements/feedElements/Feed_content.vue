@@ -1,5 +1,5 @@
 <template>
-    <v-list two-line>
+    <v-list class="feed-content" two-line>
         <v-list-tile ripple avatar v-for="content in contents" :key="content.title">
             <v-list-tile-avatar>
                 <img :src="content.title">
@@ -35,11 +35,11 @@
 </script>
 
 <style scopped>
-  .list {
+  .feed-content .list {
     background-color: rgba(221, 221, 221, 0.75) ;
     padding: 1px 0;
   }
-  .list .list__tile{
+  .feed-content .list .list__tile{
     background-color: rgba(188, 188, 188, 0.75) ;
     margin:10px;
   }

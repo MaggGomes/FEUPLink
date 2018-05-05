@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-card class="short-width" flat raised style="margin-bottom: 20px; margin-top: 20px;">
-      <v-container align-center>
+      <v-container>
         <v-layout style="margin-bottom: 20px;" row>
           <!-- Start region of mobile screen -->
           <v-flex hidden-md-and-up>
             <v-layout row justify-end>
-              <v-btn icon class="mx-0" @click.stop="editPerson = true">
+              <v-btn icon class="mx-0" @click.stop="editPersonDialog = true">
                 <v-icon>edit</v-icon>
               </v-btn>
             </v-layout>
-
+  
             <v-layout row>
               <v-flex xs12>
                 <v-avatar class="align-img-center" size="150px">
@@ -62,16 +62,16 @@
             </v-layout>
           </v-flex>
           <!-- End region of mobile screen -->
-
+  
           <!-- Start region of Small, medium, large and extra-large screen -->
           <v-flex hidden-sm-and-down>
-
+  
             <v-layout row justify-end>
-              <v-btn icon class="mx-0" @click.stop="editPerson = true">
+              <v-btn icon class="mx-0" @click.stop="editPersonDialog = true">
                 <v-icon>edit</v-icon>
               </v-btn>
             </v-layout>
-
+  
             <v-layout row>
               <v-flex lg12 md12>
                 <v-avatar class="align-img-center" size="150px">
@@ -79,47 +79,47 @@
                 </v-avatar>
               </v-flex>
             </v-layout>
-
+  
             <v-layout class="bottom-margin top-margin" row>
               <v-flex lg12 md12>
                 <h3 class="text-align-center">{{ person.name }}</h3>
               </v-flex>
             </v-layout>
-
-            <v-layout class="bottom-margin"  row>
+  
+            <v-layout class="bottom-margin" row>
               <v-flex lg12 md12>
                 <p class="grey-color text-align-center">{{ personType }}</p>
               </v-flex>
             </v-layout>
-
+  
             <v-layout v-if="locationString.length !== 0" class="bottom-margin" row>
               <v-flex lg12 md12>
                 <p class="grey-color text-align-center">{{ locationString }}</p>
               </v-flex>
             </v-layout>
-
+  
             <v-layout row justify-center>
-              <v-flex v-if="person.facebookProfile !== null" lg1 md1>
+              <v-flex v-if="person.facebookProfile !== null && person.facebookProfile !== undefined" lg1 md1>
                 <v-layout justify-center>
                   <v-icon large>fab fa-facebook</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.linkedInProfile !== null" lg1 md1>
+              <v-flex v-if="person.linkedInProfile !== null && person.linkedInProfile !== undefined" lg1 md1>
                 <v-layout justify-center>
                   <v-icon large>fab fa-linkedin</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.whatsAppProfile !== null" lg1 md1>
+              <v-flex v-if="person.whatsAppProfile !== null && person.whatsAppProfile !== undefined" lg1 md1>
                 <v-layout justify-center>
                   <v-icon large>fab fa-whatsapp</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.instagramProfile !== null" lg1 md1>
+              <v-flex v-if="person.instagramProfile !== null && person.instagramProfile !== undefined" lg1 md1>
                 <v-layout justify-center>
                   <v-icon large>fab fa-instagram</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.email !== null" 2 lg1 md1>
+              <v-flex v-if="person.email !== null  && person.email !== undefined" 2 lg1 md1>
                 <v-layout justify-center>
                   <v-icon large>email</v-icon>
                 </v-layout>
@@ -130,16 +130,19 @@
         </v-layout>
       </v-container>
     </v-card>
-
-    <v-dialog v-model="editPerson" max-width="500px">
+    <v-dialog v-model="editPersonDialog" max-width="400px">
       <v-card>
-        <v-card-title>
-          Edit
-        </v-card-title>
+        <v-card-title class="headline">Edit Profile</v-card-title>
+
         <v-card-text>
+          <profile-edit :person="person"></profile-edit>
         </v-card-text>
+
         <v-card-actions>
-          <v-btn color="primary" flat @click.stop="editPerson=false">Close</v-btn>
+          <v-layout row justify-end>
+            <v-btn color="primary" flat @click.stop="editPersonDialog=false">Close</v-btn>
+            <v-btn color="primary" flat @click.stop="editPersonDialog=false">Edit</v-btn>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -148,20 +151,24 @@
 
 <script>
 import defaultUserImg from "@/assets/defaultUser.jpg";
+import ProfileEdit from "@/components/elements/profileElements/EditProfile";
 
 export default {
   name: "profile-header",
-	props: [
-		'person',
-		'personType',
-		'locationString'
-	],
-	data () {
-		return {
+
+  components: {
+    ProfileEdit
+  },
+
+  props: ["person", "personType", "locationString"],
+
+  data() {
+    return {
       defaultUserImg: defaultUserImg,
-      editPerson: false
-		}
-	}
+      editPersonDialog: false,
+      active: null
+    };
+  }
 };
 </script>
 
@@ -178,6 +185,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
+
 .grey-color {
   color: grey;
 }
