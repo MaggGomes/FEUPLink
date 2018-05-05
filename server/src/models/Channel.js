@@ -16,15 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Channel.associate = (models) => {
-    // channel can have many administrators
-    Channel.belongsToMany(models.Person,
-      {
-        through: 'ChannelAdmins',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }
-    );
-
     // channel can have many members
     Channel.belongsToMany(models.Person,
       {

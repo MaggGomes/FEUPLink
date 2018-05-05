@@ -73,7 +73,10 @@ module.exports = {
       },
       defaults: {
         name: 'Admin',
+        name_visibility: false,
         hashedPassword: 'Password1',
+        gender_visibility: false,
+        email_visibility: false,
         role: 'Super Admin',
       },
     });

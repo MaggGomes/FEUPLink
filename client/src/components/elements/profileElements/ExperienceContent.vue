@@ -20,10 +20,20 @@
                     <v-flex xs12>
                       <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex xs9>
                       <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs3>
+                      <v-btn-toggle v-model="titleVisible">
+                        <v-btn flat>
+                          <v-icon>visibility</v-icon>
+                        </v-btn>
+                        <v-btn flat>
+                          <v-icon>visibility_off</v-icon>
+                        </v-btn>
+                      </v-btn-toggle>
+                    </v-flex>
+                    <v-flex xs9>
                       <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                         <v-text-field slot="activator" label="Start date"
@@ -32,7 +42,17 @@
                         min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
                       </v-menu>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs3>
+                      <v-btn-toggle v-model="startDateVisible">
+                        <v-btn flat>
+                          <v-icon>visibility</v-icon>
+                        </v-btn>
+                        <v-btn flat>
+                          <v-icon>visibility_off</v-icon>
+                        </v-btn>
+                      </v-btn-toggle>
+                    </v-flex>
+                    <v-flex xs9>
                       <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2"
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                         <v-text-field slot="activator" label="End date" v-model="editedItemExperience.endDate" 
@@ -41,9 +61,29 @@
                         :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
                       </v-menu>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex xs3>
+                      <v-btn-toggle v-model="endDateVisible">
+                        <v-btn flat>
+                          <v-icon>visibility</v-icon>
+                        </v-btn>
+                        <v-btn flat>
+                          <v-icon>visibility_off</v-icon>
+                        </v-btn>
+                      </v-btn-toggle>
+                    </v-flex>
+                    <v-flex xs9>
                       <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" 
                       label="Current job" prepend-icon="person"></v-select>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-btn-toggle v-model="isCurrentVisible">
+                        <v-btn flat>
+                          <v-icon>visibility</v-icon>
+                        </v-btn>
+                        <v-btn flat>
+                          <v-icon>visibility_off</v-icon>
+                        </v-btn>
+                      </v-btn-toggle>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -135,7 +175,11 @@ export default {
         isCurrent: null
       },
       dialogExperience: false,
-      userId: this.$store.state.user.id
+      userId: this.$store.state.user.id,
+      titleVisible: 0,
+      startDateVisible: 0,
+      endDateVisible: 0,
+      isCurrentVisible: 0
     };
   },
 

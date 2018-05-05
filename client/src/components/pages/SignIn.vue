@@ -13,7 +13,7 @@
                 <v-toolbar-title>Sign In</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-              <v-form autocomplete="off" ref="form" lazy-validation>
+              <v-form autocomplete="off" ref="form" v-model="valid">
                 <v-text-field :email="email"
                   prepend-icon="email"
                   label="Email"
@@ -41,7 +41,8 @@
                   Not a member?
                   <v-btn to="/signup" small flat color="primary" class="">Sign up!
                   </v-btn>
-                <v-btn v-on:click="signin" dark class="red darken-4">Continue</v-btn>
+                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">Continue</v-btn>
+                <v-btn v-else disabled>Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -66,6 +67,7 @@ import BufferingWheel from "@/components/elements/BufferingWheel";
 
 export default {
   name: "SignIn",
+  valid: false,
   components: {
     LinkedInButton,
     BufferingWheel,

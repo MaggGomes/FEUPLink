@@ -28,31 +28,66 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      name_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       gender: {
         type: DataTypes.ENUM,
         values: ['Male', 'Female', 'Not Specified'],
         defaultValue: 'Not Specified',
         allowNull: false,
       },
+      gender_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       phone: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      phone_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       birthDate: {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      birthDate_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       city: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      city_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       country: {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      country_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       headline: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      headline_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       lastLogin: {
         type: DataTypes.DATE,
@@ -62,21 +97,46 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(2500),
         allowNull: true,
       },
+      summary_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       facebookProfile: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      facebookProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       linkedInProfile: {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      linkedInProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       whatsAppProfile: {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      whatsAppProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
       instagramProfile: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      instagramProfile_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       validated: {
         type: DataTypes.BOOLEAN,
@@ -89,6 +149,11 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: true,
         },
+      },
+      email_visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       hashedPassword: {
         type: DataTypes.STRING,
@@ -121,15 +186,6 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Person.associate = (models) => {
-    // many-to-many channel admins
-    Person.belongsToMany(models.Channel,
-      {
-        through: 'ChannelAdmins',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }
-    );
-
     // many-to-many users on the channel
     Person.belongsToMany(models.Channel,
       {

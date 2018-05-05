@@ -1,5 +1,8 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const {
+    ChannelMembers,
+  } = require('../models');
 
 /**
  * Represents a book.
@@ -39,11 +42,28 @@ module.exports = {
           });
         }
     },
+    // verifies either a channel_admin of the specified channel or a super_admin
     channel_admin(req, res, next) {
         try {
           const user = jwtSignedUser(req);
-          if (user.role === 'Channel Admin') {
+
+          if (user.role === 'Super Admin') {
             next();
+          } else if (user.role === 'Channel Admin') {
+            ChannelMembers.findOne(
+              {
+                  where: {
+                    ChannelId: req.body.ChannelId,
+                    PersonId: user.id,
+                  },
+              },
+            ).then((channelInfo) => {
+                if (channelInfo !== null && channelInfo.dataValues.isAdmin) {
+                    next();
+                } else {
+                    res.status(403).send({error: 'Access Forbiden'});
+                }
+            });
           } else {
             res.status(403).send({error: 'Access Forbiden'});
           }
@@ -72,21 +92,33 @@ module.exports = {
                 new RegExp('^[a-zA-Z0-9]{8,32}$')
             ),
             birthDate: Joi.string().required(),
+            birthDate_visibility: Joi.boolean().required(),
             gender: Joi.string().required(),
+            gender_visibility: Joi.boolean().required(),
             country: Joi.string().required(),
+            country_visibility: Joi.boolean().required(),
             city: Joi.string().required(),
+            city_visibility: Joi.boolean().required(),
             courseId: Joi.number().required(),
             enrollmentDate: Joi.string().required(),
+            enrollmentDate_visibility: Joi.boolean().required(),
             graduationDate: Joi.string(),
+            graduationDate_visibility: Joi.boolean().required(),
             type: Joi.string().required(),
+            type_visibility: Joi.boolean().required(),
             mecNumber: Joi.string().required(),
+            mecNumber_visibility: Joi.boolean().required(),
             company: Joi.string(),
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
+            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
+            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
+            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
+            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 
@@ -171,21 +203,33 @@ module.exports = {
                 new RegExp('^[a-zA-Z0-9]{8,32}$')
             ),
             birthDate: Joi.string().required(),
+            birthDate_visibility: Joi.boolean().required(),
             gender: Joi.string().required(),
+            gender_visibility: Joi.boolean().required(),
             country: Joi.string().required(),
+            country_visibility: Joi.boolean().required(),
             city: Joi.string().required(),
+            city_visibility: Joi.boolean().required(),
             departmentId: Joi.number().required(),
             workingLocation: Joi.string().required(),
+            workingLocation_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
+            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
+            endDate_visibility: Joi.boolean().required(),
             mecNumber: Joi.string().required(),
+            mecNumber_visibility: Joi.boolean().required(),
             company: Joi.string(),
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
+            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
+            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
+            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
+            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 

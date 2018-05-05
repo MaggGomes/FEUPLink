@@ -16,5 +16,11 @@ export default {
     },
     list_all_courses () {
         return Api().get('list_all_courses')
+    },
+    list_courses_in_range (from, numInstances) {
+        return Api().get(`list_courses_in_range/${from}-${numInstances}`)
+    },
+    get_courses_count () {
+        return Api().get('count_courses')
     }
 }
