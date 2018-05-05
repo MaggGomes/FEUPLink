@@ -43,15 +43,64 @@
                   <v-flex xs12 md9>
                     <v-text-field label="Channel name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Channel name is required']"
                       required></v-text-field>
-                  </v-flex>               
+                  </v-flex>
 
                   <v-flex xs12>
                     <v-text-field label="Description" v-model="description" multi-line></v-text-field>
-                  </v-flex>  
-            
+                  </v-flex>
+
+                  <v-flex xs12>
+                    <v-card class="elevation-0">
+                      <v-card-text>
+                        <v-card-title>
+                          <span class="title"> Channel administrators </span>
+                        </v-card-title>
+                        <v-layout row wrap>
+                          <v-flex xs9>
+                            <v-select
+                              :items="channelPeople"
+                              v-model="newAdminId"
+                              item-text="email" 
+                              item-value="id"
+                              label="Add new Admin"
+                              autocomplete
+                            ></v-select>
+                          </v-flex>
+
+                          <v-flex xs2>
+                            <v-btn color="blue darken-1" flat @click.native="() => {
+                                    if(newAdminId !== null)
+                                      showConfirmDialog(addChannelAdmin, 'Are you sure you want to add a new admin?')
+                                }">
+                              <v-icon color="green"> add </v-icon>
+                            </v-btn>
+                          </v-flex>
+
+                          <v-flex xs12>                                       
+                            <v-toolbar v-for="person in channelPeople" :key="person.id" v-if="person.ChannelMembers.isAdmin">
+                              <v-toolbar-title >{{person.name}}</v-toolbar-title>                             
+
+                              <v-spacer></v-spacer>
+                              <v-toolbar-items>                               
+                                <v-btn fab flat @click.native="() => {
+                                    deleteAdminId=person.id
+                                    showConfirmDialog(removeChannelAdmin, `Are you sure you want to delete ${person.name} admin?`)
+                                }">
+                                  <v-icon> delete </v-icon>
+                                </v-btn>
+                              </v-toolbar-items>
+                            </v-toolbar>
+                          </v-flex>
+
+                        </v-layout>
+                      </v-card-text>                     
+                    </v-card>
+
+                  </v-flex>
                 </v-layout>
               </v-container>
             </v-form>
+
 
           </v-card-text>
           <v-card-actions>
@@ -71,7 +120,7 @@
         <v-card v-if="currentItem !== null">
           <v-card-title class="headline">{{currentItem.name}}</v-card-title>
           <v-card-text>
-             <channel-details :channel="currentItem"> </channel-details> 
+            <channel-details :channel="currentItem"> </channel-details>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -90,18 +139,12 @@
           </v-flex>
 
           <v-flex xs2 offset-xs2>
-            <v-select
-              :items="numPagesOptions"
-              v-model="itemsPerPage"
-              label="Items"
-              class="input-group--focused"
-              item-value="pa"
-            ></v-select>
+            <v-select :items="numPagesOptions" v-model="itemsPerPage" label="Items" class="input-group--focused" item-value="pa"></v-select>
           </v-flex>
         </v-layout>
       </v-flex>
 
-      
+
 
       <v-flex xs12>
         <!-- list of items -->
@@ -125,13 +168,12 @@
       </v-flex>
 
       <v-flex xs12 pt-4>
-        <v-pagination :length="numPages" v-model="currentPage" ></v-pagination>
+        <v-pagination :length="numPages" v-model="currentPage"></v-pagination>
       </v-flex>
 
     </v-layout>
   </v-container>
 </template>
-
 
 
 <script>
@@ -166,7 +208,9 @@ export default {
       // channel dialog fields
       name: null,
       description: null,
-      channelAdmins: [],
+      channelPeople: [],
+      newAdminId: null,
+      deleteAdminId: null,
       //show channel details dialog
       showItemDetails: false,
       //form-validation
@@ -194,15 +238,33 @@ export default {
     },
     openUpdateItemDialog(item){
       // update dialog fields
-      this.name=item.name
-      this.description=item.description
+      this.name = item.name
+      this.description = item.description
+      this.channelPeople = item.People 
      
       this.itemDialog=true
       this.currentItem=item
     },
+    async updateChannelPeople(){
+      try{
+        let updatedItem = (await ChannelService.get_channel_by_id(this.currentItem.id)).data
+        this.channelPeople = updatedItem.People
+       }catch(error){
+        this.error=error
+      }
+    },
+    async removeChannelAdmin(personId){
+      try{     
+        this.success = (await ChannelService.remove_channel_admin(this.currentItem.id, this.deleteAdminId)).data
+        this.updateChannelPeople()
+      }catch(error){
+        this.error=error
+      }
+    },
     async addChannelAdmin(personId){
       try{        
-        this.success = (await ChannelService.add_channel_admin(this.currentItem.id, personId)).data
+        this.success = (await ChannelService.add_channel_admin(this.currentItem.id, this.newAdminId)).data
+        this.updateChannelPeople()
       }catch(error){
         this.error=error
       }
