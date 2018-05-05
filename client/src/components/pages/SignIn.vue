@@ -33,15 +33,13 @@
                <div class="danger-alert" v-html="error" />
               </v-card-text>             
               <v-card-actions>
-                <v-checkbox style="margin-left:20px;margin-top:25px"
-                  :label="`Remember me`"
-                  v-model="checkbox"
-                ></v-checkbox>
-                <v-spacer></v-spacer>                   
-                  Not a member?
-                  <v-btn to="/signup" small flat color="primary" class="">Sign up!
-                  </v-btn>
-                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">Continue</v-btn>
+                <v-btn to="/signup" small flat color="primary" class="">
+                  Sign up!
+                </v-btn>
+                <v-spacer> </v-spacer>
+                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">
+                  Continue
+                </v-btn>
                 <v-btn v-else disabled>Continue</v-btn>
               </v-card-actions>
             </v-card>

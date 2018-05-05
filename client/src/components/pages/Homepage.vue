@@ -11,7 +11,7 @@
           >
           </v-carousel-item>
         </v-carousel>
-        <p v-lang.close><a href="...">Join us!</a></p>
+        <p>{{ $t("motivation") }}<a href="...">{{$t("join")}}</a></p>
     </div>
   </v-app>
 </template>
@@ -23,13 +23,17 @@ import homepage_2 from '@/assets/homepage_2.jpg'
 import homepage_3 from '@/assets/homepage_3.jpg' 
 
 export default {
-    messages:{
-        en:{
-            motivation: 'The FEUPLink community encompasses all those who are part of this huge family that is FEUP, from current and former students to teachers and collaborators.',
-        },
-        pt:{
-            motivation: 'A comunidade FEUPLink abrange toda a gente, desde atuais ou antigos alunos a professores e colaboradores.',
-        },
+    i18n: {
+        messages: {
+            en: {
+                motivation: 'The FEUPLink community encompasses all those who are part of this huge family that is FEUP, from current and former students to teachers and collaborators. ',
+                join: 'Join us!',
+            },
+            pt: { 
+                motivation: 'A comunidade da FEUPLink engloba todos aqueles que fazem parte desta enorme família que é a FEUP, desde atuais ou antigos alunos até professores e colaboradores. ',
+                join: 'Junte-se a nós!',
+            }
+        }
     },
     name: 'Homepage',
     data () {

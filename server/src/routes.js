@@ -121,7 +121,6 @@ module.exports = (app) => {
   );
 
   // ----Department
-
   app.post('/create_department',
     AuthenticationControllerPolicy.super_admin,
     DepartmentControllerPolicy.create,
@@ -154,6 +153,11 @@ module.exports = (app) => {
 
 
   // ----Channels
+  app.put('/channel_update',
+    AuthenticationControllerPolicy.channel_admin,
+    ChannelController.update,
+  );
+
   app.post('/add_channel_admin',
       AuthenticationControllerPolicy.channel_admin,
       ChannelController.add_channel_admin,
@@ -174,9 +178,19 @@ module.exports = (app) => {
     ChannelController.list_enrolled_channels,
   );
 
+  app.get('/num_enrolled_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_enrolled_channels,
+  );
+
   app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_admin_channels,
+  );
+
+  app.get('/num_admin_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_admin_channels,
   );
 
   app.get('/list_channels_in_range/:from-:numInstances',
@@ -188,6 +202,12 @@ module.exports = (app) => {
     AuthenticationControllerPolicy.authenticated,
     ChannelController.num_channels,
   );
+
+  app.get('/channel_by_id/:ChannelId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.channel_by_id,
+  );
+
 
     // ----Post
 

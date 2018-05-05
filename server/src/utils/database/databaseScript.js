@@ -8,6 +8,7 @@ const {
   Company,
   Job,
   Staff,
+  ChannelMembers,
 } = require('../../models');
 
 const DepartmentsAndCourses = require('./data/DepartmentsAndCourses.json');
@@ -121,6 +122,34 @@ module.exports = {
         },
       });
 
+      // [Refactor] make all students of course 1 a channel admin
+      if(courseId === 1){
+        (await ChannelMembers.update(
+          {
+            isAdmin: true,
+          },
+          {
+            where: {
+              ChannelId: 1,
+              PersonId: person.id,
+            },
+          }
+        ));
+
+        (await Person.update(
+          {
+            role: 'Channel Admin',
+          },
+          {
+            where: {
+              id: person.id,
+            },
+          }
+        ));
+
+      }
+
+      //----
       const company = (await Company.findOrCreate({
         where: {
           name: nameCompany,

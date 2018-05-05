@@ -45,18 +45,17 @@
             <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
           </v-toolbar-items>
           <v-toolbar-items flex v-else class="hidden-xs-only">
-            <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
+            <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
           </v-toolbar-items>
-            <v-menu>
 
-            <v-btn flat slot="activator">{{this.language}}</v-btn>
+          <v-menu>
+            <v-btn flat slot="activator">{{this.$i18n.locale}}</v-btn>
             <v-list>
-              <v-list-tile v-for="language in languages" :key="language" @click="changeLanguage">
-              <v-list-tile-title>{{ language }}</v-list-tile-title>
+              <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+                <v-list-tile-title>{{ language }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
-
         </div>
       </v-toolbar>
 
@@ -75,51 +74,61 @@
 <script>
   import logo from './assets/FEUPLinklogo.png';
   import minilogo from './assets/IconFeup.png';
+  import Vue from 'vue';
+
   export default {
     name: "App",
     data() {
-      return {
-        languages: ['PT', 'EN'],
+      return {        
         minilogo: minilogo,
         logo: logo,
         sideNav: false,
         menuItens: [
           {
-            title: "Sign-In",
+            title: 'signin',//"Sign-In",
             link: "/signin"
           },
           {
-            title: "Sign-Up",
+            title: 'signup',//"Sign-Up",
             link: "/signup"
           }
         ]
       };
     },
     methods: {
-      changeLanguage() {},
+      changeLanguage(language) {
+        /* TODO: save locale on cookies */
+        this.$i18n.locale = language;
+      },
     },
-    computed: {
+    created: function(){
+        /* TODO: if there is a locale saved on cookies return said locale */
+        let browserLocale = navigator.language || navigator.userLanguage
+        if(browserLocale.includes('pt')) this.$i18n.locale = 'pt'
+        else this.$i18n.locale = 'en'
+    },
+    computed: {      
       signnedInMenuItens() {
         let userId = (this.$store.state.user != undefined ? this.$store.state.user.id : 0)
         return [
           {
-            title: "Home",
+            title: "home",
             link: "/"
           },
           {
-            title: "Feed",
+            title: "feed",
             link: "/feed"
           },
           {
-            title: 'Management',
+            title: 'management',
             link: "/management"
           },
           {
-            title: "Profile",
+            title: "profile",
             link: "/profile/" + userId
           },
           {
-            title: "Logout",
+            title: "logout",
             link: "/logout"
           }
         ];

@@ -123,6 +123,11 @@ module.exports = {
             },
             {
               model: Channel,
+              include: [
+                {
+                  all: true,
+                },
+              ],
             },
             {
               model: Department,

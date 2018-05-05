@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     // channel can have many members
     Channel.belongsToMany(models.Person,
       {
-        through: 'ChannelMembers',
+        through: models.ChannelMembers,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }
