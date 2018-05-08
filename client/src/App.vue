@@ -49,7 +49,10 @@
           </v-toolbar-items>
 
           <v-menu>
-            <v-btn flat slot="activator">{{this.$i18n.locale}}</v-btn>
+            <v-btn id="locale-dropdown" slot="activator">
+              {{this.$i18n.locale}}
+              <v-icon large left>arrow_drop_down</v-icon>
+            </v-btn>
             <v-list>
               <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
                 <v-list-tile-title>{{ language }}</v-list-tile-title>
@@ -97,15 +100,19 @@
     },
     methods: {
       changeLanguage(language) {
-        /* TODO: save locale on cookies */
-        this.$i18n.locale = language;
+        this.$cookies.set('locale', language)
+        this.$i18n.locale = language
       },
     },
     created: function(){
-        /* TODO: if there is a locale saved on cookies return said locale */
-        let browserLocale = navigator.language || navigator.userLanguage
-        if(browserLocale.includes('pt')) this.$i18n.locale = 'pt'
-        else this.$i18n.locale = 'en'
+      let locale = this.$cookies.get('locale')
+        if(locale === null){
+          locale = navigator.language //|| navigator.userLanguage
+          if(locale.includes('pt')) locale = 'pt'
+          else locale = 'en'
+          this.$cookies.set('locale',locale)
+        }        
+        this.$i18n.locale = locale
     },
     computed: {      
       signnedInMenuItens() {
@@ -138,6 +145,10 @@
 </script>
 
 <style>
+  #locale-dropdown {
+    width:max-content;
+  }
+
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     background-color: #EEEEEE;

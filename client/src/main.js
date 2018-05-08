@@ -11,47 +11,20 @@ import VueI18n from 'vue-i18n'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import store from '@/store/store'
+import messages from './assets/locales.json'
+import VueCookies from 'vue-cookies'
 
+Vue.use(VueCookies)
 Vue.use(VueI18n)
-
-const messages = {
-  en: {
-    close: 'Close',
-    waning:'Warning!',
-    cancel: 'Cancel',
-    confirm: 'Confirm',
-    dismiss: 'Dismiss',
-    signin: 'Sign-In',
-    signup: 'Sign-Up',
-    logout: 'Logout',
-    management: 'Management',
-    feed: 'Feed',
-    profile: 'Profile',
-    home: 'Home',
-  },
-  pt: {
-    close: 'Fechar',
-    waning:'Atenção!',
-    cancel: 'Cancelar',
-    confirm: 'Confirmar',
-    dismiss: 'Descartar',
-    signin: 'Entrar',
-    signup: 'Registar',
-    logout: 'Sair',
-    management: 'Administração',
-    feed: 'Feed',
-    profile: 'Perfil',
-    home: 'Início', // Página Inicial?
-  }
-}
+Vue.use(Vuetify)
+Vue.use(VeeValidate)
 
 const i18n = new VueI18n({
   locale: 'en',
+  fallbackLocale: 'en',
   messages,
+  //silentTranslationWarn: true
 })
-
-Vue.use(Vuetify)
-Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
 
