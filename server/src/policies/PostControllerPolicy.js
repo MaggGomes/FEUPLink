@@ -11,6 +11,7 @@ module.exports = {
             numViews: Joi.number().integer().min(0),
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),
+            PersonId: Joi.number().required()
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -52,6 +53,11 @@ module.exports = {
                         error: `You must provide a valid tags field`,
                     });
                     break;
+                case 'PersonId':
+                    res.status(408).send({
+                        error: `You must provide a PersonId field`,
+                    });
+                    break;
                 default:
                     res.status(400).send({
                         error: 'Bad request',
@@ -71,6 +77,7 @@ module.exports = {
             numViews: Joi.number(),
             type: Joi.string(),
             tags: Joi.array().items(Joi.string()),
+            PersonId: Joi.number()
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -115,6 +122,11 @@ module.exports = {
                 case 'tags':
                     res.status(408).send({
                         error: `You must provide a valid tags field`,
+                    });
+                    break;
+                case 'PersonId':
+                    res.status(408).send({
+                        error: `You must provide a valid PersonId field`,
                     });
                     break;
                 default:

@@ -1,5 +1,5 @@
 const {
-   Post,
+    Post,
 } = require('../models');
 
 
@@ -13,7 +13,9 @@ module.exports = {
                 defaults: req.body,
             }));
 
-            res.status(201).send({
+            // setDepartment
+
+            res.status(200).send({
                 res: 'Post successfully created',
             });
         } catch (err) {
@@ -35,7 +37,7 @@ module.exports = {
                     },
                 }));
 
-            res.status(201).send({
+            res.status(200).send({
                 res: 'Successfully updated the post information',
             });
         } catch (err) {
@@ -53,7 +55,7 @@ module.exports = {
             }));
 
 
-            res.status(201).send({
+            res.status(200).send({
                 res: 'Post successfully deleted',
             });
         } catch (err) {
@@ -75,7 +77,7 @@ module.exports = {
             }));
 
 
-            res.status(201).send(posts);
+            res.status(200).send(posts);
         } catch (err) {
             res.status(400).send({
                 error: err,
@@ -99,7 +101,7 @@ module.exports = {
             }));
 
 
-            res.status(201).send(posts);
+            res.status(200).send(posts);
         } catch (err) {
             res.status(401).send({
                 error: 'no results found',

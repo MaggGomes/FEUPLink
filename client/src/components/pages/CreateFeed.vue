@@ -129,7 +129,8 @@
               date: this.date,
               link: this.link,
               type: this.postType,
-              tags: this.tagsArray
+              tags: this.tagsArray,
+              PersonId: this.$store.state.user.id
             });
 
             this.$router.push('Feed');
