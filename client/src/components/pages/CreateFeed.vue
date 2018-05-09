@@ -4,7 +4,7 @@
       <buffering-wheel />
     </v-container>
     <v-container fluid v-else>
-      <v-toolbar dark class="red darken-4" height="40px">
+      <v-toolbar style='color: white; background-color: #8c2d19' height="40px">
         <v-toolbar-title style="font-size: 15px">Create a post</v-toolbar-title>
       </v-toolbar>
       <v-stepper v-model="e1" >
@@ -56,7 +56,7 @@
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
-              <v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+              <v-btn style='color: white; background-color: #8c2d19'  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
             </v-flex>
           </v-stepper-content>
 
@@ -89,7 +89,6 @@
 
 <script>
 
-  import Vue from 'vue'
   import FeedService from '@/services/FeedService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
   import InputTag from 'vue-input-tag'
@@ -101,7 +100,7 @@
     },
     data () {
       return {
-        description: '<h1>Some initial content</h1>',
+        description: '<p>Some initial content</p>',
         valid:false,
         showingError: false,
         errorMessage: '',
@@ -111,7 +110,7 @@
         title: null,
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
-        link: null,
+        link: '',
         tagsArray: []
       }
     },
@@ -154,7 +153,7 @@
   }
 
   .primary {
-    background-color: #b71c1c !important;
+    background-color: #8c2d19 !important;
   }
 
   .cc-selector input {

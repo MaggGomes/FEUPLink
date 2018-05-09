@@ -212,19 +212,19 @@ module.exports = (app) => {
     // ----Post
 
   app.post('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.create,
       PostController.create
   );
 
   app.put('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.update,
       PostController.update
   );
 
   app.delete('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.hasId,
       PostController.delete
   );

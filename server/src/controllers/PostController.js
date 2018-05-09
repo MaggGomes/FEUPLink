@@ -13,8 +13,6 @@ module.exports = {
                 defaults: req.body,
             }));
 
-            // setDepartment
-
             res.status(201).send({
                 res: 'Post successfully created',
             });
