@@ -35,18 +35,30 @@
                   v-bind:src="logo"
                   alt="FEUPLink"
                 >
-              </v-avatar>
-            </router-link>
+              </v-avatar>              
+            </router-link>                    
           </v-toolbar-title>
         </div>
-        <div id="main-bar-content" class="hidden-xs-only">
-          <v-spacer></v-spacer>
+        <div id="main-bar-content" class="hidden-xs-only">                 
+          <v-spacer></v-spacer>          
           <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
             <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
           </v-toolbar-items>
           <v-toolbar-items flex v-else class="hidden-xs-only">
-            <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ menuItem.title }}</v-btn>
+            <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
           </v-toolbar-items>
+
+          <v-menu>
+            <v-btn id="locale-dropdown" slot="activator">
+              {{this.$i18n.locale}}
+              <v-icon large left>arrow_drop_down</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+                <v-list-tile-title>{{ language }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
         </div>
       </v-toolbar>
 
@@ -65,47 +77,65 @@
 <script>
   import logo from './assets/FEUPLinklogo.png';
   import minilogo from './assets/IconFeup.png';
+  import Vue from 'vue';
+
   export default {
     name: "App",
     data() {
-      return {
+      return {        
         minilogo: minilogo,
         logo: logo,
         sideNav: false,
         menuItens: [
           {
-            title: "Sign-In",
+            title: 'signin',//"Sign-In",
             link: "/signin"
           },
           {
-            title: "Sign-Up",
+            title: 'signup',//"Sign-Up",
             link: "/signup"
           }
         ]
       };
     },
-    computed: {
+    methods: {
+      changeLanguage(language) {
+        this.$cookies.set('locale', language)
+        this.$i18n.locale = language
+      },
+    },
+    created: function(){
+      let locale = this.$cookies.get('locale')
+        if(locale === null){
+          locale = navigator.language //|| navigator.userLanguage
+          if(locale.includes('pt')) locale = 'pt'
+          else locale = 'en'
+          this.$cookies.set('locale',locale)
+        }        
+        this.$i18n.locale = locale
+    },
+    computed: {      
       signnedInMenuItens() {
         let userId = (this.$store.state.user != undefined ? this.$store.state.user.id : 0)
         return [
           {
-            title: "Home",
+            title: "home",
             link: "/"
           },
           {
-            title: "Feed",
+            title: "feed",
             link: "/feed"
           },
           {
-            title: 'Management',
+            title: 'management',
             link: "/management"
           },
           {
-            title: "Profile",
+            title: "profile",
             link: "/profile/" + userId
           },
           {
-            title: "Logout",
+            title: "logout",
             link: "/logout"
           }
         ];
@@ -115,6 +145,10 @@
 </script>
 
 <style>
+  #locale-dropdown {
+    width:max-content;
+  }
+
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     background-color: #EEEEEE;

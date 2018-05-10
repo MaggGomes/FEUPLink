@@ -10,20 +10,20 @@
         <div v-if="success!=null">
           {{success.res}}
         </div>
-        <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+        <v-btn flat dark @click="showingFeedback=false"> <p v-lang.close></p> </v-btn>
       </v-snackbar>
 
       <!-- warning dialog -->
       <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
-          <v-card-title class="headline">Be Careful!</v-card-title>
+          <v-card-title class="headline"><p v-lang.warning></p></v-card-title>
           <v-card-text>
             {{warningTitle}}
           </v-card-text>
           <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
+            <v-btn flat color="red" @click="warningDialog=false"><p v-lang.cancel></p></v-btn>
             <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
+            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"><p v-lang.confirm></p></v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
