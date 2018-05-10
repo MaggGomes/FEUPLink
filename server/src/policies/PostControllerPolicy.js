@@ -11,7 +11,8 @@ module.exports = {
             numViews: Joi.number().integer().min(0),
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),
-            PersonId: Joi.number().required()
+            PersonId: Joi.number().integer().required(),
+            channels: Joi.array().items(Joi.number().integer()).required()
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -55,7 +56,12 @@ module.exports = {
                     break;
                 case 'PersonId':
                     res.status(408).send({
-                        error: `You must provide a PersonId field`,
+                        error: `You must provide a valid PersonId field`,
+                    });
+                    break;
+                case 'channels':
+                    res.status(408).send({
+                        error: `You must provide a valid channels field`,
                     });
                     break;
                 default:

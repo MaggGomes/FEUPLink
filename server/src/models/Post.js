@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     // post can be shared in many channels
     Post.belongsToMany(models.Channel,
       {
+        as: 'postedChannels',
         through: 'PostChannel',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',

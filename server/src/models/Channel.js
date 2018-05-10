@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }
-    );
+  );
 
     // post can be shared in many channels
     Channel.belongsToMany(models.Post,
