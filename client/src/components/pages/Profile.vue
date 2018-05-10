@@ -54,7 +54,7 @@ export default {
         this.person = student.data.person;
 
         this.locationString =
-          this.person.contry !== null && this.person.city !== null
+          this.person.country !== null && this.person.city !== null
             ? this.person.city + ", " + this.person.country
             : [this.person.city, this.person.country].join("");
 

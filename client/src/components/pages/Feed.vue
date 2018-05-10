@@ -21,6 +21,7 @@
             </v-list>
           </v-toolbar>
           <v-list class="pt-0" dense>
+            <v-btn v-if="this.$store.state.user.role === 'Super Admin' || this.$store.state.user.role === 'Channel Admin'" flat color="red darken-4" router :to="`/feed/create`">Create Post</v-btn>
             <v-list-tile v-for="nav_tab in nav_tabs"
                          v-bind:key="nav_tab.id"
                          v-bind:class="[{ active: currentTab === nav_tab.id }]"

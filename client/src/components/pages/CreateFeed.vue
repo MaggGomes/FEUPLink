@@ -40,6 +40,18 @@
                   </v-layout>
                   <v-layout align-center>
                     <v-flex xs12 sm5 text-xs-center>
+                      <v-select
+                        :items="channels"
+                        v-model="selectedChannels"
+                        item-text="name"
+                        item-value="id"
+                        label="Channel"
+                        required
+                      ></v-select>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout align-center>
+                    <v-flex xs12 sm5 text-xs-center>
                       <v-text-field
                         name="link"
                         label="Link"
@@ -90,6 +102,7 @@
 <script>
 
   import FeedService from '@/services/FeedService'
+  import ChannelService from '@/services/ChannelService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
   import InputTag from 'vue-input-tag'
   import { VueEditor } from 'vue2-editor'
@@ -100,18 +113,21 @@
     },
     data () {
       return {
-        description: '<p>Some initial content</p>',
-        valid:false,
+        valid: false,
         showingError: false,
         errorMessage: '',
         // form-fields
         loading: false,
         e1: 0,
         title: null,
+        description: '<p>Some initial content</p>',
+        text: null,
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
         link: '',
-        tagsArray: []
+        tagsArray: [],
+        channels: [],
+        selectedChannels: []
       }
     },
     watch: {
@@ -119,7 +135,21 @@
         val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
       }
     },
+    created() {
+      this.initialize();
+    },
+
     methods: {
+      async initialize() {
+        try{
+          let response = await ChannelService.get_admin_channels_in_range(2, 0, 2);
+
+          this.channels = response.data;
+          console.log(this.channels[0].name);
+        }catch(error){
+          console.log(error);
+        }
+      },
       async submitData () {
         try{
           if (this.$refs.form.validate()) {

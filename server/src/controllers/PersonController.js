@@ -203,8 +203,9 @@ module.exports = {
                 res: 'Course successfully associated to student',
             });
         } catch (err) {
+            console.log(err);
         res.status(400).send({
-            error: err,
+            error: err
         });
         }
     },

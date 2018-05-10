@@ -58,7 +58,7 @@ export default new Router({
       path: '/feed/create',
       name: 'CreateFeed',
       component: CreateFeed,
-      beforeEnter: AuthenticationPolicy.super_admin
+      beforeEnter: AuthenticationPolicy.channel_admin
     },
     {
       path: '/profile/:id',
