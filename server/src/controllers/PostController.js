@@ -6,17 +6,31 @@ const {
 module.exports = {
     async create(req, res) {
         try {
-            (await Post.findOrCreate({
+            let post = (await Post.findOrCreate({
                 where: {
                     title: req.body.title,
                 },
                 defaults: req.body,
-            }));
+            }))[0].dataValues;
+
+            Post.findById(post.id).then((p) => {
+                p.addChannels(req.body.channels);
+            });
+
+            req.body.channels.forEach((item)=>{
+
+            })
+
+            req.forEach(()=>{
+
+            });
+
 
             res.status(200).send({
                 res: 'Post successfully created',
             });
         } catch (err) {
+            console.log(err);
             res.status(400).send({
                 error: err,
             });
