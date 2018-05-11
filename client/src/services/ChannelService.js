@@ -19,6 +19,7 @@ export default {
   get_admin_channels_in_range (personId, from, numInstances) {
     return Api().get(`list_admin_channels_in_range/${personId}/${from}-${numInstances}`)
   },
+  // Get all channels where a person is admin
   get_admin_channels(personId){
     return Api.get(`list_admin_channels/${personId}`)
   },
@@ -28,6 +29,7 @@ export default {
   get_enrolled_channels_in_range (personId, from, numInstances) {
     return Api().get(`list_enrolled_channels_in_range/${personId}/${from}-${numInstances}`)
   },
+  // Get all channels where a person is enrolled
   get_enrolled_channels(personId){
     return Api.get(`list_enrolled_channels/${personId}`)
   },

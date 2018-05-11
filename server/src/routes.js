@@ -250,4 +250,16 @@ module.exports = (app) => {
       AuthenticationControllerPolicy.authenticated,
       PostController.list_by_type
   );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/:PersonId',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts
+    );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/:PersonId/:type',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts_by_type
+    );
 };

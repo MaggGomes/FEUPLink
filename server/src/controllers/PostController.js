@@ -1,7 +1,55 @@
 const {
     Post,
+    Channel,
+    Person,
 } = require('../models');
+const jwt = require('jsonwebtoken');
+const Utils = require('../utils/Utils');
 
+async function listPosts(req, res) {
+    try {
+        let posts= (await Post.findAll({
+            attribute: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+            include: [{
+                all: true,
+            }],
+            order: [
+                ['id', 'DESC'],
+            ],
+        }));
+
+        res.status(201).send(posts);
+    } catch (err) {
+        res.status(400).send({
+            error: err,
+        });
+    }
+};
+
+async function listPostsType(req, res) {
+    try {
+        let posts = (await Post.findAll({
+            where: {
+                type: req.params.type,
+            },
+
+            attribute: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+            include: [{
+                all: true,
+            }],
+            order: [
+                ['id', 'DESC'],
+            ],
+        }));
+
+
+        res.status(200).send(posts);
+    } catch (err) {
+        res.status(401).send({
+            error: 'no results found',
+        });
+    }
+};
 
 module.exports = {
     async create(req, res) {
@@ -16,15 +64,6 @@ module.exports = {
             Post.findById(post.id).then((p) => {
                 p.addChannels(req.body.channels);
             });
-
-            req.body.channels.forEach((item)=>{
-
-            })
-
-            req.forEach(()=>{
-
-            });
-
 
             res.status(200).send({
                 res: 'Post successfully created',
@@ -77,24 +116,7 @@ module.exports = {
         }
     },
     async list_all(req, res) {
-        try {
-            let posts= (await Post.findAll({
-                attribute: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
-                include: [{
-                    all: true,
-                }],
-                order: [
-                    ['id', 'DESC'],
-                ],
-            }));
-
-
-            res.status(200).send(posts);
-        } catch (err) {
-            res.status(400).send({
-                error: err,
-            });
-        }
+        listPosts(req, res);
     },
     async list_by_type(req, res) {
         try {
@@ -120,4 +142,83 @@ module.exports = {
             });
         }
     },
+    async list_enrolled_channels_posts(req, res) {
+        try {
+            const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let posts = [];
+
+            if (userData.role === 'Super Admin') { // return all posts
+                listPosts(req, res);
+                return;
+            } else {
+                posts = (await Post.findAll(
+                    {
+                        attributes: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+                        include: [{
+                            model: Channel,
+                            where: {
+                            },
+                            include: [{
+                                model: Person,
+                                where: {
+                                    id: req.params.PersonId,
+                                },
+                            }]
+                        }],
+                        order: [
+                            ['id', 'DESC'],
+                        ],
+                    },
+                ));
+            }
+
+            res.status(201).send(posts);
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
+    async list_enrolled_channels_posts_by_type(req, res) {
+        try {
+            const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let posts = [];
+
+            if (userData.role === 'Super Admin') { // return all posts
+                listPostsType(req, res);
+                return;
+            } else {
+                posts = (await Post.findAll(
+                    {
+                        attributes: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+                        where: {
+                            type: req.params.type,
+                        },
+                        include: [{
+                            model: Channel,
+                            where: {
+
+                            },
+                            include: [{
+                                model: Person,
+                                where: {
+                                    id: req.params.PersonId,
+                                },
+                            }]
+                        }],
+                        order: [
+                            ['id', 'DESC'],
+                        ],
+                    },
+                ));
+            }
+
+            res.status(201).send(posts);
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
+
 };
