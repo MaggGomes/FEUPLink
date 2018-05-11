@@ -6,13 +6,13 @@
           <v-flex xs12 sm10 md5>
             <v-card class="elevation-12">
               <v-toolbar dark class="red darken-4">
-                <v-toolbar-title>Create new account</v-toolbar-title>
+                <v-toolbar-title>{{$t('signup')}}</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
               <v-form autocomplete="off" ref="form" v-model="valid">
                 <v-text-field :name="name"
                   prepend-icon="person"
-                  label="Name"
+                  :placeholder="$t('name')"
                   v-model="name"
                   :rules="nameRules"
                   :counter="50"
@@ -20,14 +20,14 @@
                 ></v-text-field>
                 <v-text-field :email="email"
                   prepend-icon="email"
-                  label="Email"
+                  :placeholder="$t('email')"
                   v-model="email"
                   :rules="emailRules"
                   required
                 ></v-text-field>
                 <v-text-field :password="password"
                   prepend-icon="lock"
-                  label="Password"
+                  :placeholder="$t('password')"
                   type="password"
                   v-model="password"
                   :rules="passwordRules"
@@ -35,7 +35,7 @@
                 ></v-text-field>
                 <v-text-field
                   prepend-icon="lock"
-                  label="Repeat password"
+                  :placeholder="$t('repeat_password')"
                   type="password"
                   v-model="repeatPassword"
                   :rules="passwordRules"
@@ -46,8 +46,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-if="valid" v-on:click="continueSignup" dark class="red darken-4">Continue</v-btn>
-				<v-btn v-else disabled>Continue</v-btn>
+                <v-btn v-if="valid" v-on:click="continueSignup" dark class="red darken-4">{{$t('continue')}}</v-btn>
+				<v-btn v-else disabled>{{$t('continue')}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -61,17 +61,17 @@
       </v-container>
       <v-container id="userInfo" fluid v-else>
         <v-toolbar dark class="red darken-4" height="40px">
-              <v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
+              <v-toolbar-title style="font-size: 15px">{{$t('signup')}}</v-toolbar-title>
             </v-toolbar>
          		<v-stepper v-model="e1" >
          			<v-stepper-header>
-         				<v-stepper-step step="1" :complete="e1 > 1">Personal</v-stepper-step>
+         				<v-stepper-step step="1" :complete="e1 > 1">{{$t('personal')}}</v-stepper-step>
          				<v-divider></v-divider>
-         				<v-stepper-step step="2" :complete="e1 > 2">Profile type</v-stepper-step>
+         				<v-stepper-step step="2" :complete="e1 > 2">{{$t('profile_type')}}</v-stepper-step>
          				<v-divider></v-divider>
-         				<v-stepper-step step="3" :complete="e1 > 3">In FEUP</v-stepper-step>
+         				<v-stepper-step step="3" :complete="e1 > 3">{{$t('in_feup')}}</v-stepper-step>
          				<v-divider></v-divider>
-         				<v-stepper-step step="4">Experience</v-stepper-step>
+         				<v-stepper-step step="4">{{$t('experience')}}</v-stepper-step>
          			</v-stepper-header>
          			<v-stepper-items>
          				<v-stepper-content step="1">
@@ -94,7 +94,7 @@
 															>
 															<v-text-field
 															slot="activator"
-															label="Birthday date"
+															:placeholder="$t('birthdate')"
 															v-model="date"
 															prepend-icon="event"
 															readonly
@@ -123,11 +123,12 @@
 												<v-layout align-center>
 													<v-flex xs9 sm11 text-xs-center>
 														<v-select
-															:items="genders"
+															:items="$t('genders')"
 															v-model="gender"
-															label="Gender"
+															:placeholder="$t('gender')"
 															prepend-icon="person"
-															:rules="[v => !!v || 'Gender is required']" required
+															:rules="genderRules"
+															required
 														></v-select>
 													</v-flex>
 													<v-flex xs3 sm1 text-xs-center>
@@ -145,7 +146,7 @@
 													<v-flex xs9 sm11 text-xs-center>
 														<v-text-field
 														prepend-icon="person"
-														label="Country"
+														:placeholder="$t('country')"
 														v-model="country"
 														></v-text-field>
 													</v-flex>
@@ -164,7 +165,7 @@
 													<v-flex xs9 sm11 text-xs-center>
 														<v-text-field
 														prepend-icon="person"
-														label="City"
+														:placeholder="$t('city')"
 														v-model="city"
 														></v-text-field>
 													</v-flex>
@@ -184,8 +185,8 @@
 							 		
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn v-if="formValid1" dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
-							<v-btn v-else disabled>Continue</v-btn>
+							<v-btn v-if="formValid1" dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">{{$t('continue')}}</v-btn>
+							<v-btn v-else disabled>{{$t('continue')}}</v-btn>
 						</v-flex>
          			</v-stepper-content>
          			<v-stepper-content step="2">
@@ -204,8 +205,8 @@
                    </v-container>
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>Back</v-btn>							
-							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">Continue</v-btn>
+							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>							
+							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
 						</v-flex>
 					 </v-stepper-content>
          			<v-stepper-content step="3">
@@ -215,13 +216,13 @@
 											<v-layout row wrap align-center v-if="role == 'staff'">
 											<v-flex xs9 text-xs-center>
 												<v-select
-													:items="departments"													
+													:items="departments"	
 													v-model="departmentId"
 													item-text="name"
 													item-value="id"
-													label="Select your department"
-													prepend-icon="person"													
-													:rules="[v => !!v || 'You must select a department']"
+													:placeholder="$t('department')"
+													prepend-icon="person"	
+													:rules="departmentRules"
 													required
 												></v-select>		
 											</v-flex>
@@ -240,11 +241,12 @@
 										<v-layout row wrap align-center v-if="role == 'student'">
 											<v-flex xs9 sm5 text-xs-center>
 												<v-select
-												:items="degrees"
+												:items="$t('degrees')"
 												v-model="degree"
-												label="Academic degree"
+												:placeholder="$t('degree')"
 												prepend-icon="person"
-												:rules="[v => !!v || 'Academic degree is required']" required
+												:rules="degreeRules"
+												required
 												></v-select>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
@@ -256,19 +258,19 @@
 														<v-icon>visibility_off</v-icon>
 													</v-btn>
 												</v-btn-toggle>
-											</v-flex>											
-											<v-flex xs9 sm5 text-xs-center>		
+											</v-flex>
+											<v-flex xs9 sm5 text-xs-center>	
 											  <v-select
-													:items="courses"													
+													:items="courses"		
 													v-model="courseId"
 													item-text="name"
 													item-value="id"
-													label="Select your course"
+													:placeholder="$t('course')"
 													prepend-icon="person"
 													autocomplete
-													:rules="[v => !!v || 'You must select a course']"
+													:rules="courseRules"
 													required
-												></v-select>									
+												></v-select>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
 												<v-btn-toggle v-model="courseVisible">
@@ -286,7 +288,7 @@
 										<v-flex xs9 sm11 text-xs-center>
 											<v-text-field
 												prepend-icon="person"
-												label="Working location"
+												:placeholder="$t('working_location')"
 												v-model="workingLocation"
 												></v-text-field>
 										</v-flex>
@@ -317,16 +319,16 @@
 												>
 												<v-text-field v-if="role == 'student'"
 												slot="activator"
-												label="Enrollment date"
+												:placeholder="$t('enrollment_date')"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
-												:rules="[v => !!v || 'Enrollment date is required']"
+												:rules="enrollmentDateRules"
 												required
 												></v-text-field>
 												<v-text-field v-if="role == 'staff'"
 												slot="activator"
-												label="Start date"
+												:placeholder="$t('start_date')"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
@@ -370,14 +372,14 @@
 												>
 												<v-text-field v-if="role == 'student'"
 												slot="activator"
-												label="Graduation date"
+												:placeholder="$t('graduation_date')"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
 												></v-text-field>
 												<v-text-field v-if="role == 'staff'"
 												slot="activator"
-												label="End date"
+												:placeholder="$t('end_date')"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
@@ -407,11 +409,12 @@
 							<v-layout align-center v-if="role == 'student'">
 								<v-flex xs9 sm11 text-xs-center>		
 									<v-select
-											:items="studentTypes"
+											:items="$t('student_types')"
 											v-model="type"
-											label="Student type"
+											:placeholder="$t('student_type')"
 											prepend-icon="person"
-											:rules="[v => !!v || 'Student type is required']" required
+											:rules="studentTypeRules"
+											required
 											></v-select>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
@@ -429,7 +432,7 @@
 								<v-flex xs9 sm11 text-xs-center>
 									<v-text-field
 									prepend-icon="person"
-									label="Mec number"
+									:placeholder="$t('mec_number')"
 									v-model="number"
 									></v-text-field>
 								</v-flex>
@@ -448,9 +451,9 @@
          			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 2" flat>Back</v-btn>					
-					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">Continue</v-btn>
-					<v-btn v-else disabled>Continue</v-btn>
+					<v-btn  @click.native="e1 = 2" flat>{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">{{$t('continue')}}</v-btn>
+					<v-btn v-else disabled>{{$t('continue')}}</v-btn>
 				</v-flex>
 			 </v-stepper-content>
          	<v-stepper-content step="4">
@@ -462,14 +465,15 @@
 									<v-flex xs9 sm11 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 												prepend-icon="person"
-												label="Company"
+												:placeholder="$t('company')"
 												v-model="company"
 										></v-text-field>
 										<v-text-field v-else
 												prepend-icon="person"
-												label="Company"
+												:placeholder="$t('company')"
 												v-model="company"
-												:rules="[v => !!v || 'Company name is required']" required
+												:rules="companyRules"
+												required
 										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
@@ -487,9 +491,9 @@
 								<v-layout row wrap align-center>
 									<v-flex xs9 sm5 text-xs-center>
 										<v-select
-											:items="types"
+											:items="$t('company_types')"
 											v-model="companyType"
-											label="Company type"
+											:placeholder="$t('company_type')"
 											prepend-icon="person"
 										></v-select>
 									</v-flex>
@@ -506,7 +510,7 @@
 									<v-flex xs9 sm5 text-xs-center>
 										<v-text-field
 										prepend-icon="person"
-										label="Company industry"
+										:placeholder="$t('company_industry')"
 										v-model="companyIndustry"
 										></v-text-field>
 									</v-flex>
@@ -526,14 +530,14 @@
 									<v-flex xs9 sm11 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 										prepend-icon="person"
-										label="Position"
+										:placeholder="$t('position')"
 										v-model="position"
 										></v-text-field>
 										<v-text-field v-else
 										prepend-icon="person"
-										label="Position"
+										:placeholder="$t('position')"
 										v-model="position"
-										:rules="[v => !!v || 'Position is required']" required
+										:rules="positionRules" required
 										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
@@ -562,18 +566,19 @@
 											>
 											<v-text-field v-if="checkboxNoExperience"
 											slot="activator"
-											label="Start period"
+											:placeholder="$t('start_date')"
 											v-model="date4"
 											prepend-icon="event"
 											readonly
 											></v-text-field>
 											<v-text-field v-else
 											slot="activator"
-											label="Start period"
+											:placeholder="$t('start_date')"
 											v-model="date4"
 											prepend-icon="event"
 											readonly
-											:rules="[v => !!v || 'Start date is required']" required
+											:rules="startDateRules"
+											required
 											></v-text-field>
 											<v-date-picker
 											ref="picker"
@@ -614,7 +619,7 @@
 											>
 											<v-text-field
 											slot="activator"
-											label="End period"
+											:placeholder="$t('end_date')"
 											v-model="date5"
 											prepend-icon="event"
 											readonly
@@ -644,7 +649,7 @@
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm3 text-xs-center>
 									<v-checkbox
-									:label="`I currently work here`"
+									:label="$t('currently_working')"
 									v-model="checkboxWork"
 									></v-checkbox>
 								</v-flex>
@@ -662,7 +667,7 @@
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm3 text-xs-center>
 									<v-checkbox
-									:label="`I have no work experience`"
+									:label="$t('no_work_experience')"
 									v-model="checkboxNoExperience"
 									></v-checkbox>
 								</v-flex>
@@ -682,9 +687,9 @@
          			</v-form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn @click.native="e1 = 3" flat>Back</v-btn>					
-					<v-btn v-if="formValid3" color="primary" v-on:click="signup">Finish</v-btn>
-					<v-btn v-else disabled>Finish</v-btn>
+					<v-btn @click.native="e1 = 3" flat>{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid3" color="primary" v-on:click="signup">{{$t('finish')}}</v-btn>
+					<v-btn v-else disabled>{{$t('finish')}}</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
@@ -728,28 +733,28 @@ export default {
       gender: null,
       country: '',
 	  companyType: null,
-	  types: ['public', 'private'],
+	  types: this.$i18n.messages[this.$i18n.locale]['company_types'],
 	  menu: false,
 	  menu2: false,
 	  menu3: false,
 	  menu4: false,
 	  menu5: false,
 	  type: null,
-	  studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
+	  studentTypes: this.$i18n.messages[this.$i18n.locale]['student_types'],
       checkboxWork: false,
       checkboxNoExperience: false,
       number: '',
-      genders: ['Male', 'Female', 'Not Specified' ],
+      genders: this.$i18n.messages[this.$i18n.locale]['genders'],
       courseId: null,
       courses: null,
-			departmentId: null,
+	departmentId: null,
       departments: null,
       company: '',
       city: '',
       position: '',
       role: 'student',	
 	  degree: null,
-	  degrees: ['Bachelor', 'Masters', 'PhD'],
+	  degrees: this.$i18n.messages[this.$i18n.locale]['degrees'],
 	  birthdayVisible: 0,
 	  genderVisible: 0,
 	  countryVisible: 0,
@@ -773,16 +778,43 @@ export default {
 	  workingLocationVisible: 0,
 	  workingLocation: '',
 	  nameRules: [
-		v => !!v || 'Name is required',
-		v => v.length <= 50 || 'Name must be less than 50 characters'
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['name_rule1'],
+		v => v.length <= 50 || this.$i18n.messages[this.$i18n.locale]['name_rule2']
 	  ],
 	  emailRules: [
-		v => !!v || 'E-mail is required',
-		v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['email_rule1'],
+		v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.$i18n.messages[this.$i18n.locale]['email_rule2']
 	  ],
 	  passwordRules: [
-		v => !!v || 'Password is required',
-		v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || 'Password must be valid'
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['password_rule1'],
+		v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || this.$i18n.messages[this.$i18n.locale]['password_rule2']
+	  ],
+	  degreeRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['degree_rule']
+	  ],
+	  departmentRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['department_rule']
+	  ],
+	  courseRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['course_rule']
+	  ],
+	  enrollmentDateRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['enrollment_date_rule']
+	  ],
+	  startDateRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['start_date_rule']
+	  ],
+	  studentTypeRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['student_type_rule']
+	  ],
+	  companyRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['company_rule']
+	  ],
+	  positionRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['position_rule']
+	  ],
+	  genderRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['gender_rule']
 	  ],
     }
   },

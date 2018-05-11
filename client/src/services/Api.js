@@ -1,8 +1,9 @@
 import axios from 'axios'
 import store from '@/store/store'
 
-let baseURL;
+//let baseURL = 'https://712c25bc.ngrok.io';
 
+let baseURL
 if(process.env.NODE_ENV !== 'production'){
     baseURL = 'http://localhost:8081/'
 }
