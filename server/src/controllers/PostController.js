@@ -5,6 +5,12 @@ const {
 } = require('../models');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Returns posts
+ * @param {req} req - The request
+ * @param {res} res - The response
+ * @returns {post} posts
+ */
 async function listPosts(req, res) {
     try {
         let posts= (await Post.findAll({
@@ -25,6 +31,12 @@ async function listPosts(req, res) {
     }
 };
 
+/**
+ * Returns posts by type
+ * @param {req} req - The request
+ * @param {res} res - The response
+ * @returns {post} posts
+ */
 async function listPostsType(req, res) {
     try {
         let posts = (await Post.findAll({
@@ -87,7 +99,7 @@ module.exports = {
                     },
                 }));
 
-           if(req.body.channels.length > 0){
+           if (req.body.channels.length > 0) {
                 Post.findById(postId).then((p) => {
                     p.setChannels(req.body.channels);
                 });
@@ -168,7 +180,7 @@ module.exports = {
                                 where: {
                                     id: req.params.PersonId,
                                 },
-                            }]
+                            }],
                         }],
                         order: [
                             ['id', 'DESC'],
@@ -213,7 +225,7 @@ module.exports = {
                                 where: {
                                     id: req.params.PersonId,
                                 },
-                            }]
+                            }],
                         }],
                         order: [
                             ['id', 'DESC'],

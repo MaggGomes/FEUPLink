@@ -13,7 +13,7 @@ module.exports = {
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),
             PersonId: Joi.number().integer().required(),
-            channels: Joi.array().items(Joi.number().integer()).required()
+            channels: Joi.array().items(Joi.number().integer()).required(),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -91,7 +91,7 @@ module.exports = {
             type: Joi.string(),
             tags: Joi.array().items(Joi.string()),
             PersonId: Joi.number(),
-            channels: Joi.array().items(Joi.number().integer())
+            channels: Joi.array().items(Joi.number().integer()),
         };
 
         const {error} = Joi.validate(req.body, schema);
