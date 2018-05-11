@@ -4,7 +4,6 @@ const {
     Person,
 } = require('../models');
 const jwt = require('jsonwebtoken');
-const Utils = require('../utils/Utils');
 
 async function listPosts(req, res) {
     try {
@@ -87,6 +86,12 @@ module.exports = {
                         id: postId,
                     },
                 }));
+
+           if(req.body.channels.length > 0){
+                Post.findById(postId).then((p) => {
+                    p.setChannels(req.body.channels);
+                });
+            }
 
             res.status(200).send({
                 res: 'Successfully updated the post information',
@@ -183,6 +188,10 @@ module.exports = {
         try {
             const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
             let posts = [];
+
+            console.log('\n\n\n\n'+userData.name+'\n\n\n\n');
+            console.log('\n\n\n\n'+userData.role+'\n\n\n\n');
+
 
             if (userData.role === 'Super Admin') { // return all posts
                 listPostsType(req, res);

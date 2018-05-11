@@ -222,19 +222,19 @@ module.exports = (app) => {
     // ----Post
 
   app.post('/post',
-      AuthenticationControllerPolicy.channel_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.create,
       PostController.create
   );
 
   app.put('/post',
-      AuthenticationControllerPolicy.channel_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.update,
       PostController.update
   );
 
   app.delete('/post',
-      AuthenticationControllerPolicy.channel_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.hasId,
       PostController.delete
   );
@@ -252,13 +252,13 @@ module.exports = (app) => {
   );
 
     // Returns all post from the channels in which a user is enrolled
-    app.get('/post/:PersonId',
+    app.get('/post/person/:PersonId',
         AuthenticationControllerPolicy.authenticated,
         PostController.list_enrolled_channels_posts
     );
 
     // Returns all post from the channels in which a user is enrolled
-    app.get('/post/:PersonId/:type',
+    app.get('/post/person/:PersonId/type/:type',
         AuthenticationControllerPolicy.authenticated,
         PostController.list_enrolled_channels_posts_by_type
     );
