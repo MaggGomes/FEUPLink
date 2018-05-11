@@ -4,7 +4,7 @@
       <buffering-wheel />
     </v-container>
     <v-container fluid v-else>
-      <v-toolbar dark class="red darken-4" height="40px">
+      <v-toolbar style='color: white; background-color: #8c2d19' height="40px">
         <v-toolbar-title style="font-size: 15px">Create a post</v-toolbar-title>
       </v-toolbar>
       <v-stepper v-model="e1" >
@@ -40,6 +40,18 @@
                   </v-layout>
                   <v-layout align-center>
                     <v-flex xs12 sm5 text-xs-center>
+                      <v-select
+                        :items="channels"
+                        v-model="selectedChannels"
+                        item-text="name"
+                        item-value="id"
+                        label="Channel"
+                        required
+                      ></v-select>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout align-center>
+                    <v-flex xs12 sm5 text-xs-center>
                       <v-text-field
                         name="link"
                         label="Link"
@@ -56,7 +68,7 @@
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
-              <v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+              <v-btn style='color: white; background-color: #8c2d19'  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
             </v-flex>
           </v-stepper-content>
 
@@ -89,8 +101,8 @@
 
 <script>
 
-  import Vue from 'vue'
   import FeedService from '@/services/FeedService'
+  import ChannelService from '@/services/ChannelService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
   import InputTag from 'vue-input-tag'
   import { VueEditor } from 'vue2-editor'
@@ -101,18 +113,21 @@
     },
     data () {
       return {
-        description: '<h1>Some initial content</h1>',
-        valid:false,
+        valid: false,
         showingError: false,
         errorMessage: '',
         // form-fields
         loading: false,
         e1: 0,
         title: null,
+        description: '<p>Some initial content</p>',
+        text: null,
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
-        link: null,
-        tagsArray: []
+        link: '',
+        tagsArray: [],
+        channels: [],
+        selectedChannels: []
       }
     },
     watch: {
@@ -120,7 +135,21 @@
         val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
       }
     },
+    created() {
+      this.initialize();
+    },
+
     methods: {
+      async initialize() {
+        try{
+          let response = await ChannelService.get_admin_channels_in_range(2, 0, 2);
+
+          this.channels = response.data;
+          console.log(this.channels[0].name);
+        }catch(error){
+          console.log(error);
+        }
+      },
       async submitData () {
         try{
           if (this.$refs.form.validate()) {
@@ -130,7 +159,8 @@
               date: this.date,
               link: this.link,
               type: this.postType,
-              tags: this.tagsArray
+              tags: this.tagsArray,
+              PersonId: this.$store.state.user.id
             });
 
             this.$router.push('Feed');
@@ -154,7 +184,7 @@
   }
 
   .primary {
-    background-color: #b71c1c !important;
+    background-color: #8c2d19 !important;
   }
 
   .cc-selector input {

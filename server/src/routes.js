@@ -178,6 +178,11 @@ module.exports = (app) => {
     ChannelController.list_enrolled_channels,
   );
 
+    app.get('/list_enrolled_channels/:PersonId',
+        AuthenticationControllerPolicy.authenticated,
+        ChannelController.list_all_enrolled_channels,
+    );
+
   app.get('/num_enrolled_channels/:PersonId',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.num_enrolled_channels,
@@ -186,6 +191,11 @@ module.exports = (app) => {
   app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_admin_channels,
+  );
+
+  app.get('/list_admin_channels/:PersonId',
+      AuthenticationControllerPolicy.authenticated,
+      ChannelController.list_all_admin_channels,
   );
 
   app.get('/num_admin_channels/:PersonId',
@@ -212,19 +222,19 @@ module.exports = (app) => {
     // ----Post
 
   app.post('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.create,
       PostController.create
   );
 
   app.put('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.update,
       PostController.update
   );
 
   app.delete('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.hasId,
       PostController.delete
   );
@@ -240,4 +250,16 @@ module.exports = (app) => {
       AuthenticationControllerPolicy.authenticated,
       PostController.list_by_type
   );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/person/:PersonId',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts
+    );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/person/:PersonId/type/:type',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts_by_type
+    );
 };

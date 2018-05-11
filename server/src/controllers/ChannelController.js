@@ -93,6 +93,30 @@ async function listChannelsInRange(req, res) {
 };
 
 /**
+ * lists the channels at a given range.
+ * @param {req} req - The request.
+ * @param {req} res - The response.
+ */
+async function listAllChannels(req, res) {
+    try {
+        let channels = (await Channel.findAll({
+            order: [
+                ['name', 'ASC'],
+            ],
+            include: [{
+                all: true,
+            }],
+        }));
+
+        res.status(201).send(channels);
+    } catch (err) {
+        res.status(400).send({
+            error: err,
+        });
+    }
+};
+
+/**
  * gets the total amount of channels.
  * @param {req} req - The request.
  * @param {req} res - The response.
@@ -219,6 +243,35 @@ module.exports = {
       });
     }
   },
+    async list_all_enrolled_channels(req, res) {
+        try {
+            let channels = (await ChannelMembers.findAll(
+                {
+                    attributes: [],
+                    where: {
+                        PersonId: req.params.PersonId,
+                    },
+                    include: [{
+                        model: Channel,
+                        include: [
+                            {
+                                all: true,
+                            },
+                        ],
+                        order: [
+                            ['name', 'ASC'],
+                        ],
+                    }],
+                },
+            ));
+            channels = Utils.removeJsonKeyInArray('Channel', channels);
+            res.status(201).send(channels);
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
   async num_enrolled_channels(req, res) {
     try {
       let channelsNumber = (await ChannelMembers.count({
@@ -274,6 +327,47 @@ module.exports = {
     });
   }
   },
+    async list_all_admin_channels(req, res) {
+        try {
+            const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
+            let channels = [];
+
+            if (userData.role === 'Super Admin') { // return all channels
+                listAllChannels(req, res);
+                return;
+            } else {
+                channels = (await ChannelMembers.findAll(
+                    {
+                        attributes: [],
+                        where: {
+                            PersonId: req.params.PersonId,
+                            isAdmin: true,
+                        },
+                        include: [{
+                            model: Channel,
+                            include: [
+                                {
+                                    all: true,
+                                },
+                            ],
+                            order: [
+                                ['name', 'ASC'],
+                            ],
+                        }],
+                    },
+                ));
+                channels = Utils.removeJsonKeyInArray('Channel', channels);
+            }
+
+            res.status(201).send(channels);
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+
+    },
+
   async num_admin_channels(req, res) {
     try {
       const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
