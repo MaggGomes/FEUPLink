@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
  * Returns posts
  * @param {req} req - The request
  * @param {res} res - The response
- * @returns {post} posts
  */
 async function listPosts(req, res) {
     try {
