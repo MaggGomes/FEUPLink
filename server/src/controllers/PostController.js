@@ -34,7 +34,6 @@ async function listPosts(req, res) {
  * Returns posts by type
  * @param {req} req - The request
  * @param {res} res - The response
- * @returns {post} posts
  */
 async function listPostsType(req, res) {
     try {
