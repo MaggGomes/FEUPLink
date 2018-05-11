@@ -1,6 +1,12 @@
 <template>
     <v-btn v-on:click="signIn" large class="blue darken-3" color="primary"> 
-      <v-icon color="white" large left>fab fa-facebook</v-icon>Sign in with Facebook
+      <v-icon color="white" large left>fab fa-facebook</v-icon>
+      <div v-if="this.$route.name === 'SignUp'">
+        {{$t('signup')}} {{$t('facebook')}}
+      </div>
+      <div v-else-if="this.$route.name == 'SignIn'">
+        {{$t('signin')}} {{$t('facebook')}}
+    </div>     
     </v-btn> 
 </template>
 
@@ -11,8 +17,7 @@ export default {
   methods: {
     async signIn() {
         try {
-          console.log("Facebook Sign Up");
-          
+
           let client_id = '1602254696490199'; 
           let redirect_uri = 'https://localhost:8080/facebook'; 
           let state = 'Feup-Link-state'; 
