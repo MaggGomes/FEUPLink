@@ -24,8 +24,9 @@
       };
     },
     mounted: async function() {
+
       try{
-        this.contents = (await FeedService.get_all_posts()).data;
+        this.contents = (await FeedService.get_posts_by_person (this.$store.state.user.id)).data;
 
       }catch(error){
 

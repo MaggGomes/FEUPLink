@@ -25,7 +25,7 @@
     },
     mounted: async function() {
       try{
-        this.contents = (await FeedService.get_posts_by_type('Education')).data;
+        this.contents = (await FeedService.get_posts_by_person_and_type(this.$store.state.user.id, 'Education')).data;
 
       }catch(error){
 
