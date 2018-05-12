@@ -155,7 +155,7 @@
         e1: 0,
         title: null,
         description: null,
-        text: '<p>Some initial content</p>',
+        text: '<p>Some content</p>',
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
         link: '',
