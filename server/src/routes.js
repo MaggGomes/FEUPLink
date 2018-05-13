@@ -222,13 +222,13 @@ module.exports = (app) => {
     // ----Post
 
   app.post('/post',
-      AuthenticationControllerPolicy.authenticated,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.create,
       PostController.create
   );
 
   app.put('/post',
-      AuthenticationControllerPolicy.authenticated,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.update,
       PostController.update
   );

@@ -51,20 +51,32 @@ module.exports = {
           if (user.role === 'Super Admin') {
             next();
           } else if (user.role === 'Channel Admin') {
-            ChannelMembers.findOne(
-              {
-                  where: {
-                    ChannelId: req.body.ChannelId,
-                    PersonId: user.id,
-                  },
-              },
-            ).then((channelInfo) => {
-                if (channelInfo !== null && channelInfo.dataValues.isAdmin) {
-                    next();
-                } else {
-                    res.status(403).send({error: 'Access Forbiden'});
-                }
-            });
+            let channels = [];
+
+            if (req.body.hasOwnProperty('channels')) {
+                channels = req.body.channels;
+            } else if (req.body.hasOwnProperty('ChannelId')) {
+                channels = [req.body.ChannelId];
+            }
+
+            for (let i = 0; i < channels.length; i++) {
+                ChannelMembers.findOne(
+                {
+                    where: {
+                        ChannelId: channels[i],
+                        PersonId: user.id,
+                    },
+                },
+                ).then((channelInfo) => {
+                    // is not an admin of the current channel
+                    if (channelInfo !== null && !channelInfo.dataValues.isAdmin) {
+                        res.status(403).send({error: 'Access Forbiden'});
+                        return;
+                    }
+                });
+            }
+            // is an admin of all the channels
+            next();
           } else {
             res.status(403).send({error: 'Access Forbiden'});
           }

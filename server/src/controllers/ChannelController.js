@@ -17,7 +17,7 @@ const Utils = require('../utils/Utils');
 async function manageChannelAdmin(req, res, isAdmin) {
   try {
     // update association table
-    (await ChannelMembers.update(
+    let updateRes = (await ChannelMembers.update(
       {
         isAdmin: isAdmin,
       },
@@ -28,6 +28,13 @@ async function manageChannelAdmin(req, res, isAdmin) {
         },
       }
     ));
+
+    if (updateRes[0] == false) {
+      res.status(201).send({
+        res: `The specied person is not a channel member`,
+      });
+      return;
+    }
 
     // update person role
     const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);

@@ -64,7 +64,6 @@ module.exports = {
                 },
             }))[0].dataValues.id;
 
-            console.log('\n\n courseId: \n\n', courseId);
             
             Course.findById(courseId).then((c) => {
                 c.addDepartments([depId]);

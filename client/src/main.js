@@ -6,6 +6,7 @@ import router from './router'
 import VeeValidate from 'vee-validate'
 import { sync } from 'vuex-router-sync'
 import VueI18n from 'vue-i18n'
+import * as VueGoogleMaps from "vue2-google-maps";
 
 // Importing vuetify stuff
 import Vuetify from 'vuetify'
@@ -25,6 +26,13 @@ const i18n = new VueI18n({
   messages,
   //silentTranslationWarn: true
 })
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyCch6DI0UVWidRXGpAwvIbDf03I3aY7c8I",
+    libraries: "places" // necessary for places input
+  }
+});
 
 Vue.config.productionTip = false
 
