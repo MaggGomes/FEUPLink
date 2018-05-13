@@ -54,9 +54,19 @@
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-select :items="departments" :filter="customDepartmentFilter" v-model="selectedDepartmentId" item-text="name" item-value="id"
-                      label="Select the course department" autocomplete :rules="[v => !!v || 'Course department is required']"
-                      required></v-select>
+                    <v-select 
+                        :items="departments" 
+                        :filter="customDepartmentFilter" 
+                        v-model="selectedDepartmentIds" 
+                        item-text="name" item-value="id"
+                        label="Select one or more course departments" 
+                        autocomplete 
+                        multiple
+                        chips
+                        max-height="400"
+                        :rules="[v => !!v || 'Course department is required']"
+                        required>
+                    </v-select>
                   </v-flex>
 
                   <v-flex xs12 md9>
@@ -245,7 +255,7 @@ export default {
       creationDateMenu:false,
       endDate: null,
       endDateMenu:false,
-      selectedDepartmentId: null,
+      selectedDepartmentIds: null,
       //show course details dialog
       showCourseDetails: false,
       //form-validation
@@ -289,7 +299,7 @@ export default {
           website: this.website,
           creationDate: this.creationDate,
           endDate: this.endDate,
-          departmentId: this.selectedDepartmentId,
+          departmentIds: this.selectedDepartmentIds,
         }
     },
     async createCourse(){
@@ -315,7 +325,10 @@ export default {
       this.website=course.website
       this.creationDate=(course.creationDate !== null) ? String(course.creationDate).substring(0,10) : course.creationDate
       this.endDate=(course.endDate !== null) ? String(course.endDate).substring(0,10) : course.endDate
-      this.selectedDepartmentId=course.DepartmentId
+
+      console.log('\n\n\ntest', course)
+      
+      this.selectedDepartmentIds=course.Departments.map(elem => elem.id)
       
       this.updatingCourse=true
       this.courseDialog=true

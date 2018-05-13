@@ -12,7 +12,7 @@ module.exports = {
         website: Joi.string().allow(null).allow(''),
         creationDate: Joi.date().allow(null),
         endDate: Joi.date().allow(null),
-        departmentId: Joi.number().required(),
+        departmentIds: Joi.array().min(1),
       };
 
       const {error} = Joi.validate(req.body, schema);
@@ -78,7 +78,7 @@ module.exports = {
             website: Joi.string().allow(null).allow(''),
             creationDate: Joi.date().allow(null),
             endDate: Joi.date().allow(null),
-            departmentId: Joi.number(),
+            departmentIds: Joi.array().min(1),
         };
 
         const {error} = Joi.validate(req.body, schema);

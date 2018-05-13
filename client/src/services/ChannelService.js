@@ -21,7 +21,7 @@ export default {
   },
   // Get all channels where a person is admin
   get_admin_channels(personId){
-    return Api.get(`list_admin_channels/${personId}`)
+    return Api().get(`list_admin_channels/${personId}`)
   },
   get_admin_channels_count (personId) {
     return Api().get(`num_admin_channels/${personId}`)
@@ -31,7 +31,7 @@ export default {
   },
   // Get all channels where a person is enrolled
   get_enrolled_channels(personId){
-    return Api.get(`list_enrolled_channels/${personId}`)
+    return Api().get(`list_enrolled_channels/${personId}`)
   },
   get_enrolled_channels_count (personId) {
     return Api().get(`num_enrolled_channels/${personId}`)

@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       // many-to-many staff - department
       Staff.belongsToMany(models.Department,
         {
-          through: 'StaffDepartment',
+          through: models.StaffDepartment,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }

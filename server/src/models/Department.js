@@ -19,15 +19,16 @@ module.exports = (sequelize, DataTypes) => {
       // many-to-many staff - department
     Department.belongsToMany(models.Staff,
         {
-          through: 'StaffDepartment',
+          through: models.StaffDepartment,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }
       );
 
     // Departments can have many courses
-    Department.hasMany(models.Course,
+    Department.belongsToMany(models.Course,
       {
+        through: 'CourseDepartment',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }

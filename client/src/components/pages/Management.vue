@@ -36,7 +36,10 @@
             </span>
             <span v-else-if="currentTab === 3">
               <channel-management></channel-management>
-            </span>         
+            </span>
+            <span v-else-if="currentTab === 4">
+              <statistics></statistics>
+            </span> 
           </v-flex>
 
           <!-- small screen --> 
@@ -54,6 +57,9 @@
                 </span>
                 <span v-else-if="currentTab === 3">
                   <channel-management></channel-management>
+                </span>
+                 <span v-else-if="currentTab === 4">
+                  <statistics></statistics>
                 </span>
               </v-tab-item>
             </v-tabs>
@@ -73,12 +79,15 @@
   import CourseManagement from '@/components/elements/managementTabs/CourseManagement'
   import DepartmentManagement from '@/components/elements/managementTabs/DepartmentManagement'
   import ChannelManagement from '@/components/elements/managementTabs/ChannelManagement'
+  import Statistics from '@/components/elements/managementTabs/Statistics'
+
   
   export default {
     components: {
       CourseManagement,
       DepartmentManagement,
       ChannelManagement,
+      Statistics,
     },
     data () {
         return {
@@ -86,9 +95,9 @@
             drawer: true,           
             currentTab: 1,
             nav_tabs: {
-              'Super Admin' : [{name:'Courses', id:1}, {name:'Departments', id:2}, {name:'Channels', id:3} ],
-              'Channel Admin' : [ {name:'Channels', id:3} ],
-              'User' : [],             
+              'Super Admin' : [{name:'Courses', id:1}, {name:'Departments', id:2}, {name:'Channels', id:3}, {name:'Statistics', id:4} ],
+              'Channel Admin' : [{name:'Channels', id:3}, {name:'Statistics', id:4} ],
+              'User' : [{name:'Statistics', id:4}],             
             }
         }
     },
