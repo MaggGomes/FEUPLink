@@ -76,9 +76,9 @@
   Vue.component('nav_tab-1', Feed_content);
   Vue.component('nav_tab-2', Events_content);
   Vue.component('nav_tab-3', Jobs_content);
-  Vue.component('nav_tab-4', Newsletter_content);
-  Vue.component('nav_tab-5', News_content);
-  Vue.component('nav_tab-6', Education_content);
+  Vue.component('nav_tab-4', News_content);
+  Vue.component('nav_tab-5', Education_content);
+  Vue.component('nav_tab-6', Newsletter_content);
 
     export default {
   name: "Feed",
@@ -92,7 +92,7 @@
             drawer: true,
             user: {username: 'John Doe', type: 'Student',img: 'https://www.w3schools.com/howto/img_avatar.png'},
             currentTab: 1,
-            nav_tabs: [{name:'Feed', id:1}, {name:'Events', id:2}, {name:'Job Opportunities', id:3}, {name:'Newsletter', id:4}, {name:'News', id:5}, {name:'Education', id:6}],
+            nav_tabs: [{name:'Feed', id:1}, {name:'Events', id:2}, {name:'Job Opportunities', id:3}, {name:'News', id:4}, {name:'Education', id:5}, {name:'Newsletter', id:6}],
         }
     },
     computed: {
@@ -117,25 +117,11 @@
     }
 
     #feed_content .list{
-        margin-bottom: 10px !important;
+        background-color: rgba(221, 221, 221, 0.75) !important;   
     }
-
-    #feed_content .navigation-drawer>.list .list__tile{
-        background-color: rgba(221, 221, 221, 0.75);
-        margin: 5px 10px;
-    }
-
-    #feed_content .navigation-drawer>.list .active .list__tile {
-        background-color: rgba(188, 188, 188, 0.75);
-    }
-
-    #feed_content .side_content .list {
-        background-color: rgba(221, 221, 221, 0.75) ;
-        padding: 1px 0px;
-    }
-    #feed_content .side_content .list .list__tile{
-        background-color: rgba(188, 188, 188, 0.75) ;
-        margin:10px;
+  
+    #feed_content .active{
+        background-color: rgba(188, 188, 188, 0.75) !important;
     }
 
     @media(min-width: 1024px ){

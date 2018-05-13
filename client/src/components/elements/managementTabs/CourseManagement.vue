@@ -10,20 +10,20 @@
         <div v-if="success!=null">
           {{success.res}}
         </div>
-        <v-btn flat dark @click="showingFeedback=false"> <p v-lang.close></p> </v-btn>
+        <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
       </v-snackbar>
 
       <!-- warning dialog -->
       <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
-          <v-card-title class="headline"><p v-lang.warning></p></v-card-title>
+          <v-card-title class="headline">Be Careful!</v-card-title>
           <v-card-text>
             {{warningTitle}}
           </v-card-text>
           <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"> <p v-lang.cancel></p> </v-btn>
+            <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
             <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> <p v-lang.confirm></p> </v-btn>
+            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -113,12 +113,12 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="closeDialog"><p v-lang.cancel></p></v-btn>
+            <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
             <v-btn color="blue darken-1" flat @click.native="() => {                
                   if(updatingCourse)
-                    showConfirmDialog(updateCourse, this.translate('dialog1','Vue.JS'))
+                    showConfirmDialog(updateCourse, 'Are you sure you want to update the course?')
                    else
-                     showConfirmDialog(createCourse, this.translate('dialog1','Vue.JS'))
+                     showConfirmDialog(createCourse, 'Are you sure you want to create the course?')
                 }" :disabled="!formValid">
               {{ updatingCourse ? 'Update' : 'Create' }}
             </v-btn>
@@ -135,7 +135,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> <p v-lang.dismiss></p> </v-btn>
+            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> Dismiss </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -146,7 +146,7 @@
       <v-flex>
         <v-layout>
           <v-flex xs7>
-            <span class="display-1"> <p v-lang.manage_courses></p> </span>
+            <span class="display-1"> Manage Courses </span>
             <v-btn flat color="success" slot="activator" @click="courseDialog=true">
               <v-icon> add </v-icon>
             </v-btn>
@@ -185,7 +185,7 @@
             </v-btn>
             <v-btn fab flat color="error" @click="() => {
                       currentCourse=course
-                      showConfirmDialog(deleteCourse,this.translate('dialog2', 'Vue.JS'))
+                      showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
                   }">
               <v-icon> delete </v-icon>
             </v-btn>
@@ -208,19 +208,7 @@ import CourseService from '@/services/CourseService'
 import DepartmentService from '@/services/DepartmentService'
 import CourseDetails from '@/components/elements/CourseDetails'
 
-export default {  
-  messages: {
-    en:{
-      manage_courses:'Manage Courses',
-      dialog1: 'Are you sure you want to update the course?',
-      dialog2: `Are you sure you want to delete \'\${course.name}\' ?`,
-    },
-    pt:{
-      manage_courses:'Gerir Cursos',
-      dialog1: 'Tem a certeza que quer atualizar este curso?',
-      dialog2: `Tem a certeza que quer apagar \'\${course.name}\' ?`,
-    }
-  },
+export default {
   components:{
     CourseDetails
   },

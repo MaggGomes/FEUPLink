@@ -138,12 +138,11 @@
   import FeedService from '@/services/FeedService'
   import ChannelService from '@/services/ChannelService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
-  import InputTag from 'vue-input-tag'
   import { VueEditor } from 'vue2-editor'
 
   export default {
     components: {
-      BufferingWheel, InputTag, VueEditor
+      BufferingWheel, VueEditor
     },
     data () {
       return {
