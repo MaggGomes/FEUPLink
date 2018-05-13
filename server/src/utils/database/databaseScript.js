@@ -48,7 +48,7 @@ module.exports = {
                 DepartmentsAndCourses[key].endDate = null;
             }
 
-            Course.findOrCreate({
+            let courseId = (await Course.findOrCreate({
                 where: {
                     name: DepartmentsAndCourses[key].courseName,
                 },
@@ -62,7 +62,14 @@ module.exports = {
                     endDate: DepartmentsAndCourses[key].endDate,
                     DepartmentId: depId,
                 },
+            }))[0].dataValues.id;
+
+            console.log('\n\n courseId: \n\n', courseId);
+            
+            Course.findById(courseId).then((c) => {
+                c.addDepartments([depId]);
             });
+           
         }
 
         // Create users

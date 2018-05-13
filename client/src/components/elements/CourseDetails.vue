@@ -10,6 +10,9 @@
             Course Students
           </v-tab>
           <v-tab ripple>
+            Course Departments
+          </v-tab>
+          <v-tab ripple>
             Course associated channels
           </v-tab>
           <v-tab-item style="height: 400px;">
@@ -26,10 +29,7 @@
                   <v-flex xs8 mt-2>{{course.academicDegree}}</v-flex>
 
                   <v-flex class="subheading" xs4 mt-2>Description</v-flex>
-                  <v-flex xs8 mt-2>{{course.description}}</v-flex>
-
-                  <v-flex class="subheading" xs4 mt-2>Department</v-flex>
-                  <v-flex xs8 mt-2>{{course.Department.name}}</v-flex>
+                  <v-flex xs8 mt-2>{{course.description}}</v-flex>           
 
                   <v-flex class="subheading" xs4 mt-2>website</v-flex>
                   <v-flex xs8 mt-2>{{course.website}}</v-flex>
@@ -75,15 +75,41 @@
             </v-expansion-panel>
           </v-tab-item>
 
+          <!-- departments -->
+          <v-tab-item style="height: 400px;">
+            <v-expansion-panel>
+              <v-expansion-panel-content  v-for="department in course.Departments" :key="department.id">
+                <div slot="header">
+                  {{department.name}} 
+                  <v-spacer> </v-spacer>  
+                </div>
+                <v-card class="grey lighten-3">                
+                  <v-card-text>
+                    <v-layout row wrap>
+                     
+                      <v-flex class="subheading" xs4 mt-2>Department Name</v-flex>
+                      <v-flex xs8 mt-2>{{String(department.name)}}</v-flex>
+                    
+                      <v-flex class="subheading" xs4 mt-2>Department Acronym</v-flex>
+                      <v-flex xs8 mt-2>{{String(department.acronym)}}</v-flex>                    
+                                
+                    </v-layout>
+                  </v-card-text>                  
+                </v-card>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-tab-item>
+
+
           <!-- Channels -->
           <v-tab-item style="height: 400px;">
             <v-expansion-panel>
-              <v-expansion-panel-content v-for="channel in course.Channels" :key="channel.id">
-                <div slot="header">Channel</div>
+              <v-expansion-panel-content>
+                <div slot="header"> {{course.Channel.name}}</div>
                 <v-card class="grey lighten-3">
-                  <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat.</v-card-text>
+                  <v-card-text>
+                    {{course}}
+                  </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>

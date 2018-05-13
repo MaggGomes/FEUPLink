@@ -78,7 +78,6 @@ module.exports = {
                 res: 'Post successfully created',
             });
         } catch (err) {
-            console.log(err);
             res.status(400).send({
                 error: err,
             });
@@ -198,9 +197,6 @@ module.exports = {
         try {
             const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
             let posts = [];
-
-            console.log('\n\n\n\n'+userData.name+'\n\n\n\n');
-            console.log('\n\n\n\n'+userData.role+'\n\n\n\n');
 
 
             if (userData.role === 'Super Admin') { // return all posts

@@ -30,7 +30,7 @@ createServer({
 */
 
 // sequelize.sync({force: true}) // this will drop and delete all the database (please be careful!!)
- sequelize.sync()
+ sequelize.sync({force: true})
   .then(() => {
     app.listen(process.env.PORT, function() {
       // Fill the database with data
