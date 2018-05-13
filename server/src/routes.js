@@ -178,10 +178,10 @@ module.exports = (app) => {
     ChannelController.list_enrolled_channels,
   );
 
-    app.get('/list_enrolled_channels/:PersonId',
-        AuthenticationControllerPolicy.authenticated,
-        ChannelController.list_all_enrolled_channels,
-    );
+  app.get('/list_enrolled_channels/:PersonId',
+      AuthenticationControllerPolicy.authenticated,
+      ChannelController.list_all_enrolled_channels,
+  );
 
   app.get('/num_enrolled_channels/:PersonId',
     AuthenticationControllerPolicy.authenticated,

@@ -28,6 +28,16 @@
                       </v-text-field>
                     </v-flex>
                   </v-layout>
+                  <v-layout row wrap align-center>
+                    <v-flex xs12 sm5 text-xs-center>
+                      <v-text-field
+                        name="description"
+                        label="Description"
+                        v-model="description"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                  </v-layout>
                   <v-layout align-center>
                     <v-flex xs12 sm5 text-xs-center>
                       <v-select
@@ -46,6 +56,11 @@
                         item-text="name"
                         item-value="id"
                         label="Channel"
+                        multiple
+                        max-height="400"
+                        hint="Select one or more channels"
+                        persistent-hint
+                        chips
                         required
                       ></v-select>
                     </v-flex>
@@ -61,7 +76,26 @@
                   </v-layout>
                   <v-layout row wrap align-center>
                     <v-flex xs12 sm5 text-xs-left>
-                      <input-tag placeholder="Add tags" :tags.sync="tagsArray"></input-tag>
+                      <v-select
+                        v-model="selectedTags"
+                        :items="tags"
+                        label="Tags"
+                        chips
+                        tags
+                      >
+                        <template slot="selection" slot-scope="data">
+                          <v-chip
+                            :selected="data.selected"
+                            :disabled="data.disabled"
+                            :key="JSON.stringify(data.item)"
+                            class="chip--select-multi"
+                            @input="data.parent.selectItem(data.item)"
+                          >
+                            <v-avatar class="tagUppercase">{{ data.item.slice(0, 1).toUpperCase() }}</v-avatar>
+                            {{ data.item }}
+                          </v-chip>
+                        </template>
+                      </v-select>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -77,7 +111,7 @@
               <v-form v-model="valid" ref="form" autocomplete="off" lazy-validation>
                 <v-container fluid>
                 </v-container>
-                  <vue-editor v-model="description"></vue-editor>
+                  <vue-editor v-model="text"></vue-editor>
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
@@ -104,12 +138,11 @@
   import FeedService from '@/services/FeedService'
   import ChannelService from '@/services/ChannelService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
-  import InputTag from 'vue-input-tag'
   import { VueEditor } from 'vue2-editor'
 
   export default {
     components: {
-      BufferingWheel, InputTag, VueEditor
+      BufferingWheel, VueEditor
     },
     data () {
       return {
@@ -120,12 +153,13 @@
         loading: false,
         e1: 0,
         title: null,
-        description: '<p>Some initial content</p>',
-        text: null,
+        description: null,
+        text: '<p>Some new content new</p>',
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
         link: '',
-        tagsArray: [],
+        tags: ['Porto', 'University', 'Engineering', 'Informatics'],
+        selectedTags: [],
         channels: [],
         selectedChannels: []
       }
@@ -156,10 +190,12 @@
             await FeedService.create_post({
               title: this.title,
               description: this.description,
+              text: this.text,
               date: this.date,
               link: this.link,
               type: this.postType,
-              tags: this.tagsArray,
+              tags: this.selectedTags,
+              channels: this.selectedChannels,
               PersonId: this.$store.state.user.id
             });
 
@@ -220,6 +256,12 @@
     -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
     -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
     filter: brightness(1.2) grayscale(.5) opacity(.9);
+  }
+
+  .tagUppercase {
+    background-color: #8c2d19;
+    border-color: #8c2d19;
+    color: white;
   }
 
   /* Extras */
