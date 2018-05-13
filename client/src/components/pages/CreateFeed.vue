@@ -176,10 +176,10 @@
     methods: {
       async initialize() {
         try{
-          let response = await ChannelService.get_admin_channels_in_range(2, 0, 2);
+          let response = await ChannelService.get_admin_channels(this.$store.state.user.id);
 
           this.channels = response.data;
-          console.log(this.channels[0].name);
+          console.log(this.channels);
         }catch(error){
           console.log(error);
         }
