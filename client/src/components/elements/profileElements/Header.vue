@@ -130,22 +130,8 @@
         </v-layout>
       </v-container>
     </v-card>
-    <v-dialog v-model="editPersonDialog" max-width="400px">
-      <v-card>
-        <v-card-title class="headline">Edit Profile</v-card-title>
-
-        <v-card-text>
-          <profile-edit :person="person"></profile-edit>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-layout row justify-end>
-            <v-btn color="primary" flat @click.stop="editPersonDialog=false">Close</v-btn>
-            <v-btn color="primary" flat @click.stop="editPersonDialog=false">Edit</v-btn>
-          </v-layout>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    
+    <profile-edit :person="person" :editDialog="editPersonDialog"></profile-edit>
   </div>
 </template>
 
@@ -164,8 +150,8 @@ export default {
 
   data() {
     return {
-      defaultUserImg: defaultUserImg,
       editPersonDialog: false,
+      defaultUserImg: defaultUserImg,
       active: null
     };
   }
