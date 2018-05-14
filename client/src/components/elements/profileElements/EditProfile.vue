@@ -37,7 +37,7 @@
 			<v-card-actions>
 				<v-layout row justify-end>
 					<v-btn color="primary" flat @click.stop="editPersonDialog=false">Close</v-btn>
-					<v-btn color="primary" flat @click.stop="editPersonDialog=false">Edit</v-btn>
+					<v-btn color="primary" flat @click.stop="updatePersonProfile">Edit</v-btn>
 				</v-layout>
 			</v-card-actions>
 		</v-card>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import ProfileService from "@/services/ProfileService";
+
 export default {
   name: "profile-edit",
 
@@ -64,7 +66,25 @@ export default {
       genders: ["Male", "Female"],
       menu: null
     };
-  },
+	},
+	
+	methods: {
+		async updatePersonProfile() {
+			let result = await ProfileService.updatePerson({
+				userId: this.editedPerson.id,
+				name: this.editedPerson.name,
+				email: this.editedPerson.email,
+				gender: this.editedPerson.gender,
+				phone: this.editedPerson.phone,
+				birthDate: this.editedPerson.birthDate,
+				country: this.editedPerson.country,
+				city: this.editedPerson.city
+			});
+			console.log(result)
+
+			this.editPersonDialog = false;
+		}
+	},
 
   mounted() {
     console.log(this.person.name);

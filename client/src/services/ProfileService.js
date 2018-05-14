@@ -28,4 +28,7 @@ export default {
     deleteCourseStudent (userInfo) {
         return Api().post('delete_course_student', userInfo)
     },
+    updatePerson (personInfo) {
+        return Api().post('update_person', personInfo)
+    },
 }

@@ -333,14 +333,13 @@ module.exports = {
         try {
             const userId = req.body.userId;
             delete req.body.userId;
-            console.log(req.body);
 
-            console.log((await Person.update(
+            (await Person.update(
                 req.body, {
                     where: {
                         id: userId,
                     },
-                })));
+                }));
 
             res.status(200).send({
                 res: 'Successfully updated the post information',
