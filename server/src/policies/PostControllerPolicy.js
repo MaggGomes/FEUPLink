@@ -6,11 +6,14 @@ module.exports = {
         const schema = {
             title: Joi.string().required(),
             description: Joi.string().required(),
+            text: Joi.string().required(),
             date: Joi.string(),
             link: Joi.string(),
             numViews: Joi.number().integer().min(0),
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),
+            PersonId: Joi.number().integer().required(),
+            channels: Joi.array().items(Joi.number().integer()).required(),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -52,6 +55,21 @@ module.exports = {
                         error: `You must provide a valid tags field`,
                     });
                     break;
+                case 'PersonId':
+                    res.status(408).send({
+                        error: `You must provide a valid PersonId field`,
+                    });
+                    break;
+                case 'channels':
+                    res.status(408).send({
+                        error: `You must provide a valid channels field`,
+                    });
+                    break;
+                case 'text':
+                    res.status(409).send({
+                        error: `You must provide a valid text field`,
+                    });
+                    break;
                 default:
                     res.status(400).send({
                         error: 'Bad request',
@@ -65,12 +83,15 @@ module.exports = {
         const schema = {
             postId: Joi.number().required(),
             title: Joi.string(),
+            text: Joi.string(),
             description: Joi.string(),
             date: Joi.string(),
             link: Joi.string(),
             numViews: Joi.number(),
             type: Joi.string(),
             tags: Joi.array().items(Joi.string()),
+            PersonId: Joi.number(),
+            channels: Joi.array().items(Joi.number().integer()),
         };
 
         const {error} = Joi.validate(req.body, schema);
@@ -115,6 +136,16 @@ module.exports = {
                 case 'tags':
                     res.status(408).send({
                         error: `You must provide a valid tags field`,
+                    });
+                    break;
+                case 'PersonId':
+                    res.status(409).send({
+                        error: `You must provide a valid PersonId field`,
+                    });
+                    break;
+                case 'text':
+                    res.status(410).send({
+                        error: `You must provide a valid text field`,
                     });
                     break;
                 default:

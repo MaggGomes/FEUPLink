@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     // channel can have many members
     Channel.belongsToMany(models.Person,
       {
-        through: 'ChannelMembers',
+        through: models.ChannelMembers,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }
-    );
+  );
 
     // post can be shared in many channels
     Channel.belongsToMany(models.Post,

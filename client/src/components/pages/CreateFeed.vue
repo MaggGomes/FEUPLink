@@ -4,7 +4,7 @@
       <buffering-wheel />
     </v-container>
     <v-container fluid v-else>
-      <v-toolbar dark class="red darken-4" height="40px">
+      <v-toolbar style='color: white; background-color: #8c2d19' height="40px">
         <v-toolbar-title style="font-size: 15px">Create a post</v-toolbar-title>
       </v-toolbar>
       <v-stepper v-model="e1" >
@@ -28,12 +28,39 @@
                       </v-text-field>
                     </v-flex>
                   </v-layout>
+                  <v-layout row wrap align-center>
+                    <v-flex xs12 sm5 text-xs-center>
+                      <v-text-field
+                        name="description"
+                        label="Description"
+                        v-model="description"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                  </v-layout>
                   <v-layout align-center>
                     <v-flex xs12 sm5 text-xs-center>
                       <v-select
                         :items="postTypes"
                         v-model="postType"
                         label="Type"
+                        required
+                      ></v-select>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout align-center>
+                    <v-flex xs12 sm5 text-xs-center>
+                      <v-select
+                        :items="channels"
+                        v-model="selectedChannels"
+                        item-text="name"
+                        item-value="id"
+                        label="Channel"
+                        multiple
+                        max-height="400"
+                        hint="Select one or more channels"
+                        persistent-hint
+                        chips
                         required
                       ></v-select>
                     </v-flex>
@@ -49,14 +76,33 @@
                   </v-layout>
                   <v-layout row wrap align-center>
                     <v-flex xs12 sm5 text-xs-left>
-                      <input-tag placeholder="Add tags" :tags.sync="tagsArray"></input-tag>
+                      <v-select
+                        v-model="selectedTags"
+                        :items="tags"
+                        label="Tags"
+                        chips
+                        tags
+                      >
+                        <template slot="selection" slot-scope="data">
+                          <v-chip
+                            :selected="data.selected"
+                            :disabled="data.disabled"
+                            :key="JSON.stringify(data.item)"
+                            class="chip--select-multi"
+                            @input="data.parent.selectItem(data.item)"
+                          >
+                            <v-avatar class="tagUppercase">{{ data.item.slice(0, 1).toUpperCase() }}</v-avatar>
+                            {{ data.item }}
+                          </v-chip>
+                        </template>
+                      </v-select>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
-              <v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+              <v-btn style='color: white; background-color: #8c2d19'  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
             </v-flex>
           </v-stepper-content>
 
@@ -65,7 +111,7 @@
               <v-form v-model="valid" ref="form" autocomplete="off" lazy-validation>
                 <v-container fluid>
                 </v-container>
-                  <vue-editor v-model="description"></vue-editor>
+                  <vue-editor v-model="text"></vue-editor>
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
@@ -89,30 +135,33 @@
 
 <script>
 
-  import Vue from 'vue'
   import FeedService from '@/services/FeedService'
+  import ChannelService from '@/services/ChannelService'
   import BufferingWheel from '@/components/elements/BufferingWheel'
-  import InputTag from 'vue-input-tag'
   import { VueEditor } from 'vue2-editor'
 
   export default {
     components: {
-      BufferingWheel, InputTag, VueEditor
+      BufferingWheel, VueEditor
     },
     data () {
       return {
-        description: '<h1>Some initial content</h1>',
-        valid:false,
+        valid: false,
         showingError: false,
         errorMessage: '',
         // form-fields
         loading: false,
         e1: 0,
         title: null,
+        description: null,
+        text: '<p>Some new content new</p>',
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
-        link: null,
-        tagsArray: []
+        link: '',
+        tags: ['Porto', 'University', 'Engineering', 'Informatics'],
+        selectedTags: [],
+        channels: [],
+        selectedChannels: []
       }
     },
     watch: {
@@ -120,17 +169,34 @@
         val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
       }
     },
+    created() {
+      this.initialize();
+    },
+
     methods: {
+      async initialize() {
+        try{
+          let response = await ChannelService.get_admin_channels(this.$store.state.user.id);
+
+          this.channels = response.data;
+          console.log(this.channels);
+        }catch(error){
+          console.log(error);
+        }
+      },
       async submitData () {
         try{
           if (this.$refs.form.validate()) {
             await FeedService.create_post({
               title: this.title,
               description: this.description,
+              text: this.text,
               date: this.date,
               link: this.link,
               type: this.postType,
-              tags: this.tagsArray
+              tags: this.selectedTags,
+              channels: this.selectedChannels,
+              PersonId: this.$store.state.user.id
             });
 
             this.$router.push('Feed');
@@ -154,7 +220,7 @@
   }
 
   .primary {
-    background-color: #b71c1c !important;
+    background-color: #8c2d19 !important;
   }
 
   .cc-selector input {
@@ -190,6 +256,12 @@
     -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
     -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
     filter: brightness(1.2) grayscale(.5) opacity(.9);
+  }
+
+  .tagUppercase {
+    background-color: #8c2d19;
+    border-color: #8c2d19;
+    color: white;
   }
 
   /* Extras */

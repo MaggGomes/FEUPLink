@@ -1,6 +1,12 @@
 <template>
     <v-btn v-on:click="signIn" large class="light-blue darken-1" color="primary" > 
-      <v-icon color="white" large left>fab fa-linkedin</v-icon>Sign in with LinkedIn
+      <v-icon color="white" large left>fab fa-linkedin</v-icon>
+      <div v-if="this.$route.name === 'SignUp'">
+          {{$t('signup')}} {{$t('linkedin')}}
+        </div>
+        <div v-else-if="this.$route.name == 'SignIn'">
+          {{$t('signin')}} {{$t('linkedin')}}
+      </div>
     </v-btn> 
 </template>
 

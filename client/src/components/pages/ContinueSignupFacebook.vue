@@ -1,54 +1,52 @@
 <template>
-    <v-content id="createContent">
-		 <v-container fluid v-if="loading">
-        <buffering-wheel />
-      </v-container>
-      <v-container fluid v-else>
+    <v-content id="createContent">      
+      <v-container id="userInfo" fluid>
         <v-toolbar dark class="red darken-4" height="40px">
-              <v-toolbar-title style="font-size: 15px">Continue Signup Facebook</v-toolbar-title>
+              <v-toolbar-title style="font-size: 15px">{{$t('signup')}}</v-toolbar-title>
             </v-toolbar>
          		<v-stepper v-model="e1" >
-         			<v-stepper-header>
-         				<v-stepper-step step="1" :complete="e1 > 1">Profile type</v-stepper-step>
+         			<v-stepper-header>         				
+         				<v-stepper-step step="1" :complete="e1 > 1">{{$t('profile_type')}}</v-stepper-step>
          				<v-divider></v-divider>
-         				<v-stepper-step step="2">In FEUP</v-stepper-step>
-						<v-divider></v-divider>
-						<v-stepper-step step="3">Experience</v-stepper-step>
+         				<v-stepper-step step="2" :complete="e1 > 2">{{$t('in_feup')}}</v-stepper-step>
+         				<v-divider></v-divider>
+         				<v-stepper-step step="3">{{$t('experience')}}</v-stepper-step>
          			</v-stepper-header>
-         			<v-stepper-items>
-                        <v-stepper-content step="1">
-                            <v-card color="grey lighten-3" class="mb-5" fill-height>
-                    <v-container fill-height>
-                        <v-layout align-center>
-                        <v-flex xs12 sm12 text-xs-center>
-                            <div class="cc-selector">
-                            <input v-model="role" id="student" type="radio" name="credit-card" value="student" />
-                            <label class="drinkcard-cc student" for="student"></label>
-                            <input v-model="role" id="staff" type="radio" name="credit-card" value="staff" />
-                            <label class="drinkcard-cc staff" for="staff"></label>
-                            </div>
-                        </v-flex>
-                        </v-layout>
-                    </v-container>
-                            </v-card>
-                            <v-flex xs12 sm12 text-right class="text-xs-right">
-                                <v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
-                            </v-flex>
-                        </v-stepper-content>
+         			<v-stepper-items>         				
+         			<v-stepper-content step="1">
+         				<v-card color="grey lighten-3" class="mb-5" fill-height>
+                   <v-container fill-height>
+                    <v-layout align-center>
+                      <v-flex xs12 sm12 text-xs-center>
+                        <div class="cc-selector">
+                          <input v-model="role" id="student" type="radio" name="credit-card" value="student" />
+                          <label class="drinkcard-cc student" for="student"></label>
+                          <input v-model="role" id="staff" type="radio" name="credit-card" value="staff" />
+                          <label class="drinkcard-cc staff" for="staff"></label>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                   </v-container>
+         				</v-card>
+						<v-flex xs12 sm12 text-right class="text-xs-right">
+							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>							
+							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
+						</v-flex>
+					 </v-stepper-content>
          			<v-stepper-content step="2">
          				<v-card color="grey lighten-3" class="mb-5">
-         					<v-form v-model="valid" ref="form" autocomplete="off" lazy-validation>
+         					<v-form autocomplete="off" ref="form" v-model="formValid2">
          						<v-container fluid>
 											<v-layout row wrap align-center v-if="role == 'staff'">
-										<v-flex xs9 text-xs-center>
+											<v-flex xs9 text-xs-center>
 												<v-select
-													:items="departments"													
+													:items="departments"	
 													v-model="departmentId"
 													item-text="name"
 													item-value="id"
-													label="Select your department"
-													prepend-icon="person"													
-													:rules="[v => !!v || 'You must select a department']"
+													:placeholder="$t('department')"
+													prepend-icon="person"	
+													:rules="departmentRules"
 													required
 												></v-select>		
 											</v-flex>
@@ -67,25 +65,36 @@
 										<v-layout row wrap align-center v-if="role == 'student'">
 											<v-flex xs9 sm5 text-xs-center>
 												<v-select
-												:items="degrees"
+												:items="$t('degrees')"
 												v-model="degree"
-												label="Academic degree"
+												:placeholder="$t('degree')"
 												prepend-icon="person"
-												:rules="[v => !!v || 'Academic Degree is required']"
+												:rules="degreeRules"
+												required
 												></v-select>
-											</v-flex>											
-											<v-flex xs9 sm5 offset-sm1 text-xs-center>		
+											</v-flex>
+											<v-flex xs3 sm1 text-xs-center>
+												<v-btn-toggle v-model="academicDegreeVisible">
+													<v-btn flat>
+														<v-icon>visibility</v-icon>
+													</v-btn>
+													<v-btn flat>
+														<v-icon>visibility_off</v-icon>
+													</v-btn>
+												</v-btn-toggle>
+											</v-flex>
+											<v-flex xs9 sm5 text-xs-center>	
 											  <v-select
-													:items="courses"													
+													:items="courses"		
 													v-model="courseId"
 													item-text="name"
 													item-value="id"
-													label="Select your course"
+													:placeholder="$t('course')"
 													prepend-icon="person"
 													autocomplete
-													:rules="[v => !!v || 'You must select a course']"
+													:rules="courseRules"
 													required
-												></v-select>									
+												></v-select>
 											</v-flex>
 											<v-flex xs3 sm1 text-xs-center>
 												<v-btn-toggle v-model="courseVisible">
@@ -98,11 +107,12 @@
 												</v-btn-toggle>
 											</v-flex>
 										</v-layout>
+
 									<v-layout align-center v-if="role == 'staff'">
 										<v-flex xs9 sm11 text-xs-center>
 											<v-text-field
 												prepend-icon="person"
-												label="Working location"
+												:placeholder="$t('working_location')"
 												v-model="workingLocation"
 												></v-text-field>
 										</v-flex>
@@ -133,14 +143,16 @@
 												>
 												<v-text-field v-if="role == 'student'"
 												slot="activator"
-												label="Enrollment date"
+												:placeholder="$t('enrollment_date')"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
+												:rules="enrollmentDateRules"
+												required
 												></v-text-field>
 												<v-text-field v-if="role == 'staff'"
 												slot="activator"
-												label="Start date"
+												:placeholder="$t('start_date')"
 												v-model="date2"
 												prepend-icon="event"
 												readonly
@@ -184,14 +196,14 @@
 												>
 												<v-text-field v-if="role == 'student'"
 												slot="activator"
-												label="Graduation date"
+												:placeholder="$t('graduation_date')"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
 												></v-text-field>
 												<v-text-field v-if="role == 'staff'"
 												slot="activator"
-												label="End date"
+												:placeholder="$t('end_date')"
 												v-model="date3"
 												prepend-icon="event"
 												readonly
@@ -221,11 +233,11 @@
 							<v-layout align-center v-if="role == 'student'">
 								<v-flex xs9 sm11 text-xs-center>		
 									<v-select
-											:items="studentTypes"
-											v-model="studenType"
-											label="Student type"
+											:items="$t('student_types')"
+											v-model="type"
+											:placeholder="$t('student_type')"
 											prepend-icon="person"
-											:rules="[v => !!v || 'Student type is required']"
+											:rules="studentTypeRules"
 											required
 											></v-select>
 								</v-flex>
@@ -244,10 +256,8 @@
 								<v-flex xs9 sm11 text-xs-center>
 									<v-text-field
 									prepend-icon="person"
-									label="Mec number"
+									:placeholder="$t('mec_number')"
 									v-model="number"
-									:rules="[v => !!v || 'Number is required']"
-									required
 									></v-text-field>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
@@ -265,22 +275,30 @@
          			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 1" flat>Back</v-btn>
-					<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">Continue</v-btn>					
+					<v-btn  @click.native="e1 = 2" flat>{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">{{$t('continue')}}</v-btn>
+					<v-btn v-else disabled>{{$t('continue')}}</v-btn>
 				</v-flex>
-         	</v-stepper-content>
-			 <v-stepper-content step="3">
+			 </v-stepper-content>
+         	<v-stepper-content step="3">
          		<v-card color="grey lighten-3" class="mb-5">
 
-         		<form autocomplete="off">
+         		<v-form autocomplete="off" ref="form" v-model="formValid3">
 							<v-container fluid>
 								<v-layout align-center>
 									<v-flex xs9 sm11 text-xs-center>
-										<v-text-field
+										<v-text-field v-if="checkboxNoExperience"
 												prepend-icon="person"
-												label="Company"
+												:placeholder="$t('company')"
 												v-model="company"
-												></v-text-field>
+										></v-text-field>
+										<v-text-field v-else
+												prepend-icon="person"
+												:placeholder="$t('company')"
+												v-model="company"
+												:rules="companyRules"
+												required
+										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
 										<v-btn-toggle v-model="companyVisible">
@@ -297,9 +315,9 @@
 								<v-layout row wrap align-center>
 									<v-flex xs9 sm5 text-xs-center>
 										<v-select
-											:items="types"
+											:items="$t('company_types')"
 											v-model="companyType"
-											label="Company type"
+											:placeholder="$t('company_type')"
 											prepend-icon="person"
 										></v-select>
 									</v-flex>
@@ -316,7 +334,7 @@
 									<v-flex xs9 sm5 text-xs-center>
 										<v-text-field
 										prepend-icon="person"
-										label="Company industry"
+										:placeholder="$t('company_industry')"
 										v-model="companyIndustry"
 										></v-text-field>
 									</v-flex>
@@ -334,10 +352,16 @@
 
 								<v-layout align-center>
 									<v-flex xs9 sm11 text-xs-center>
-										<v-text-field
+										<v-text-field v-if="checkboxNoExperience"
 										prepend-icon="person"
-										label="Position"
+										:placeholder="$t('position')"
 										v-model="position"
+										></v-text-field>
+										<v-text-field v-else
+										prepend-icon="person"
+										:placeholder="$t('position')"
+										v-model="position"
+										:rules="positionRules" required
 										></v-text-field>
 									</v-flex>
 									<v-flex xs3 sm1 text-xs-center>
@@ -364,12 +388,21 @@
 											:nudge-right="40"
 											min-width="290px"
 											>
-											<v-text-field
+											<v-text-field v-if="checkboxNoExperience"
 											slot="activator"
-											label="Start period"
+											:placeholder="$t('start_date')"
 											v-model="date4"
 											prepend-icon="event"
 											readonly
+											></v-text-field>
+											<v-text-field v-else
+											slot="activator"
+											:placeholder="$t('start_date')"
+											v-model="date4"
+											prepend-icon="event"
+											readonly
+											:rules="startDateRules"
+											required
 											></v-text-field>
 											<v-date-picker
 											ref="picker"
@@ -410,7 +443,7 @@
 											>
 											<v-text-field
 											slot="activator"
-											label="End period"
+											:placeholder="$t('end_date')"
 											v-model="date5"
 											prepend-icon="event"
 											readonly
@@ -438,13 +471,13 @@
 								</v-layout>
 							
 							<v-layout row wrap align-center>
-								<v-flex xs12 sm2 text-xs-center>
+								<v-flex xs12 sm3 text-xs-center>
 									<v-checkbox
-									:label="`I currently work here`"
+									:label="$t('currently_working')"
 									v-model="checkboxWork"
 									></v-checkbox>
 								</v-flex>
-								<v-flex xs3 offset-xs9 sm1 text-xs-center>
+								<v-flex xs3 offset-xs8 sm1 text-xs-center>
 									<v-btn-toggle v-model="checkboxWorkVisible">
 										<v-btn flat>
 											<v-icon>visibility</v-icon>
@@ -458,7 +491,7 @@
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm3 text-xs-center>
 									<v-checkbox
-									:label="`I have no work experience`"
+									:label="$t('no_work_experience')"
 									v-model="checkboxNoExperience"
 									></v-checkbox>
 								</v-flex>
@@ -475,18 +508,16 @@
 							</v-layout>
 							
          				</v-container>
-         			</form>
+         			</v-form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn @click.native="e1 = 3" flat>Back</v-btn>					
-					<v-btn color="primary" v-on:click="submitData">Finish</v-btn>
+					<v-btn @click.native="e1 = 3" flat>{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid3" color="primary" v-on:click="signup">{{$t('finish')}}</v-btn>
+					<v-btn v-else disabled>{{$t('finish')}}</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
      </v-stepper>
-      <v-alert xs12 type="error" :value="showingError">
-        {{this.errorMessage}}
-      </v-alert>
       </v-container>
     </v-content>
 </template>
@@ -495,64 +526,120 @@
 
 import Vue from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
-import BufferingWheel from '@/components/elements/BufferingWheel'
+import LinkedInButton from '@/components/elements/LinkedInButton'
+import FacebookButton from '@/components/elements/FacebookButton'
 import DepartmentService from '@/services/DepartmentService'
 import CourseService from '@/services/CourseService'
 
 export default {
-	 components: {
-      BufferingWheel
+  name: 'SignUp',
+   components: {
+    LinkedInButton,FacebookButton
   },
   data () {
-    return {
-		valid:false,
-		showingError: false,
-		errorMessage: '',
-		// form-fields
-		loading: false,
-		e1: 0,
-		date2: null,
-		date3: null,
-		menu2: false,
-		menu3: false,
-		studenType: null,
-		studentTypes: ['Actual Student', 'Mobility Student', 'Alumni'],
-		courseId: null,
-		courses: null,
-		departmentId: null,
-		departments: null,
-		role: 'student',	  
-		number: '',
-		degree: null,
-		degrees: ['Bachelor', 'Masters', 'PhD'],
-		dpVisible: 0,
-		degreeVisible: 0,
-		courseVisible: 0,
-		date2Visible: 0,
-		date3Visible: 0,
-		typeVisible: 0,
-		numberVisible: 0,
-		workingLocationVisible: 0,
-		workingLocation: '',
-		companyType: null,
-		types: ['public', 'private'],
-		checkboxWork: false,
-		checkboxNoExperience: false,
-		company: '',
-		position: '',
-		companyVisible: 0,
-		positionVisible: 0,
-		companyTypeVisible: 0,
-		checkboxWorkVisible: 0,
-		checkboxNoExperienceVisible: 0,
-		date4Visible: 0,
-		date5Visible: 0,
-		companyIndustry: '',
-		companyIndustryVisible: 0,
-		menu4: false,
-		date4: null,
-		menu5: false,
-		date5: null,
+    return {    
+	  valid: false,
+	  formValid1: false,
+	  formValid2: false,
+	  formValid3: false,
+      name: 'paulo',
+      email: 'paulo@gmail.com',
+      password: '1234paulo',
+      repeatPassword: '1234paulo',
+      error: null,
+      firstStep: true,
+      e1: 0,
+      date: null,
+      date2: null,
+      date3: null,
+      date4: null,
+      date5: null,
+      gender: null,
+      country: '',
+	  companyType: null,
+	  types: this.$i18n.messages[this.$i18n.locale]['company_types'],
+	  menu: false,
+	  menu2: false,
+	  menu3: false,
+	  menu4: false,
+	  menu5: false,
+	  type: null,
+	  studentTypes: this.$i18n.messages[this.$i18n.locale]['student_types'],
+      checkboxWork: false,
+      checkboxNoExperience: false,
+      number: '',
+      genders: this.$i18n.messages[this.$i18n.locale]['genders'],
+      courseId: null,
+      courses: null,
+	departmentId: null,
+      departments: null,
+      company: '',
+      city: '',
+      position: '',
+      role: 'student',	
+	  degree: null,
+	  degrees: this.$i18n.messages[this.$i18n.locale]['degrees'],
+	  birthdayVisible: 0,
+	  genderVisible: 0,
+	  countryVisible: 0,
+	  cityVisible: 0,
+	  dpVisible: 0,
+	  academicDegreeVisible: 0,
+	  courseVisible: 0,
+	  date2Visible: 0,
+	  date3Visible: 0,
+	  typeVisible: 0,
+	  numberVisible: 0,
+	  companyVisible: 0,
+	  positionVisible: 0,
+	  companyTypeVisible: 0,
+	  checkboxWorkVisible: 0,
+	  checkboxNoExperienceVisible: 0,
+	  date4Visible: 0,
+	  date5Visible: 0,
+	  companyIndustry: '',
+	  companyIndustryVisible: 0,
+	  workingLocationVisible: 0,
+	  workingLocation: '',
+	  nameRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['name_rule1'],
+		v => v.length <= 50 || this.$i18n.messages[this.$i18n.locale]['name_rule2']
+	  ],
+	  emailRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['email_rule1'],
+		v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.$i18n.messages[this.$i18n.locale]['email_rule2']
+	  ],
+	  passwordRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['password_rule1'],
+		v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) || this.$i18n.messages[this.$i18n.locale]['password_rule2']
+	  ],
+	  degreeRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['degree_rule']
+	  ],
+	  departmentRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['department_rule']
+	  ],
+	  courseRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['course_rule']
+	  ],
+	  enrollmentDateRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['enrollment_date_rule']
+	  ],
+	  startDateRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['start_date_rule']
+	  ],
+	  studentTypeRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['student_type_rule']
+	  ],
+	  companyRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['company_rule']
+	  ],
+	  positionRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['position_rule']
+	  ],
+	  genderRules: [
+		v => !!v || this.$i18n.messages[this.$i18n.locale]['gender_rule']
+	  ],
     }
   },
   watch: {
@@ -561,42 +648,51 @@ export default {
     }
   },
   methods: {
-    async submitData () {
-				try{
-					if (this.$refs.form.validate()) {			
-						await AuthenticationService.continue_signup_facebook({
-							personType: this.role,
-							courseId: this.courseId,
-							enrollmentDate: this.date2,
-							graduationDate: this.date3,
-							studenType: this.studenType,
-							departmentId: this.departmentId,						
-							workingLocation: this.workingLocation,
-							startDate: this.date2,
-							endDate: this.date3,
-							mecNumber: this.number,
-							company: this.company,
-							companyType: this.companyType,
-							companyIndustry: this.companyIndustry,
-							title: this.position,
-							startDate: this.date4,
-							endDate: this.date5,
-							isCurrent: this.checkboxWork,
-							workExperience: this.checkboxNoExperience
-						});
+    continueSignup: function() {
+      if(this.$refs.form.validate())
+        this.firstStep = false;
+    },
+    async signup () {
+			try {
+				let resp = (await AuthenticationService.continue_signup_facebook({
 						
-						this.$router.push('/feed');
-					}
-				}catch(error){					
-					this.e1=1;
-					this.showingError=true;
-					this.errorMessage=error.response.data.error;
-				}
-		},
-		save (date) {
-			this.$refs.menu.save(date)
-		},
-		async getCourses(){
+						courseId: this.courseId,
+						enrollmentDate: this.date2,
+						enrollmentDate_visibility: ((this.date2Visible == 0) ? true : false),
+						graduationDate: this.date3,
+						graduationDate_visibility: ((this.date3 == 0) ? true : false),
+						type: this.type,
+						type_visibility: ((this.typeVisible == 0) ? true : false),
+						mecNumber: this.number,
+						mecNumber_visibility: ((this.numberVisible == 0) ? true : false),
+						company: this.company,
+						companyType: this.companyType,
+						companyIndustry: this.companyIndustry,
+						title: this.position,
+						title_visibility: ((this.positionVisible == 0) ? true : false),
+						startDate: this.date4,
+						startDate_visibility: ((this.date4Visible == 0) ? true : false),
+						endDate: this.date5,
+						endDate_visibility: ((this.date5Visible == 0) ? true : false),
+						isCurrent: this.checkboxWork,
+						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
+						workExperience: this.checkboxNoExperience
+					})).data
+				
+				if (resp != null) {
+				this.$store.dispatch("setToken", resp.token);
+				this.$store.dispatch("setUser", resp.person);
+				this.loading = false;
+				this.$router.push("Feed");
+        }
+			}catch(error){
+				 this.error=error
+			}
+	},
+	save (date) {
+		this.$refs.menu.save(date)
+	},
+	async getCourses(){
       try{
         this.courses = (await CourseService.list_all_courses()).data
       }catch(error){
@@ -614,11 +710,17 @@ export default {
 	mounted: async function (){
 		await this.getCourses();
 		await this.getDepartments()
-  },	
+  },
 }
 </script>
 
 <style scopped>
+.signup-button {
+  width: 100%;
+  height:60px;
+  font-size: 125%;
+}
+
 .v-select .dropdown-menu {
 	display:block;
 }
@@ -668,8 +770,8 @@ a{color:#444;text-decoration:none;}
 p{margin-bottom:.3em;}
 
 @media only screen and (max-width: 720px) {
-	#createContent {
-		padding: 0 !important;
+	#social {
+		padding-top: 1.5em !important;
 	}
 	.stepper__content {
 		padding: 0;

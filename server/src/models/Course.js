@@ -64,9 +64,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
 
-      // Course as one channel associated
-      Course.belongsTo(models.Department,
+      // Course as many departments associated
+      Course.belongsToMany(models.Department,
         {
+          through: 'CourseDepartment',
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         }

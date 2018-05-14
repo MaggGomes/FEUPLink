@@ -10,21 +10,21 @@
           <v-flex xs12 sm10 md5>
             <v-card class="elevation-12">
               <v-toolbar dark class="red darken-4">
-                <v-toolbar-title>Sign In</v-toolbar-title>
+                <v-toolbar-title>{{$t("signin")}}</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
               <v-form autocomplete="off" ref="form" v-model="valid">
                 <v-text-field :email="email"
                   prepend-icon="email"
-                  label="Email"
+                  :placeholder="$t('email')"
                   :rules="emailRules"
                   v-model="email"
                   required
                 ></v-text-field>
                 <v-text-field :password="password"
                   prepend-icon="lock"
-                  label="Password"
                   type="password"
+                  :placeholder="$t('password')"
                   :rules="passwordRules"
                   v-model="password"
                   required
@@ -33,16 +33,14 @@
                <div class="danger-alert" v-html="error" />
               </v-card-text>             
               <v-card-actions>
-                <v-checkbox style="margin-left:20px;margin-top:25px"
-                  :label="`Remember me`"
-                  v-model="checkbox"
-                ></v-checkbox>
-                <v-spacer></v-spacer>                   
-                  Not a member?
-                  <v-btn to="/signup" small flat color="primary" class="">Sign up!
-                  </v-btn>
-                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">Continue</v-btn>
-                <v-btn v-else disabled>Continue</v-btn>
+                <v-btn to="/signup" small flat color="primary" class="">
+                  {{$t("signup")}}
+                </v-btn>
+                <v-spacer> </v-spacer>
+                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">
+                  {{$t("continue")}}
+                </v-btn>
+                <v-btn v-else disabled>{{$t("continue")}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -82,16 +80,16 @@ export default {
       checkbox: "",
       error: null,
       emailRules: [
-        v => !!v || "E-mail is required",
+        v => !!v || this.$i18n.messages[this.$i18n.locale]['email_rule1'],
         v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail must be valid"
+          this.$i18n.messages[this.$i18n.locale]['email_rule2']
       ],
       passwordRules: [
-        v => !!v || "Password is required",
+        v => !!v || this.$i18n.messages[this.$i18n.locale]['password_rule1'],
         v =>
           /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v) ||
-          "Password must be valid"
+          this.$i18n.messages[this.$i18n.locale]['password_rule2']
       ]
     };
   },

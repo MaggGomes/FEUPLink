@@ -25,7 +25,7 @@
     },
     mounted: async function() {
       try{
-        this.contents = (await FeedService.get_posts_by_type('New')).data;
+        this.contents = (await FeedService.get_posts_by_person_and_type(this.$store.state.user.id, 'New')).data;
 
       }catch(error){
 
@@ -34,14 +34,7 @@
   }
 </script>
 
-<style scopped>
-  .list {
-    background-color: rgba(221, 221, 221, 0.75) ;
-    padding: 1px 0;
-  }
-  .list .list__tile{
-    background-color: rgba(188, 188, 188, 0.75) ;
-    margin:10px;
-  }
+<style scoped>
+
 </style>
 

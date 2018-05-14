@@ -18,7 +18,7 @@ module.exports = {
         }))[0].dataValues;
 
         Course.findById(course.id).then((c) => {
-          c.setDepartment(req.body.departmentId);
+          c.setDepartments(req.body.departmentIds);
         });
 
 
@@ -46,7 +46,7 @@ module.exports = {
       ));
 
         Course.findById(courseId).then((c) => {
-          c.setDepartment(req.body.departmentId);
+          c.setDepartments(req.body.departmentIds);
         });
 
         res.status(201).send({
@@ -123,6 +123,11 @@ module.exports = {
             },
             {
               model: Channel,
+              include: [
+                {
+                  all: true,
+                },
+              ],
             },
             {
               model: Department,

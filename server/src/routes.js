@@ -121,7 +121,6 @@ module.exports = (app) => {
   );
 
   // ----Department
-
   app.post('/create_department',
     AuthenticationControllerPolicy.super_admin,
     DepartmentControllerPolicy.create,
@@ -154,6 +153,11 @@ module.exports = (app) => {
 
 
   // ----Channels
+  app.put('/channel_update',
+    AuthenticationControllerPolicy.channel_admin,
+    ChannelController.update,
+  );
+
   app.post('/add_channel_admin',
       AuthenticationControllerPolicy.channel_admin,
       ChannelController.add_channel_admin,
@@ -174,9 +178,29 @@ module.exports = (app) => {
     ChannelController.list_enrolled_channels,
   );
 
+  app.get('/list_enrolled_channels/:PersonId',
+      AuthenticationControllerPolicy.authenticated,
+      ChannelController.list_all_enrolled_channels,
+  );
+
+  app.get('/num_enrolled_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_enrolled_channels,
+  );
+
   app.get('/list_admin_channels_in_range/:PersonId/:from-:numInstances',
     AuthenticationControllerPolicy.authenticated,
     ChannelController.list_admin_channels,
+  );
+
+  app.get('/list_admin_channels/:PersonId',
+      AuthenticationControllerPolicy.authenticated,
+      ChannelController.list_all_admin_channels,
+  );
+
+  app.get('/num_admin_channels/:PersonId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.num_admin_channels,
   );
 
   app.get('/list_channels_in_range/:from-:numInstances',
@@ -189,22 +213,28 @@ module.exports = (app) => {
     ChannelController.num_channels,
   );
 
+  app.get('/channel_by_id/:ChannelId',
+    AuthenticationControllerPolicy.authenticated,
+    ChannelController.channel_by_id,
+  );
+
+
     // ----Post
 
   app.post('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.create,
       PostController.create
   );
 
   app.put('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.channel_admin,
       PostControllerPolicy.update,
       PostController.update
   );
 
   app.delete('/post',
-      AuthenticationControllerPolicy.super_admin,
+      AuthenticationControllerPolicy.authenticated,
       PostControllerPolicy.hasId,
       PostController.delete
   );
@@ -220,4 +250,16 @@ module.exports = (app) => {
       AuthenticationControllerPolicy.authenticated,
       PostController.list_by_type
   );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/person/:PersonId',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts
+    );
+
+    // Returns all post from the channels in which a user is enrolled
+    app.get('/post/person/:PersonId/type/:type',
+        AuthenticationControllerPolicy.authenticated,
+        PostController.list_enrolled_channels_posts_by_type
+    );
 };
