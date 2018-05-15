@@ -34,27 +34,27 @@
               </v-flex>
             </v-layout>
             <v-layout row style="margin-top: 15px;" justify-center>
-              <v-flex v-if="person.facebookProfile !== null" xs2>
+              <v-flex v-if="person.facebookProfile !== null && person.facebookProfile !== undefined" xs2>
                 <v-layout justify-center>
                   <v-icon>fab fa-facebook</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.linkedInProfile !== null" xs2>
+              <v-flex v-if="person.linkedInProfile !== null && person.linkedInProfile !== undefined" xs2>
                 <v-layout justify-center>
                   <v-icon>fab fa-linkedin</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.whatsAppProfile !== null" xs2>
+              <v-flex v-if="person.whatsAppProfile !== null && person.whatsAppProfile !== undefined" xs2>
                 <v-layout justify-center>
                   <v-icon>fab fa-whatsapp</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.instagramProfile !== null" xs2>
+              <v-flex v-if="person.instagramProfile !== null && person.instagramProfile !== undefined" xs2>
                 <v-layout justify-center>
                   <v-icon>fab fa-instagram</v-icon>
                 </v-layout>
               </v-flex>
-              <v-flex v-if="person.email !== null" xs2>
+              <v-flex v-if="person.email !== null && person.email !== undefined" xs2>
                 <v-layout justify-center>
                   <v-icon>email</v-icon>
                 </v-layout>
