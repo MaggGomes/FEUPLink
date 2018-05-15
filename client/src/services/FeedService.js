@@ -24,4 +24,7 @@ export default {
   get_posts_by_person_and_type (personId, postType) {
     return Api().get('/post/person/'+personId+'/type/'+postType)
   },
+  get_post_by_id (postId) {
+    return Api().get(`post/${postId}`)
+  },
 }
