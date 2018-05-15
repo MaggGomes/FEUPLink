@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: true,
         },
+        isVisible: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+        },
     },
     {
         freezeTableName: true,

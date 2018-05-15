@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <profile-header :person="person" :personType="personType" :locationString="locationString">
+    <profile-header class="cards-width" :personObj="person" :personType="personType">
     </profile-header>
 
-    <profile-experience-content :person="person" :itemsExperience="itemsExperience">
+    <profile-experience-content class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content :person="person" :itemsEducation="itemsEducation">
+    <profile-education-content class="cards-width" :person="person" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
@@ -27,11 +27,11 @@ export default {
     ProfileExperienceContent,
     ProfileEducationContent
   },
+  
   data: () => ({
     itemsExperience: [],
     itemsEducation: [],
     person: {},
-    locationString: "",
     personType: ""
   }),
 
@@ -52,12 +52,7 @@ export default {
         });
 
         this.person = student.data.person;
-
-        this.locationString =
-          this.person.country !== null && this.person.city !== null
-            ? this.person.city + ", " + this.person.country
-            : [this.person.city, this.person.country].join("");
-
+        
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
             student.data.courses[i].CourseStudent.enrollmentDate
@@ -111,5 +106,12 @@ export default {
 <style scopped>
 .primary {
   background-color: #b71c1c !important;
+}
+
+@media screen and (max-width: 960px) {
+  .cards-width {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 </style>

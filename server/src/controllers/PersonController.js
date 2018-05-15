@@ -67,7 +67,11 @@ module.exports = {
     async getStudent(req, res) {
         try {
             let person = await Person.findOne({
-                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email'],
+                attributes: ['id', 'name', 'name_visibility', 'gender', 'gender_visibility', 'phone',
+                'phone_visibility', 'birthDate', 'birthDate_visibility', 'city', 'city_visibility',
+                'country', 'country_visibility', 'email', 'email_visibility', 'facebookProfile',
+                'facebookProfile_visibility', 'linkedInProfile', 'linkedInProfile_visibility',
+                'whatsAppProfile', 'whatsAppProfile_visibility', 'instagramProfile', 'instagramProfile_visibility'],
                 where: {
                     id: req.query.id,
                 },
@@ -153,7 +157,7 @@ module.exports = {
         try {
             const company = (await Company.findOrCreate({
                 where: {
-                name: req.body.company,
+                    name: req.body.company,
                 },
                 defaults: {
                     name: req.body.company,
@@ -173,22 +177,22 @@ module.exports = {
                 res: 'Job successfully created',
             });
         } catch (err) {
-        res.status(400).send({
-            error: err,
-        });
+            res.status(400).send({
+                error: err,
+            });
         }
     },
     async insertCourseStudent(req, res) {
         try {
             const course = (await Course.findOne({
                 where: {
-                  name: req.body.name,
-                  academicDegree: req.body.academicDegree,
+                    name: req.body.name,
+                    academicDegree: req.body.academicDegree,
                 },
             }));
             const student = (await Student.findOne({
                 where: {
-                  PersonId: req.body.PersonId,
+                    PersonId: req.body.PersonId,
                 },
             }));
 
@@ -204,9 +208,9 @@ module.exports = {
             });
         } catch (err) {
             console.log(err);
-        res.status(400).send({
-            error: err,
-        });
+            res.status(400).send({
+                error: err,
+            });
         }
     },
     async updateJobExperience(req, res) {
@@ -215,61 +219,59 @@ module.exports = {
             delete req.body.personId;
             const company = (await Company.findOne({
                 where: {
-                  name: req.body.company,
+                    name: req.body.company,
                 },
             }));
             delete req.body.company;
 
             (await Job.update(
-                req.body,
-                {
-                  where: {
-                    CompanyId: company.toJSON().id,
-                    PersonId: personId,
-                },
-              }));
-              res.status(201).send({
+                req.body, {
+                    where: {
+                        CompanyId: company.toJSON().id,
+                        PersonId: personId,
+                    },
+                }));
+            res.status(201).send({
                 res: 'Successfully updated the job information',
-              });
-          } catch (err) {
-            res.status(400).send({
-              error: err,
             });
-          }
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
     },
     async updateCourseStudent(req, res) {
         try {
             const student = (await Student.findOne({
                 where: {
-                  PersonId: req.body.PersonId,
+                    PersonId: req.body.PersonId,
                 },
             }));
             delete req.body.PersonId;
 
             const course = (await Course.findOne({
                 where: {
-                  name: req.body.name,
-                  academicDegree: req.body.academicDegree,
+                    name: req.body.name,
+                    academicDegree: req.body.academicDegree,
                 },
             }));
             delete req.body.name;
             delete req.body.academicDegree;
             (await CourseStudent.update(
-                req.body,
-                {
-                  where: {
-                    CourseId: course.toJSON().id,
-                    StudentId: student.toJSON().id,
-                },
-              }));
-              res.status(201).send({
+                req.body, {
+                    where: {
+                        CourseId: course.toJSON().id,
+                        StudentId: student.toJSON().id,
+                    },
+                }));
+            res.status(201).send({
                 res: 'Successfully updated the course student information',
-              });
-          } catch (err) {
-            res.status(400).send({
-              error: err,
             });
-          }
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
     },
     async deleteJobExperience(req, res) {
         try {
@@ -277,7 +279,7 @@ module.exports = {
             delete req.body.personId;
             const company = (await Company.findOne({
                 where: {
-                  name: req.body.company,
+                    name: req.body.company,
                 },
             }));
             delete req.body.company;
@@ -287,46 +289,67 @@ module.exports = {
                     CompanyId: company.toJSON().id,
                     PersonId: personId,
                 },
-              }));
-              res.status(201).send({
+            }));
+            res.status(201).send({
                 res: 'Job successfully deleted',
-              });
-          } catch (err) {
-            res.status(400).send({
-              error: err,
             });
-          }
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
     },
     async deleteCourseStudent(req, res) {
         try {
             const student = (await Student.findOne({
                 where: {
-                  PersonId: req.body.PersonId,
+                    PersonId: req.body.PersonId,
                 },
             }));
             delete req.body.PersonId;
 
             const course = (await Course.findOne({
                 where: {
-                  name: req.body.name,
-                  academicDegree: req.body.academicDegree,
+                    name: req.body.name,
+                    academicDegree: req.body.academicDegree,
                 },
             }));
             delete req.body.name;
             delete req.body.academicDegree;
             (await CourseStudent.destroy({
-                  where: {
+                where: {
                     CourseId: course.toJSON().id,
                     StudentId: student.toJSON().id,
                 },
-              }));
-              res.status(201).send({
+            }));
+            res.status(201).send({
                 res: 'Successfully updated the course student information',
-              });
-          } catch (err) {
-            res.status(400).send({
-              error: err,
             });
-          }
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
+    async update(req, res) {
+        try {
+            const userId = req.body.userId;
+            delete req.body.userId;
+
+            (await Person.update(
+                req.body, {
+                    where: {
+                        id: userId,
+                    },
+                }));
+
+            res.status(200).send({
+                res: 'Successfully updated the post information',
+            });
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
     },
 };

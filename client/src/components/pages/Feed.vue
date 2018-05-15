@@ -137,7 +137,6 @@
         #feed_content .container.fluid,
         #feed_content .container{
             padding: 0;
-
         }
         #feed_content .accent{
             background-color: red!important;

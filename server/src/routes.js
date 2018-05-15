@@ -85,6 +85,10 @@ module.exports = (app) => {
     PersonController.deleteJobExperience
   );
 
+  app.post('/update_person',
+    PersonController.update
+  );
+
   app.post('/delete_course_student',
     PersonController.deleteCourseStudent
   );

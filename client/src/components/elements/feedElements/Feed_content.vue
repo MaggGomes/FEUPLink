@@ -1,5 +1,5 @@
 <template>
-    <v-list two-line>
+    <v-list class="feed-content" two-line>
         <v-list-tile ripple avatar v-for="content in contents" :key="content.title">
             <v-list-tile-avatar>
                 <img :src="content.title">
