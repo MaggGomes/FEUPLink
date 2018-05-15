@@ -67,9 +67,11 @@ module.exports = {
     async getStudent(req, res) {
         try {
             let person = await Person.findOne({
-                attributes: ['id', 'name', 'gender', 'phone', 'birthDate', 'city', 'country', 'email',
-                    'facebookProfile', 'linkedInProfile', 'whatsAppProfile', 'instagramProfile',
-                ],
+                attributes: ['id', 'name', 'name_visibility', 'gender', 'gender_visibility', 'phone',
+                'phone_visibility', 'birthDate', 'birthDate_visibility', 'city', 'city_visibility',
+                'country', 'country_visibility', 'email', 'email_visibility', 'facebookProfile',
+                'facebookProfile_visibility', 'linkedInProfile', 'linkedInProfile_visibility',
+                'whatsAppProfile', 'whatsAppProfile_visibility', 'instagramProfile', 'instagramProfile_visibility'],
                 where: {
                     id: req.query.id,
                 },
