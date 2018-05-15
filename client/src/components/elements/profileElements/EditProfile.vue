@@ -5,30 +5,31 @@
 		<v-card-text>
 			<v-container wrap>
 				<v-layout row>
-					<v-text-field label="Name" v-model="editedPerson.name"></v-text-field>
+					<v-text-field label="Name" v-model="editedPerson.name" prepend-icon="person"></v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-text-field label="Email" v-model="editedPerson.email"></v-text-field>
+					<v-text-field label="Email" v-model="editedPerson.email" prepend-icon="email"></v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" single-line></v-select>
+					<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" 
+					single-line prepend-icon="fa-transgender"></v-select>
 				</v-layout>
 				<v-layout row>
-					<v-text-field label="Phone" v-model="editedPerson.phone"></v-text-field>
+					<v-text-field prepend-icon="phone" label="Phone" v-model="editedPerson.phone"></v-text-field>
 				</v-layout>
 				<v-layout row>
 					<v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" style="width: 100%;">
 						<v-text-field slot="activator" label="Birth Date" :placeholder="birthDateFormatted" v-model="birthDateFormatted" 
-							readonly hint="DD/MM/YYYY format"></v-text-field>
+							readonly hint="DD/MM/YYYY format" prepend-icon="event"></v-text-field>
 						<v-date-picker ref="picker" v-model="date" @change="updateBirthDate" min="1950-01-01"
 							:max="new Date().toISOString().substr(0, 10)" value="02/02/2015"></v-date-picker>
 					</v-menu>
 				</v-layout>
 				<v-layout row>
-					<v-text-field label="Country" v-model="editedPerson.country"></v-text-field>
+					<v-text-field prepend-icon="flag" label="Country" v-model="editedPerson.country"></v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-text-field label="City" v-model="editedPerson.city"></v-text-field>
+					<v-text-field prepend-icon="location_city" label="City" v-model="editedPerson.city"></v-text-field>
 				</v-layout>
 			</v-container>
 		</v-card-text>
