@@ -100,7 +100,6 @@ export default {
 			day = day[0] + day[1]
 
 			this.date =  `${year}-${month}-${day}`
-			console.log(this.date)
 		}
 	},
 	
