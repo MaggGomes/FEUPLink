@@ -6,6 +6,34 @@
           <v-toolbar-title class="center-text">Education</v-toolbar-title>
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
+
+          <!-- provide feedback to the user -->
+          <v-snackbar :timeout="6000" :color="feedbackColor" v-model="showingFeedback" top multi-line>
+            <div v-if="error!=null">
+              {{error.response.data.error}}
+            </div>
+            <div v-if="success!=null">
+              {{success.res}}
+            </div>
+            <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+          </v-snackbar>
+
+          <!-- warning dialog -->
+          <v-dialog v-model="warningDialog" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">Be Careful!</v-card-title>
+              <v-card-text>
+                {{warningTitle}}
+              </v-card-text>
+              <v-card-actions>
+                <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
+                <v-spacer> </v-spacer>
+                <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+
           <v-dialog v-model="dialogEducation" max-width="500px">
             <v-btn icon slot="activator" class="mx-0">
               <v-icon>fa-plus</v-icon>
@@ -55,7 +83,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click.native="closeEducation">Cancel</v-btn>
-                <v-btn v-if="valid2" color="blue darken-1" flat @click.native="saveEducation">Save</v-btn>
+                <v-btn v-if="valid2" color="blue darken-1" flat @click.native="showConfirmDialog(saveEducation, 'Are you sure you want to save this item?')">Save</v-btn>
                 <v-btn v-else disabled>Save</v-btn>
               </v-card-actions>
             </v-card>
@@ -83,7 +111,10 @@
                     <v-btn icon class="mx-0" @click="editItemEducation(item)">
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn icon class="mx-0" @click="deleteItemEducation(item)">
+                    <v-btn icon class="mx-0" @click.native="() => {
+                        currentItem=item
+                        showConfirmDialog(deleteItemEducation, 'Are you sure you want to delete this item ?')
+                      }">
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-list-tile-action>
@@ -97,7 +128,10 @@
                 </v-btn>
               </v-flex>
               <v-flex lg6 md6 style="text-align: center;">
-                <v-btn icon class="mx-0" @click="deleteItemEducation(item)">
+                <v-btn icon class="mx-0" @click.native="() => {
+                    currentItem=item
+                    showConfirmDialog(deleteItemEducation, 'Are you sure you want to delete this item ?')
+                  }">
                   <v-icon>delete</v-icon>
                 </v-btn>
               </v-flex>
@@ -122,6 +156,13 @@ export default {
   data() {
     return {
       defaultCourseImg: defaultCourseImg,
+      currentItem: null,
+      showingFeedback: false,
+      feedbackColor: 'error',
+      error: null,
+      success: null,
+      warningDialog: false,
+      warningTitle: null,
       valid2: false,
       menu: false,
       menu2: false,
@@ -154,21 +195,33 @@ export default {
       }
     },
 
+    showConfirmDialog(action, title){
+        this.warningDialog=true
+        this.warningAction=action 
+        this.warningTitle=title
+    },
+
+    warningAction() { // function to be ovewritten by the correct action
+    },
+  
     editItemEducation(item) {
       this.editedIndexEducation = this.itemsEducation.indexOf(item);
       this.editedItemEducation = Object.assign({}, item);
       this.dialogEducation = true;
     },
 
-    async deleteItemEducation(item) {
-      const index = this.itemsEducation.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+    async deleteItemEducation() {
+      try{
+        this.success = (await ProfileService.deleteCourseStudent({
+          name: this.currentItem.course.name,
+          academicDegree: this.currentItem.degree,
+          PersonId: this.$store.state.user.id
+        })).data;
+        const index = this.itemsEducation.indexOf(this.currentItem);
         this.itemsEducation.splice(index, 1);
-      await ProfileService.deleteCourseStudent({
-        name: item.course.name,
-        academicDegree: item.degree,
-        PersonId: this.$store.state.user.id
-      });
+      } catch(error){
+          this.error=error
+      }
     },    
 
     closeExperience() {
@@ -196,22 +249,30 @@ export default {
           this.itemsEducation[this.editedIndexEducation],
           this.editedItemEducation
         );
-        await ProfileService.updateCourseStudent({
-          name: this.editedItemEducation.course.name,
-          academicDegree: this.editedItemEducation.degree,
-          enrollmentDate: this.editedItemEducation.enrollmentDate,
-          graduationDate: this.editedItemEducation.graduationDate,
-          PersonId: this.$store.state.user.id
-        });
+        try{
+          this.success = (await ProfileService.updateCourseStudent({
+            name: this.editedItemEducation.course.name,
+            academicDegree: this.editedItemEducation.degree,
+            enrollmentDate: this.editedItemEducation.enrollmentDate,
+            graduationDate: this.editedItemEducation.graduationDate,
+            PersonId: this.$store.state.user.id
+          })).data;
+        } catch(error){
+          this.error=error
+        }
       } else {
-        this.itemsEducation.push(this.editedItemEducation);
-        await ProfileService.insertCourseStudent({
-          name: this.editedItemEducation.course.name,
-          academicDegree: this.editedItemEducation.degree,
-          enrollmentDate: this.editedItemEducation.enrollmentDate,
-          graduationDate: this.editedItemEducation.graduationDate,
-          PersonId: this.$store.state.user.id
-        });
+        try{
+          this.success = (await ProfileService.insertCourseStudent({
+            name: this.editedItemEducation.course.name,
+            academicDegree: this.editedItemEducation.degree,
+            enrollmentDate: this.editedItemEducation.enrollmentDate,
+            graduationDate: this.editedItemEducation.graduationDate,
+            PersonId: this.$store.state.user.id
+          })).data;
+          this.itemsEducation.push(this.editedItemEducation);
+        } catch(error){
+          this.error=error
+        }
       }
       this.closeEducation();
     },
@@ -241,6 +302,20 @@ export default {
   watch: {
     dialogEducation(val) {
       val || this.close();
+    },
+    success (val){
+      if(val !== null){
+        this.error=null
+        this.feedbackColor='success'
+        this.showingFeedback=true
+      }
+    },
+    error(val){
+      if(val !== null){
+        this.success=null
+        this.feedbackColor='error'
+        this.showingFeedback=true
+      }
     }
   },
 

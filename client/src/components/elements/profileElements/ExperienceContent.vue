@@ -6,6 +6,33 @@
           <v-toolbar-title class="center-text">Experience</v-toolbar-title>
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
+          <!-- provide feedback to the user -->
+          <v-snackbar :timeout="6000" :color="feedbackColor" v-model="showingFeedback" top multi-line>
+            <div v-if="error!=null">
+              {{error.response.data.error}}
+            </div>
+            <div v-if="success!=null">
+              {{success.res}}
+            </div>
+            <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+          </v-snackbar>
+
+          <!-- warning dialog -->
+          <v-dialog v-model="warningDialog" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">Be Careful!</v-card-title>
+              <v-card-text>
+                {{warningTitle}}
+              </v-card-text>
+              <v-card-actions>
+                <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
+                <v-spacer> </v-spacer>
+                <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+
           <v-dialog v-model="dialogExperience" max-width="500px">
             <v-btn icon slot="activator" class="mx-0">
                 <v-icon>fa-plus</v-icon>
@@ -96,7 +123,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
-                <v-btn v-if="valid3" color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+                <v-btn v-if="valid3" color="blue darken-1" flat @click.native="showConfirmDialog(saveExperience, 'Are you sure you want to save this item?')">Save</v-btn>
                 <v-btn v-else disabled>Save</v-btn>
               </v-card-actions>
             </v-card>
@@ -124,7 +151,10 @@
                     <v-btn icon class="mx-0" @click="editItemExperience(item)">
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn icon class="mx-0" @click="deleteItemExperience(item)">
+                    <v-btn icon class="mx-0" @click="() => {
+                      currentItem=item
+                      showConfirmDialog(deleteItemExperience, 'Are you sure you want to delete this item ?')
+                    }">
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-list-tile-action>
@@ -138,7 +168,10 @@
                 </v-btn>
               </v-flex>
               <v-flex lg6 md6 style="text-align: center;">
-                <v-btn icon class="mx-0" @click="deleteItemExperience(item)">
+                <v-btn icon class="mx-0" @click="() => {
+                    currentItem=item
+                    showConfirmDialog(deleteItemExperience, 'Are you sure you want to delete this item ?')
+                  }">
                   <v-icon>delete</v-icon>
                 </v-btn>
               </v-flex>
@@ -162,6 +195,13 @@ export default {
   data() {
     return {
       defaultCompanyImg: defaultCompanyImg,
+      currentItem: null,
+      showingFeedback: false,
+      feedbackColor: 'error',
+      error: null,
+      success: null,
+      warningDialog: false,
+      warningTitle: null,
       valid3: false,
       menu: false,
       menu2: false,
@@ -195,19 +235,31 @@ export default {
   },
 
   methods: {
+    showConfirmDialog(action, title){
+        this.warningDialog=true
+        this.warningAction=action 
+        this.warningTitle=title
+    },
+
+    warningAction(){ // function to be ovewritten by the correct action
+    },
+
     editItemExperience(item) {
       this.editedIndexExperience = this.itemsExperience.indexOf(item);
       this.editedItemExperience = Object.assign({}, item);
       this.dialogExperience = true;
     },
-    async deleteItemExperience(item) {
-      const index = this.itemsExperience.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+    async deleteItemExperience() {
+      try {
+        this.success = (await ProfileService.deleteJobExperience({
+          company: this.currentItem.company,
+          personId: this.$store.state.user.id
+        })).data;
+        const index = this.itemsExperience.indexOf(this.currentItem);
         this.itemsExperience.splice(index, 1);
-      await ProfileService.deleteJobExperience({
-        company: item.company,
-        personId: this.$store.state.user.id
-      });
+      } catch(error) {
+        this.error=error
+      }
     },
 
     closeExperience() {
@@ -228,32 +280,40 @@ export default {
           this.editedItemExperience
         );
 
-        await ProfileService.updateJobExperience({
-          company: this.editedItemExperience.company,
-          title: this.editedItemExperience.title,
-          title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
-          startDate: this.editedItemExperience.startDate,
-          startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
-          endDate: this.editedItemExperience.endDate,
-          endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
-          isCurrent: this.editedItemExperience.isCurrent,
-          isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
-          personId: this.$store.state.user.id
-        });
+        try {
+          this.success = (await ProfileService.updateJobExperience({
+            company: this.editedItemExperience.company,
+            title: this.editedItemExperience.title,
+            title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
+            startDate: this.editedItemExperience.startDate,
+            startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
+            endDate: this.editedItemExperience.endDate,
+            endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
+            isCurrent: this.editedItemExperience.isCurrent,
+            isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
+            personId: this.$store.state.user.id
+          })).data;
+        } catch(error) {
+          this.error=error
+        }
       } else {
-        this.itemsExperience.push(this.editedItemExperience);
-        await ProfileService.insertExperience({
-          company: this.editedItemExperience.company,
-          title: this.editedItemExperience.title,
-          title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
-          startDate: this.editedItemExperience.startDate,
-          startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
-          endDate: this.editedItemExperience.endDate,
-          endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
-          isCurrent: this.editedItemExperience.isCurrent,
-          isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
-          personId: this.$store.state.user.id
-        });
+        try {
+          this.success = (await ProfileService.insertExperience({
+            company: this.editedItemExperience.company,
+            title: this.editedItemExperience.title,
+            title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
+            startDate: this.editedItemExperience.startDate,
+            startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
+            endDate: this.editedItemExperience.endDate,
+            endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
+            isCurrent: this.editedItemExperience.isCurrent,
+            isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
+            personId: this.$store.state.user.id
+          })).data;
+          this.itemsExperience.push(this.editedItemExperience);
+        } catch(error) {
+          this.error=error
+        }
       }
       this.closeExperience();
     },
@@ -281,6 +341,20 @@ export default {
     dialogExperience(val) {
       val || this.close();
     },
+    success (val){
+      if(val !== null){
+        this.error=null
+        this.feedbackColor='success'
+        this.showingFeedback=true
+      }
+    },
+    error(val){
+      if(val !== null){
+        this.success=null
+        this.feedbackColor='error'
+        this.showingFeedback=true
+      }
+    }
   }
 };
 </script>
