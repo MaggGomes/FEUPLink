@@ -3,41 +3,44 @@
 		<v-card-title class="headline">Edit Profile</v-card-title>
 
 		<v-card-text>
-			<v-container wrap>
-				<v-layout row>
-					<v-text-field label="Name" v-model="editedPerson.name" prepend-icon="person"></v-text-field>
-				</v-layout>
-				<v-layout row>
-					<v-text-field label="Email" v-model="editedPerson.email" prepend-icon="email"></v-text-field>
-				</v-layout>
-				<v-layout row>
-					<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" 
-					single-line prepend-icon="fa-transgender"></v-select>
-				</v-layout>
-				<v-layout row>
-					<v-text-field prepend-icon="phone" label="Phone" v-model="editedPerson.phone"></v-text-field>
-				</v-layout>
-				<v-layout row>
-					<v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" style="width: 100%;">
-						<v-text-field slot="activator" label="Birth Date" :placeholder="birthDateFormatted" v-model="birthDateFormatted" 
-							readonly hint="DD/MM/YYYY format" prepend-icon="event"></v-text-field>
-						<v-date-picker ref="picker" v-model="date" @change="updateBirthDate" min="1950-01-01"
-							:max="new Date().toISOString().substr(0, 10)" value="02/02/2015"></v-date-picker>
-					</v-menu>
-				</v-layout>
-				<v-layout row>
-					<v-text-field prepend-icon="flag" label="Country" v-model="editedPerson.country"></v-text-field>
-				</v-layout>
-				<v-layout row>
-					<v-text-field prepend-icon="location_city" label="City" v-model="editedPerson.city"></v-text-field>
-				</v-layout>
-			</v-container>
+			<v-form autocomplete="off" ref="form" v-model="valid">
+				<v-container wrap>
+					<v-layout row>
+						<v-text-field label="Name" v-model="editedPerson.name" :rules="[v => !!v || 'Name is required']" required prepend-icon="person"></v-text-field>
+					</v-layout>
+					<v-layout row>
+						<v-text-field label="Email" v-model="editedPerson.email" :rules="[v => !!v || 'Email is required']" required prepend-icon="email"></v-text-field>
+					</v-layout>
+					<v-layout row>
+						<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" 
+						single-line :rules="[v => !!v || 'Gender is required']" required prepend-icon="fa-transgender"></v-select>
+					</v-layout>
+					<v-layout row>
+						<v-text-field prepend-icon="phone" label="Phone" v-model="editedPerson.phone"></v-text-field>
+					</v-layout>
+					<v-layout row>
+						<v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" style="width: 100%;">
+							<v-text-field slot="activator" label="Birth Date" :placeholder="birthDateFormatted" v-model="birthDateFormatted" 
+								readonly hint="DD/MM/YYYY format" prepend-icon="event"></v-text-field>
+							<v-date-picker ref="picker" v-model="date" @change="updateBirthDate" min="1950-01-01"
+								:max="new Date().toISOString().substr(0, 10)" value="02/02/2015"></v-date-picker>
+						</v-menu>
+					</v-layout>
+					<v-layout row>
+						<v-text-field prepend-icon="flag" label="Country" v-model="editedPerson.country"></v-text-field>
+					</v-layout>
+					<v-layout row>
+						<v-text-field prepend-icon="location_city" label="City" v-model="editedPerson.city"></v-text-field>
+					</v-layout>
+				</v-container>
+			</v-form>
 		</v-card-text>
 
 		<v-card-actions>
 			<v-layout row justify-end>
 				<v-btn color="primary" flat @click.stop="$emit('closeDialog')">Close</v-btn>
-				<v-btn color="primary" flat @click.stop="updatePersonProfile">Edit</v-btn>
+				<v-btn v-if="valid" color="primary" flat @click.stop="updatePersonProfile">Edit</v-btn>
+				<v-btn v-else disabled>Edit</v-btn>
 			</v-layout>
 		</v-card-actions>
 	</v-card>
@@ -57,6 +60,7 @@ export default {
 
   data() {
     return {
+	  valid: false,
       editedPerson: this.person,
       genders: ["Male", "Female"],
 			menu: null,

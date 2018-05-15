@@ -15,83 +15,89 @@
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
               <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12>
-                      <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
-                    </v-flex>
-                    <v-flex xs9>
-                      <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
-                    </v-flex>
-                    <v-flex xs3>
-                      <v-btn-toggle v-model="editedItemExperience.title_visibility ? 0 : 1">
-                        <v-btn flat>
-                          <v-icon>visibility</v-icon>
-                        </v-btn>
-                        <v-btn flat>
-                          <v-icon>visibility_off</v-icon>
-                        </v-btn>
-                      </v-btn-toggle>
-                    </v-flex>
-                    <v-flex xs9>
-                      <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
-                        transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
-                        <v-text-field slot="activator" label="Start date"
-                        v-model="editedItemExperience.startDate" prepend-icon="event" readonly></v-text-field>
-                        <v-date-picker ref="picker" v-model="editedItemExperience.startDate" @change="save" 
-                        min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
-                      </v-menu>
-                    </v-flex>
-                    <v-flex xs3>
-                      <v-btn-toggle v-model="editedItemExperience.startDate_visibility ? 0 : 1">
-                        <v-btn flat>
-                          <v-icon>visibility</v-icon>
-                        </v-btn>
-                        <v-btn flat>
-                          <v-icon>visibility_off</v-icon>
-                        </v-btn>
-                      </v-btn-toggle>
-                    </v-flex>
-                    <v-flex xs9>
-                      <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2"
-                        transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
-                        <v-text-field slot="activator" label="End date" v-model="editedItemExperience.endDate" 
-                        prepend-icon="event" readonly></v-text-field>
-                        <v-date-picker ref="picker" v-model="editedItemExperience.endDate" @change="save" min="1950-01-01" 
-                        :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
-                      </v-menu>
-                    </v-flex>
-                    <v-flex xs3>
-                      <v-btn-toggle v-model="editedItemExperience.endDate_visibility ? 0 : 1">
-                        <v-btn flat>
-                          <v-icon>visibility</v-icon>
-                        </v-btn>
-                        <v-btn flat>
-                          <v-icon>visibility_off</v-icon>
-                        </v-btn>
-                      </v-btn-toggle>
-                    </v-flex>
-                    <v-flex xs9>
-                      <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" 
-                      label="Current job" prepend-icon="person"></v-select>
-                    </v-flex>
-                    <v-flex xs3>
-                      <v-btn-toggle v-model="editedItemExperience.isCurrent_visibility ? 0 : 1">
-                        <v-btn flat>
-                          <v-icon>visibility</v-icon>
-                        </v-btn>
-                        <v-btn flat>
-                          <v-icon>visibility_off</v-icon>
-                        </v-btn>
-                      </v-btn-toggle>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
+                <v-form autocomplete="off" ref="form" v-model="valid3">
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12>
+                        <v-text-field label="Company" v-model="editedItemExperience.company"
+                        :rules="[v => !!v || 'Company name is required']" required></v-text-field>
+                      </v-flex>
+                      <v-flex xs9>
+                        <v-text-field label="Title" v-model="editedItemExperience.title"
+                        :rules="[v => !!v || 'Title is required']" required></v-text-field>
+                      </v-flex>
+                      <v-flex xs3>
+                        <v-btn-toggle v-model="editedItemExperience.title_visibility ? 0 : 1">
+                          <v-btn flat>
+                            <v-icon>visibility</v-icon>
+                          </v-btn>
+                          <v-btn flat>
+                            <v-icon>visibility_off</v-icon>
+                          </v-btn>
+                        </v-btn-toggle>
+                      </v-flex>
+                      <v-flex xs9>
+                        <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
+                          transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
+                          <v-text-field slot="activator" label="Start date"
+                          v-model="editedItemExperience.startDate" prepend-icon="event" 
+                          :rules="[v => !!v || 'Start date is required']" required readonly></v-text-field>
+                          <v-date-picker ref="picker" v-model="editedItemExperience.startDate" @change="save" 
+                          min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
+                        </v-menu>
+                      </v-flex>
+                      <v-flex xs3>
+                        <v-btn-toggle v-model="editedItemExperience.startDate_visibility ? 0 : 1">
+                          <v-btn flat>
+                            <v-icon>visibility</v-icon>
+                          </v-btn>
+                          <v-btn flat>
+                            <v-icon>visibility_off</v-icon>
+                          </v-btn>
+                        </v-btn-toggle>
+                      </v-flex>
+                      <v-flex xs9>
+                        <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2"
+                          transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
+                          <v-text-field slot="activator" label="End date" v-model="editedItemExperience.endDate" 
+                          prepend-icon="event" readonly></v-text-field>
+                          <v-date-picker ref="picker" v-model="editedItemExperience.endDate" @change="save" min="1950-01-01" 
+                          :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
+                        </v-menu>
+                      </v-flex>
+                      <v-flex xs3>
+                        <v-btn-toggle v-model="editedItemExperience.endDate_visibility ? 0 : 1">
+                          <v-btn flat>
+                            <v-icon>visibility</v-icon>
+                          </v-btn>
+                          <v-btn flat>
+                            <v-icon>visibility_off</v-icon>
+                          </v-btn>
+                        </v-btn-toggle>
+                      </v-flex>
+                      <v-flex xs9>
+                        <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" 
+                        label="Current job" :rules="[v => !!v || 'Is current job is required']" required prepend-icon="person"></v-select>
+                      </v-flex>
+                      <v-flex xs3>
+                        <v-btn-toggle v-model="editedItemExperience.isCurrent_visibility ? 0 : 1">
+                          <v-btn flat>
+                            <v-icon>visibility</v-icon>
+                          </v-btn>
+                          <v-btn flat>
+                            <v-icon>visibility_off</v-icon>
+                          </v-btn>
+                        </v-btn-toggle>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+                <v-btn v-if="valid3" color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+                <v-btn v-else disabled>Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -156,6 +162,7 @@ export default {
   data() {
     return {
       defaultCompanyImg: defaultCompanyImg,
+      valid3: false,
       menu: false,
       menu2: false,
       jobOptions: ["Yes", "No"],
