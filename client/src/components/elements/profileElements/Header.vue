@@ -131,7 +131,9 @@
       </v-container>
     </v-card>
     
-    <profile-edit @personEdited="updatePersonObj" :person="person" :editDialog="editPersonDialog"></profile-edit>
+    <v-dialog v-model="editPersonDialog" max-width="400px">
+      <profile-edit @personEdited="updatePersonObj" @closeDialog="editPersonDialog = false" :person="person"></profile-edit>
+    </v-dialog>
   </div>
 </template>
 
@@ -160,6 +162,7 @@ export default {
   methods: {
     updatePersonObj(editedPerson) {
       this.person = editedPerson
+      this.editPersonDialog = false
     }
   },
 
