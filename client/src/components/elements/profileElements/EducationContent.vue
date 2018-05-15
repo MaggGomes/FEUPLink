@@ -51,7 +51,7 @@
                           label="Academic degree" :rules="[v => !!v || 'Academic degree is required']" required prepend-icon="person" ></v-select>
                       </v-flex>
                       <v-flex xs12>
-                        <v-select :items="coursesOptions" item-text="name" autocomplete v-model="editedItemEducation.course"
+                        <v-select :items="filteredCourses" item-text="name" autocomplete v-model="editedItemEducation.course"
                         label="Course name" :rules="[v => !!v || 'Course is required']" required prepend-icon="person"></v-select>
                       </v-flex>
                       <v-flex xs12 sm6>
@@ -296,6 +296,9 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndexExperience === -1 ? "New Item" : "Edit Item";
+    },
+    filteredCourses() {
+      return this.coursesOptions.filter(c => c.academicDegree == this.editedItemEducation.degree)
     }
   },
 

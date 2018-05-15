@@ -261,7 +261,7 @@
 											</v-flex>
 											<v-flex xs9 sm5 text-xs-center>	
 											  <v-select
-													:items="courses"		
+													:items="filteredCourses"		
 													v-model="courseId"
 													item-text="name"
 													item-value="id"
@@ -935,6 +935,11 @@ export default {
 	mounted: async function (){
 		await this.getCourses();
 		await this.getDepartments()
+  },
+  computed: {
+    filteredCourses() {
+      return this.courses.filter(c => c.academicDegree == this.degree)
+    }
   },
 }
 </script>
