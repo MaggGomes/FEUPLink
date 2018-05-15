@@ -131,7 +131,7 @@
       </v-container>
     </v-card>
     
-    <profile-edit :person="person" :editDialog="editPersonDialog"></profile-edit>
+    <profile-edit @personEdited="updatePersonObj" :person="person" :editDialog="editPersonDialog"></profile-edit>
   </div>
 </template>
 
@@ -146,14 +146,38 @@ export default {
     ProfileEdit
   },
 
-  props: ["person", "personType", "locationString"],
+  props: ["personObj", "personType"],
 
   data() {
     return {
       editPersonDialog: false,
       defaultUserImg: defaultUserImg,
-      active: null
+      active: null,
+      person: this.personObj,
     };
+  },
+
+  methods: {
+    updatePersonObj(editedPerson) {
+      this.person = editedPerson
+    }
+  },
+
+  computed: {
+    locationString() {
+      if (this.person.city === undefined && this.person.country === undefined)
+        return ''
+        
+      return this.person.country !== null && this.person.city !== null
+        ? this.person.city + ", " + this.person.country
+        : [this.person.city, this.person.country].join("");
+    }
+  },
+
+  watch: {
+    personObj(val) {
+      this.person = val;
+		}
   }
 };
 </script>

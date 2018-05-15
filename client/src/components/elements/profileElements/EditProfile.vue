@@ -81,15 +81,16 @@ export default {
 				city: this.editedPerson.city
 			});
 			console.log(result)
+			if (result.status !== 200) {
+				// show error!!
+			}
 
 			this.editPersonDialog = false;
+
+			//Updating parent component
+			this.$emit('personEdited', this.editedPerson)
 		}
 	},
-
-  mounted() {
-    console.log(this.person.name);
-    console.log(this.editedPerson.name);
-  },
 
   watch: {
     person(val) {

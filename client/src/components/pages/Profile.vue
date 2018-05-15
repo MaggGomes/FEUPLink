@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <profile-header class="cards-width" :person="person" :personType="personType" :locationString="locationString">
+    <profile-header class="cards-width" :personObj="person" :personType="personType">
     </profile-header>
 
     <profile-experience-content class="cards-width" :person="person" :itemsExperience="itemsExperience">
@@ -32,7 +32,6 @@ export default {
     itemsExperience: [],
     itemsEducation: [],
     person: {},
-    locationString: "",
     personType: ""
   }),
 
@@ -53,12 +52,7 @@ export default {
         });
 
         this.person = student.data.person;
-
-        this.locationString =
-          this.person.country !== null && this.person.city !== null
-            ? this.person.city + ", " + this.person.country
-            : [this.person.city, this.person.country].join("");
-
+        
         for (var i = 0; i < student.data.courses.length; i++) {
           var enrDate = new Date(
             student.data.courses[i].CourseStudent.enrollmentDate
