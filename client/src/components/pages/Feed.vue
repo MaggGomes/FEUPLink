@@ -22,16 +22,18 @@
           </v-toolbar>
           <v-list class="pt-0" dense>
             <v-btn class="button-layout" v-if="this.$store.state.user.role === 'Super Admin' || this.$store.state.user.role === 'Channel Admin'" flat router :to="`/feed/create`">Create Post</v-btn>
-            <v-list-tile v-for="nav_tab in nav_tabs"
-                         v-bind:key="nav_tab.id"
-                         v-bind:class="[{ active: currentTab === nav_tab.id }]"
-                         @click="currentTab = nav_tab.id">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                    <div style="text-align: center; padding: auto; font-weight: bold;">{{ nav_tab.name }}</div>
+            <template v-for="(nav_tab, index) in nav_tabs">
+                <v-divider v-if="index !== 0" :key="'aside-tabs' + index" style="margin-left: 1.5em;"></v-divider>
+                <v-list-tile v-bind:key="nav_tab.id"
+                            v-bind:class="[{ active: currentTab === nav_tab.id }]"
+                            @click="currentTab = nav_tab.id">
+                <v-list-tile-content>
+                    <v-list-tile-title style="text-align: center; padding: auto; font-weight: bold;">
+                        {{ nav_tab.name }}
                     </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-tile-content>
+                </v-list-tile>
+            </template>
           </v-list>
         </v-navigation-drawer>
         <v-tabs dark
