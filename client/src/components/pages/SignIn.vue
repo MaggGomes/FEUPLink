@@ -36,10 +36,10 @@
                   {{$t("signup")}}
                 </v-btn>
                 <v-spacer> </v-spacer>
-                </v-btn>
-                <v-btn v-else disabled>{{$t("continue")}}</v-btn>
                 <v-btn v-if="valid" v-on:click="signin" dark>
                   {{$t("continue")}}
+                </v-btn>
+                <v-btn v-else disabled>{{$t("continue")}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -125,7 +125,7 @@ export default {
   height: 60px;
   font-size: 125%;
 }
-.toolbar__content, button.btn{
+#main_card .toolbar__content, button.btn{
   background-color:rgb(140,45,25)!important;
 }
 @media only screen and (max-width: 960px) and (min-width: 600px){

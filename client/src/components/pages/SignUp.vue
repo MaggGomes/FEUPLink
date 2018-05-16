@@ -809,7 +809,13 @@ export default {
   font-size: 125%;
 }
 
-.continue_btn, .back_btn, .finish_btn, .stepper__step--active .stepper__step__step, .stepper__step--complete .stepper__step__step, .toolbar__content{
+.continue_btn,
+.back_btn,
+.finish_btn,
+.stepper__step--active .stepper__step__step,
+.stepper__step--complete .stepper__step__step,
+#main_card .toolbar__content,
+#userInfo .toolbar__content{
 	background-color:rgb(140,45,25)!important;
 	color:white!important;
 }
