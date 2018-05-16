@@ -167,7 +167,7 @@ export default {
   background: url("assets/header.png") no-repeat center;
   background-size: cover;
   background-color: rgb(140, 45, 25);
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
   height: 50px;
 }
 .main-bar .btn__content {
@@ -189,7 +189,7 @@ export default {
 
 @media (min-width: 991px) {
   .main-bar {
-    height: 120px !important;
+    height: 100px !important;
   }
   .main-bar-content {
     margin-top: 20px;
@@ -205,7 +205,7 @@ export default {
     margin-right: 2px;
   }
   .main-container {
-    margin-top: 30px !important;
+    margin-top: 10px !important;
     margin-left: 30px !important;
   }
 }
