@@ -3,9 +3,9 @@
       <v-container fluid v-if="firstStep" id="createNewAcc">
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm10 md5>
+          <v-flex xs12 sm10 md5 id="main_card">
             <v-card class="elevation-12">
-              <v-toolbar dark class="red darken-4">
+              <v-toolbar dark id="title_create">
                 <v-toolbar-title>Create new account</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
@@ -46,12 +46,12 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-on:click="continueSignup" dark class="red darken-4">Continue</v-btn>
+                <v-btn v-on:click="continueSignup" dark class="continue_btn">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 md5 id="social">
+          <v-flex xs12 sm12 md5 id="social">
 			<facebook-button class="signup-button elevation-12"></facebook-button><br>
             <linked-in-button class="signup-button elevation-12" ></linked-in-button>
           </v-flex>
@@ -59,7 +59,7 @@
         </v-layout>
       </v-container>
       <v-container id="userInfo" fluid v-else>
-        <v-toolbar dark class="red darken-4" height="40px">
+        <v-toolbar dark height="40px" id="title_registration">
               <v-toolbar-title style="font-size: 15px">Registration</v-toolbar-title>
             </v-toolbar>
          		<v-stepper v-model="e1" >
@@ -182,7 +182,7 @@
 							 		
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+							<v-btn dark height="33px" border-radius="0px" @click.native="e1 = 2" class="continue_btn">Continue</v-btn>
 						</v-flex>
          			</v-stepper-content>
          			<v-stepper-content step="2">
@@ -201,8 +201,8 @@
                    </v-container>
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>Back</v-btn>							
-							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">Continue</v-btn>
+							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat class="back_btn">Back</v-btn>
+							<v-btn dark border-radius="0px" @click.native="e1 = 3" class="continue_btn">Continue</v-btn>
 						</v-flex>
 					 </v-stepper-content>
          			<v-stepper-content step="3">
@@ -431,8 +431,8 @@
          			</form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 2" flat>Back</v-btn>					
-					<v-btn dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">Continue</v-btn>
+					<v-btn  @click.native="e1 = 2" flat class="back_btn">Back</v-btn>
+					<v-btn dark border-radius="0px" @click.native="e1 = 4" class="continue_btn">Continue</v-btn>
 				</v-flex>
 			 </v-stepper-content>
          	<v-stepper-content step="4">
@@ -644,8 +644,8 @@
          			</form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn @click.native="e1 = 3" flat>Back</v-btn>					
-					<v-btn color="primary" v-on:click="signup">Finish</v-btn>
+					<v-btn @click.native="e1 = 3" flat class="back_btn">Back</v-btn>
+					<v-btn color="primary" v-on:click="signup" class="finish_btn">Finish</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
@@ -847,12 +847,12 @@ export default {
   font-size: 125%;
 }
 
+.continue_btn, .back_btn, .finish_btn, .stepper__step--active .stepper__step__step, .stepper__step--complete .stepper__step__step, .toolbar__content{
+	background-color:rgb(140,45,25)!important;
+	color:white!important;
+}
 .v-select .dropdown-menu {
 	display:block;
-}
-
-.primary {
-  background-color: #b71c1c !important;
 }
 
 .cc-selector input {
@@ -862,8 +862,14 @@ export default {
             appearance:none;
 }
 
-.student{background-image:url(https://cdn3.iconfinder.com/data/icons/school-and-education-2/56/education_icons_IF-02-512.png);}
-.staff{background-image:url(https://cdn4.iconfinder.com/data/icons/hr-recruitment-management-part-2/400/hr-07-2-512.png);}
+.student{
+	background: url('https://cdn3.iconfinder.com/data/icons/school-and-education-2/56/education_icons_IF-02-512.png') no-repeat center;
+	background-size: cover;
+}
+.staff{
+	background: url('https://cdn4.iconfinder.com/data/icons/hr-recruitment-management-part-2/400/hr-07-2-512.png') no-repeat center;
+	background-size: cover;
+}
 
 .cc-selector input:active +.drinkcard-cc{opacity: .9;}
 .cc-selector input:checked +.drinkcard-cc{
@@ -916,6 +922,14 @@ p{margin-bottom:.3em;}
 	}
 	.to {
 		display: none;
+	}
+}
+@media only screen and (max-width: 960px) and (min-width: 600px){
+	#main_card {
+		margin: 10px 20%;
+	}
+	#social {
+		margin: 10px 40%;
 	}
 }
 </style>
