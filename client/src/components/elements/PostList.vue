@@ -14,6 +14,8 @@
 
 <script>
 
+  import defaultPostImg from "@/assets/defaultPostImage.png";
+
 export default {
 
   data() {
@@ -23,7 +25,10 @@ export default {
 	},
 
 	props: {
-		posts: Object
+    posts: {
+      type: Array,
+      default: []
+    }
 	}
 };
 </script>

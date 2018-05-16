@@ -9,7 +9,7 @@
           <div>
             <h3 class="headline mb-0">{{post.title}}</h3>
             <div>{{post.description}}</div>
-						<div>{{post.text}}</div>
+            <div v-html="post.text"></div>
           </div>
         </v-card-title>
       </v-card>
@@ -22,14 +22,14 @@ import defaultPostImg from "@/assets/defaultPostImage.png";
 import FeedService from '@/services/FeedService'
 
 export default {
- 
+
   data() {
     return {
 			defaultPostImg: defaultPostImg,
 			post: {}
 		}
 	},
-	
+
 	mounted () {
 		this.getPost()
 	},

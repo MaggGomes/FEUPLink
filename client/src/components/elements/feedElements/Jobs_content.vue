@@ -14,9 +14,16 @@
 
 <script>
   import FeedService from '@/services/FeedService'
+  import PostList from "@/components/elements/PostList"
 
   export default {
     name: "nav_tab_3",
+
+    components: {
+      PostList
+    },
+
+
     contents: [],
     data() {
       return {

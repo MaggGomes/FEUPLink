@@ -10,6 +10,12 @@
 
   export default {
     name: "nav_tab_5",
+
+    components: {
+      PostList
+    },
+
+
     contents: [],
     data() {
       return {
