@@ -49,21 +49,11 @@
                         <v-text-field label="Company" v-model="editedItemExperience.company"
                         :rules="[v => !!v || 'Company name is required']" required></v-text-field>
                       </v-flex>
-                      <v-flex xs9>
+                      <v-flex xs12>
                         <v-text-field label="Title" v-model="editedItemExperience.title"
                         :rules="[v => !!v || 'Title is required']" required></v-text-field>
                       </v-flex>
-                      <v-flex xs3>
-                        <v-btn-toggle v-model="editedItemExperience.title_visibility ? 0 : 1">
-                          <v-btn flat>
-                            <v-icon>visibility</v-icon>
-                          </v-btn>
-                          <v-btn flat>
-                            <v-icon>visibility_off</v-icon>
-                          </v-btn>
-                        </v-btn-toggle>
-                      </v-flex>
-                      <v-flex xs9>
+                      <v-flex xs12>
                         <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
                           transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                           <v-text-field slot="activator" label="Start date"
@@ -73,17 +63,7 @@
                           min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
                         </v-menu>
                       </v-flex>
-                      <v-flex xs3>
-                        <v-btn-toggle v-model="editedItemExperience.startDate_visibility ? 0 : 1">
-                          <v-btn flat>
-                            <v-icon>visibility</v-icon>
-                          </v-btn>
-                          <v-btn flat>
-                            <v-icon>visibility_off</v-icon>
-                          </v-btn>
-                        </v-btn-toggle>
-                      </v-flex>
-                      <v-flex xs9>
+                      <v-flex xs12>
                         <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2"
                           transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                           <v-text-field slot="activator" label="End date" v-model="editedItemExperience.endDate" 
@@ -92,29 +72,9 @@
                           :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
                         </v-menu>
                       </v-flex>
-                      <v-flex xs3>
-                        <v-btn-toggle v-model="editedItemExperience.endDate_visibility ? 0 : 1">
-                          <v-btn flat>
-                            <v-icon>visibility</v-icon>
-                          </v-btn>
-                          <v-btn flat>
-                            <v-icon>visibility_off</v-icon>
-                          </v-btn>
-                        </v-btn-toggle>
-                      </v-flex>
-                      <v-flex xs9>
+                      <v-flex xs12>
                         <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" 
                         label="Current job" :rules="[v => !!v || 'Is current job is required']" required prepend-icon="person"></v-select>
-                      </v-flex>
-                      <v-flex xs3>
-                        <v-btn-toggle v-model="editedItemExperience.isCurrent_visibility ? 0 : 1">
-                          <v-btn flat>
-                            <v-icon>visibility</v-icon>
-                          </v-btn>
-                          <v-btn flat>
-                            <v-icon>visibility_off</v-icon>
-                          </v-btn>
-                        </v-btn-toggle>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -209,25 +169,17 @@ export default {
       defaultItemExperience: {
         company: "",
         title: "",
-        title_visibility: true,
         startDate: null,
-        startDate_visibility: true,
         endDate: null,
-        endDate_visibility: true,
-        isCurrent: null,
-        isCurrent_visibility: true
+        isCurrent: null
       },
       editedIndexExperience: -1,
       editedItemExperience: {
         company: "",
         title: "",
-        title_visibility: true,
         startDate: null,
-        startDate_visibility: true,
         endDate: null,
-        endDate_visibility: true,
-        isCurrent: null,
-        isCurrent_visibility: true
+        isCurrent: null
       },
       dialogExperience: false,
       userId: this.$store.state.user.id
@@ -284,13 +236,9 @@ export default {
           this.success = (await ProfileService.updateJobExperience({
             company: this.editedItemExperience.company,
             title: this.editedItemExperience.title,
-            title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
             startDate: this.editedItemExperience.startDate,
-            startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
             endDate: this.editedItemExperience.endDate,
-            endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
             isCurrent: this.editedItemExperience.isCurrent,
-            isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
             personId: this.$store.state.user.id
           })).data;
         } catch(error) {
@@ -301,13 +249,9 @@ export default {
           this.success = (await ProfileService.insertExperience({
             company: this.editedItemExperience.company,
             title: this.editedItemExperience.title,
-            title_visibility: ((this.editedItemExperience.title_visibility == 0) ? true : false),
             startDate: this.editedItemExperience.startDate,
-            startDate_visibility: ((this.editedItemExperience.startDate_visibility == 0) ? true : false),
             endDate: this.editedItemExperience.endDate,
-            endDate_visibility: ((this.editedItemExperience.endDate_visibility == 0) ? true : false),
             isCurrent: this.editedItemExperience.isCurrent,
-            isCurrent_visibility: ((this.editedItemExperience.isCurrent_visibility == 0) ? true : false),
             personId: this.$store.state.user.id
           })).data;
           this.itemsExperience.push(this.editedItemExperience);
