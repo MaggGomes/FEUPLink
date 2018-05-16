@@ -25,8 +25,8 @@
                 <router-link to="/" tag="span" style="cursor: pointer">
                   <v-avatar tile class="main-logo">
                     <img v-bind:src="logo" alt="FEUPLink">
-                  </v-avatar>              
-                </router-link>                    
+                  </v-avatar>
+                </router-link>
               </v-toolbar-title>
             </v-flex>
 
@@ -39,19 +39,19 @@
                     <router-link to="/" tag="span" style="cursor: pointer">
                       <v-avatar tile class="mini-logo">
                         <img :src="minilogo" alt="IconFeup">
-                      </v-avatar>             
-                    </router-link>                    
+                      </v-avatar>
+                    </router-link>
                   </v-toolbar-title>
                   </v-layout>
                 </v-flex>
               </v-layout>
             </v-flex>
-                       
+
           <v-flex class="main-bar-content hidden-sm-and-down">
-            <v-layout justify-end>    
+            <v-layout justify-end>
               <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
                 <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
-                
+
               </v-toolbar-items>
               <v-toolbar-items flex v-else>
                 <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
@@ -117,6 +117,7 @@ export default {
     }
   },
   created: function() {
+    this.$vuetify.theme.primary = '#8c2d19';
     let locale = this.$cookies.get("locale");
     if (locale === null) {
       locale = navigator.language; //|| navigator.userLanguage

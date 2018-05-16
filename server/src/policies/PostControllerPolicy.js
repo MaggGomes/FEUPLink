@@ -8,7 +8,7 @@ module.exports = {
             description: Joi.string().required(),
             text: Joi.string().required(),
             date: Joi.string(),
-            link: Joi.string(),
+            link: Joi.string().allow(''),
             numViews: Joi.number().integer().min(0),
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),

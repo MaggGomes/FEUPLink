@@ -117,7 +117,6 @@
             <v-flex xs12 sm12 text-right class="text-xs-right">
               <v-btn  @click.native="e1 = 1" flat>Back</v-btn>
               <v-btn
-                color="primary"
                 v-on:click="submitData"
                 :disabled="!valid">
                 Finish
@@ -149,6 +148,7 @@
         valid: false,
         showingError: false,
         errorMessage: '',
+        inputColor: 'red',
         // form-fields
         loading: false,
         e1: 0,
@@ -158,7 +158,7 @@
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
         link: '',
-        tags: ['Porto', 'University', 'Engineering', 'Informatics'],
+        tags: ['Engineering', 'Informatics', 'Management', 'Porto', 'University', ],
         selectedTags: [],
         channels: [],
         selectedChannels: []
@@ -217,10 +217,6 @@
 <style scopped>
   .v-select .dropdown-menu {
     display:block;
-  }
-
-  .primary {
-    background-color: #8c2d19 !important;
   }
 
   .cc-selector input {
