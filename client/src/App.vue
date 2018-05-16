@@ -35,13 +35,24 @@
                 <v-toolbar-side-icon style="margin: 0px;" @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
                 <v-flex>
                   <v-layout justify-end>
-                  <v-toolbar-title>
-                    <router-link to="/" tag="span" style="cursor: pointer">
-                      <v-avatar tile class="mini-logo">
-                        <img :src="minilogo" alt="IconFeup">
-                      </v-avatar>             
-                    </router-link>                    
-                  </v-toolbar-title>
+                    <v-menu>
+                      <v-btn class="language-dropdown-sm-and-md" slot="activator">
+                        {{this.$i18n.locale}}
+                        <v-icon large left>arrow_drop_down</v-icon>
+                      </v-btn>
+                      <v-list>
+                        <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+                          <v-list-tile-title>{{ language }}</v-list-tile-title>
+                        </v-list-tile>
+                      </v-list>
+                    </v-menu>
+                    <v-toolbar-title>
+                      <router-link to="/" tag="span" style="cursor: pointer">
+                        <v-avatar tile class="mini-logo">
+                          <img :src="minilogo" alt="IconFeup">
+                        </v-avatar>             
+                      </router-link>                    
+                    </v-toolbar-title>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -52,7 +63,7 @@
                 <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
                   <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
                   <v-menu>
-                    <v-btn id="locale-dropdown" slot="activator">
+                    <v-btn slot="activator">
                       {{this.$i18n.locale}}
                       <v-icon large left>arrow_drop_down</v-icon>
                     </v-btn>
@@ -66,7 +77,7 @@
                 <v-toolbar-items flex v-else>
                   <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
                   <v-menu>
-                    <v-btn id="locale-dropdown" slot="activator">
+                    <v-btn slot="activator">
                       {{this.$i18n.locale}}
                       <v-icon large left>arrow_drop_down</v-icon>
                     </v-btn>
@@ -195,6 +206,17 @@ export default {
   height: 40px !important;
   width: auto !important;
 }
+
+.language-dropdown-sm-and-md {
+    width: 20px;
+    height: 20px;
+    background-color: transparent !important;
+    font-weight: bold;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 0.6em;
+    box-shadow: none !important;
+  }
 
 @media (min-width: 991px) {
   .main-bar {
