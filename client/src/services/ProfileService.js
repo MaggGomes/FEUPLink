@@ -31,4 +31,10 @@ export default {
     updatePerson (personInfo) {
         return Api().post('update_person', personInfo)
     },
+    updateExperienceVisibility (userInfo) {
+        return Api().post('update_experience_visibility', userInfo)
+    },
+    updateEducationVisibility (userInfo) {
+        return Api().post('update_education_visibility', userInfo)
+    },
 }

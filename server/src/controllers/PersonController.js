@@ -71,7 +71,7 @@ module.exports = {
                 'phone_visibility', 'birthDate', 'birthDate_visibility', 'city', 'city_visibility',
                 'country', 'country_visibility', 'email', 'email_visibility', 'facebookProfile',
                 'facebookProfile_visibility', 'linkedInProfile', 'linkedInProfile_visibility',
-                'whatsAppProfile', 'whatsAppProfile_visibility', 'instagramProfile', 'instagramProfile_visibility'],
+                'whatsAppProfile', 'whatsAppProfile_visibility', 'instagramProfile', 'instagramProfile_visibility', 'experienceVisible'],
                 where: {
                     id: req.query.id,
                 },
@@ -345,6 +345,48 @@ module.exports = {
 
             res.status(200).send({
                 res: 'Successfully updated the post information',
+            });
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
+    async updateExperienceVisibility(req, res) {
+        try {
+            const userId = req.body.personId;
+            delete req.body.personId;
+
+            (await Person.update(
+                req.body, {
+                    where: {
+                        id: userId,
+                    },
+                }));
+
+            res.status(200).send({
+                res: 'Successfully updated the experience visibility',
+            });
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
+    async updateEducationVisibility(req, res) {
+        try {
+            const userId = req.body.personId;
+            delete req.body.personId;
+
+            (await Student.update(
+                req.body, {
+                    where: {
+                        PersonId: userId,
+                    },
+                }));
+
+            res.status(200).send({
+                res: 'Successfully updated the education visibility',
             });
         } catch (err) {
             res.status(400).send({

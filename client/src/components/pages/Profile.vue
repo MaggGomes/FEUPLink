@@ -7,7 +7,7 @@
     <profile-experience-content class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content class="cards-width" :person="person" :itemsEducation="itemsEducation">
+    <profile-education-content class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
@@ -32,6 +32,7 @@ export default {
     itemsExperience: [],
     itemsEducation: [],
     person: {},
+    student: {},
     personType: ""
   }),
 
@@ -50,7 +51,7 @@ export default {
         let student = await ProfileService.getStudentInformation({
           id: this.$route.params.id
         });
-
+        this.student = student.data.student;
         this.person = student.data.person;
         
         for (var i = 0; i < student.data.courses.length; i++) {

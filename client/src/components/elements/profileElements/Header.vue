@@ -3,6 +3,17 @@
     <v-card class="short-width" flat raised style="margin-bottom: 20px; margin-top: 20px;">
       <v-container>
         <v-layout style="margin-bottom: 20px;" row>
+          <!-- provide feedback to the user -->
+          <v-snackbar :timeout="6000" :color="feedbackColor" v-model="showingFeedback" top multi-line>
+          <div v-if="error!=null">
+            {{error.response.data.error}}
+          </div>
+          <div v-if="success!=null">
+            {{success.res}}
+          </div>
+          <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+          </v-snackbar>
+
           <!-- Start region of mobile screen -->
           <v-flex hidden-md-and-up>
             <v-layout row justify-end>
@@ -19,7 +30,7 @@
               </v-flex>
             </v-layout>
             <v-layout style="margin-bottom: 15px;margin-top: 15px;" row>
-              <v-flex xs12 wrap>
+              <v-flex xs9 wrap>
                 <h2 class="text-align-center">{{ person.name }}</h2>
               </v-flex>
             </v-layout>
@@ -131,7 +142,7 @@
       </v-container>
     </v-card>
     
-    <v-dialog v-model="editPersonDialog" max-width="400px">
+    <v-dialog v-model="editPersonDialog" max-width="600px">
       <profile-edit @personEdited="updatePersonObj" @closeDialog="editPersonDialog = false" :person="person"></profile-edit>
     </v-dialog>
   </div>
@@ -156,12 +167,18 @@ export default {
       defaultUserImg: defaultUserImg,
       active: null,
       person: this.personObj,
+	    showingFeedback: false,
+      feedbackColor: 'error',
+      error: null,
+      success: null
     };
   },
 
   methods: {
     updatePersonObj(editedPerson) {
-      this.person = editedPerson
+      this.person = editedPerson[0]
+      this.success = editedPerson[1]
+      this.error = editedPerson[2]
       this.editPersonDialog = false
     }
   },
@@ -180,7 +197,21 @@ export default {
   watch: {
     personObj(val) {
       this.person = val;
-		}
+    },
+	  success (val){
+      if(val !== null){
+        this.error=null
+        this.feedbackColor='success'
+        this.showingFeedback=true
+      }
+    },
+    error(val){
+      if(val !== null){
+        this.success=null
+        this.feedbackColor='error'
+        this.showingFeedback=true
+      }
+    }
   }
 };
 </script>

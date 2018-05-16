@@ -114,9 +114,7 @@ module.exports = {
             city_visibility: Joi.boolean().required(),
             courseId: Joi.number().required(),
             enrollmentDate: Joi.string().required(),
-            enrollmentDate_visibility: Joi.boolean().required(),
             graduationDate: Joi.string(),
-            graduationDate_visibility: Joi.boolean().required(),
             type: Joi.string().required(),
             type_visibility: Joi.boolean().required(),
             mecNumber: Joi.string().required(),
@@ -125,13 +123,9 @@ module.exports = {
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
-            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
-            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
-            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
-            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 
@@ -236,13 +230,9 @@ module.exports = {
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
-            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
-            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
-            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
-            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 
