@@ -16,7 +16,7 @@
 
           <!-- Start region of mobile screen -->
           <v-flex hidden-md-and-up>
-            <v-layout row justify-end>
+            <v-layout v-if="person.id == this.$store.state.user.id" row justify-end>
               <v-btn icon class="mx-0" @click.stop="editPersonDialog = true">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -77,7 +77,7 @@
           <!-- Start region of Small, medium, large and extra-large screen -->
           <v-flex hidden-sm-and-down>
   
-            <v-layout row justify-end>
+            <v-layout v-if="person.id == this.$store.state.user.id" row justify-end>
               <v-btn icon class="mx-0" @click.stop="editPersonDialog = true">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -142,7 +142,7 @@
       </v-container>
     </v-card>
     
-    <v-dialog v-model="editPersonDialog" max-width="600px">
+    <v-dialog v-if="person.id == this.$store.state.user.id" v-model="editPersonDialog" max-width="600px">
       <profile-edit @personEdited="updatePersonObj" @closeDialog="editPersonDialog = false" :person="person"></profile-edit>
     </v-dialog>
   </div>

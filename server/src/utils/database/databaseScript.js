@@ -80,10 +80,9 @@ module.exports = {
             },
             defaults: {
                 name: 'Admin',
-                name_visibility: false,
                 hashedPassword: 'Password1',
-                gender_visibility: false,
-                email_visibility: false,
+                gender_visibility: 'Super Admins',
+                email_visibility: 'Super Admins',
                 role: 'Super Admin',
             },
         });

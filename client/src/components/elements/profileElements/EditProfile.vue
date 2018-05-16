@@ -20,14 +20,8 @@
 			<v-form autocomplete="off" ref="form" v-model="valid">
 				<v-container wrap>
 					<v-layout row>
-						<v-flex xs7>
+						<v-flex xs12>
 							<v-text-field label="Name" v-model="editedPerson.name" :rules="[v => !!v || 'Name is required']" required prepend-icon="person"></v-text-field>
-						</v-flex>
-						<v-flex xs1>
-						</v-flex>
-						<v-flex xs4>
-							<v-select :items="visibleOptions" v-model="editedPerson.name_visibility" 
-                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
@@ -157,7 +151,6 @@ export default {
 				this.success = (await ProfileService.updatePerson({
 					userId: this.editedPerson.id,
 					name: this.editedPerson.name,
-					name_visibility: this.editedPerson.name_visibility,
 					email: this.editedPerson.email,
 					email_visibility: this.editedPerson.email_visibility,
 					gender: this.editedPerson.gender,

@@ -28,12 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      name_visibility: {
-        type: DataTypes.ENUM,
-        values: ['All Users', 'Channel Admins', 'Super Admins'],
-        defaultValue: 'All Users',
-        allowNull: false,
-      },
       gender: {
         type: DataTypes.ENUM,
         values: ['Male', 'Female', 'Not Specified'],

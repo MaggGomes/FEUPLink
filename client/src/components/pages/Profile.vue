@@ -4,10 +4,10 @@
     <profile-header class="cards-width" :personObj="person" :personType="personType">
     </profile-header>
 
-    <profile-experience-content class="cards-width" :person="person" :itemsExperience="itemsExperience">
+    <profile-experience-content v-if="getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(person.experienceVisible)" class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
+    <profile-education-content v-if="getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(student.educationVisible)" class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
@@ -33,7 +33,9 @@ export default {
     itemsEducation: [],
     person: {},
     student: {},
-    personType: ""
+    personType: "",
+    visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
+    roles: ['User', 'Channel Admin', 'Super Admin']
   }),
 
   created() {
@@ -98,6 +100,20 @@ export default {
         let staff = await ProfileService.getStaffInformation({
           id: this.$route.params.id
         });
+      }
+    },
+    getVisibleIndex(str) {
+      console.log("visible " + str);
+      for(var i = 0; i < this.visibleOptions.length; i++) {
+        if(str == this.visibleOptions[i])
+          return i;
+      }
+    },
+    getRoleIndex(str) {
+      console.log("role " + str);
+      for(var i = 0; i < this.roles.length; i++) {
+        if(str == this.roles[i])
+          return i;
       }
     }
   }
