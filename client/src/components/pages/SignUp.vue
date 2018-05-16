@@ -462,7 +462,7 @@
          		<v-form autocomplete="off" ref="form" v-model="formValid3">
 							<v-container fluid>
 								<v-layout align-center>
-									<v-flex xs9 sm11 text-xs-center>
+									<v-flex xs12 sm12 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 												prepend-icon="person"
 												:placeholder="$t('company')"
@@ -476,20 +476,10 @@
 												required
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 
 								<v-layout row wrap align-center>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-select
 											:items="$t('company_types')"
 											v-model="companyType"
@@ -497,37 +487,17 @@
 											prepend-icon="person"
 										></v-select>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyTypeVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-text-field
 										prepend-icon="person"
 										:placeholder="$t('company_industry')"
 										v-model="companyIndustry"
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyIndustryVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 
 								<v-layout align-center>
-									<v-flex xs9 sm11 text-xs-center>
+									<v-flex xs12 sm12 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 										prepend-icon="person"
 										:placeholder="$t('position')"
@@ -540,19 +510,9 @@
 										:rules="positionRules" required
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="positionVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 								<v-layout row wrap align-center>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-menu
 											ref="menu4"
 											lazy
@@ -590,22 +550,12 @@
 											></v-date-picker>
 										</v-menu>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="date4Visible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 
 									<v-flex class="to" xs12 sm1 text-xs-center>
 										to
 									</v-flex>
 
-									<v-flex xs9 sm4 text-xs-center>
+									<v-flex xs12 sm5 text-xs-center>
 										<v-menu
 											ref="menu5"
 											lazy
@@ -634,16 +584,6 @@
 											></v-date-picker>
 										</v-menu>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="date5Visible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 							
 							<v-layout row wrap align-center>
@@ -653,16 +593,6 @@
 									v-model="checkboxWork"
 									></v-checkbox>
 								</v-flex>
-								<v-flex xs3 offset-xs8 sm1 text-xs-center>
-									<v-btn-toggle v-model="checkboxWorkVisible">
-										<v-btn flat>
-											<v-icon>visibility</v-icon>
-										</v-btn>
-										<v-btn flat>
-											<v-icon>visibility_off</v-icon>
-										</v-btn>
-									</v-btn-toggle>
-								</v-flex>
 							</v-layout>
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm3 text-xs-center>
@@ -670,16 +600,6 @@
 									:label="$t('no_work_experience')"
 									v-model="checkboxNoExperience"
 									></v-checkbox>
-								</v-flex>
-								<v-flex xs3 offset-xs8 sm1 text-xs-center>
-									<v-btn-toggle v-model="checkboxNoExperienceVisible">
-										<v-btn flat>
-											<v-icon>visibility</v-icon>
-										</v-btn>
-										<v-btn flat>
-											<v-icon>visibility_off</v-icon>
-										</v-btn>
-									</v-btn-toggle>
 								</v-flex>
 							</v-layout>
 							
@@ -766,15 +686,7 @@ export default {
 	  date3Visible: 0,
 	  typeVisible: 0,
 	  numberVisible: 0,
-	  companyVisible: 0,
-	  positionVisible: 0,
-	  companyTypeVisible: 0,
-	  checkboxWorkVisible: 0,
-	  checkboxNoExperienceVisible: 0,
-	  date4Visible: 0,
-	  date5Visible: 0,
 	  companyIndustry: '',
-	  companyIndustryVisible: 0,
 	  workingLocationVisible: 0,
 	  workingLocation: '',
 	  nameRules: [
@@ -857,13 +769,9 @@ export default {
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
-						title_visibility: ((this.positionVisible == 0) ? true : false),
 						startDate: this.date4,
-						startDate_visibility: ((this.date4Visible == 0) ? true : false),
 						endDate: this.date5,
-						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
-						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}
@@ -893,13 +801,9 @@ export default {
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
-						title_visibility: ((this.positionVisible == 0) ? true : false),
 						startDate: this.date4,
-						startDate_visibility: ((this.date4Visible == 0) ? true : false),
 						endDate: this.date5,
-						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
-						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}	

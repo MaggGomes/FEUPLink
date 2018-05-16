@@ -125,13 +125,9 @@ module.exports = {
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
-            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
-            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
-            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
-            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 
@@ -236,13 +232,9 @@ module.exports = {
             companyType: Joi.string(),
             companyIndustry: Joi.string(),
             title: Joi.string(),
-            title_visibility: Joi.boolean().required(),
             startDate: Joi.string(),
-            startDate_visibility: Joi.boolean().required(),
             endDate: Joi.string(),
-            endDate_visibility: Joi.boolean().required(),
             isCurrent: Joi.boolean(),
-            isCurrent_visibility: Joi.boolean().required(),
             workExperience: Joi.boolean(),
         };
 

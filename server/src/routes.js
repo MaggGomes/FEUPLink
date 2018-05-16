@@ -92,6 +92,10 @@ module.exports = (app) => {
   app.post('/delete_course_student',
     PersonController.deleteCourseStudent
   );
+
+  app.post('/update_experience_visibility',
+    PersonController.updateExperienceVisibility
+  );
   // ----Course
 
   app.post('/create_course',

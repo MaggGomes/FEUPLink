@@ -61,10 +61,6 @@ module.exports = {
             startDate: req.body.startDate,
             endDate: req.body.endDate,
             isCurrent: req.body.isCurrent,
-            title_visibility: req.body.title_visibility,
-            startDate_visibility: req.body.startDate_visibility,
-            endDate_visibility: req.body.endDate_visibility,
-            isCurrent_visibility: req.body.isCurrent_visibility,
             CompanyId: company.toJSON().id,
             PersonId: personJson.id,
           });
@@ -114,10 +110,6 @@ module.exports = {
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           isCurrent: req.body.isCurrent,
-          title_visibility: req.body.title_visibility,
-          startDate_visibility: req.body.startDate_visibility,
-          endDate_visibility: req.body.endDate_visibility,
-          isCurrent_visibility: req.body.isCurrent_visibility,
           CompanyId: company.toJSON().id,
           PersonId: personJson.id,
         });
@@ -543,10 +535,6 @@ module.exports = {
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           isCurrent: req.body.isCurrent,
-          title_visibility: req.body.title_visibility,
-          startDate_visibility: req.body.startDate_visibility,
-          endDate_visibility: req.body.endDate_visibility,
-          isCurrent_visibility: req.body.isCurrent_visibility,
           CompanyId: company.toJSON().id,
           PersonId: person.id,
         });

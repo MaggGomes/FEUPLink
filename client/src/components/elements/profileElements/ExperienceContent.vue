@@ -2,10 +2,10 @@
   <v-card flat raised class="short-width" style="margin-bottom: 20px;">
     <v-container class="minimum-side-padding">
       <v-layout row>
-        <v-flex xs11>
+        <v-flex xs7 wrap>
           <v-toolbar-title class="center-text">Experience</v-toolbar-title>
         </v-flex>
-        <v-flex v-if="person.id == this.$store.state.user.id">
+        <v-flex v-if="person.id == this.$store.state.user.id" wrap>
           <!-- provide feedback to the user -->
           <v-snackbar :timeout="6000" :color="feedbackColor" v-model="showingFeedback" top multi-line>
             <div v-if="error!=null">
@@ -32,11 +32,21 @@
             </v-card>
           </v-dialog>
 
+          <v-layout row>
+            <v-flex xs1>
+							<v-btn icon class="mx-0" @click="dialogExperience=true"> 
+                <v-icon>fa-plus</v-icon>  
+              </v-btn>
+						</v-flex>
+            <v-flex xs1>
+            </v-flex>
+						<v-flex xs9>
+              <v-select :items="visibleOptions" v-model="person.experienceVisible" 
+                label="Visible to..." prepend-icon="visibility" @change="showConfirmDialog(updateExperienceVisibility, 'Are you sure you want to change the visibility?')"></v-select>
+						</v-flex>
+					</v-layout>
 
           <v-dialog v-model="dialogExperience" max-width="500px">
-            <v-btn icon slot="activator" class="mx-0">
-                <v-icon>fa-plus</v-icon>
-              </v-btn>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -166,6 +176,7 @@ export default {
       menu: false,
       menu2: false,
       jobOptions: ["Yes", "No"],
+      visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
       defaultItemExperience: {
         company: "",
         title: "",
@@ -196,6 +207,16 @@ export default {
     warningAction(){ // function to be ovewritten by the correct action
     },
 
+    async updateExperienceVisibility() {
+      try {
+        this.success = (await ProfileService.updateExperienceVisibility({
+          experienceVisible: this.person.experienceVisible,
+          personId: this.$store.state.user.id
+        })).data;
+      } catch(error) {
+        this.error=error
+      }
+    },
     editItemExperience(item) {
       this.editedIndexExperience = this.itemsExperience.indexOf(item);
       this.editedItemExperience = Object.assign({}, item);

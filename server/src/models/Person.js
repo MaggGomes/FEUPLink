@@ -171,6 +171,12 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'User',
         allowNull: false,
       },
+      experienceVisible: {
+        type: DataTypes.ENUM,
+        values: ['All Users', 'Channel Admins', 'Super Admins'],
+        defaultValue: 'All Users',
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
