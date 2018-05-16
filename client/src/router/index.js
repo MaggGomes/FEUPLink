@@ -11,6 +11,7 @@ import Management from '@/components/pages/Management'
 import FacebookLoading from '@/components/pages/FacebookLoading'
 import LinkedINLoading from '@/components/pages/LinkedINLoading'
 import CreateFeed from '@/components/pages/CreateFeed'
+import PostDetails from '@/components/pages/PostDetails'
 import AuthenticationPolicy from '@/policies/authenticationPolicy'
 import store from '@/store/store'
 
@@ -89,6 +90,12 @@ export default new Router({
       path: '/facebook',
       name: 'FacebookLoading',
       component: FacebookLoading
+    },
+    {
+      path: '/post/:id',
+      name: 'PostDetails',
+      component: PostDetails,
+      beforeEnter: AuthenticationPolicy.authenticated
     },
   ]
 })

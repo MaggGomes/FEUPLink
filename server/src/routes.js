@@ -257,6 +257,12 @@ module.exports = (app) => {
       PostController.list_all
   );
 
+  // Returns a post by id
+  app.get('/post/:postId',
+      AuthenticationControllerPolicy.authenticated,
+      PostController.get_post_by_id
+  );
+
   // Returns all post from a specified type
   app.get('/post/:type',
       AuthenticationControllerPolicy.authenticated,

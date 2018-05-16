@@ -235,5 +235,18 @@ module.exports = {
             });
         }
     },
+    async get_post_by_id(req, res) {
+        try {
+            const post = await (Post.findById(req.params.postId,
+                {
+                }));
+                res.status(201).send(post);
+            } catch (err) {
+                console.log(err);
+                res.status(400).send({
+                    error: err,
+                });
+            }
+    },
 
 };
