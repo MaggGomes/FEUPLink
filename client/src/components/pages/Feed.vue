@@ -14,20 +14,22 @@
                   <img :src= 'user.img'>
                 </v-list-tile-avatar>
                 <v-list-tile-content>
-                  <v-list-tile-title>{{ user.username }}</v-list-tile-title>
+                  <v-list-tile-title style="font-weight: bold;">{{ user.username }}</v-list-tile-title>
                     <v-list-tile-sub-title> {{ user.type }}</v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </v-list>
           </v-toolbar>
           <v-list class="pt-0" dense>
-            <v-btn v-if="this.$store.state.user.role === 'Super Admin' || this.$store.state.user.role === 'Channel Admin'" flat color="red darken-4" router :to="`/feed/create`">Create Post</v-btn>
+            <v-btn class="button-layout" v-if="this.$store.state.user.role === 'Super Admin' || this.$store.state.user.role === 'Channel Admin'" flat router :to="`/feed/create`">Create Post</v-btn>
             <v-list-tile v-for="nav_tab in nav_tabs"
                          v-bind:key="nav_tab.id"
                          v-bind:class="[{ active: currentTab === nav_tab.id }]"
                          @click="currentTab = nav_tab.id">
               <v-list-tile-content>
-                <v-list-tile-title>{{ nav_tab.name }}</v-list-tile-title>
+                <v-list-tile-title>
+                    <div style="text-align: center; padding: auto; font-weight: bold;">{{ nav_tab.name }}</div>
+                    </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -112,16 +114,17 @@
 
     #feed_content .navigation-drawer{
         max-width: 170px;
-        margin-top: 170px!important;
+        margin-top: 9.5em !important;
+        margin-left: 16em !important;
         background-color: transparent;
     }
 
     #feed_content .list{
-        background-color: rgba(221, 221, 221, 0.75) !important;   
+        background-color: white !important;   
     }
   
     #feed_content .active{
-        background-color: rgba(188, 188, 188, 0.75) !important;
+        background-color: white !important;
     }
 
     @media(min-width: 1024px ){
@@ -142,6 +145,13 @@
             background-color: red!important;
             border-color: red!important;
         }
+    }
+
+    .button-layout {
+        border-radius: 2%;
+        background-color: rgb(140, 45, 25) !important;
+        color: white;
+        font-weight: bold;
     }
 
 </style>
