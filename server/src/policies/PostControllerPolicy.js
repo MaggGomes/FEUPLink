@@ -13,7 +13,7 @@ module.exports = {
             type: Joi.string().required(),
             tags: Joi.array().items(Joi.string()),
             PersonId: Joi.number().integer().required(),
-            channels: Joi.array().items(Joi.number().integer()).required(),
+            channels: Joi.array().items(Joi.number().integer()).min(1).unique(),
         };
 
         const {error} = Joi.validate(req.body, schema);

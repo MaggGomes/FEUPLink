@@ -57,7 +57,6 @@
                         item-value="id"
                         label="Channel"
                         multiple
-                        max-height="400"
                         hint="Select one or more channels"
                         persistent-hint
                         chips
@@ -148,7 +147,6 @@
         valid: false,
         showingError: false,
         errorMessage: '',
-        inputColor: 'red',
         // form-fields
         loading: false,
         e1: 0,
@@ -158,7 +156,7 @@
         postType: null,
         postTypes: ['New', 'Job', 'Event', 'Education'],
         link: '',
-        tags: ['Engineering', 'Informatics', 'Management', 'Porto', 'University', ],
+        tags: ['Engineering', 'Informatics', 'Physics', 'Mathematics', 'Management', 'Lisbon', 'Meetup', 'Porto', 'University'],
         selectedTags: [],
         channels: [],
         selectedChannels: []
@@ -187,7 +185,7 @@
       async submitData () {
         try{
           if (this.$refs.form.validate()) {
-            await FeedService.create_post({
+            let postID = (await FeedService.create_post({
               title: this.title,
               description: this.description,
               text: this.text,
@@ -197,9 +195,9 @@
               tags: this.selectedTags,
               channels: this.selectedChannels,
               PersonId: this.$store.state.user.id
-            });
+            }));
 
-            this.$router.push('Feed');
+            this.$router.push({ path: `/post/${postID.data.res}` });
           }
         }catch(error){
           this.e1=1;

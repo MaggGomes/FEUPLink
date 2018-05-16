@@ -75,7 +75,7 @@ module.exports = {
             });
 
             res.status(200).send({
-                res: 'Post successfully created',
+                res: post.id,
             });
         } catch (err) {
             res.status(400).send({
