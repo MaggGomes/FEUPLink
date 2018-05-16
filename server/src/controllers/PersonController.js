@@ -373,4 +373,25 @@ module.exports = {
             });
         }
     },
+    async updateEducationVisibility(req, res) {
+        try {
+            const userId = req.body.personId;
+            delete req.body.personId;
+
+            (await Student.update(
+                req.body, {
+                    where: {
+                        PersonId: userId,
+                    },
+                }));
+
+            res.status(200).send({
+                res: 'Successfully updated the education visibility',
+            });
+        } catch (err) {
+            res.status(400).send({
+                error: err,
+            });
+        }
+    },
 };

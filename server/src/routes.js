@@ -96,6 +96,10 @@ module.exports = (app) => {
   app.post('/update_experience_visibility',
     PersonController.updateExperienceVisibility
   );
+
+  app.post('/update_education_visibility',
+    PersonController.updateEducationVisibility
+  );
   // ----Course
 
   app.post('/create_course',

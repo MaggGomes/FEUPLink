@@ -43,9 +43,7 @@ module.exports = {
           CourseId: req.body.courseId,
           StudentId: student.toJSON().id,
           enrollmentDate: req.body.enrollmentDate,
-          enrollmentDate_visibility: req.body.enrollmentDate_visibility,
           graduationDate: req.body.graduationDate,
-          graduationDate_visibility: req.body.graduationDate_visibility,
         }));
 
 

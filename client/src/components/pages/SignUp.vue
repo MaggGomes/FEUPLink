@@ -239,7 +239,7 @@
 										 </v-layout>	
 										
 										<v-layout row wrap align-center v-if="role == 'student'">
-											<v-flex xs9 sm5 text-xs-center>
+											<v-flex xs12 sm6 text-xs-center>
 												<v-select
 												:items="$t('degrees')"
 												v-model="degree"
@@ -249,17 +249,7 @@
 												required
 												></v-select>
 											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="academicDegreeVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>	
+											<v-flex xs12 sm6 text-xs-center>	
 											  <v-select
 													:items="filteredCourses"		
 													v-model="courseId"
@@ -271,16 +261,6 @@
 													:rules="courseRules"
 													required
 												></v-select>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="courseVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
 											</v-flex>
 										</v-layout>
 
@@ -305,7 +285,7 @@
 									</v-layout>
 
 									<v-layout row wrap align-center>
-										<v-flex xs9 sm5 text-xs-center>
+										<v-flex xs12 sm6 text-xs-center>
 											<v-menu
 												ref="menu2"
 												lazy
@@ -343,22 +323,12 @@
 												></v-date-picker>
 											</v-menu>
 										</v-flex>
-										<v-flex xs3 sm1 text-xs-center>
-											<v-btn-toggle v-model="date2Visible">
-												<v-btn flat>
-													<v-icon>visibility</v-icon>
-												</v-btn>
-												<v-btn flat>
-													<v-icon>visibility_off</v-icon>
-												</v-btn>
-											</v-btn-toggle>
-										</v-flex>
 
 										<v-flex class="to" xs12 sm1 text-xs-center>
 											to
 										</v-flex>
 
-										<v-flex xs9 sm4 text-xs-center>
+										<v-flex xs12 sm5 text-xs-center>
 											<v-menu
 												ref="menu3"
 												lazy
@@ -394,28 +364,18 @@
 												></v-date-picker>
 											</v-menu>
 										</v-flex>
-										<v-flex xs3 sm1 text-xs-center>
-											<v-btn-toggle v-model="date3Visible">
-												<v-btn flat>
-													<v-icon>visibility</v-icon>
-												</v-btn>
-												<v-btn flat>
-													<v-icon>visibility_off</v-icon>
-												</v-btn>
-											</v-btn-toggle>
-										</v-flex>
 									</v-layout>
 
 							<v-layout align-center v-if="role == 'student'">
 								<v-flex xs9 sm11 text-xs-center>		
 									<v-select
-											:items="$t('student_types')"
-											v-model="type"
-											:placeholder="$t('student_type')"
-											prepend-icon="person"
-											:rules="studentTypeRules"
-											required
-											></v-select>
+										:items="$t('student_types')"
+										v-model="type"
+										:placeholder="$t('student_type')"
+										prepend-icon="person"
+										:rules="studentTypeRules"
+										required
+									></v-select>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
 									<v-btn-toggle v-model="typeVisible">
@@ -680,10 +640,6 @@ export default {
 	  countryVisible: 0,
 	  cityVisible: 0,
 	  dpVisible: 0,
-	  academicDegreeVisible: 0,
-	  courseVisible: 0,
-	  date2Visible: 0,
-	  date3Visible: 0,
 	  typeVisible: 0,
 	  numberVisible: 0,
 	  companyIndustry: '',
@@ -758,9 +714,7 @@ export default {
 						city_visibility: ((this.cityVisible == 0) ? true : false),
 						courseId: this.courseId,
 						enrollmentDate: this.date2,
-						enrollmentDate_visibility: ((this.date2Visible == 0) ? true : false),
 						graduationDate: this.date3,
-						graduationDate_visibility: ((this.date3 == 0) ? true : false),
 						type: this.type,
 						type_visibility: ((this.typeVisible == 0) ? true : false),
 						mecNumber: this.number,

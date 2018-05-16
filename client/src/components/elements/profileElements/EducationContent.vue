@@ -2,7 +2,7 @@
   <v-card flat raised class="short-width" style="margin-bottom: 20px;">
     <v-container class="minimum-side-padding">
       <v-layout row>
-        <v-flex xs11>
+        <v-flex xs7 wrap>
           <v-toolbar-title class="center-text">Education</v-toolbar-title>
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
@@ -33,11 +33,21 @@
             </v-card>
           </v-dialog>
 
+          <v-layout row>
+            <v-flex xs1>
+							<v-btn icon class="mx-0" @click="dialogEducation=true"> 
+                <v-icon>fa-plus</v-icon>  
+              </v-btn>
+						</v-flex>
+            <v-flex xs1>
+            </v-flex>
+						<v-flex xs9>
+              <v-select :items="visibleOptions" v-model="student.educationVisible" 
+                label="Visible to..." prepend-icon="visibility" @change="showConfirmDialog(updateEducationVisibility, 'Are you sure you want to change the visibility?')"></v-select>
+						</v-flex>
+					</v-layout>
 
           <v-dialog v-model="dialogEducation" max-width="500px">
-            <v-btn icon slot="activator" class="mx-0">
-              <v-icon>fa-plus</v-icon>
-            </v-btn>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -151,7 +161,7 @@ import CourseService from "@/services/CourseService";
 export default {
   name: "profile-education-content",
 
-  props: ["person", "itemsEducation"],
+  props: ["person", "itemsEducation", "student"],
 
   data() {
     return {
@@ -167,6 +177,7 @@ export default {
       menu: false,
       menu2: false,
       degreeOptions: ["Bachelor", "Masters", "PhD"],
+      visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
       dialogEducation: false,
       coursesOptions: null,
       editedIndexEducation: -1,
@@ -203,7 +214,18 @@ export default {
 
     warningAction() { // function to be ovewritten by the correct action
     },
-  
+
+    async updateEducationVisibility() {
+      try {
+        this.success = (await ProfileService.updateEducationVisibility({
+          educationVisible: this.student.educationVisible,
+          personId: this.$store.state.user.id
+        })).data;
+      } catch(error) {
+        this.error=error
+      }
+    },
+
     editItemEducation(item) {
       this.editedIndexEducation = this.itemsEducation.indexOf(item);
       this.editedItemEducation = Object.assign({}, item);

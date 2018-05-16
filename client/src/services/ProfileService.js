@@ -34,4 +34,7 @@ export default {
     updateExperienceVisibility (userInfo) {
         return Api().post('update_experience_visibility', userInfo)
     },
+    updateEducationVisibility (userInfo) {
+        return Api().post('update_education_visibility', userInfo)
+    },
 }

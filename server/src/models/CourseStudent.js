@@ -4,19 +4,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false,
         },
-        enrollmentDate_visibility: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true,
-        },
         graduationDate: {
             type: DataTypes.DATE,
             allowNull: true,
-        },
-        graduationDate_visibility: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-            defaultValue: true,
         },
         isVisible: {
             type: DataTypes.BOOLEAN,
