@@ -47,29 +47,38 @@
               </v-layout>
             </v-flex>
                        
-          <v-flex class="main-bar-content hidden-sm-and-down">
-            <v-layout justify-end>    
-              <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
-                <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
-                
-              </v-toolbar-items>
-              <v-toolbar-items flex v-else>
-                <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
-              </v-toolbar-items>
-            </v-layout>
-          </v-flex>
-
-          <!-- <v-menu>
-            <v-btn id="locale-dropdown" slot="activator">
-              {{this.$i18n.locale}}
-              <v-icon large left>arrow_drop_down</v-icon>
-            </v-btn>
-            <v-list>
-              <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
-                <v-list-tile-title>{{ language }}</v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu> -->
+            <v-flex class="main-bar-content hidden-sm-and-down">
+              <v-layout justify-end>    
+                <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
+                  <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+                  <v-menu>
+                    <v-btn id="locale-dropdown" slot="activator">
+                      {{this.$i18n.locale}}
+                      <v-icon large left>arrow_drop_down</v-icon>
+                    </v-btn>
+                    <v-list>
+                      <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+                        <v-list-tile-title>{{ language }}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </v-toolbar-items>
+                <v-toolbar-items flex v-else>
+                  <v-btn flat v-for="menuItem in menuItens" :class="menuItem.title" :key="menuItem.title" router :to="menuItem.link">{{ $t(menuItem.title) }}</v-btn>
+                  <v-menu>
+                    <v-btn id="locale-dropdown" slot="activator">
+                      {{this.$i18n.locale}}
+                      <v-icon large left>arrow_drop_down</v-icon>
+                    </v-btn>
+                    <v-list>
+                      <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+                        <v-list-tile-title>{{ language }}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </v-toolbar-items>
+              </v-layout>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-toolbar>
@@ -196,6 +205,7 @@ export default {
   }
   .main-bar-content .btn {
     width: 120px;
+    height: 25px;
     border: 2px solid #f5f5f5;
     border-radius: 2%;
     color: rgb(140, 45, 25);
