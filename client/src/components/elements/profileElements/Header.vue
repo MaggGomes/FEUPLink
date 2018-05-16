@@ -142,7 +142,7 @@
       </v-container>
     </v-card>
     
-    <v-dialog v-model="editPersonDialog" max-width="400px">
+    <v-dialog v-model="editPersonDialog" max-width="600px">
       <profile-edit @personEdited="updatePersonObj" @closeDialog="editPersonDialog = false" :person="person"></profile-edit>
     </v-dialog>
   </div>

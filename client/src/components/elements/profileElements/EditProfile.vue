@@ -20,68 +20,52 @@
 			<v-form autocomplete="off" ref="form" v-model="valid">
 				<v-container wrap>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-text-field label="Name" v-model="editedPerson.name" :rules="[v => !!v || 'Name is required']" required prepend-icon="person"></v-text-field>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="nameVisibility" @change="updateNameVisibility">
-								<v-btn flat>
-									<v-icon>visibility</v-icon>
-								</v-btn>
-								<v-btn flat>
-									<v-icon>visibility_off</v-icon>
-								</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.name_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-text-field label="Email" v-model="editedPerson.email" :rules="[v => !!v || 'Email is required']" required prepend-icon="email"></v-text-field>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="emailVisibility" @change="updateEmailVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.email_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" 
 							single-line :rules="[v => !!v || 'Gender is required']" required prepend-icon="fa-transgender"></v-select>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="genderVisibility" @change="updateGenderVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.gender_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-text-field prepend-icon="phone" label="Phone" v-model="editedPerson.phone"></v-text-field>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="phoneVisibility" @change="updatePhoneVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.phone_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" style="width: 100%;">
 								<v-text-field slot="activator" label="Birth Date" :placeholder="birthDateFormatted" v-model="birthDateFormatted" 
 									readonly hint="DD/MM/YYYY format" prepend-icon="event"></v-text-field>
@@ -89,45 +73,33 @@
 									:max="new Date().toISOString().substr(0, 10)" value="02/02/2015"></v-date-picker>
 							</v-menu>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="birthDateVisibility" @change="updateBirthDateVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.birthDate_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-text-field prepend-icon="flag" label="Country" v-model="editedPerson.country"></v-text-field>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="countryVisibility" @change="updateCountryVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.country_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 					<v-layout row>
-						<v-flex xs9>
+						<v-flex xs7>
 							<v-text-field prepend-icon="location_city" label="City" v-model="editedPerson.city"></v-text-field>
 						</v-flex>
-						<v-flex xs3>
-							<v-btn-toggle v-model="cityVisibility" @change="updateCityVisibility">
-							<v-btn flat>
-								<v-icon>visibility</v-icon>
-							</v-btn>
-							<v-btn flat>
-								<v-icon>visibility_off</v-icon>
-							</v-btn>
-							</v-btn-toggle>
+						<v-flex xs1>
+						</v-flex>
+						<v-flex xs4>
+							<v-select :items="visibleOptions" v-model="editedPerson.city_visibility" 
+                				label="Visible to..." prepend-icon="visibility"></v-select>
 						</v-flex>
 					</v-layout>
 				</v-container>
@@ -166,7 +138,8 @@ export default {
       warningDialog: false,
 	  warningTitle: null,
 	  success: null,
-	  error: null
+	  error: null,
+	  visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
     };
 	},
 	
@@ -209,48 +182,6 @@ export default {
 				this.editedPerson.birthDate = date
 
 			this.$refs.menu.save(date)
-		},
-		updateNameVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.name_visibility = true
-			else
-				this.editedPerson.name_visibility = false
-		},
-		updateEmailVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.email_visibility = true
-			else
-				this.editedPerson.email_visibility = false
-		},
-		updateGenderVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.gender_visibility = true
-			else
-				this.editedPerson.gender_visibility = false
-		},
-		updatePhoneVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.phone_visibility = true
-			else
-				this.editedPerson.phone_visibility = false
-		},
-		updateBirthDateVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.birthDate_visibility = true
-			else
-				this.editedPerson.birthDate_visibility = false
-		},
-		updateCountryVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.country_visibility = true
-			else
-				this.editedPerson.country_visibility = false
-		},
-		updateCityVisibility (visibility) {
-			if (visibility == 0)
-				this.editedPerson.city_visibility = true
-			else
-				this.editedPerson.city_visibility = false
 		}
 	},
 
@@ -274,104 +205,6 @@ export default {
 			day = day[0] + day[1]
 
 			return `${day}-${month}-${year}`
-		},
-		nameVisibility: {
-			get: function () {
-				if(this.editedPerson.name_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.name_visibility = true
-				else
-					this.editedPerson.name_visibility = false
-			}
-		},
-		emailVisibility: {
-			get: function () {
-				if(this.editedPerson.email_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.email_visibility = true
-				else
-					this.editedPerson.email_visibility = false
-			}
-		},
-		genderVisibility: {
-			get: function () {
-				if(this.editedPerson.gender_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.gender_visibility = true
-				else
-					this.editedPerson.gender_visibility = false
-			}
-		},
-		phoneVisibility: {
-			get: function () {
-				if(this.editedPerson.phone_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.phone_visibility = true
-				else
-					this.editedPerson.phone_visibility = false
-			}
-		},
-		birthDateVisibility: {
-			get: function () {
-				if(this.editedPerson.birthDate_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.birthDate_visibility = true
-				else
-					this.editedPerson.birthDate_visibility = false
-			}
-		},
-		countryVisibility: {
-			get: function () {
-				if(this.editedPerson.country_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.country_visibility = true
-				else
-					this.editedPerson.country_visibility = false
-			}
-		},
-		cityVisibility: {
-			get: function () {
-				if(this.editedPerson.city_visibility)
-					return 0
-				else
-					return 1
-			},
-			set: function (newValue) {
-				if(newValue == 0)
-					this.editedPerson.city_visibility = true
-				else
-					this.editedPerson.city_visibility = false
-			}
 		}
 	}
 };
