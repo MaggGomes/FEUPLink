@@ -1,6 +1,5 @@
 <template>	
 	<v-card>
-<<<<<<< HEAD
 		 <v-dialog v-model="warningDialog" max-width="500px">
 			<v-card>
 				<v-card-title class="headline">Be Careful!</v-card-title>

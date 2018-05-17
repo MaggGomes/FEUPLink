@@ -6,11 +6,11 @@
       <v-navigation-drawer app temporary v-model="sideNav" absolute>
         <v-list>
           <v-list-tile v-if="$store.state.isUserLoggedIn" v-for="signnedInItem in signnedInMenuItens" :key="signnedInItem.title" route :to="signnedInItem.link">
-            {{ signnedInItem.title }}
+            {{ $t(signnedInItem.title) }}
           </v-list-tile>
           <v-list-tile v-else>
             <v-list-tile-content v-for="menuItem in menuItens" :key="menuItem.title" route :to="menuItem.link">
-              {{ menuItem.title }}
+              {{ $t(menuItem.title) }}
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -61,7 +61,7 @@
             <v-flex class="main-bar-content hidden-sm-and-down">
               <v-layout justify-end>    
                 <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
-                  <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+                  <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ $t(signnedInItem.title) }}</v-btn>
                   <v-menu>
                     <v-btn slot="activator">
                       {{this.$i18n.locale}}
