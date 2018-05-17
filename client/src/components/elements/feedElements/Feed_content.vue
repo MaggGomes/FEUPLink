@@ -11,8 +11,8 @@
 
 <script>
   import FeedService from '@/services/FeedService'
-  import PostList from "@/components/elements/PostList"
-  import NoPosts from "@/components/elements/NoPosts"
+  import PostList from '@/components/elements/PostList'
+  import NoPosts from '@/components/elements/NoPosts'
 
   export default {
     name: "nav_tab_1",
@@ -27,8 +27,8 @@
         contents: []
       };
     },
-    mounted: async function() {
 
+    mounted: async function() {
       try{
         this.contents = (await FeedService.get_posts_by_person (this.$store.state.user.id)).data;
 
