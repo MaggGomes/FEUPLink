@@ -3,7 +3,7 @@
     <v-container class="minimum-side-padding">
       <v-layout row>
         <v-flex xs11>
-          <v-toolbar-title class="center-text">Experience</v-toolbar-title>
+          <v-toolbar-title class="center-text">{{$t('experience')}}</v-toolbar-title>
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
           <v-dialog v-model="dialogExperience" max-width="500px">
@@ -18,10 +18,10 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <v-flex xs12>
-                      <v-text-field label="Company" v-model="editedItemExperience.company"></v-text-field>
+                      <v-text-field :placeholder="$t('company')" v-model="editedItemExperience.company"></v-text-field>
                     </v-flex>
                     <v-flex xs9>
-                      <v-text-field label="Title" v-model="editedItemExperience.title"></v-text-field>
+                      <v-text-field :placeholder="$t('position')" v-model="editedItemExperience.title"></v-text-field>
                     </v-flex>
                     <v-flex xs3>
                       <v-btn-toggle v-model="editedItemExperience.title_visibility ? 0 : 1">
@@ -36,7 +36,7 @@
                     <v-flex xs9>
                       <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" 
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
-                        <v-text-field slot="activator" label="Start date"
+                        <v-text-field slot="activator" :placeholder="$t('start_date')" 
                         v-model="editedItemExperience.startDate" prepend-icon="event" readonly></v-text-field>
                         <v-date-picker ref="picker" v-model="editedItemExperience.startDate" @change="save" 
                         min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
@@ -55,7 +55,7 @@
                     <v-flex xs9>
                       <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2"
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
-                        <v-text-field slot="activator" label="End date" v-model="editedItemExperience.endDate" 
+                        <v-text-field slot="activator" :placeholder="$t('end_date')" v-model="editedItemExperience.endDate" 
                         prepend-icon="event" readonly></v-text-field>
                         <v-date-picker ref="picker" v-model="editedItemExperience.endDate" @change="save" min="1950-01-01" 
                         :max="new Date().toISOString().substr(0, 10)" type="month"></v-date-picker>
@@ -72,8 +72,7 @@
                       </v-btn-toggle>
                     </v-flex>
                     <v-flex xs9>
-                      <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" 
-                      label="Current job" prepend-icon="person"></v-select>
+                      <v-select :items="jobOptions" v-model="editedItemExperience.isCurrent" :placeholder="$t('current_job')" prepend-icon="person"></v-select>
                     </v-flex>
                     <v-flex xs3>
                       <v-btn-toggle v-model="editedItemExperience.isCurrent_visibility ? 0 : 1">
@@ -90,8 +89,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="closeExperience">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="saveExperience">Save</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="closeExperience">{{$t('cancel')}}</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="saveExperience">{{$t('save')}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -158,7 +157,7 @@ export default {
       defaultCompanyImg: defaultCompanyImg,
       menu: false,
       menu2: false,
-      jobOptions: ["Yes", "No"],
+      jobOptions: this.$i18n.messages[this.$i18n.locale]["job_options"],
       defaultItemExperience: {
         company: "",
         title: "",
@@ -195,7 +194,7 @@ export default {
     },
     async deleteItemExperience(item) {
       const index = this.itemsExperience.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm(this.$i18n.messages[this.$i18n.locale]["delete_confirmation"]) &&
         this.itemsExperience.splice(index, 1);
       await ProfileService.deleteJobExperience({
         company: item.company,
@@ -266,7 +265,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndexExperience === -1 ? "New Item" : "Edit Item";
+      return this.editedIndexExperience === -1 ? this.$i18n.messages[this.$i18n.locale]["new_item"] : this.$i18n.messages[this.$i18n.locale]["edit_item"];
     }
   },
 

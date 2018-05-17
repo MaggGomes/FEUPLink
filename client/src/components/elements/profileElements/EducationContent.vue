@@ -3,7 +3,7 @@
     <v-container class="minimum-side-padding">
       <v-layout row>
         <v-flex xs11>
-          <v-toolbar-title class="center-text">Education</v-toolbar-title>
+          <v-toolbar-title class="center-text">{{$t['education']}}</v-toolbar-title>
         </v-flex>
         <v-flex v-if="person.id == this.$store.state.user.id">
           <v-dialog v-model="dialogEducation" max-width="500px">
@@ -19,17 +19,17 @@
                   <v-layout wrap>
                     <v-flex xs12>
                       <v-select :items="degreeOptions" v-model="editedItemEducation.degree" 
-                        label="Academic degree" prepend-icon="person" ></v-select>
+                        :placeholder="$t('degree')" prepend-icon="person" ></v-select>
                     </v-flex>
                     <v-flex xs12>
                       <v-select :items="coursesOptions" item-text="name" autocomplete v-model="editedItemEducation.course"
-                       label="Course name" prepend-icon="person"></v-select>
+                       :placeholder="$t('course')" prepend-icon="person"></v-select>
                     </v-flex>
                     <v-flex xs12 sm6>
                       <v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu"
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                         <v-text-field
-                        slot="activator" label="Enrollment date" v-model="editedItemEducation.enrollmentDate"
+                        slot="activator" :placeholder="$t('enrollment_date')" v-model="editedItemEducation.enrollmentDate"
                          prepend-icon="event" readonly></v-text-field>
                         <v-date-picker
                         ref="picker" v-model="editedItemEducation.enrollmentDate" @change="save" min="1950-01-01"
@@ -41,7 +41,7 @@
                         ref="menu2" lazy :close-on-content-click="false" v-model="menu2" 
                         transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px">
                         <v-text-field
-                        slot="activator" label="Graduation date" v-model="editedItemEducation.graduationDate" 
+                        slot="activator" :placeholder="$t('graduation_date')" v-model="editedItemEducation.graduationDate" 
                         prepend-icon="event" readonly></v-text-field>
                         <v-date-picker ref="picker" v-model="editedItemEducation.graduationDate" @change="save"
                         min="1950-01-01" :max="new Date().toISOString().substr(0, 10)" type="month" ></v-date-picker>
@@ -52,8 +52,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="closeEducation">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="saveEducation">Save</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="closeEducation">{{$t['cancel']}}</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="saveEducation">{{$t['save']}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -121,7 +121,7 @@ export default {
       defaultCourseImg: defaultCourseImg,
       menu: false,
       menu2: false,
-      degreeOptions: ["Bachelor", "Masters", "PhD"],
+      degreeOptions: this.$i18n.messages[this.$i18n.locale]["degrees"],
       dialogEducation: false,
       coursesOptions: null,
       editedIndexEducation: -1,
@@ -158,7 +158,7 @@ export default {
 
     async deleteItemEducation(item) {
       const index = this.itemsEducation.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm(this.$i18n.messages[this.$i18n.locale]["delete_confirmation"]) &&
         this.itemsEducation.splice(index, 1);
       await ProfileService.deleteCourseStudent({
         name: item.course.name,
@@ -230,7 +230,8 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndexExperience === -1 ? "New Item" : "Edit Item";
+      return this.editedIndexExperience === -1 ? this.$i18n.messages[this.$i18n.locale]["new_item"] :
+      argumentsthis.$i18n.messages[this.$i18n.locale]["edit_item"];
     }
   },
 

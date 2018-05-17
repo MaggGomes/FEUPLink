@@ -28,7 +28,7 @@
                   </v-avatar>              
                 </router-link>                    
               </v-toolbar-title>
-            </v-flex>
+            </v-flex>           
 
             <v-flex class="hidden-md-and-up">
               <v-layout>
@@ -45,12 +45,13 @@
                   </v-layout>
                 </v-flex>
               </v-layout>
-            </v-flex>
+            </v-flex> 
                        
           <v-flex class="main-bar-content hidden-sm-and-down">
+
             <v-layout justify-end>    
               <v-toolbar-items flex v-if="$store.state.isUserLoggedIn" >
-                <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ signnedInItem.title }}</v-btn>
+                <v-btn flat v-for="signnedInItem in signnedInMenuItens" :class="signnedInItem.title" :key="signnedInItem.title" router :to="signnedInItem.link">{{ $t(signnedInItem.title) }}</v-btn>
                 
               </v-toolbar-items>
               <v-toolbar-items flex v-else>
@@ -59,19 +60,25 @@
             </v-layout>
           </v-flex>
 
-          <!-- <v-menu>
+
+
+          </v-layout>
+        </v-container>
+
+        <v-menu id="locale-dropdown-menu" class="main-bar-content hidden-sm-and-down">
             <v-btn id="locale-dropdown" slot="activator">
               {{this.$i18n.locale}}
               <v-icon large left>arrow_drop_down</v-icon>
             </v-btn>
             <v-list>
-              <v-list-tile v-for="language in Object.keys(this.$i18n.messages)" :key="language" @click="changeLanguage(language)">
+              <v-list-tile
+              v-for="language in Object.keys(this.$i18n.messages)"
+              :key="language" @click="changeLanguage(language)">
                 <v-list-tile-title>{{ language }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
-          </v-menu> -->
-          </v-layout>
-        </v-container>
+          </v-menu>
+
       </v-toolbar>
 
       <v-content>
@@ -132,23 +139,23 @@ export default {
         this.$store.state.user != undefined ? this.$store.state.user.id : 0;
       return [
         {
-          title: "Home",
+          title: "home",
           link: "/"
         },
         {
-          title: "Feed",
+          title: "feed",
           link: "/feed"
         },
         {
-          title: "Management",
+          title: "management",
           link: "/management"
         },
         {
-          title: "Profile",
+          title: "profile",
           link: "/profile/" + userId
         },
         {
-          title: "Logout",
+          title: "logout",
           link: "/logout"
         }
       ];
@@ -158,6 +165,18 @@ export default {
 </script>
 
 <style>
+
+#locale-dropdown-menu{
+  margin-right: -15px;
+  margin-bottom: 55px;
+  margin-left: 30px;
+}
+
+#locale-dropdown{
+  font-size: 16px;
+  height: 40px;
+  width: 25px;
+}
 
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

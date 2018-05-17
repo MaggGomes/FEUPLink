@@ -46,7 +46,7 @@ export default {
       });
 
       if (result.data.type == "student") {
-        this.personType = "Student";
+        this.personType = this.$i18n.messages[this.$i18n.locale]["student"];
         let student = await ProfileService.getStudentInformation({
           id: this.$route.params.id
         });
@@ -81,8 +81,8 @@ export default {
             eDate.getUTCFullYear() + "-" + (eDate.getUTCMonth() + 1);
 
           var current = "";
-          if (student.data.experience[i].job.isCurrent) current = "Yes";
-          else current = "No";
+          if (student.data.experience[i].job.isCurrent) current = this.$i18n.messages[this.$i18n.locale]["yes"];
+          else current = this.$i18n.messages[this.$i18n.locale]["no"];
 
           this.itemsExperience.push({
             company: student.data.experience[i].companyName,
@@ -93,7 +93,7 @@ export default {
           });
         }
       } else if (result.data.type == "staff") {
-        this.personType = "Staff";
+        this.personType = this.$i18n.messages[this.$i18n.locale]["staff"];
         let staff = await ProfileService.getStaffInformation({
           id: this.$route.params.id
         });

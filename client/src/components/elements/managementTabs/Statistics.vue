@@ -2,11 +2,11 @@
   <v-container fluid pa-0>
     <v-layout row wrap>
         <v-flex xs12>
-          <h2>Search and add a pin</h2>
+          <h2>{{$t('add_pin')}}</h2>
           <label>
             <gmap-autocomplete @place_changed="setPlace">
             </gmap-autocomplete>
-            <button @click="addMarker">Add</button>
+            <button @click="addMarker">{{$t('add')}}</button>
           </label>
         </v-flex>
         <v-flex xs12>

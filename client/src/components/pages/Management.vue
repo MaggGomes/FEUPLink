@@ -6,7 +6,7 @@
         <div v-if="nav_tabs[userRole].length == 0">
          <v-layout row wrap>
           <v-flex xs12 >
-            <span class="display-1"> No Models to manage </span>
+            <span class="display-1"> {{$t('no_models')}} </span>
           </v-flex>
            </v-layout>
         </div>
@@ -95,9 +95,17 @@
             drawer: true,           
             currentTab: 1,
             nav_tabs: {
-              'Super Admin' : [{name:'Courses', id:1}, {name:'Departments', id:2}, {name:'Channels', id:3}, {name:'Statistics', id:4} ],
-              'Channel Admin' : [{name:'Channels', id:3}, {name:'Statistics', id:4} ],
-              'User' : [{name:'Statistics', id:4}],             
+              'Super Admin' : [
+                {name:this.$i18n.messages[this.$i18n.locale]['courses'], id:1},
+                {name:this.$i18n.messages[this.$i18n.locale]['departments'], id:2},
+                {name:this.$i18n.messages[this.$i18n.locale]['channels'], id:3},
+                {name:this.$i18n.messages[this.$i18n.locale]['statistics'], id:4} 
+              ],
+              'Channel Admin' : [
+                {name:this.$i18n.messages[this.$i18n.locale]['channels'], id:3},
+                {name:this.$i18n.messages[this.$i18n.locale]['statistics'], id:4}
+                ],
+              'User' : [{name:this.$i18n.messages[this.$i18n.locale]['statistics'], id:4}],             
             }
         }
     },

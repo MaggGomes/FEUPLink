@@ -127,4 +127,5 @@ export default {
   height: 60px;
   font-size: 125%;
 }
+
 </style>

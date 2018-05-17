@@ -92,7 +92,14 @@
             drawer: true,
             user: {username: 'John Doe', type: 'Student',img: 'https://www.w3schools.com/howto/img_avatar.png'},
             currentTab: 1,
-            nav_tabs: [{name:'Feed', id:1}, {name:'Events', id:2}, {name:'Job Opportunities', id:3}, {name:'News', id:4}, {name:'Education', id:5}, {name:'Newsletter', id:6}],
+            nav_tabs: [
+                {name:this.$i18n.messages[this.$i18n.locale]['feed'], id:1},
+                {name:this.$i18n.messages[this.$i18n.locale]['events'], id:2},
+                {name:this.$i18n.messages[this.$i18n.locale]['job_opportunities'], id:3},
+                {name:this.$i18n.messages[this.$i18n.locale]['news'], id:4},
+                {name:this.$i18n.messages[this.$i18n.locale]['education'], id:5},
+                {name:this.$i18n.messages[this.$i18n.locale]['newsletter'], id:6}
+                ],
         }
     },
     computed: {

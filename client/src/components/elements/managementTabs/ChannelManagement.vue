@@ -10,20 +10,20 @@
         <div v-if="success!=null">
           {{success.res}}
         </div>
-        <v-btn flat dark @click="showingFeedback=false"> <p v-lang.close></p> </v-btn>
+        <v-btn flat dark @click="showingFeedback=false">  {{$t('close')}} </v-btn>
       </v-snackbar>
 
       <!-- warning dialog -->
       <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
-          <v-card-title class="headline"><p v-lang.warning></p></v-card-title>
+          <v-card-title class="headline">{{$t('warning')}} </v-card-title>
           <v-card-text>
             {{warningTitle}}
           </v-card-text>
           <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"><p v-lang.cancel></p></v-btn>
+            <v-btn flat color="red" @click="warningDialog=false">{{$t('cancel')}} </v-btn>
             <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"><p v-lang.confirm></p></v-btn>
+            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }">{{$t('confirm')}} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -33,7 +33,7 @@
       <v-dialog v-model="itemDialog" v-if="currentItem !== null" persistent max-width="700px">
         <v-card>
           <v-card-title>
-            <span class="headline"> Update channel information </span>
+            <span class="headline"> {{$t('update_channel')}} </span>
           </v-card-title>
           <v-card-text>
             <v-form v-model="formValid" ref="form" autocomplete="off">
@@ -41,19 +41,19 @@
                 <v-layout wrap>
 
                   <v-flex xs12 md9>
-                    <v-text-field label="Channel name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Channel name is required']"
+                    <v-text-field :placeholder="$t('channel_name')" hint="This must be unique" v-model="name" :rules="channelNameRules"
                       required></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-text-field label="Description" v-model="description" multi-line></v-text-field>
+                    <v-text-field :placeholder="$t('description')" v-model="description" multi-line></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
                     <v-card class="elevation-0">
                       <v-card-text>
                         <v-card-title>
-                          <span class="title"> Channel administrators </span>
+                          <span class="title"> {{$t('channel_administrators')}} </span>
                         </v-card-title>
                         <v-layout row wrap>
                           <v-flex xs9>
@@ -62,16 +62,13 @@
                               v-model="newAdminId"
                               item-text="email" 
                               item-value="id"
-                              label="Add new Admin"
+                              :placeholder="$t('add_admin')"
                               autocomplete
                             ></v-select>
                           </v-flex>
 
                           <v-flex xs2>
-                            <v-btn color="blue darken-1" flat @click.native="() => {
-                                    if(newAdminId !== null)
-                                      showConfirmDialog(addChannelAdmin, 'Are you sure you want to add a new admin?')
-                                }">
+                            <v-btn color="blue darken-1" flat @click.native="addAdminWarning">
                               <v-icon color="green"> add </v-icon>
                             </v-btn>
                           </v-flex>
@@ -82,10 +79,7 @@
 
                               <v-spacer></v-spacer>
                               <v-toolbar-items>                               
-                                <v-btn fab flat @click.native="() => {
-                                    deleteAdminId=person.id
-                                    showConfirmDialog(removeChannelAdmin, `Are you sure you want to delete ${person.name} admin?`)
-                                }">
+                                <v-btn fab flat @click.native="removeAdminWarning(person)">
                                   <v-icon> delete </v-icon>
                                 </v-btn>
                               </v-toolbar-items>
@@ -105,11 +99,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="() => {
-                    showConfirmDialog(updateChannel, 'Are you sure you want to update the channel?')
-                }" :disabled="!formValid">
-              Update
+            <v-btn color="blue darken-1" flat @click.native="closeDialog">{{$t('cancel')}}</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="channelUpdateWarning" :disabled="!formValid">
+              {{$t('update')}}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -124,7 +116,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="blue darken-1" @click="showItemDetails=false"> Dismiss </v-btn>
+            <v-btn flat color="blue darken-1" @click="showItemDetails=false"> {{$t('close')}} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -135,11 +127,11 @@
       <v-flex>
         <v-layout>
           <v-flex xs7>
-            <span class="display-1"> Manage Channels </span>
+            <span class="display-1"> {{$t('manage_channels')}} </span>
           </v-flex>
 
           <v-flex xs2 offset-xs2>
-            <v-select :items="numPagesOptions" v-model="itemsPerPage" label="Items" class="input-group--focused" item-value="pa"></v-select>
+            <v-select :items="numPagesOptions" v-model="itemsPerPage" :placeholder="$t('items')" class="input-group--focused" item-value="pa"></v-select>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -215,9 +207,30 @@ export default {
       showItemDetails: false,
       //form-validation
       formValid:false,
+      channelNameRules: [v => !!v || this.$i18n.messages[this.$i18n.locale]['channel_name_rule']],
     }
   },
   methods: {
+    channelUpdateWArning(){
+      this.showConfirmDialog(
+        this.updateChannel,
+        this.$i18n.messages[this.$i18n.locale]['update_channel_warning']
+      )
+    },
+    removeAdminWarning(person){
+      this.deleteAdminId = person.id
+      this.showConfirmDialog(
+        this.removeChannelAdmin,
+        this.$i18n.messages[this.$i18n.locale]['remove_admin_warning'] + person.name + "'?"
+      )
+    },
+    addAdminWarning(){      
+      if(this.newAdminId !== null)
+        this.showConfirmDialog(
+          this.addChannelAdmin,
+          this.$i18n.messages[this.$i18n.locale]['add_admin_warning']
+        )  
+    },
     showConfirmDialog(action, title){
         this.warningDialog=true
         this.warningAction=action 

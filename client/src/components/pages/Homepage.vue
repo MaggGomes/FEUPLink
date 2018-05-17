@@ -22,19 +22,7 @@ import homepage_1 from '@/assets/homepage_1.jpg'
 import homepage_2 from '@/assets/homepage_2.jpg'
 import homepage_3 from '@/assets/homepage_3.jpg' 
 
-export default {
-    i18n: {
-        messages: {
-            en: {
-                motivation: 'The FEUPLink community encompasses all those who are part of this huge family that is FEUP, from current and former students to teachers and collaborators. ',
-                join: 'Join us!',
-            },
-            pt: { 
-                motivation: 'A comunidade da FEUPLink engloba todos aqueles que fazem parte desta enorme família que é a FEUP, desde atuais ou antigos alunos até professores e colaboradores. ',
-                join: 'Junte-se a nós!',
-            }
-        }
-    },
+export default {   
     name: 'Homepage',
     data () {
         return {

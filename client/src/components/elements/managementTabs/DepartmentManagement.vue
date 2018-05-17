@@ -10,20 +10,20 @@
         <div v-if="success!=null">
           {{success.res}}
         </div>
-        <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+        <v-btn flat dark @click="showingFeedback=false"> {{$t('close')}} </v-btn>
       </v-snackbar>
 
       <!-- warning dialog -->
       <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
-          <v-card-title class="headline">Be Careful!</v-card-title>
+          <v-card-title class="headline">{{$t('warning')}} </v-card-title>
           <v-card-text>
             {{warningTitle}}
           </v-card-text>
           <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
+            <v-btn flat color="red" @click="warningDialog=false"> {{$t('cancel')}}  </v-btn>
             <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
+            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> {{$t('confirm')}}  </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -33,7 +33,7 @@
       <v-dialog v-model="departmentDialog" persistent max-width="700px">
         <v-card>
           <v-card-title>
-            <span class="headline"> {{ updatingDepartment ? 'Update Department information' : 'Create a new Department' }} </span>
+            <span class="headline"> {{ updatingDepartment ? $t('update_department') : $t('create_department') }} </span>
           </v-card-title>
           <v-card-text>
             <v-form v-model="formValid" ref="form" autocomplete="off">
@@ -41,12 +41,12 @@
                 <v-layout wrap>
 
                   <v-flex xs12 md9>
-                    <v-text-field label="Department name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Department name is required']"
+                    <v-text-field :placeholder="$t('department')" hint="This must be unique" v-model="name" :rules="departmentRules"
                       required></v-text-field>
                   </v-flex>
 
                   <v-flex xs12 md3>
-                    <v-text-field label="Department acronym" v-model="acronym" :rules="[v => !!v || 'Department acronym is required']" required></v-text-field>
+                    <v-text-field :placeholder="$t('department_acronym')" v-model="acronym" :rules="departmentAcronymRules" required></v-text-field>
                   </v-flex>
 
                 </v-layout>
@@ -55,14 +55,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="() => {                
-                  if(updatingDepartment)
-                    showConfirmDialog(updateDepartment, 'Are you sure you want to update the department?')
-                   else
-                     showConfirmDialog(createDepartment, 'Are you sure you want to create the department?')
-                }" :disabled="!formValid">
-              {{ updatingDepartment ? 'Update' : 'Create' }}
+            <v-btn color="blue darken-1" flat @click.native="closeDialog">{{$t('cancel')}}</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="departmentWarnings" :disabled="!formValid">
+              {{ updatingDepartment ? $t('update') : $t('create') }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -73,7 +68,7 @@
     
       <v-layout>
         <v-flex xs10>
-          <span class="display-1"> Manage Departments </span>
+          <span class="display-1"> {{$t('manage_departments')}} </span>
           <v-btn flat color="success" slot="activator" @click="departmentDialog=true">
             <v-icon> add </v-icon>
           </v-btn>
@@ -101,7 +96,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="blue darken-1" @click="showDepartmentDetails=false"> Dismiss </v-btn>          
+            <v-btn flat color="blue darken-1" @click="showDepartmentDetails=false"> {{$t('close')}} </v-btn>          
           </v-card-actions>
         </v-card>        
       </v-dialog>
@@ -121,10 +116,7 @@
         <v-btn fab flat @click="openUpdateDepartmentDialog(department)">
           <v-icon> mode_edit </v-icon>
         </v-btn>
-        <v-btn fab flat color="error" @click="() => {
-                    currentDepartment=department
-                    showConfirmDialog(deleteDepartment, `Are you sure you want to delete \'${department.name}\' ?`)
-                }">
+        <v-btn fab flat color="error" @click="deleteDepartmentWarning(department)">
           <v-icon > delete </v-icon>
         </v-btn>     
       </v-toolbar>
@@ -177,9 +169,31 @@ export default {
       showDepartmentDetails:false,
       //form-validation
       formValid:false,
+      departmentRules: [v => !!v || this.$i18n.messages[this.$i18n.locale]['department_rule2']],
+      departmentAcronymRules: [v => !!v || this.$i18n.messages[this.$i18n.locale]['department_acronym_rule']],
     }
   },
   methods: {
+    deleteDepartmentWarning(department){
+      this.currentDepartment = department
+      this.showConfirmDialog(
+        this.deleteDepartment,
+        this.$i18n.messages[this.$i18n.locale]['delete_department_warning'] +
+        department.name + "'?"
+      )
+    },
+    departmentWarnings(){                    
+      if(this.updatingDepartment)
+        this.showConfirmDialog(
+          this.updateDepartment,
+          this.$i18n.messages[this.$i18n.locale]['update_department_warning']
+        )
+      else
+        this.showConfirmDialog(
+          this.createDepartment,
+          this.$i18n.messages[this.$i18n.locale]['create_department_warning']
+        )    
+    },
     showConfirmDialog(action, title){
         this.warningDialog=true
         this.warningAction=action 

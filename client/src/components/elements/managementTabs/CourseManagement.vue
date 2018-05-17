@@ -10,20 +10,20 @@
         <div v-if="success!=null">
           {{success.res}}
         </div>
-        <v-btn flat dark @click="showingFeedback=false"> Close </v-btn>
+        <v-btn flat dark @click="showingFeedback=false"> {{$t('close')}} </v-btn>
       </v-snackbar>
 
       <!-- warning dialog -->
       <v-dialog v-model="warningDialog" max-width="500px">
         <v-card>
-          <v-card-title class="headline">Be Careful!</v-card-title>
+          <v-card-title class="headline">{{$t('warning')}}</v-card-title>
           <v-card-text>
             {{warningTitle}}
           </v-card-text>
           <v-card-actions>
-            <v-btn flat color="red" @click="warningDialog=false"> Cancel </v-btn>
+            <v-btn flat color="red" @click="warningDialog=false"> {{$t('cancel')}} </v-btn>
             <v-spacer> </v-spacer>
-            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> Confirm </v-btn>
+            <v-btn flat color="green" @click="() => { warningDialog=false, warningAction() }"> {{$t('confirm')}} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -33,7 +33,7 @@
       <v-dialog v-model="courseDialog" persistent max-width="700px">
         <v-card>
           <v-card-title>
-            <span class="headline"> {{ updatingCourse ? 'Update Course information' : 'Create a new Course' }} </span>
+            <span class="headline"> {{ updatingCourse ? $t('update_course') : $t('new_course') }} </span>
           </v-card-title>
           <v-card-text>
             <v-form v-model="formValid" ref="form" autocomplete="off">
@@ -41,16 +41,16 @@
                 <v-layout wrap>
 
                   <v-flex xs12 md9>
-                    <v-text-field label="Course name" hint="This must be unique" v-model="name" :rules="[v => !!v || 'Course name is required']"
+                    <v-text-field :placeholder="$t('course')" hint="This must be unique" v-model="name" :rules="courseNameRule"
                       required></v-text-field>
                   </v-flex>
 
                   <v-flex xs12 md3>
-                    <v-text-field label="Course acronym" v-model="acronym" :rules="[v => !!v || 'Course acronym is required']" required></v-text-field>
+                    <v-text-field :placeholder="$t('course_acronym')" v-model="acronym" :rules="courseAcronymRule" required></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-text-field label="Description" v-model="description" multi-line></v-text-field>
+                    <v-text-field :placeholder="$t('description')" v-model="description" multi-line></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
@@ -59,23 +59,23 @@
                         :filter="customDepartmentFilter" 
                         v-model="selectedDepartmentIds" 
                         item-text="name" item-value="id"
-                        label="Select one or more course departments" 
+                        :placeholder="$t('select_course')"
                         autocomplete 
                         multiple
                         chips
                         max-height="400"
-                        :rules="[v => !!v || 'Course department is required']"
+                        :rules="courseDepartmentRule"
                         required>
                     </v-select>
                   </v-flex>
 
                   <v-flex xs12 md9>
-                    <v-text-field label="Website" v-model="website" prepend-icon="web"></v-text-field>
+                    <v-text-field :placeholder="$t('website')"  v-model="website" prepend-icon="web"></v-text-field>
                   </v-flex>
 
                   <v-flex xs12 md3>
-                    <v-select label="Type of degree" v-model="academicDegree" :rules="[v => !!v || 'Course type of degree is required']" required
-                      :items="['Bachelor', 'Masters', 'PhD']"></v-select>
+                    <v-select :placeholder="$t('degree')"  v-model="academicDegree" :rules="courseDegreeRule" required
+                      :items="$t('degrees')"></v-select>
                   </v-flex>
 
                   <v-flex xs12 md6>
@@ -83,7 +83,7 @@
                       <v-flex xs8>
                         <v-menu ref="creationDateMenu" lazy :close-on-content-click="false" v-model="creationDateMenu" transition="scale-transition"
                           offset-y full-width :nudge-right="40" min-width="290px">
-                          <v-text-field slot="activator" label="Creation date" v-model="creationDate" prepend-icon="event" readonly></v-text-field>
+                          <v-text-field slot="activator" :placeholder="$t('creation_date')" v-model="creationDate" prepend-icon="event" readonly></v-text-field>
                           <v-date-picker ref="picker" v-model="creationDate" @change="saveCreationDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
                         </v-menu>
 
@@ -102,7 +102,7 @@
                       <v-flex xs8>
                         <v-menu ref="endDateMenu" lazy :close-on-content-click="false" v-model="endDateMenu" transition="scale-transition" offset-y
                           full-width :nudge-right="40" min-width="290px">
-                          <v-text-field slot="activator" label="Close date" v-model="endDate" prepend-icon="event" hint="If the course has already closed"
+                          <v-text-field slot="activator" :placeholder="$t('close_date')" v-model="endDate" prepend-icon="event" hint="If the course has already closed"
                             readonly></v-text-field>
                           <v-date-picker ref="picker" v-model="endDate" @change="saveEndDate" min="1950-01-01" :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
                         </v-menu>
@@ -123,14 +123,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="closeDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="() => {                
-                  if(updatingCourse)
-                    showConfirmDialog(updateCourse, 'Are you sure you want to update the course?')
-                   else
-                     showConfirmDialog(createCourse, 'Are you sure you want to create the course?')
-                }" :disabled="!formValid">
-              {{ updatingCourse ? 'Update' : 'Create' }}
+            <v-btn color="blue darken-1" flat @click.native="closeDialog">{{$t('cancel')}}</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="warningDialogs" :disabled="!formValid">
+              {{ updatingCourse ? $t('update') : $t('create') }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -145,7 +140,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> Dismiss </v-btn>
+            <v-btn flat color="blue darken-1" @click="showCourseDetails=false"> {{$t('close')}} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -156,7 +151,7 @@
       <v-flex>
         <v-layout>
           <v-flex xs7>
-            <span class="display-1"> Manage Courses </span>
+            <span class="display-1"> {{$t('manage_courses')}} </span>
             <v-btn flat color="success" slot="activator" @click="courseDialog=true">
               <v-icon> add </v-icon>
             </v-btn>
@@ -166,7 +161,7 @@
             <v-select
               :items="numPagesOptions"
               v-model="itemsPerPage"
-              label="Items"
+              :placeholder="$t('items')"
               class="input-group--focused"
               item-value="pa"
             ></v-select>
@@ -193,10 +188,7 @@
             <v-btn fab flat @click="openUpdateCourseDialog(course)">
               <v-icon> mode_edit </v-icon>
             </v-btn>
-            <v-btn fab flat color="error" @click="() => {
-                      currentCourse=course
-                      showConfirmDialog(deleteCourse, `Are you sure you want to delete \'${course.name}\' ?`)
-                  }">
+            <v-btn fab flat color="error" @click="deleteCourseWarning(course)">
               <v-icon> delete </v-icon>
             </v-btn>
           </v-toolbar-items>
@@ -261,9 +253,32 @@ export default {
       //form-validation
       formValid:false,
       departments: [],
+      courseNameRule: [v => !!v || this.$i18n.messages[this.$i18n.locale]['course_name_rule']],
+      courseAcronymRule: [v => !!v || this.$i18n.messages[this.$i18n.locale]['course_acronym_rule']],
+      courseDepartmentRule: [v => !!v || this.$i18n.messages[this.$i18n.locale]['course_department_rule']],
+      courseDegreeRule: [v => !!v || this.$i18n.messages[this.$i18n.locale]['course_degree_rule']],
     }
   },
   methods: {
+    deleteCourseWarning(course){      
+      this.currentCourse=course
+      this.showConfirmDialog(
+        this.deleteCourse,
+        this.$i18n.messages[this.$i18n.locale]['delete_course_warning'] + course.name + "'?"
+        )                  
+    },
+      warningDialogs(){  
+        if(this.updatingCourse)
+          this.showConfirmDialog(
+            this.updateCourse,
+            this.$i18n.messages[this.$i18n.locale]['update_course_warning']
+          )
+        else
+          this.showConfirmDialog(
+            this.createCourse,
+            this.$i18n.messages[this.$i18n.locale]['create_course_warning']
+          )
+      },
      customDepartmentFilter (item, queryText, itemText) {        
           const hasValue = val => val != null ? val : ''
           const text = hasValue(item.name)
@@ -272,7 +287,7 @@ export default {
             .toLowerCase()
             .indexOf(query.toString().toLowerCase()) > -1
     },
-    showConfirmDialog(action, title){
+    showConfirmDialog(action, title){      
         this.warningDialog=true
         this.warningAction=action 
         this.warningTitle=title

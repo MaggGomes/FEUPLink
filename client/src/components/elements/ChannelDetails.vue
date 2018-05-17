@@ -4,13 +4,13 @@
       <v-flex xs12>
         <v-tabs v-model="active" color="red darken-4" dark slider-color="white">
           <v-tab ripple>
-            Channel details
+            {{$t('channel_details')}}
           </v-tab>
           <v-tab ripple>
-            Channel members
+            {{$t('channel_members')}}
           </v-tab>
           <v-tab ripple>
-            Channels admin
+            {{$t('channel_admin')}}
           </v-tab>
 
           <!-- details -->
@@ -18,10 +18,10 @@
             <v-card flat>
               <v-card-text>
                 <v-layout row wrap>
-                  <v-flex class="subheading" xs4 mt-2>Name</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('name')}}</v-flex>
                   <v-flex xs8 mt-2>{{channel.name}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>Description</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('description')}}</v-flex>
                   <v-flex xs8 mt-2>{{channel.description}}</v-flex>
 
                 </v-layout>
@@ -47,7 +47,7 @@
                   </v-card-text>        
                   <v-card-actions>
                      <v-spacer></v-spacer>
-                     <v-btn flat color="red darken-4" router :to="`/profile/${person.id}`"> See Profile </v-btn>          
+                     <v-btn flat color="red darken-4" router :to="`/profile/${person.id}`"> {{$t('see_profile')}} </v-btn>          
                   </v-card-actions>
                 </v-card>
               </v-expansion-panel-content>
@@ -72,7 +72,7 @@
                   </v-card-text>        
                   <v-card-actions>
                      <v-spacer></v-spacer>
-                     <v-btn flat color="red darken-4" router :to="`/profile/${person.id}`"> See Profile </v-btn>          
+                     <v-btn flat color="red darken-4" router :to="`/profile/${person.id}`"> {{$t('see_profile')}} </v-btn>          
                   </v-card-actions>
                 </v-card>
               </v-expansion-panel-content>

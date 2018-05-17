@@ -6,9 +6,9 @@
             </v-toolbar>
          		<v-stepper v-model="e1" >
          			<v-stepper-header>         				
-         				<v-stepper-step step="1" :complete="e1 > 1">{{$t('profile_type')}}</v-stepper-step>
+         				<v-stepper-step step="1" :complete="e1 > 2">{{$t('profile_type')}}</v-stepper-step>
          				<v-divider></v-divider>
-         				<v-stepper-step step="2" :complete="e1 > 2">{{$t('in_feup')}}</v-stepper-step>
+         				<v-stepper-step step="2" :complete="e1 > 3">{{$t('in_feup')}}</v-stepper-step>
          				<v-divider></v-divider>
          				<v-stepper-step step="3">{{$t('experience')}}</v-stepper-step>
          			</v-stepper-header>
@@ -30,7 +30,7 @@
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
 							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>							
-							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
+							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 2">{{$t('continue')}}</v-btn>
 						</v-flex>
 					 </v-stepper-content>
          			<v-stepper-content step="2">
@@ -275,8 +275,8 @@
          			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 2" flat>{{$t('back')}}</v-btn>					
-					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">{{$t('continue')}}</v-btn>
+					<v-btn  @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
 					<v-btn v-else disabled>{{$t('continue')}}</v-btn>
 				</v-flex>
 			 </v-stepper-content>
@@ -511,7 +511,7 @@
          			</v-form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn @click.native="e1 = 3" flat>{{$t('back')}}</v-btn>					
+					<v-btn @click.native="e1 = 2" flat>{{$t('back')}}</v-btn>					
 					<v-btn v-if="formValid3" color="primary" v-on:click="signup">{{$t('finish')}}</v-btn>
 					<v-btn v-else disabled>{{$t('finish')}}</v-btn>
 				</v-flex>

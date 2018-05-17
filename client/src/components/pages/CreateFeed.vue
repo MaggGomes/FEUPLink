@@ -5,13 +5,13 @@
     </v-container>
     <v-container fluid v-else>
       <v-toolbar style='color: white; background-color: #8c2d19' height="40px">
-        <v-toolbar-title style="font-size: 15px">Create a post</v-toolbar-title>
+        <v-toolbar-title style="font-size: 15px">{{$t('create_post')}}</v-toolbar-title>
       </v-toolbar>
       <v-stepper v-model="e1" >
         <v-stepper-header>
-          <v-stepper-step step="1" :complete="e1 > 1">Description</v-stepper-step>
+          <v-stepper-step step="1" :complete="e1 > 1">{{$t('description')}}</v-stepper-step>
           <v-divider></v-divider>
-          <v-stepper-step step="2">Text</v-stepper-step>
+          <v-stepper-step step="2">{{$t('text')}}</v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content step="1">
@@ -22,7 +22,7 @@
                     <v-flex xs12 sm5 text-xs-center>
                       <v-text-field
                         name="title"
-                        label="Title"
+                        :placeholder="$t('title')"
                         v-model="title"
                         required>
                       </v-text-field>
@@ -32,7 +32,7 @@
                     <v-flex xs12 sm5 text-xs-center>
                       <v-text-field
                         name="description"
-                        label="Description"
+                        :placeholder="$t('description')"
                         v-model="description"
                         required>
                       </v-text-field>
@@ -41,9 +41,9 @@
                   <v-layout align-center>
                     <v-flex xs12 sm5 text-xs-center>
                       <v-select
-                        :items="postTypes"
+                        :items="$t('post_types')"
                         v-model="postType"
-                        label="Type"
+                        :placeholder="$t('post_type')"
                         required
                       ></v-select>
                     </v-flex>
@@ -55,11 +55,9 @@
                         v-model="selectedChannels"
                         item-text="name"
                         item-value="id"
-                        label="Channel"
+                        :placeholder="$t('channel')"
                         multiple
                         max-height="400"
-                        hint="Select one or more channels"
-                        persistent-hint
                         chips
                         required
                       ></v-select>
@@ -69,7 +67,7 @@
                     <v-flex xs12 sm5 text-xs-center>
                       <v-text-field
                         name="link"
-                        label="Link"
+                        :placeholder="$t('link')"
                         v-model="link">
                       </v-text-field>
                     </v-flex>
@@ -79,7 +77,7 @@
                       <v-select
                         v-model="selectedTags"
                         :items="tags"
-                        label="Tags"
+                        :placeholder="$t('tags')"
                         chips
                         tags
                       >
@@ -102,7 +100,7 @@
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
-              <v-btn style='color: white; background-color: #8c2d19'  border-radius="0px" @click.native="e1 = 2">Continue</v-btn>
+              <v-btn style='color: white; background-color: #8c2d19'  border-radius="0px" @click.native="e1 = 2">{{$t('continue')}}</v-btn>
             </v-flex>
           </v-stepper-content>
 
@@ -115,12 +113,12 @@
               </v-form>
             </v-card>
             <v-flex xs12 sm12 text-right class="text-xs-right">
-              <v-btn  @click.native="e1 = 1" flat>Back</v-btn>
+              <v-btn  @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>
               <v-btn
                 color="primary"
                 v-on:click="submitData"
                 :disabled="!valid">
-                Finish
+                {{$t('finish')}}
               </v-btn>
             </v-flex>
           </v-stepper-content>
@@ -156,9 +154,9 @@
         description: null,
         text: '<p>Some new content new</p>',
         postType: null,
-        postTypes: ['New', 'Job', 'Event', 'Education'],
+        postTypes: this.$i18n.messages[this.$i18n.locale]['post_types'],
         link: '',
-        tags: ['Porto', 'University', 'Engineering', 'Informatics'],
+        tags: this.$i18n.messages[this.$i18n.locale]['post_tags'],
         selectedTags: [],
         channels: [],
         selectedChannels: []

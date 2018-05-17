@@ -4,40 +4,40 @@
       <v-flex xs12>
         <v-tabs v-model="active" color="red darken-4" dark slider-color="white">
           <v-tab ripple>
-            Course details
+            {{$t('course_details')}}
           </v-tab>
           <v-tab ripple>
-            Course Students
+            {{$t('course_students')}}
           </v-tab>
           <v-tab ripple>
-            Course Departments
+            {{$t('course_departments')}}
           </v-tab>
           <v-tab ripple>
-            Course associated channels
+            {{$t('course_channels')}}
           </v-tab>
           <v-tab-item style="height: 400px;">
             <v-card flat>
               <v-card-text>
                 <v-layout row wrap>
-                  <v-flex class="subheading" xs4 mt-2>Name</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('name')}}</v-flex>
                   <v-flex xs8 mt-2>{{course.name}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>Acronym</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('acronym')}}</v-flex>
                   <v-flex xs8 mt-2>{{course.acronym}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>Type of Degree</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('degree')}}</v-flex>
                   <v-flex xs8 mt-2>{{course.academicDegree}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>Description</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('description')}}</v-flex>
                   <v-flex xs8 mt-2>{{course.description}}</v-flex>           
 
-                  <v-flex class="subheading" xs4 mt-2>website</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('website')}}</v-flex>
                   <v-flex xs8 mt-2>{{course.website}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>Creation Date</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('creation_date')}}</v-flex>
                   <v-flex xs8 mt-2>{{String(course.creationDate).substring(0,10)}}</v-flex>
 
-                  <v-flex class="subheading" xs4 mt-2>End Date</v-flex>
+                  <v-flex class="subheading" xs4 mt-2>{{$t('close_date')}}</v-flex>
                   <v-flex xs8 mt-2>{{String(course.endDate).substring(0,10)}}</v-flex>
 
                 </v-layout>
@@ -58,17 +58,17 @@
                   <v-card-text>
                     <v-layout row wrap>
                      
-                      <v-flex class="subheading" xs4 mt-2>Enrrolment Date</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>{{$t('enrollment_date')}}</v-flex>
                       <v-flex xs8 mt-2>{{String(student.CourseStudent.enrollmentDate).substring(0,10)}}</v-flex>
                     
-                      <v-flex class="subheading" xs4 mt-2>Graduation Date</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>{{$t('graduation_date')}}</v-flex>
                       <v-flex xs8 mt-2>{{String(student.CourseStudent.graduationDate).substring(0,10)}}</v-flex>                    
                                 
                     </v-layout>
                   </v-card-text>        
                   <v-card-actions>
                      <v-spacer></v-spacer>
-                     <v-btn flat color="red darken-4" router :to="`/profile/${student.PersonId}`"> See Student Profile </v-btn>          
+                     <v-btn flat color="red darken-4" router :to="`/profile/${student.PersonId}`"> {{$t('see_profile')}} </v-btn>          
                   </v-card-actions>
                 </v-card>
               </v-expansion-panel-content>
@@ -87,10 +87,10 @@
                   <v-card-text>
                     <v-layout row wrap>
                      
-                      <v-flex class="subheading" xs4 mt-2>Department Name</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>{{$t('department')}}</v-flex>
                       <v-flex xs8 mt-2>{{String(department.name)}}</v-flex>
                     
-                      <v-flex class="subheading" xs4 mt-2>Department Acronym</v-flex>
+                      <v-flex class="subheading" xs4 mt-2>{{$t('acronym')}}</v-flex>
                       <v-flex xs8 mt-2>{{String(department.acronym)}}</v-flex>                    
                                 
                     </v-layout>

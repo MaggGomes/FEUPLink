@@ -1,43 +1,47 @@
 <template>	
 	<v-card>
-		<v-card-title class="headline">Edit Profile</v-card-title>
+		<v-card-title class="headline">{{ $t("edit_profile") }}</v-card-title>
 
 		<v-card-text>
 			<v-container wrap>
 				<v-layout row>
-					<v-text-field label="Name" v-model="editedPerson.name" prepend-icon="person"></v-text-field>
+					<v-text-field
+					:placeholder="$t('name')"
+					v-model="editedPerson.name"
+					prepend-icon="person">
+					</v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-text-field label="Email" v-model="editedPerson.email" prepend-icon="email"></v-text-field>
+					<v-text-field :placeholder="$t('email')" v-model="editedPerson.email" prepend-icon="email"></v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-select autocomplete :items="genders" v-model="editedPerson.gender" label="Gender" 
+					<v-select autocomplete :items="genders" v-model="editedPerson.gender" :placeholder="$t('gender')" 
 					single-line prepend-icon="fa-transgender"></v-select>
 				</v-layout>
 				<v-layout row>
-					<v-text-field prepend-icon="phone" label="Phone" v-model="editedPerson.phone"></v-text-field>
+					<v-text-field prepend-icon="phone" :placeholder="$t('phone')" v-model="editedPerson.phone"></v-text-field>
 				</v-layout>
 				<v-layout row>
 					<v-menu ref="menu" lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" style="width: 100%;">
-						<v-text-field slot="activator" label="Birth Date" :placeholder="birthDateFormatted" v-model="birthDateFormatted" 
-							readonly hint="DD/MM/YYYY format" prepend-icon="event"></v-text-field>
+						<v-text-field slot="activator" :placeholder="$t('birthdate')" v-model="birthDateFormatted" 
+							readonly prepend-icon="event"></v-text-field>
 						<v-date-picker ref="picker" v-model="date" @change="updateBirthDate" min="1950-01-01"
 							:max="new Date().toISOString().substr(0, 10)" value="02/02/2015"></v-date-picker>
 					</v-menu>
 				</v-layout>
 				<v-layout row>
-					<v-text-field prepend-icon="flag" label="Country" v-model="editedPerson.country"></v-text-field>
+					<v-text-field prepend-icon="flag" :placeholder="$t('country')" v-model="editedPerson.country"></v-text-field>
 				</v-layout>
 				<v-layout row>
-					<v-text-field prepend-icon="location_city" label="City" v-model="editedPerson.city"></v-text-field>
+					<v-text-field prepend-icon="location_city" :placeholder="$t('city')" v-model="editedPerson.city"></v-text-field>
 				</v-layout>
 			</v-container>
 		</v-card-text>
 
 		<v-card-actions>
 			<v-layout row justify-end>
-				<v-btn color="primary" flat @click.stop="$emit('closeDialog')">Close</v-btn>
-				<v-btn color="primary" flat @click.stop="updatePersonProfile">Edit</v-btn>
+				<v-btn color="primary" flat @click.stop="$emit('closeDialog')">{{$t('close')}}</v-btn>
+				<v-btn color="primary" flat @click.stop="updatePersonProfile">{{$t('edit')}}</v-btn>
 			</v-layout>
 		</v-card-actions>
 	</v-card>
@@ -58,9 +62,9 @@ export default {
   data() {
     return {
       editedPerson: this.person,
-      genders: ["Male", "Female"],
-			menu: null,
-			date: null
+      genders: this.$i18n.messages[this.$i18n.locale]["genders"],
+		menu: null,
+		date: null
     };
 	},
 	
