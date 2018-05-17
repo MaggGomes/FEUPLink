@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 25em;">
 		<template v-for="(post, index) in posts">
 			<v-divider v-if="index !== 0" :key="index" inset></v-divider>
 			<v-list-tile ripple avatar :key="post.title" route :to="'/post/' + post.id">

@@ -4,7 +4,14 @@
       <no-posts></no-posts>
     </v-card>
     <v-list v-else class="feed-content" two-line>
-       <post-list :posts="contents"></post-list>
+      <v-list-tile style="margin-left: 3.5em;">
+        <v-layout row>
+          <v-flex xs12 md6>
+            <v-text-field append-icon="search" v-model="postSearch" label="Search for Post's"></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-list-tile>
+      <post-list :posts="contents"></post-list>
     </v-list>
   </div>
 </template>
@@ -24,7 +31,8 @@
 
     data() {
       return {
-        contents: []
+        contents: [],
+        postSearch: ''
       };
     },
 
