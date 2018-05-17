@@ -1,13 +1,22 @@
 <template>
   <div>
     <v-card v-if="contents.length === 0" height="30em">
+      <v-card-text>
+        <v-layout row style="margin-left: 3.5em; margin-top: -0.6em;">
+          <v-flex xs12 md6>
+            <!-- @keyup.enter.native  maybe use this event-->
+            <v-text-field autofocus append-icon="search" v-model="postSearch" @input="updateContent" label="Search for Post's"></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
       <no-posts></no-posts>
     </v-card>
-    <v-list v-else two-line>
+    <v-list v-else class="feed-content" two-line>
       <v-list-tile style="margin-left: 3.5em;">
         <v-layout row>
-          <v-flex xs6>
-            <v-text-field append-icon="search" v-model="postSearch" label="Search for Post's"></v-text-field>
+          <v-flex xs12 md6>
+            <!-- @keyup.enter.native  maybe use this event-->
+            <v-text-field autofocus append-icon="search" v-model="postSearch" @input="updateContent" label="Search for Post's"></v-text-field>
           </v-flex>
         </v-layout>
       </v-list-tile>
@@ -38,10 +47,18 @@
 
     mounted: async function() {
       try{
-        this.contents = (await FeedService.get_posts_by_person_and_type(this.$store.state.user.id, 'Event')).data;
+        this.contents = this.updateContent()
 
       }catch(error){
 
+      }
+    },
+
+    methods: {
+      async updateContent () {
+        let searchString = ''
+        this.postSearch === '' ? searchString = '_' : searchString = this.postSearch
+        this.contents = (await FeedService.get_posts_by_person_and_type(this.$store.state.user.id, 'Event', searchString)).data;
       }
     }
   }

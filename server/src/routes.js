@@ -268,7 +268,7 @@ module.exports = (app) => {
     );
 
     // Returns all post from the channels in which a user is enrolled
-    app.get('/post/person/:PersonId/type/:type',
+    app.get('/post/person/:PersonId/type/:type/search/:postSearch',
         AuthenticationControllerPolicy.authenticated,
         PostController.list_enrolled_channels_posts_by_type
     );

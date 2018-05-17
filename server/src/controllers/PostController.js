@@ -159,13 +159,9 @@ module.exports = {
         }
     },
     async list_enrolled_channels_posts(req, res) {
-        console.log('\n\n\n\naliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n\n\n\n');
         try {
             const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
             let posts = [];
-
-            console.log(req.params);
-            console.log('ali');
 
             if (userData.role === 'Super Admin') { // return all posts
                 listPosts(req, res);
@@ -230,6 +226,21 @@ module.exports = {
                         attributes: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
                         where: {
                             type: req.params.type,
+                        },
+                        where: {
+                            [Op.or]: [{
+                                title: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }, {
+                                description: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }, {
+                                text: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }],
                         },
                         include: [{
                             model: Channel,
