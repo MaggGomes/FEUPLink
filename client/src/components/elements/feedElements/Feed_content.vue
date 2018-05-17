@@ -1,24 +1,30 @@
 <template>
-    <v-list class="feed-content" two-line>
-        <post-list :posts="contents"></post-list>
+  <div>
+    <v-card v-if="contents.length === 0" height="30em">
+      <no-posts></no-posts>
+    </v-card>
+    <v-list v-else class="feed-content" two-line>
+       <post-list :posts="contents"></post-list>
     </v-list>
+  </div>
 </template>
 
 <script>
   import FeedService from '@/services/FeedService'
-  import PostList from "@/components/elements/PostList";
+  import PostList from "@/components/elements/PostList"
+  import NoPosts from "@/components/elements/NoPosts"
 
   export default {
     name: "nav_tab_1",
 
     components: {
-      PostList
+      PostList,
+      NoPosts
     },
 
-    contents: [],
     data() {
       return {
-        contents: null
+        contents: []
       };
     },
     mounted: async function() {
