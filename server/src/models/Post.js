@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('Post', {
     text: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
         allowNull: false,
     },
     title: {
@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     tags: {
-      // eslint-disable-next-line
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
