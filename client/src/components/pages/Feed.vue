@@ -1,5 +1,5 @@
 <template>
-  <div class="text-lg-center text-md-center text-sm-center" id="feed_content">
+  <div class="text-lg-center text-md-center text-sm-center add-margin-top" id="feed_content">
     <v-container>
        <v-navigation-drawer  fixed
                              permanent
@@ -124,10 +124,6 @@
     #feed_content .list{
         background-color: white !important;   
     }
-  
-    #feed_content .active{
-        background-color: white !important;
-    }
 
     @media(min-width: 1024px ){
         #feed_content .navigation-drawer{
@@ -155,5 +151,11 @@
         color: white;
         font-weight: bold;
     }
+
+    @media(max-width: 960px) {
+			.add-margin-top {
+				margin-top: -1.5em;
+			}
+		}
 
 </style>

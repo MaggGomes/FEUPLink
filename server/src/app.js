@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const {sequelize} = require('./models');
-const databaseScript = require('./utils/database/databaseScript');
+// const databaseScript = require('./utils/database/databaseScript');
 
 const app = express();
 app.use(morgan('combined'));
@@ -34,7 +34,7 @@ createServer({
   .then(() => {
     app.listen(process.env.PORT, function() {
       // Fill the database with data
-      databaseScript.populateDatabase();
+      // databaseScript.populateDatabase();
       console.log(`FEUPLink server started on ${process.env.SERVER_URL_DEV}`);
     });
 });

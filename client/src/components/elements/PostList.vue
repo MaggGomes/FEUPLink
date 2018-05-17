@@ -11,6 +11,7 @@
 						<v-list-tile-sub-title>{{post.description}}</v-list-tile-sub-title>
 				</v-list-tile-content>
 			</v-list-tile>
+			<v-divider v-if="index === posts.length - 1" :key="'bottom-divider' + index" inset></v-divider>
 		</template>
 	</div>
 </template>

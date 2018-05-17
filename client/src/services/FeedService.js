@@ -14,8 +14,8 @@ export default {
     return Api().get('post/')
   },
   // Returns all post from the channels in which a user is enrolled
-  get_posts_by_person (personId) {
-    return Api().get('/post/person/'+personId)
+  get_posts_by_person (personId, postSearch) {
+    return Api().get(`/post/person/${personId}/search/${postSearch}`)
   },
   get_posts_by_type (postType) {
     return Api().get('post/'+postType)

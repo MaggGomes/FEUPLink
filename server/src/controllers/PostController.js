@@ -4,6 +4,8 @@ const {
     Person,
 } = require('../models');
 const jwt = require('jsonwebtoken');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 /**
  * Returns posts
@@ -157,9 +159,13 @@ module.exports = {
         }
     },
     async list_enrolled_channels_posts(req, res) {
+        console.log('\n\n\n\naliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n\n\n\n');
         try {
             const userData = jwt.verify(req.get('auth'), process.env.JWT_SECRET);
             let posts = [];
+
+            console.log(req.params);
+            console.log('ali');
 
             if (userData.role === 'Super Admin') { // return all posts
                 listPosts(req, res);
@@ -168,6 +174,21 @@ module.exports = {
                 posts = (await Post.findAll(
                     {
                         attributes: ['id', 'title', 'description', 'date', 'link', 'numViews', 'type', 'tags'],
+                        where: {
+                            [Op.or]: [{
+                                title: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }, {
+                                description: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }, {
+                                text: {
+                                    [Op.like]: '%' + req.params.postSearch + '%',
+                                },
+                            }],
+                        },
                         include: [{
                             model: Channel,
                             where: {
@@ -191,6 +212,7 @@ module.exports = {
             res.status(400).send({
                 error: err,
             });
+            console.log(err);
         }
     },
     async list_enrolled_channels_posts_by_type(req, res) {
