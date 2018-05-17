@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: true,
       },
+      educationVisible: {
+        type: DataTypes.ENUM,
+        values: ['All Users', 'Channel Admins', 'Super Admins'],
+        defaultValue: 'All Users',
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,

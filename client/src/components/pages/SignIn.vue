@@ -1,5 +1,4 @@
 <template>
-   <v-app id="inspire">
     <v-content>
       <v-container fluid v-if="loading">
         <buffering-wheel />
@@ -7,9 +6,9 @@
       <v-container fluid v-else>
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm10 md5>
+          <v-flex xs12 sm12 md5 id="main_card">
             <v-card class="elevation-12">
-              <v-toolbar dark class="red darken-4">
+              <v-toolbar dark>
                 <v-toolbar-title>{{$t("signin")}}</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
@@ -37,7 +36,7 @@
                   {{$t("signup")}}
                 </v-btn>
                 <v-spacer> </v-spacer>
-                <v-btn v-if="valid" v-on:click="signin" dark class="red darken-4">
+                <v-btn v-if="valid" v-on:click="signin" dark>
                   {{$t("continue")}}
                 </v-btn>
                 <v-btn v-else disabled>{{$t("continue")}}</v-btn>
@@ -45,7 +44,7 @@
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 md5>             
+          <v-flex xs12 sm12 md5 id="social">
             <facebook-button class="signin-button elevation-12"></facebook-button><br>
             <linked-in-button class="signin-button elevation-12" ></linked-in-button>
           </v-flex>
@@ -53,7 +52,6 @@
         </v-layout>
       </v-container>
     </v-content>
-  </v-app>
 </template>
 
 <script>
@@ -126,6 +124,17 @@ export default {
   width: 100%;
   height: 60px;
   font-size: 125%;
+}
+#main_card .toolbar__content, button.btn{
+  background-color:rgb(140,45,25)!important;
+}
+@media only screen and (max-width: 960px) and (min-width: 600px){
+  #main_card {
+    margin: 10px 20%;
+  }
+  #social {
+    margin: 10px 40%;
+  }
 }
 
 </style>

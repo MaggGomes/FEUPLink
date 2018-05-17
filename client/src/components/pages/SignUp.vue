@@ -3,9 +3,9 @@
       <v-container fluid v-if="firstStep" id="createNewAcc">
         <v-layout row wrap align-center justify-center>
           <v-spacer></v-spacer>
-          <v-flex xs12 sm10 md5>
+          <v-flex xs12 sm10 md5 id="main_card">
             <v-card class="elevation-12">
-              <v-toolbar dark class="red darken-4">
+              <v-toolbar dark id="title_create">
                 <v-toolbar-title>{{$t('signup')}}</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
@@ -46,13 +46,13 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-if="valid" v-on:click="continueSignup" dark class="red darken-4">{{$t('continue')}}</v-btn>
-				<v-btn v-else disabled>{{$t('continue')}}</v-btn>
+                <v-btn v-if="valid" v-on:click="continueSignup" dark class="continue_btn">{{$t('continue')}}</v-btn>
+				<v-btn class="continue_btn" v-else disabled>{{$t('continue')}}</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs12 md5 id="social">
+          <v-flex xs12 sm12 md5 id="social">
 			<facebook-button class="signup-button elevation-12"></facebook-button><br>
             <linked-in-button class="signup-button elevation-12" ></linked-in-button>
           </v-flex>
@@ -60,7 +60,7 @@
         </v-layout>
       </v-container>
       <v-container id="userInfo" fluid v-else>
-        <v-toolbar dark class="red darken-4" height="40px">
+        <v-toolbar dark height="40px" id="title_registration">
               <v-toolbar-title style="font-size: 15px">{{$t('signup')}}</v-toolbar-title>
             </v-toolbar>
          		<v-stepper v-model="e1" >
@@ -185,8 +185,8 @@
 							 		
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn v-if="formValid1" dark class="red darken-4" height="33px" border-radius="0px" @click.native="e1 = 2">{{$t('continue')}}</v-btn>
-							<v-btn v-else disabled>{{$t('continue')}}</v-btn>
+							<v-btn v-if="formValid1" dark class="continue_btn" height="33px" border-radius="0px" @click.native="e1 = 2">{{$t('continue')}}</v-btn>
+							<v-btn v-else class="continue_btn" disabled>{{$t('continue')}}</v-btn>
 						</v-flex>
          			</v-stepper-content>
          			<v-stepper-content step="2">
@@ -205,8 +205,8 @@
                    </v-container>
          				</v-card>
 						<v-flex xs12 sm12 text-right class="text-xs-right">
-							<v-btn background-color="darkgrey" @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>							
-							<v-btn dark class="red darken-4"  border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
+							<v-btn class="back_btn" background-color="darkgrey" @click.native="e1 = 1" flat>{{$t('back')}}</v-btn>							
+							<v-btn dark class="continue_btn"  border-radius="0px" @click.native="e1 = 3">{{$t('continue')}}</v-btn>
 						</v-flex>
 					 </v-stepper-content>
          			<v-stepper-content step="3">
@@ -239,7 +239,7 @@
 										 </v-layout>	
 										
 										<v-layout row wrap align-center v-if="role == 'student'">
-											<v-flex xs9 sm5 text-xs-center>
+											<v-flex xs12 sm6 text-xs-center>
 												<v-select
 												:items="$t('degrees')"
 												v-model="degree"
@@ -249,19 +249,9 @@
 												required
 												></v-select>
 											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="academicDegreeVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
-											</v-flex>
-											<v-flex xs9 sm5 text-xs-center>	
+											<v-flex xs12 sm6 text-xs-center>	
 											  <v-select
-													:items="courses"		
+													:items="filteredCourses"		
 													v-model="courseId"
 													item-text="name"
 													item-value="id"
@@ -271,16 +261,6 @@
 													:rules="courseRules"
 													required
 												></v-select>
-											</v-flex>
-											<v-flex xs3 sm1 text-xs-center>
-												<v-btn-toggle v-model="courseVisible">
-													<v-btn flat>
-														<v-icon>visibility</v-icon>
-													</v-btn>
-													<v-btn flat>
-														<v-icon>visibility_off</v-icon>
-													</v-btn>
-												</v-btn-toggle>
 											</v-flex>
 										</v-layout>
 
@@ -305,7 +285,7 @@
 									</v-layout>
 
 									<v-layout row wrap align-center>
-										<v-flex xs9 sm5 text-xs-center>
+										<v-flex xs12 sm6 text-xs-center>
 											<v-menu
 												ref="menu2"
 												lazy
@@ -343,22 +323,12 @@
 												></v-date-picker>
 											</v-menu>
 										</v-flex>
-										<v-flex xs3 sm1 text-xs-center>
-											<v-btn-toggle v-model="date2Visible">
-												<v-btn flat>
-													<v-icon>visibility</v-icon>
-												</v-btn>
-												<v-btn flat>
-													<v-icon>visibility_off</v-icon>
-												</v-btn>
-											</v-btn-toggle>
-										</v-flex>
 
 										<v-flex class="to" xs12 sm1 text-xs-center>
 											to
 										</v-flex>
 
-										<v-flex xs9 sm4 text-xs-center>
+										<v-flex xs12 sm5 text-xs-center>
 											<v-menu
 												ref="menu3"
 												lazy
@@ -394,28 +364,18 @@
 												></v-date-picker>
 											</v-menu>
 										</v-flex>
-										<v-flex xs3 sm1 text-xs-center>
-											<v-btn-toggle v-model="date3Visible">
-												<v-btn flat>
-													<v-icon>visibility</v-icon>
-												</v-btn>
-												<v-btn flat>
-													<v-icon>visibility_off</v-icon>
-												</v-btn>
-											</v-btn-toggle>
-										</v-flex>
 									</v-layout>
 
 							<v-layout align-center v-if="role == 'student'">
 								<v-flex xs9 sm11 text-xs-center>		
 									<v-select
-											:items="$t('student_types')"
-											v-model="type"
-											:placeholder="$t('student_type')"
-											prepend-icon="person"
-											:rules="studentTypeRules"
-											required
-											></v-select>
+										:items="$t('student_types')"
+										v-model="type"
+										:placeholder="$t('student_type')"
+										prepend-icon="person"
+										:rules="studentTypeRules"
+										required
+									></v-select>
 								</v-flex>
 								<v-flex xs3 sm1 text-xs-center>
 									<v-btn-toggle v-model="typeVisible">
@@ -451,9 +411,9 @@
          			</v-form>
          		</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn  @click.native="e1 = 2" flat>{{$t('back')}}</v-btn>					
-					<v-btn v-if="formValid2" dark class="red darken-4" border-radius="0px" @click.native="e1 = 4">{{$t('continue')}}</v-btn>
-					<v-btn v-else disabled>{{$t('continue')}}</v-btn>
+					<v-btn  @click.native="e1 = 2" flat class="back_btn">{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid2" dark class="continue_btn" border-radius="0px" @click.native="e1 = 4">{{$t('continue')}}</v-btn>
+					<v-btn v-else disabled class="continue_btn">{{$t('continue')}}</v-btn>
 				</v-flex>
 			 </v-stepper-content>
          	<v-stepper-content step="4">
@@ -462,7 +422,7 @@
          		<v-form autocomplete="off" ref="form" v-model="formValid3">
 							<v-container fluid>
 								<v-layout align-center>
-									<v-flex xs9 sm11 text-xs-center>
+									<v-flex xs12 sm12 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 												prepend-icon="person"
 												:placeholder="$t('company')"
@@ -476,20 +436,10 @@
 												required
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 
 								<v-layout row wrap align-center>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-select
 											:items="$t('company_types')"
 											v-model="companyType"
@@ -497,37 +447,17 @@
 											prepend-icon="person"
 										></v-select>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyTypeVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-text-field
 										prepend-icon="person"
 										:placeholder="$t('company_industry')"
 										v-model="companyIndustry"
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="companyIndustryVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 
 								<v-layout align-center>
-									<v-flex xs9 sm11 text-xs-center>
+									<v-flex xs12 sm12 text-xs-center>
 										<v-text-field v-if="checkboxNoExperience"
 										prepend-icon="person"
 										:placeholder="$t('position')"
@@ -540,19 +470,9 @@
 										:rules="positionRules" required
 										></v-text-field>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="positionVisible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 								<v-layout row wrap align-center>
-									<v-flex xs9 sm5 text-xs-center>
+									<v-flex xs12 sm6 text-xs-center>
 										<v-menu
 											ref="menu4"
 											lazy
@@ -590,22 +510,12 @@
 											></v-date-picker>
 										</v-menu>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="date4Visible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 
 									<v-flex class="to" xs12 sm1 text-xs-center>
 										to
 									</v-flex>
 
-									<v-flex xs9 sm4 text-xs-center>
+									<v-flex xs12 sm5 text-xs-center>
 										<v-menu
 											ref="menu5"
 											lazy
@@ -634,16 +544,6 @@
 											></v-date-picker>
 										</v-menu>
 									</v-flex>
-									<v-flex xs3 sm1 text-xs-center>
-										<v-btn-toggle v-model="date5Visible">
-											<v-btn flat>
-												<v-icon>visibility</v-icon>
-											</v-btn>
-											<v-btn flat>
-												<v-icon>visibility_off</v-icon>
-											</v-btn>
-										</v-btn-toggle>
-									</v-flex>
 								</v-layout>
 							
 							<v-layout row wrap align-center>
@@ -653,16 +553,6 @@
 									v-model="checkboxWork"
 									></v-checkbox>
 								</v-flex>
-								<v-flex xs3 offset-xs8 sm1 text-xs-center>
-									<v-btn-toggle v-model="checkboxWorkVisible">
-										<v-btn flat>
-											<v-icon>visibility</v-icon>
-										</v-btn>
-										<v-btn flat>
-											<v-icon>visibility_off</v-icon>
-										</v-btn>
-									</v-btn-toggle>
-								</v-flex>
 							</v-layout>
 							<v-layout row wrap align-center>
 								<v-flex xs12 sm3 text-xs-center>
@@ -671,25 +561,15 @@
 									v-model="checkboxNoExperience"
 									></v-checkbox>
 								</v-flex>
-								<v-flex xs3 offset-xs8 sm1 text-xs-center>
-									<v-btn-toggle v-model="checkboxNoExperienceVisible">
-										<v-btn flat>
-											<v-icon>visibility</v-icon>
-										</v-btn>
-										<v-btn flat>
-											<v-icon>visibility_off</v-icon>
-										</v-btn>
-									</v-btn-toggle>
-								</v-flex>
 							</v-layout>
 							
          				</v-container>
          			</v-form>
          			</v-card>
 				<v-flex xs12 sm12 text-right class="text-xs-right">
-					<v-btn @click.native="e1 = 3" flat>{{$t('back')}}</v-btn>					
-					<v-btn v-if="formValid3" color="primary" v-on:click="signup">{{$t('finish')}}</v-btn>
-					<v-btn v-else disabled>{{$t('finish')}}</v-btn>
+					<v-btn @click.native="e1 = 3" flat class="back_btn">{{$t('back')}}</v-btn>					
+					<v-btn v-if="formValid3" class="finish_btn" color="primary" v-on:click="signup">{{$t('finish')}}</v-btn>
+					<v-btn v-else disabled class="finish_btn">{{$t('finish')}}</v-btn>
 				</v-flex>
          	</v-stepper-content>
          </v-stepper-items>
@@ -718,10 +598,10 @@ export default {
 	  formValid1: false,
 	  formValid2: false,
 	  formValid3: false,
-      name: 'paulo',
-      email: 'paulo@gmail.com',
-      password: '1234paulo',
-      repeatPassword: '1234paulo',
+      name: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
       error: null,
       firstStep: true,
       e1: 0,
@@ -760,21 +640,9 @@ export default {
 	  countryVisible: 0,
 	  cityVisible: 0,
 	  dpVisible: 0,
-	  academicDegreeVisible: 0,
-	  courseVisible: 0,
-	  date2Visible: 0,
-	  date3Visible: 0,
 	  typeVisible: 0,
 	  numberVisible: 0,
-	  companyVisible: 0,
-	  positionVisible: 0,
-	  companyTypeVisible: 0,
-	  checkboxWorkVisible: 0,
-	  checkboxNoExperienceVisible: 0,
-	  date4Visible: 0,
-	  date5Visible: 0,
 	  companyIndustry: '',
-	  companyIndustryVisible: 0,
 	  workingLocationVisible: 0,
 	  workingLocation: '',
 	  nameRules: [
@@ -837,33 +705,27 @@ export default {
 						email: this.email,
 						hashedPassword: this.password,
 						birthDate: this.date,
-						birthDate_visibility: ((this.birthdayVisible == 0) ? true : false),
+						birthDate_visibility: this.birthdayVisible,
 						gender: this.gender,
-						gender_visibility: ((this.genderVisible == 0) ? true : false),
+						gender_visibility: this.genderVisible,
 						country: this.country,
-						country_visibility: ((this.countryVisible == 0) ? true : false),
+						country_visibility: this.countryVisible,
 						city: this.city,
-						city_visibility: ((this.cityVisible == 0) ? true : false),
+						city_visibility: this.cityVisible,
 						courseId: this.courseId,
 						enrollmentDate: this.date2,
-						enrollmentDate_visibility: ((this.date2Visible == 0) ? true : false),
 						graduationDate: this.date3,
-						graduationDate_visibility: ((this.date3 == 0) ? true : false),
 						type: this.type,
-						type_visibility: ((this.typeVisible == 0) ? true : false),
+						type_visibility: this.typeVisible,
 						mecNumber: this.number,
-						mecNumber_visibility: ((this.numberVisible == 0) ? true : false),
+						mecNumber_visibility: this.numberVisible,
 						company: this.company,
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
-						title_visibility: ((this.positionVisible == 0) ? true : false),
 						startDate: this.date4,
-						startDate_visibility: ((this.date4Visible == 0) ? true : false),
 						endDate: this.date5,
-						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
-						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}
@@ -873,33 +735,29 @@ export default {
 						email: this.email,
 						hashedPassword: this.password,
 						birthDate: this.date,
-						birthDate_visibility: ((this.birthdayVisible == 0) ? true : false),
+						birthDate_visibility: this.birthdayVisible,
 						gender: this.gender,
-						gender_visibility: ((this.genderVisible == 0) ? true : false),
+						gender_visibility: this.genderVisible,
 						country: this.country,
-						country_visibility: ((this.countryVisible == 0) ? true : false),
+						country_visibility: this.countryVisible,
 						city: this.city,
-						city_visibility: ((this.cityVisible == 0) ? true : false),
+						city_visibility: this.cityVisible,
 						departmentId: this.departmentId,
 						workingLocation: this.workingLocation,
-						workingLocation_visibility: ((this.workingLocationVisible == 0) ? true : false),
+						workingLocation_visibility: this.workingLocationVisible,
 						startDate: this.date2,
-						startDate_visibility: ((this.date2Visible == 0) ? true : false),
+						startDate_visibility: this.date2Visible == 0,
 						endDate: this.date3,
-						endDate_visibility: ((this.date3Visible == 0) ? true : false),
+						endDate_visibility: this.date3Visible == 0,
 						mecNumber: this.number,
-						mecNumber_visibility: ((this.numberVisible == 0) ? true : false),
+						mecNumber_visibility: this.numberVisible == 0,
 						company: this.company,
 						companyType: this.companyType,
 						companyIndustry: this.companyIndustry,
 						title: this.position,
-						title_visibility: ((this.positionVisible == 0) ? true : false),
 						startDate: this.date4,
-						startDate_visibility: ((this.date4Visible == 0) ? true : false),
 						endDate: this.date5,
-						endDate_visibility: ((this.date5Visible == 0) ? true : false),
 						isCurrent: this.checkboxWork,
-						isCurrent_visibility: ((this.checkboxWorkVisible == 0) ? true : false),
 						workExperience: this.checkboxNoExperience
 					})).data
 				}	
@@ -936,6 +794,11 @@ export default {
 		await this.getCourses();
 		await this.getDepartments()
   },
+  computed: {
+    filteredCourses() {
+      return this.courses.filter(c => c.academicDegree == this.degree)
+    }
+  },
 }
 </script>
 
@@ -946,12 +809,18 @@ export default {
   font-size: 125%;
 }
 
+.continue_btn,
+.back_btn,
+.finish_btn,
+.stepper__step--active .stepper__step__step,
+.stepper__step--complete .stepper__step__step,
+#main_card .toolbar__content,
+#userInfo .toolbar__content{
+	background-color:rgb(140,45,25)!important;
+	color:white!important;
+}
 .v-select .dropdown-menu {
 	display:block;
-}
-
-.primary {
-  background-color: #b71c1c !important;
 }
 
 .cc-selector input {
@@ -961,8 +830,14 @@ export default {
             appearance:none;
 }
 
-.student{background-image:url(https://cdn3.iconfinder.com/data/icons/school-and-education-2/56/education_icons_IF-02-512.png);}
-.staff{background-image:url(https://cdn4.iconfinder.com/data/icons/hr-recruitment-management-part-2/400/hr-07-2-512.png);}
+.student{
+	background: url('https://cdn3.iconfinder.com/data/icons/school-and-education-2/56/education_icons_IF-02-512.png') no-repeat center;
+	background-size: cover;
+}
+.staff{
+	background: url('https://cdn4.iconfinder.com/data/icons/hr-recruitment-management-part-2/400/hr-07-2-512.png') no-repeat center;
+	background-size: cover;
+}
 
 .cc-selector input:active +.drinkcard-cc{opacity: .9;}
 .cc-selector input:checked +.drinkcard-cc{
@@ -1006,6 +881,14 @@ p{margin-bottom:.3em;}
 	}
 	.to {
 		display: none;
+	}
+}
+@media only screen and (max-width: 960px) and (min-width: 600px){
+	#main_card {
+		margin: 10px 20%;
+	}
+	#social {
+		margin: 10px 40%;
 	}
 }
 </style>
