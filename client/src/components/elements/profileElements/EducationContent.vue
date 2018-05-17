@@ -165,6 +165,7 @@ export default {
 
   data() {
     return {
+      coursesOptions: null,
       defaultCourseImg: defaultCourseImg,
       currentItem: null,
       showingFeedback: false,
@@ -179,7 +180,6 @@ export default {
       degreeOptions: ["Bachelor", "Masters", "PhD"],
       visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
       dialogEducation: false,
-      coursesOptions: null,
       editedIndexEducation: -1,
       editedItemEducation: {
         degree: null,
@@ -205,7 +205,6 @@ export default {
         this.error = error;
       }
     },
-
     showConfirmDialog(action, title){
         this.warningDialog=true
         this.warningAction=action 
@@ -343,7 +342,6 @@ export default {
       }
     }
   },
-
   mounted: async function() {
     await this.getCourses();
   }

@@ -4,10 +4,10 @@
     <profile-header class="cards-width" :personObj="person" :personType="personType">
     </profile-header>
 
-    <profile-experience-content v-if="getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(person.experienceVisible)" class="cards-width" :person="person" :itemsExperience="itemsExperience">
+    <profile-experience-content v-if="(getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(person.experienceVisible)) || (person.id == this.$store.state.user.id)" class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content v-if="getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(student.educationVisible)" class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
+    <profile-education-content v-if="(getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(student.educationVisible)) || (person.id == this.$store.state.user.id)" class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
