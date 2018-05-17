@@ -7,7 +7,7 @@
     <profile-experience-content v-if="(getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(person.experienceVisible)) || (person.id == this.$store.state.user.id)" class="cards-width" :person="person" :itemsExperience="itemsExperience">
     </profile-experience-content>
 
-    <profile-education-content v-if="(getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(student.educationVisible)) || (person.id == this.$store.state.user.id)" class="cards-width" :person="person" :student="student" :itemsEducation="itemsEducation">
+    <profile-education-content v-if="(getRoleIndex(this.$store.state.user.role) >= getVisibleIndex(student.educationVisible)) || (person.id == this.$store.state.user.id)" class="cards-width" :person="person" :student="student" :coursesOptions="coursesOptions" :itemsEducation="itemsEducation">
     </profile-education-content>
 
   </div>
@@ -18,6 +18,7 @@ import ProfileService from "@/services/ProfileService";
 import ProfileHeader from "@/components/elements/profileElements/Header";
 import ProfileExperienceContent from "@/components/elements/profileElements/ExperienceContent";
 import ProfileEducationContent from "@/components/elements/profileElements/EducationContent";
+import CourseService from "@/services/CourseService";
 
 export default {
   name: "profile",
@@ -35,14 +36,26 @@ export default {
     student: {},
     personType: "",
     visibleOptions: ['All Users', 'Channel Admins', 'Super Admins'],
-    roles: ['User', 'Channel Admin', 'Super Admin']
+    roles: ['User', 'Channel Admin', 'Super Admin'],
+    coursesOptions: null
   }),
 
   created() {
     this.initialize();
   },
 
+  mounted: async function() {
+    await this.getCourses();
+  },
+
   methods: {
+    async getCourses() {
+      try {
+        this.coursesOptions = (await CourseService.list_all_courses()).data;
+      } catch (error) {
+        this.error = error;
+      }
+    },
     async initialize() {
       let result = await ProfileService.getTypeOfPerson({
         id: this.$route.params.id

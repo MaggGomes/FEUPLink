@@ -161,11 +161,10 @@ import CourseService from "@/services/CourseService";
 export default {
   name: "profile-education-content",
 
-  props: ["person", "itemsEducation", "student"],
+  props: ["person", "itemsEducation", "student", "coursesOptions"],
 
   data() {
     return {
-      coursesOptions: null,
       defaultCourseImg: defaultCourseImg,
       currentItem: null,
       showingFeedback: false,
@@ -198,13 +197,6 @@ export default {
   },
 
   methods: {
-    async getCourses() {
-      try {
-        this.coursesOptions = (await CourseService.list_all_courses()).data;
-      } catch (error) {
-        this.error = error;
-      }
-    },
     showConfirmDialog(action, title){
         this.warningDialog=true
         this.warningAction=action 
@@ -341,9 +333,6 @@ export default {
         this.showingFeedback=true
       }
     }
-  },
-  mounted: async function() {
-    await this.getCourses();
   }
 };
 </script>
